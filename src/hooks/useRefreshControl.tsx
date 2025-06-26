@@ -25,10 +25,12 @@ export const useRefreshControl = () => {
   }, [isAutoRefresh, refreshRate]);
 
   const handleManualRefresh = () => {
+    console.log('Manual refresh triggered');
     setLastUpdated(new Date());
     setRefreshCounter(prev => prev + 1);
     // Dispatch a custom event to notify other components
     window.dispatchEvent(new CustomEvent('manualRefresh'));
+    console.log('Manual refresh completed, event dispatched');
   };
 
   return {
