@@ -1,5 +1,7 @@
+
 import { Transfer } from '@/types/transfer';
 import { TransferParser, ParsedTransferData } from './transferParser';
+import { PREMIER_LEAGUE_CLUBS, CLUB_VARIATIONS } from './transferParser/constants';
 
 export interface CrawlResult {
   url: string;
@@ -130,12 +132,56 @@ export class TransferIntegrationService {
     return Array.from(seen.values());
   }
 
+  static cleanupCorruptedPlayerNames(transfers: Transfer[]): Transfer[] {
+    const allClubNames = new Set([
+      ...PREMIER_LEAGUE_CLUBS.map(club => club.toLowerCase()),
+      ...Object.keys(CLUB_VARIATIONS).map(club => club.toLowerCase()),
+      ...Object.values(CLUB_VARIATIONS).flat().map(variation => variation.toLowerCase())
+    ]);
+
+    return transfers.map(transfer => {
+      let cleanedPlayerName = transfer.playerName;
+      
+      // Remove club names from player names
+      const playerWords = cleanedPlayerName.split(' ');
+      const filteredWords = playerWords.filter(word => {
+        const cleanWord = word.toLowerCase().replace(/[^\w]/g, '');
+        return !allClubNames.has(cleanWord);
+      });
+      
+      // Only update if we have at least 2 words left (first and last name)
+      if (filteredWords.length >= 2) {
+        cleanedPlayerName = filteredWords.join(' ');
+      }
+      
+      // If the cleaned name is too short or empty, mark for removal
+      if (cleanedPlayerName.length < 3 || filteredWords.length < 2) {
+        return null;
+      }
+      
+      return {
+        ...transfer,
+        playerName: cleanedPlayerName
+      };
+    }).filter(transfer => transfer !== null) as Transfer[];
+  }
+
   static getParsedTransfers(): Transfer[] {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       const transfers = stored ? JSON.parse(stored) : [];
       console.log(`Retrieved ${transfers.length} parsed transfers from storage`);
-      return transfers;
+      
+      // Clean up corrupted player names
+      const cleanedTransfers = this.cleanupCorruptedPlayerNames(transfers);
+      
+      // Store the cleaned transfers back
+      if (cleanedTransfers.length !== transfers.length) {
+        console.log(`Cleaned up ${transfers.length - cleanedTransfers.length} corrupted transfers`);
+        this.storeParsedTransfers(cleanedTransfers);
+      }
+      
+      return cleanedTransfers;
     } catch (error) {
       console.error('Error loading parsed transfers:', error);
       return [];

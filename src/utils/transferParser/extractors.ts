@@ -102,18 +102,36 @@ export function extractPlayerName(sentence: string): string | null {
     }
   }
 
+  // Create a comprehensive list of words to exclude (club names, common words, etc.)
+  const excludedWords = new Set([
+    ...PREMIER_LEAGUE_CLUBS.map(club => club.toLowerCase()),
+    ...Object.keys(CLUB_VARIATIONS).map(club => club.toLowerCase()),
+    ...Object.values(CLUB_VARIATIONS).flat().map(variation => variation.toLowerCase()),
+    'the', 'a', 'an', 'in', 'on', 'at', 'to', 'from', 'for', 'with', 'by', 'united', 'city', 'town', 'fc', 'transfer', 'has', 'signed', 'joins', 'completes', 'move', 'completed', 'official', 'officially', 'announces', 'announcement', 'confirms', 'confirmed', 'welcome', 'pleased', 'delighted', 'agreement', 'reached', 'medical', 'contract', 'registration', 'premier', 'league', 'football', 'club', 'player', 'midfielder', 'defender', 'forward', 'striker', 'goalkeeper', 'winger'
+  ]);
+
   // Look for capitalized words that could be names
   const words = sentence.split(/\s+/);
-  const capitalizedWords = words.filter(word => 
-    /^[A-Z][a-z]+$/.test(word) && 
-    word.length > 2 &&
-    !['The', 'A', 'An', 'In', 'On', 'At', 'To', 'From', 'For', 'With', 'By', 'United', 'City', 'Town', 'FC', 'Transfer', 'Has', 'Signed', 'Joins'].includes(word)
-  );
+  const capitalizedWords = words.filter(word => {
+    const cleanWord = word.replace(/[^\w]/g, '');
+    return /^[A-Z][a-z]+$/.test(cleanWord) && 
+           cleanWord.length > 2 &&
+           !excludedWords.has(cleanWord.toLowerCase());
+  });
 
-  // Look for name patterns (2-3 consecutive capitalized words)
+  // Look for name patterns (2-3 consecutive capitalized words that aren't club names)
   for (let i = 0; i < capitalizedWords.length - 1; i++) {
     const possibleName = capitalizedWords.slice(i, Math.min(i + 3, capitalizedWords.length)).join(' ');
-    if (possibleName.length > 4 && possibleName.split(' ').length >= 2) {
+    
+    // Double-check that this isn't a club name or contains club names
+    const isClubName = PREMIER_LEAGUE_CLUBS.some(club => 
+      possibleName.toLowerCase().includes(club.toLowerCase())
+    ) || Object.keys(CLUB_VARIATIONS).some(club =>
+      possibleName.toLowerCase().includes(club.toLowerCase()) || 
+      CLUB_VARIATIONS[club].some(variation => possibleName.toLowerCase().includes(variation.toLowerCase()))
+    );
+    
+    if (!isClubName && possibleName.length > 4 && possibleName.split(' ').length >= 2) {
       console.log(`Extracted potential player name: ${possibleName}`);
       return possibleName;
     }
