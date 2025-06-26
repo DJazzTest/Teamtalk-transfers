@@ -31,26 +31,26 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
   }
 
   return (
-    <Card className="bg-gradient-to-r from-green-900/20 to-emerald-900/20 backdrop-blur-md border-green-500/30">
+    <Card className="bg-slate-800/90 backdrop-blur-md border-slate-600/50">
       <div className="p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="bg-green-500/20 p-2 rounded-lg">
-            <TrendingUp className="w-5 h-5 text-green-400" />
+          <div className="bg-blue-500/20 p-2 rounded-lg">
+            <TrendingUp className="w-5 h-5 text-blue-400" />
           </div>
           <h3 className="text-xl font-bold text-white">Latest Confirmed Transfers</h3>
-          <Badge className="bg-green-500 text-white text-xs">
+          <Badge className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
             BREAKING
           </Badge>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {recentConfirmed.map((transfer, index) => (
-            <Card key={transfer.id} className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200">
+            <Card key={transfer.id} className="bg-slate-700/60 backdrop-blur-md border-slate-600 hover:bg-slate-700/80 transition-all duration-200">
               <div className="p-4">
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <Badge className="bg-green-500 text-white text-xs">
+                    <CheckCircle className="w-4 h-4 text-blue-400" />
+                    <Badge className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
                       #{index + 1} LATEST
                     </Badge>
                   </div>
@@ -68,7 +68,7 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
                   
                   <div className="flex justify-between items-end">
                     <div>
-                      <p className="text-lg font-bold text-green-400">{transfer.fee}</p>
+                      <p className="text-lg font-bold text-blue-400">{transfer.fee}</p>
                       <p className="text-xs text-gray-400">{new Date(transfer.date).toLocaleDateString()}</p>
                     </div>
                     <p className="text-xs text-gray-300">{transfer.source}</p>
