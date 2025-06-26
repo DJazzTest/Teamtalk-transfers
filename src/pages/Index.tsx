@@ -21,7 +21,8 @@ const Index = () => {
     refreshCounter
   } = useRefreshControl();
 
-  const [countdownTarget, setCountdownTarget] = useState('2025-09-01T23:59:00');
+  // Set countdown to Monday 1 September 2025 at 19:00 BST (18:00 UTC)
+  const [countdownTarget, setCountdownTarget] = useState('2025-09-01T18:00:00Z');
   const [allTransfers, setAllTransfers] = useState<Transfer[]>(() => {
     // Initialize with merged transfers (mock + parsed)
     return TransferIntegrationService.mergeParsedWithMockTransfers(mockTransferData);
