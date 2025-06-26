@@ -1,4 +1,3 @@
-
 export const PREMIER_LEAGUE_CLUBS = [
   'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton', 'Brighton & Hove Albion',
   'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 'Leeds',
@@ -39,16 +38,18 @@ export const TRUSTED_SOURCES = [
 ];
 
 export const KNOWN_PLAYERS = [
-  // Leeds United
-  'Jaka Bijol', 'Lukas Nmecha', 
-  // Liverpool
-  'Giorgi Mamardashvili', 'Jeremie Frimpong', 'Armin Pecsi', 'Florian Wirtz',
-  // Manchester City
-  'Rayan Ait-Nouri', 'Marcus Bettinelli', 'Rayan Cherki', 'Tijjani Reijnders',
-  // Other known players
-  'Matheus Cunha', 'Diego León', 'Chido Obi', 'Tyler Fredricson', 
-  'Marcus Rashford', 'Antony', 'Tyrell Malacia'
-];
+  // Existing players
+  'Jaka Bijol', 'Lukas Nmecha', 'Giorgi Mamardashvili', 'Jeremie Frimpong',
+  'Rayan Ait-Nouri', 'Marcus Bettinelli',
+  
+  // New Brentford signings
+  'Romelle Donovan', 'Michael Kayode', 'Caoimhin Kelleher',
+  
+  // Other recent signings to look for
+  'Yankuba Minteh', 'Elliot Anderson', 'Lloyd Kelly', 'Lewis Hall',
+  'Chadi Riad', 'Matt O\'Riley', 'Ferdi Kadioglu', 'Mats Wieffer',
+  'Ibrahim Osmen', 'Georginio Rutter', 'Crysencio Summerville'
+] as const;
 
 export const FEE_PATTERNS = [
   /£([\d.]+)m/gi,

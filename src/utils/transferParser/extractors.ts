@@ -55,10 +55,12 @@ export function containsRelevantConfirmedContent(sentence: string): boolean {
     return false;
   }
   
-  // MUST contain confirmed transfer keywords
+  // Enhanced confirmation keyword detection - more flexible
   const hasConfirmedKeyword = CONFIRMED_TRANSFER_KEYWORDS.some(keyword => 
     lower.includes(keyword.toLowerCase())
-  );
+  ) || lower.includes('signs') || lower.includes('joins') || 
+     lower.includes('completes') || lower.includes('move') ||
+     lower.includes('announces') || lower.includes('welcome');
   
   const hasClubName = PREMIER_LEAGUE_CLUBS.some(club => 
     lower.includes(club.toLowerCase())
@@ -71,7 +73,7 @@ export function containsRelevantConfirmedContent(sentence: string): boolean {
     lower.includes(player.toLowerCase())
   );
   
-  // Accept only if it has confirmed keywords + club, or confirmed keywords + known player
+  // Accept if it has any signing-related keywords + club, or signing keywords + known player
   const isRelevant = hasConfirmedKeyword && (hasClubName || hasKnownPlayer);
   
   if (isRelevant) {
