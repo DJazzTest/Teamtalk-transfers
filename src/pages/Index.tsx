@@ -1,17 +1,13 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TransferCountdown } from '@/components/TransferCountdown';
-import { CountdownSettings } from '@/components/CountdownSettings';
-import { UrlManager } from '@/components/UrlManager';
-import { TransferResults } from '@/components/TransferResults';
 import { RecentTransfers } from '@/components/RecentTransfers';
-import { CompletedTransfers } from '@/components/CompletedTransfers';
-import { ApiKeyManager } from '@/components/ApiKeyManager';
-import { RefreshControl } from '@/components/RefreshControl';
+import { AppHeader } from '@/components/AppHeader';
+import { MainTabs } from '@/components/MainTabs';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useRefreshControl } from '@/hooks/useRefreshControl';
 
-// Mock transfers data (same as in TransferResults)
+// Mock transfers data
 const mockTransfers = [
   {
     id: '1',
@@ -156,43 +152,20 @@ const mockTransfers = [
 ];
 
 const Index = () => {
-  const [refreshRate, setRefreshRate] = useState(300000); // 5 minutes default
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
-  const [isAutoRefresh, setIsAutoRefresh] = useState(false);
-  const [countdownTarget, setCountdownTarget] = useState('2025-09-01T23:59:00');
+  const {
+    refreshRate,
+    setRefreshRate,
+    lastUpdated,
+    isAutoRefresh,
+    setIsAutoRefresh,
+    handleManualRefresh
+  } = useRefreshControl();
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isAutoRefresh) {
-      interval = setInterval(() => {
-        setLastUpdated(new Date());
-        console.log('Auto-refreshing transfer data...');
-      }, refreshRate);
-    }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isAutoRefresh, refreshRate]);
+  const [countdownTarget, setCountdownTarget] = useState('2025-09-01T23:59:00');
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
-      {/* Header */}
-      <header className="bg-white/90 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                PlanetSport Transfers
-              </h1>
-              <p className="text-gray-600 text-sm">Live Transfer Tracking</p>
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-gray-500">Last Updated</p>
-              <p className="text-xs text-gray-700 font-medium">{lastUpdated.toLocaleTimeString()}</p>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AppHeader lastUpdated={lastUpdated} />
 
       <div className="container mx-auto px-4 py-8">
         {/* Recent Transfers Highlight */}
@@ -208,71 +181,17 @@ const Index = () => {
         </Card>
 
         {/* Main Content Tabs */}
-        <Tabs defaultValue="transfers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-white/90 border border-gray-200/50 shadow-sm">
-            <TabsTrigger value="transfers" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
-              Live Transfers
-            </TabsTrigger>
-            <TabsTrigger value="completed" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
-              Completed
-            </TabsTrigger>
-            <TabsTrigger value="sources" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
-              Sources
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
-              Settings
-            </TabsTrigger>
-            <TabsTrigger value="api" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
-              API Config
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="transfers" className="space-y-6">
-            <RefreshControl
-              refreshRate={refreshRate}
-              setRefreshRate={setRefreshRate}
-              isAutoRefresh={isAutoRefresh}
-              setIsAutoRefresh={setIsAutoRefresh}
-              onManualRefresh={() => setLastUpdated(new Date())}
-            />
-            <TransferResults lastUpdated={lastUpdated} />
-          </TabsContent>
-
-          <TabsContent value="completed">
-            <CompletedTransfers transfers={mockTransfers} />
-          </TabsContent>
-
-          <TabsContent value="sources">
-            <UrlManager />
-          </TabsContent>
-
-          <TabsContent value="settings" className="space-y-6">
-            <CountdownSettings 
-              targetDate={countdownTarget}
-              onDateChange={setCountdownTarget}
-            />
-            
-            <Card className="bg-white/95 backdrop-blur-md border-gray-200/50 shadow-lg">
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">Transfer Settings</h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
-                    <p className="text-sm text-gray-600">June 1, 2025 - September 1, 2025</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Transfer Type</label>
-                    <p className="text-sm text-gray-600">Players arriving at clubs only</p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="api">
-            <ApiKeyManager />
-          </TabsContent>
-        </Tabs>
+        <MainTabs
+          refreshRate={refreshRate}
+          setRefreshRate={setRefreshRate}
+          isAutoRefresh={isAutoRefresh}
+          setIsAutoRefresh={setIsAutoRefresh}
+          onManualRefresh={handleManualRefresh}
+          lastUpdated={lastUpdated}
+          countdownTarget={countdownTarget}
+          setCountdownTarget={setCountdownTarget}
+          mockTransfers={mockTransfers}
+        />
       </div>
     </div>
   );
