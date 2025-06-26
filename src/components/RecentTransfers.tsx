@@ -37,7 +37,7 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
           <div className="bg-emerald-100 p-2 rounded-lg">
             <TrendingUp className="w-5 h-5 text-emerald-600" />
           </div>
-          <h3 className="text-xl font-bold text-white">Latest Confirmed Transfers</h3>
+          <h3 className="text-xl font-bold text-emerald-400">Latest Confirmed Transfers</h3>
           <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs">
             BREAKING
           </Badge>

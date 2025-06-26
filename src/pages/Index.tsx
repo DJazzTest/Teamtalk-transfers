@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { TransferCountdown } from '@/components/TransferCountdown';
 import { CountdownSettings } from '@/components/CountdownSettings';
 import { UrlManager } from '@/components/UrlManager';
 import { TransferResults } from '@/components/TransferResults';
 import { RecentTransfers } from '@/components/RecentTransfers';
+import { CompletedTransfers } from '@/components/CompletedTransfers';
 import { ApiKeyManager } from '@/components/ApiKeyManager';
 import { RefreshControl } from '@/components/RefreshControl';
 import { Card } from '@/components/ui/card';
@@ -207,9 +209,12 @@ const Index = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="transfers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/90 border border-gray-200/50 shadow-sm">
+          <TabsList className="grid w-full grid-cols-5 bg-white/90 border border-gray-200/50 shadow-sm">
             <TabsTrigger value="transfers" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
               Live Transfers
+            </TabsTrigger>
+            <TabsTrigger value="completed" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
+              Completed
             </TabsTrigger>
             <TabsTrigger value="sources" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
               Sources
@@ -231,6 +236,10 @@ const Index = () => {
               onManualRefresh={() => setLastUpdated(new Date())}
             />
             <TransferResults lastUpdated={lastUpdated} />
+          </TabsContent>
+
+          <TabsContent value="completed">
+            <CompletedTransfers transfers={mockTransfers} />
           </TabsContent>
 
           <TabsContent value="sources">

@@ -43,10 +43,7 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
 
   return (
     <div className="text-center" style={{ backgroundColor: '#2F517A', borderRadius: '0.5rem', padding: '2rem' }}>
-      <h2 className="text-2xl font-bold text-white mb-2">Transfer Window Countdown</h2>
-      <p className="text-gray-200 mb-6">
-        {isExpired ? 'Transfer Window Closed' : `Countdown to ${target.toLocaleDateString()}`}
-      </p>
+      <h2 className="text-2xl font-bold text-blue-400 mb-2">Transfer Window Countdown</h2>
       
       {isExpired ? (
         <div className="bg-red-50 border border-red-200 rounded-lg p-8 max-w-md mx-auto">
