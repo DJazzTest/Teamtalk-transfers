@@ -1,4 +1,3 @@
-
 export interface Transfer {
   id: string;
   playerName: string;
@@ -9,6 +8,7 @@ export interface Transfer {
   source: string;
   status: 'confirmed' | 'rumored' | 'pending' | 'rejected';
   rejectionReason?: string;
+  playerImage?: string;
 }
 
 export interface CrawlStatus {

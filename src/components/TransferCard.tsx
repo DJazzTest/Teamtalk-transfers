@@ -11,25 +11,6 @@ interface TransferCardProps {
   isCompact?: boolean;
 }
 
-const getPlayerImage = (playerName: string) => {
-  // Use a hash of the player name to consistently assign the same image
-  const hash = playerName.split('').reduce((a, b) => {
-    a = ((a << 5) - a) + b.charCodeAt(0);
-    return a & a;
-  }, 0);
-  
-  const images = [
-    'photo-1582562124811-c09040d0a901',
-    'photo-1466721591366-2d5fba72006d',
-    'photo-1535268647677-300dbf3d78d1',
-    'photo-1501286353178-1ec881214838',
-    'photo-1452378174528-3090a4bba7b2'
-  ];
-  
-  const imageIndex = Math.abs(hash) % images.length;
-  return `https://images.unsplash.com/${images[imageIndex]}?w=400&h=400&fit=crop&crop=face`;
-};
-
 const getPlayerInitials = (playerName: string) => {
   return playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 };
@@ -42,7 +23,7 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Avatar className="w-8 h-8">
-                <AvatarImage src={getPlayerImage(transfer.playerName)} alt={transfer.playerName} />
+                {transfer.playerImage && <AvatarImage src={transfer.playerImage} alt={transfer.playerName} />}
                 <AvatarFallback className="bg-slate-600 text-white text-xs">
                   {getPlayerInitials(transfer.playerName)}
                 </AvatarFallback>
@@ -86,7 +67,7 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex-1 flex items-center gap-4">
             <Avatar className="w-12 h-12">
-              <AvatarImage src={getPlayerImage(transfer.playerName)} alt={transfer.playerName} />
+              {transfer.playerImage && <AvatarImage src={transfer.playerImage} alt={transfer.playerName} />}
               <AvatarFallback className="bg-slate-600 text-white">
                 {getPlayerInitials(transfer.playerName)}
               </AvatarFallback>
