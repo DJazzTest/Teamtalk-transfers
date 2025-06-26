@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,8 +15,28 @@ export const UrlManager = () => {
     if (savedUrls) {
       setUrls(JSON.parse(savedUrls));
     } else {
-      // Default URLs
+      // Premier League transfer news URLs from NewsNow
       const defaultUrls = [
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Arsenal/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Aston+Villa/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Bournemouth/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Brentford/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Brighton/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Burnley/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Chelsea/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Crystal+Palace/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Everton/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Fulham/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Leeds+United/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Liverpool/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Manchester+City/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Manchester+United/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Newcastle+United/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Nottingham+Forest/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Sunderland/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Tottenham+Hotspur/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/West+Ham+United/Transfer+News',
+        'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Wolves/Transfer+News',
         'https://www.bbc.com/sport/football',
         'https://www.skysports.com/football/transfers',
         'https://www.transfermarkt.com',
