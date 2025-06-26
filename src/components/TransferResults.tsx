@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Search, Users, TrendingUp, CheckCircle, Clock, Globe } from 'lucide-react';
+import { Search, Users, TrendingUp, CheckCircle, Clock, Globe, MessageCircle, Verified } from 'lucide-react';
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
 
@@ -152,6 +152,26 @@ const mockTransfers: Transfer[] = [
     date: '2025-06-14',
     source: 'Yorkshire Evening Post',
     status: 'confirmed'
+  },
+  {
+    id: '13',
+    playerName: 'Kylian Mbappé',
+    fromClub: 'PSG',
+    toClub: 'Liverpool',
+    fee: '£150M',
+    date: '2025-06-28',
+    source: 'The Sun',
+    status: 'rumored'
+  },
+  {
+    id: '14',
+    playerName: 'Pedri',
+    fromClub: 'Barcelona',
+    toClub: 'Chelsea',
+    fee: '£80M',
+    date: '2025-06-30',
+    source: 'Daily Mail',
+    status: 'rumored'
   }
 ];
 
@@ -160,7 +180,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>(mockTransfers);
   const [selectedClub, setSelectedClub] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [viewMode, setViewMode] = useState<'list' | 'clubs'>('clubs');
+  const [viewMode, setViewMode] = useState<'list' | 'clubs' | 'lanes'>('lanes');
   const [isScraping, setIsScraping] = useState(false);
   const { toast } = useToast();
 
@@ -249,6 +269,15 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
     }
   };
 
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'confirmed': return <Verified className="w-4 h-4" />;
+      case 'pending': return <Clock className="w-4 h-4" />;
+      case 'rumored': return <MessageCircle className="w-4 h-4" />;
+      default: return <Clock className="w-4 h-4" />;
+    }
+  };
+
   const groupTransfersByClub = () => {
     const grouped: { [key: string]: Transfer[] } = {};
     filteredTransfers.forEach(transfer => {
@@ -260,7 +289,40 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
     return grouped;
   };
 
+  const groupTransfersByStatus = () => {
+    const grouped: { [key: string]: Transfer[] } = {
+      confirmed: [],
+      rumored: [],
+      pending: []
+    };
+    
+    filteredTransfers.forEach(transfer => {
+      grouped[transfer.status].push(transfer);
+    });
+    
+    return grouped;
+  };
+
   const clubTransfers = groupTransfersByClub();
+  const statusTransfers = groupTransfersByStatus();
+
+  const getLaneTitle = (status: string) => {
+    switch (status) {
+      case 'confirmed': return 'Confirmed Transfers';
+      case 'rumored': return 'Transfer Gossip';
+      case 'pending': return 'Pending Deals';
+      default: return status;
+    }
+  };
+
+  const getLaneIcon = (status: string) => {
+    switch (status) {
+      case 'confirmed': return <CheckCircle className="w-5 h-5 text-green-400" />;
+      case 'rumored': return <MessageCircle className="w-5 h-5 text-blue-400" />;
+      case 'pending': return <Clock className="w-5 h-5 text-yellow-400" />;
+      default: return <Clock className="w-5 h-5 text-gray-400" />;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -292,11 +354,12 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
                 ))}
               </SelectContent>
             </Select>
-            <Select value={viewMode} onValueChange={(value: 'list' | 'clubs') => setViewMode(value)}>
+            <Select value={viewMode} onValueChange={(value: 'list' | 'clubs' | 'lanes') => setViewMode(value)}>
               <SelectTrigger className="w-32 bg-slate-700 border-slate-600 text-white">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="lanes">Lanes</SelectItem>
                 <SelectItem value="clubs">By Club</SelectItem>
                 <SelectItem value="list">List View</SelectItem>
               </SelectContent>
@@ -343,14 +406,14 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         
         <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
           <div className="p-4 flex items-center gap-3">
-            <div className="bg-yellow-500/20 p-2 rounded-lg">
-              <Clock className="w-5 h-5 text-yellow-400" />
+            <div className="bg-blue-500/20 p-2 rounded-lg">
+              <MessageCircle className="w-5 h-5 text-blue-400" />
             </div>
             <div>
               <p className="text-white font-semibold">
-                {filteredTransfers.filter(t => t.status === 'pending').length}
+                {filteredTransfers.filter(t => t.status === 'rumored').length}
               </p>
-              <p className="text-gray-300 text-sm">Pending</p>
+              <p className="text-gray-300 text-sm">Gossip</p>
             </div>
           </div>
         </Card>
@@ -364,6 +427,58 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
               <p className="text-gray-400">No transfers found matching your criteria</p>
             </div>
           </Card>
+        ) : viewMode === 'lanes' ? (
+          // Lanes View
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {Object.entries(statusTransfers).map(([status, statusTransferList]) => (
+              <div key={status} className="space-y-4">
+                <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+                  <div className="p-4 border-b border-slate-600">
+                    <div className="flex items-center gap-3">
+                      {getLaneIcon(status)}
+                      <h3 className="text-lg font-bold text-white">
+                        {getLaneTitle(status)}
+                      </h3>
+                      <Badge className={`${getStatusColor(status)} text-white text-xs`}>
+                        {statusTransferList.length}
+                      </Badge>
+                    </div>
+                  </div>
+                </Card>
+                
+                <div className="space-y-3 max-h-96 overflow-y-auto">
+                  {statusTransferList.map((transfer) => (
+                    <Card key={transfer.id} className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200">
+                      <div className="p-4">
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            {getStatusIcon(transfer.status)}
+                            <h4 className="font-semibold text-white text-sm">{transfer.playerName}</h4>
+                          </div>
+                          
+                          <div className="text-xs text-gray-300">
+                            <div className="flex items-center gap-1 mb-1">
+                              <span>{transfer.fromClub}</span>
+                              <span>→</span>
+                              <span className="font-semibold text-white">{transfer.toClub}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex justify-between items-end">
+                            <div>
+                              <p className="text-sm font-bold text-green-400">{transfer.fee}</p>
+                              <p className="text-xs text-gray-400">{new Date(transfer.date).toLocaleDateString()}</p>
+                            </div>
+                            <p className="text-xs text-gray-300">{transfer.source}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         ) : viewMode === 'clubs' ? (
           // Club View
           Object.entries(clubTransfers).map(([club, clubTransferList]) => (
