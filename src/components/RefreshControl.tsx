@@ -31,9 +31,9 @@ export const RefreshControl: React.FC<RefreshControlProps> = ({
 
   return (
     <Card className="bg-white/70 backdrop-blur-md border-gray-200/50 shadow-lg">
-      <div className="p-4">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-4">
+      <div className="p-3 sm:p-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
             <div className="flex items-center gap-2">
               <Switch
                 checked={isAutoRefresh}
@@ -51,13 +51,13 @@ export const RefreshControl: React.FC<RefreshControlProps> = ({
               )}
             </div>
             
-            <div className="flex items-center gap-2">
-              <span className="text-gray-700 text-sm">Every:</span>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <span className="text-gray-700 text-sm whitespace-nowrap">Every:</span>
               <Select
                 value={refreshRate.toString()}
                 onValueChange={(value) => setRefreshRate(Number(value))}
               >
-                <SelectTrigger className="w-32 bg-white border-gray-300 text-gray-700">
+                <SelectTrigger className="w-full sm:w-32 bg-white border-gray-300 text-gray-700 text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -73,7 +73,8 @@ export const RefreshControl: React.FC<RefreshControlProps> = ({
 
           <Button
             onClick={onManualRefresh}
-            className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm w-full sm:w-auto"
+            size="sm"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
             Refresh Now
