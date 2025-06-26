@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -217,11 +216,11 @@ export const UrlManager = () => {
     
     switch (testStatus.status) {
       case 'testing':
-        return <TestTube className="w-4 h-4 text-yellow-500 animate-pulse flex-shrink-0" title="Testing URL..." />;
+        return <div title="Testing URL..."><TestTube className="w-4 h-4 text-yellow-500 animate-pulse flex-shrink-0" /></div>;
       case 'success':
-        return <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" title="URL test successful" />;
+        return <div title="URL test successful"><CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" /></div>;
       case 'error':
-        return <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" title={`Test failed: ${testStatus.error}`} />;
+        return <div title={`Test failed: ${testStatus.error}`}><AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" /></div>;
       default:
         return null;
     }
