@@ -193,21 +193,22 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         description: `Starting to scrape ${urls.length} URLs for transfer data...`,
       });
 
-      for (const url of urls) {
-        console.log(`Scraping URL: ${url}`);
-        const result = await FirecrawlService.crawlWebsite(url);
-        
-        if (result.success && result.data) {
-          console.log(`Successfully scraped ${url}:`, result.data);
-        } else {
-          console.error(`Failed to scrape ${url}:`, result.error);
-        }
+      const result = await FirecrawlService.crawlTransferSources(urls);
+      
+      if (result.success && result.data) {
+        console.log('Successfully scraped URLs:', result.data);
+        toast({
+          title: "Scraping Complete",
+          description: `Successfully scraped ${result.data.length} sources. Check console for detailed results.`,
+        });
+      } else {
+        console.error('Failed to scrape URLs:', result.error);
+        toast({
+          title: "Scraping Error",
+          description: result.error || "Failed to scrape URLs.",
+          variant: "destructive",
+        });
       }
-
-      toast({
-        title: "Scraping Complete",
-        description: "All URLs have been scraped. Check console for detailed results.",
-      });
     } catch (error) {
       console.error('Error during scraping:', error);
       toast({
