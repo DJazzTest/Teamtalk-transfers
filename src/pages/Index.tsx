@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { TransferCountdown } from '@/components/TransferCountdown';
 import { CountdownSettings } from '@/components/CountdownSettings';
@@ -174,9 +173,9 @@ const Index = () => {
   }, [isAutoRefresh, refreshRate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-100 to-blue-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
+      <header className="bg-white/90 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -200,7 +199,7 @@ const Index = () => {
         </div>
 
         {/* Transfer Window Countdown */}
-        <Card className="mb-8 bg-white/70 backdrop-blur-md border-gray-200/50 shadow-lg">
+        <Card className="mb-8 bg-white/95 backdrop-blur-md border-gray-200/50 shadow-lg">
           <div className="p-6">
             <TransferCountdown targetDate={countdownTarget} />
           </div>
@@ -208,7 +207,7 @@ const Index = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="transfers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/80 border border-gray-200/50 shadow-sm">
+          <TabsList className="grid w-full grid-cols-4 bg-white/90 border border-gray-200/50 shadow-sm">
             <TabsTrigger value="transfers" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
               Live Transfers
             </TabsTrigger>
@@ -244,7 +243,7 @@ const Index = () => {
               onDateChange={setCountdownTarget}
             />
             
-            <Card className="bg-white/70 backdrop-blur-md border-gray-200/50 shadow-lg">
+            <Card className="bg-white/95 backdrop-blur-md border-gray-200/50 shadow-lg">
               <div className="p-6">
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">Transfer Settings</h3>
                 <div className="space-y-4">
