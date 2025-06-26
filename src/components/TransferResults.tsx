@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Search, Users, TrendingUp, CheckCircle, Clock, Globe, MessageCircle, Verified, AlertCircle } from 'lucide-react';
+import { Search, Users, TrendingUp, CheckCircle, Clock, Globe, MessageCircle, Verified, AlertCircle, X } from 'lucide-react';
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
 
@@ -16,7 +16,8 @@ interface Transfer {
   fee: string;
   date: string;
   source: string;
-  status: 'confirmed' | 'rumored' | 'pending';
+  status: 'confirmed' | 'rumored' | 'pending' | 'rejected';
+  rejectionReason?: string;
 }
 
 interface TransferResultsProps {
@@ -29,7 +30,7 @@ interface CrawlStatus {
   error?: string;
 }
 
-// Updated mock data with Leeds United players and other missing transfers
+// Updated mock data with rejected transfers
 const mockTransfers: Transfer[] = [
   {
     id: '1',
@@ -170,6 +171,50 @@ const mockTransfers: Transfer[] = [
     date: '2025-06-30',
     source: 'Daily Mail',
     status: 'rumored'
+  },
+  {
+    id: '15',
+    playerName: 'Neymar Jr',
+    fromClub: 'Al-Hilal',
+    toClub: 'Manchester United',
+    fee: '£25M',
+    date: '2025-06-20',
+    source: 'Sky Sports',
+    status: 'rejected',
+    rejectionReason: 'Failed medical - knee injury concerns'
+  },
+  {
+    id: '16',
+    playerName: 'Paulo Dybala',
+    fromClub: 'AS Roma',
+    toClub: 'Arsenal',
+    fee: '£30M',
+    date: '2025-06-18',
+    source: 'BBC Sport',
+    status: 'rejected',
+    rejectionReason: 'Personal terms disagreement'
+  },
+  {
+    id: '17',
+    playerName: 'Ivan Toney',
+    fromClub: 'Brentford',
+    toClub: 'Newcastle United',
+    fee: '£40M',
+    date: '2025-06-22',
+    source: 'The Guardian',
+    status: 'rejected',
+    rejectionReason: 'Club pulled out due to high wage demands'
+  },
+  {
+    id: '18',
+    playerName: 'Moussa Diaby',
+    fromClub: 'Aston Villa',
+    toClub: 'Chelsea',
+    fee: '£50M',
+    date: '2025-06-25',
+    source: 'ESPN',
+    status: 'rejected',
+    rejectionReason: 'Work permit issues'
   }
 ];
 
@@ -325,6 +370,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       case 'confirmed': return 'bg-green-500';
       case 'pending': return 'bg-yellow-500';
       case 'rumored': return 'bg-blue-500';
+      case 'rejected': return 'bg-red-500';
       default: return 'bg-gray-500';
     }
   };
@@ -334,6 +380,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       case 'confirmed': return <Verified className="w-4 h-4" />;
       case 'pending': return <Clock className="w-4 h-4" />;
       case 'rumored': return <MessageCircle className="w-4 h-4" />;
+      case 'rejected': return <X className="w-4 h-4" />;
       default: return <Clock className="w-4 h-4" />;
     }
   };
@@ -353,7 +400,8 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
     const grouped: { [key: string]: Transfer[] } = {
       confirmed: [],
       rumored: [],
-      pending: []
+      pending: [],
+      rejected: []
     };
     
     filteredTransfers.forEach(transfer => {
@@ -371,6 +419,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       case 'confirmed': return 'Confirmed Transfers';
       case 'rumored': return 'Transfer Gossip';
       case 'pending': return 'Pending Deals';
+      case 'rejected': return 'Rejected Deals';
       default: return status;
     }
   };
@@ -380,6 +429,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       case 'confirmed': return <CheckCircle className="w-5 h-5 text-green-400" />;
       case 'rumored': return <MessageCircle className="w-5 h-5 text-blue-400" />;
       case 'pending': return <Clock className="w-5 h-5 text-yellow-400" />;
+      case 'rejected': return <X className="w-5 h-5 text-red-400" />;
       default: return <Clock className="w-5 h-5 text-gray-400" />;
     }
   };
@@ -483,7 +533,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
           <div className="p-4 flex items-center gap-3">
             <div className="bg-blue-500/20 p-2 rounded-lg">
@@ -523,6 +573,20 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
             </div>
           </div>
         </Card>
+
+        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <div className="p-4 flex items-center gap-3">
+            <div className="bg-red-500/20 p-2 rounded-lg">
+              <X className="w-5 h-5 text-red-400" />
+            </div>
+            <div>
+              <p className="text-white font-semibold">
+                {filteredTransfers.filter(t => t.status === 'rejected').length}
+              </p>
+              <p className="text-gray-300 text-sm">Rejected</p>
+            </div>
+          </div>
+        </Card>
       </div>
 
       {/* Transfer Display */}
@@ -535,7 +599,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
           </Card>
         ) : viewMode === 'lanes' ? (
           // Lanes View
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {Object.entries(statusTransfers).map(([status, statusTransferList]) => (
               <div key={status} className="space-y-4">
                 <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
@@ -569,6 +633,12 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
                               <span className="font-semibold text-white">{transfer.toClub}</span>
                             </div>
                           </div>
+                          
+                          {transfer.rejectionReason && (
+                            <div className="bg-red-500/10 border border-red-500/20 rounded p-2">
+                              <p className="text-red-400 text-xs">{transfer.rejectionReason}</p>
+                            </div>
+                          )}
                           
                           <div className="flex justify-between items-end">
                             <div>
@@ -609,6 +679,11 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
                             <span>→</span>
                             <span className="font-semibold text-white">{transfer.toClub}</span>
                           </div>
+                          {transfer.rejectionReason && (
+                            <div className="mt-2 bg-red-500/10 border border-red-500/20 rounded p-2">
+                              <p className="text-red-400 text-sm">{transfer.rejectionReason}</p>
+                            </div>
+                          )}
                         </div>
                         
                         <div className="text-right">
@@ -641,6 +716,11 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
                       <span>→</span>
                       <span className="font-semibold text-white">{transfer.toClub}</span>
                     </div>
+                    {transfer.rejectionReason && (
+                      <div className="mt-2 bg-red-500/10 border border-red-500/20 rounded p-2">
+                        <p className="text-red-400 text-sm">{transfer.rejectionReason}</p>
+                      </div>
+                    )}
                   </div>
                   
                   <div className="text-right">
