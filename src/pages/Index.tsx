@@ -27,14 +27,14 @@ const Index = () => {
   }, [isAutoRefresh, refreshRate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-gray-900">
       {/* Header */}
-      <header className="bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
+      <header className="bg-slate-800/90 backdrop-blur-md border-b border-slate-700 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white">PlanetSport Transfers</h1>
-              <p className="text-blue-200 text-sm">Live Transfer Tracking</p>
+              <p className="text-gray-300 text-sm">Live Transfer Tracking</p>
             </div>
             <div className="text-right text-white">
               <p className="text-sm opacity-80">Last Updated</p>
@@ -46,7 +46,7 @@ const Index = () => {
 
       <div className="container mx-auto px-4 py-8">
         {/* Transfer Window Countdown */}
-        <Card className="mb-8 bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="mb-8 bg-slate-800/50 backdrop-blur-md border-slate-700">
           <div className="p-6">
             <TransferCountdown />
           </div>
@@ -54,17 +54,17 @@ const Index = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="transfers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/10 backdrop-blur-md">
-            <TabsTrigger value="transfers" className="text-white data-[state=active]:bg-white/20">
+          <TabsList className="grid w-full grid-cols-4 bg-slate-800 border border-slate-700">
+            <TabsTrigger value="transfers" className="text-gray-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white">
               Live Transfers
             </TabsTrigger>
-            <TabsTrigger value="sources" className="text-white data-[state=active]:bg-white/20">
+            <TabsTrigger value="sources" className="text-gray-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white">
               Sources
             </TabsTrigger>
-            <TabsTrigger value="settings" className="text-white data-[state=active]:bg-white/20">
+            <TabsTrigger value="settings" className="text-gray-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white">
               Settings
             </TabsTrigger>
-            <TabsTrigger value="api" className="text-white data-[state=active]:bg-white/20">
+            <TabsTrigger value="api" className="text-gray-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white">
               API Config
             </TabsTrigger>
           </TabsList>
@@ -85,17 +85,17 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="settings">
-            <Card className="bg-white/10 backdrop-blur-md border-white/20">
+            <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
               <div className="p-6">
                 <h3 className="text-xl font-semibold text-white mb-4">Transfer Settings</h3>
                 <div className="space-y-4 text-white">
                   <div>
                     <label className="block text-sm font-medium mb-2">Date Range</label>
-                    <p className="text-sm text-blue-200">June 1, 2025 - September 1, 2025</p>
+                    <p className="text-sm text-gray-300">June 1, 2025 - September 1, 2025</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Transfer Type</label>
-                    <p className="text-sm text-blue-200">Players arriving at clubs only</p>
+                    <p className="text-sm text-gray-300">Players arriving at clubs only</p>
                   </div>
                 </div>
               </div>

@@ -30,7 +30,7 @@ export const RefreshControl: React.FC<RefreshControlProps> = ({
   ];
 
   return (
-    <Card className="bg-white/10 backdrop-blur-md border-white/20">
+    <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
       <div className="p-4">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
@@ -51,7 +51,7 @@ export const RefreshControl: React.FC<RefreshControlProps> = ({
                 value={refreshRate.toString()}
                 onValueChange={(value) => setRefreshRate(Number(value))}
               >
-                <SelectTrigger className="w-32 bg-white/20 border-white/30 text-white">
+                <SelectTrigger className="w-32 bg-slate-700 border-slate-600 text-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

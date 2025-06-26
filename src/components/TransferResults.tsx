@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Search, Users, TrendingUp } from 'lucide-react';
+import { Search, Users, TrendingUp, CheckCircle, Clock } from 'lucide-react';
 
 interface Transfer {
   id: string;
@@ -29,7 +29,7 @@ const premierLeagueClubs = [
   'Wolverhampton Wanderers'
 ];
 
-// Mock data for demonstration
+// Mock data for demonstration - expanded with more clubs
 const mockTransfers: Transfer[] = [
   {
     id: '1',
@@ -60,6 +60,36 @@ const mockTransfers: Transfer[] = [
     date: '2025-06-25',
     source: 'Goal.com',
     status: 'pending'
+  },
+  {
+    id: '4',
+    playerName: 'Marcus Silva',
+    fromClub: 'Porto',
+    toClub: 'Arsenal',
+    fee: '£28M',
+    date: '2025-06-22',
+    source: 'ESPN',
+    status: 'confirmed'
+  },
+  {
+    id: '5',
+    playerName: 'João Santos',
+    fromClub: 'Benfica',
+    toClub: 'Chelsea',
+    fee: '£42M',
+    date: '2025-06-18',
+    source: 'The Guardian',
+    status: 'confirmed'
+  },
+  {
+    id: '6',
+    playerName: 'Alex Thompson',
+    fromClub: 'Brighton',
+    toClub: 'Liverpool',
+    fee: '£15M',
+    date: '2025-06-21',
+    source: 'Liverpool Echo',
+    status: 'pending'
   }
 ];
 
@@ -68,6 +98,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>(mockTransfers);
   const [selectedClub, setSelectedClub] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [viewMode, setViewMode] = useState<'list' | 'clubs'>('clubs');
 
   useEffect(() => {
     let filtered = transfers;
@@ -96,25 +127,38 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
     }
   };
 
+  const groupTransfersByClub = () => {
+    const grouped: { [key: string]: Transfer[] } = {};
+    filteredTransfers.forEach(transfer => {
+      if (!grouped[transfer.toClub]) {
+        grouped[transfer.toClub] = [];
+      }
+      grouped[transfer.toClub].push(transfer);
+    });
+    return grouped;
+  };
+
+  const clubTransfers = groupTransfersByClub();
+
   return (
     <div className="space-y-6">
       {/* Filter Controls */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20">
+      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
         <div className="p-4">
-          <div className="flex gap-4 flex-wrap">
+          <div className="flex gap-4 flex-wrap items-center">
             <div className="flex-1 min-w-48">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
                   placeholder="Search players, clubs..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/60"
+                  className="pl-10 bg-slate-700 border-slate-600 text-white placeholder:text-gray-400"
                 />
               </div>
             </div>
             <Select value={selectedClub} onValueChange={setSelectedClub}>
-              <SelectTrigger className="w-48 bg-white/20 border-white/30 text-white">
+              <SelectTrigger className="w-48 bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="Filter by club" />
               </SelectTrigger>
               <SelectContent>
@@ -126,64 +170,112 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
                 ))}
               </SelectContent>
             </Select>
+            <Select value={viewMode} onValueChange={(value: 'list' | 'clubs') => setViewMode(value)}>
+              <SelectTrigger className="w-32 bg-slate-700 border-slate-600 text-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="clubs">By Club</SelectItem>
+                <SelectItem value="list">List View</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </Card>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
           <div className="p-4 flex items-center gap-3">
-            <div className="bg-green-500/20 p-2 rounded-lg">
-              <Users className="w-5 h-5 text-green-400" />
+            <div className="bg-blue-500/20 p-2 rounded-lg">
+              <Users className="w-5 h-5 text-blue-400" />
             </div>
             <div>
               <p className="text-white font-semibold">{filteredTransfers.length}</p>
-              <p className="text-blue-200 text-sm">Total Transfers</p>
+              <p className="text-gray-300 text-sm">Total Transfers</p>
             </div>
           </div>
         </Card>
         
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
           <div className="p-4 flex items-center gap-3">
-            <div className="bg-blue-500/20 p-2 rounded-lg">
-              <TrendingUp className="w-5 h-5 text-blue-400" />
+            <div className="bg-green-500/20 p-2 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-400" />
             </div>
             <div>
               <p className="text-white font-semibold">
                 {filteredTransfers.filter(t => t.status === 'confirmed').length}
               </p>
-              <p className="text-blue-200 text-sm">Confirmed</p>
+              <p className="text-gray-300 text-sm">Confirmed</p>
             </div>
           </div>
         </Card>
         
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
           <div className="p-4 flex items-center gap-3">
             <div className="bg-yellow-500/20 p-2 rounded-lg">
-              <TrendingUp className="w-5 h-5 text-yellow-400" />
+              <Clock className="w-5 h-5 text-yellow-400" />
             </div>
             <div>
               <p className="text-white font-semibold">
                 {filteredTransfers.filter(t => t.status === 'pending').length}
               </p>
-              <p className="text-blue-200 text-sm">Pending</p>
+              <p className="text-gray-300 text-sm">Pending</p>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* Transfer List */}
+      {/* Transfer Display */}
       <div className="space-y-4">
         {filteredTransfers.length === 0 ? (
-          <Card className="bg-white/10 backdrop-blur-md border-white/20">
+          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
             <div className="p-8 text-center">
-              <p className="text-white/60">No transfers found matching your criteria</p>
+              <p className="text-gray-400">No transfers found matching your criteria</p>
             </div>
           </Card>
+        ) : viewMode === 'clubs' ? (
+          // Club View
+          Object.entries(clubTransfers).map(([club, clubTransferList]) => (
+            <Card key={club} className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-white mb-4 border-b border-slate-600 pb-2">
+                  {club} ({clubTransferList.length} transfers)
+                </h3>
+                <div className="space-y-3">
+                  {clubTransferList.map((transfer) => (
+                    <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4 hover:bg-slate-700/70 transition-all duration-200">
+                      <div className="flex items-center justify-between flex-wrap gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h4 className="text-lg font-semibold text-white">{transfer.playerName}</h4>
+                            <Badge className={`${getStatusColor(transfer.status)} text-white text-xs`}>
+                              {transfer.status}
+                            </Badge>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-gray-300">
+                            <span>{transfer.fromClub}</span>
+                            <span>→</span>
+                            <span className="font-semibold text-white">{transfer.toClub}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="text-right">
+                          <p className="text-lg font-bold text-green-400">{transfer.fee}</p>
+                          <p className="text-xs text-gray-300">{transfer.source}</p>
+                          <p className="text-xs text-gray-400">{new Date(transfer.date).toLocaleDateString()}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          ))
         ) : (
+          // List View
           filteredTransfers.map((transfer) => (
-            <Card key={transfer.id} className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all duration-200">
+            <Card key={transfer.id} className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200">
               <div className="p-4">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex-1">
@@ -193,7 +285,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
                         {transfer.status}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-blue-200">
+                    <div className="flex items-center gap-2 text-sm text-gray-300">
                       <span>{transfer.fromClub}</span>
                       <span>→</span>
                       <span className="font-semibold text-white">{transfer.toClub}</span>
@@ -202,8 +294,8 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
                   
                   <div className="text-right">
                     <p className="text-lg font-bold text-green-400">{transfer.fee}</p>
-                    <p className="text-xs text-blue-200">{transfer.source}</p>
-                    <p className="text-xs text-white/60">{new Date(transfer.date).toLocaleDateString()}</p>
+                    <p className="text-xs text-gray-300">{transfer.source}</p>
+                    <p className="text-xs text-gray-400">{new Date(transfer.date).toLocaleDateString()}</p>
                   </div>
                 </div>
               </div>
