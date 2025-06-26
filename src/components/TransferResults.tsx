@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Search, Users, TrendingUp, CheckCircle, Clock, Globe, MessageCircle, Verified } from 'lucide-react';
+import { Search, Users, TrendingUp, CheckCircle, Clock, Globe, MessageCircle, Verified, AlertCircle } from 'lucide-react';
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
 
@@ -23,13 +23,11 @@ interface TransferResultsProps {
   lastUpdated: Date;
 }
 
-const premierLeagueClubs = [
-  'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
-  'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United',
-  'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United',
-  'Nottingham Forest', 'Sunderland', 'Tottenham Hotspur', 'West Ham United',
-  'Wolverhampton Wanderers'
-];
+interface CrawlStatus {
+  url: string;
+  status: 'success' | 'error' | 'pending';
+  error?: string;
+}
 
 // Updated mock data with Leeds United players and other missing transfers
 const mockTransfers: Transfer[] = [
@@ -175,6 +173,14 @@ const mockTransfers: Transfer[] = [
   }
 ];
 
+const premierLeagueClubs = [
+  'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
+  'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United',
+  'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United',
+  'Nottingham Forest', 'Sunderland', 'Tottenham Hotspur', 'West Ham United',
+  'Wolverhampton Wanderers'
+];
+
 export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated }) => {
   const [transfers] = useState<Transfer[]>(mockTransfers);
   const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>(mockTransfers);
@@ -182,6 +188,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'list' | 'clubs' | 'lanes'>('lanes');
   const [isScraping, setIsScraping] = useState(false);
+  const [crawlStatuses, setCrawlStatuses] = useState<CrawlStatus[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -225,6 +232,13 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
 
     const urls = JSON.parse(savedUrls);
     setIsScraping(true);
+    
+    // Initialize crawl statuses
+    const initialStatuses: CrawlStatus[] = urls.map((url: string) => ({
+      url,
+      status: 'pending' as const
+    }));
+    setCrawlStatuses(initialStatuses);
 
     try {
       toast({
@@ -236,12 +250,43 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       
       if (result.success && result.data) {
         console.log('Successfully scraped URLs:', result.data);
+        
+        // Update crawl statuses based on results
+        const updatedStatuses: CrawlStatus[] = urls.map((url: string) => {
+          const crawlResult = result.data.find((r: any) => r.url === url);
+          if (crawlResult) {
+            return {
+              url,
+              status: crawlResult.success ? 'success' : 'error',
+              error: crawlResult.error
+            };
+          }
+          return {
+            url,
+            status: 'error',
+            error: 'No result returned'
+          };
+        });
+        setCrawlStatuses(updatedStatuses);
+        
+        const successCount = updatedStatuses.filter(s => s.status === 'success').length;
+        const errorCount = updatedStatuses.filter(s => s.status === 'error').length;
+        
         toast({
           title: "Scraping Complete",
-          description: `Successfully scraped ${result.data.length} sources. Check console for detailed results.`,
+          description: `${successCount} successful, ${errorCount} failed. Check the status indicators below.`,
         });
       } else {
         console.error('Failed to scrape URLs:', result.error);
+        
+        // Mark all as failed
+        const failedStatuses: CrawlStatus[] = urls.map((url: string) => ({
+          url,
+          status: 'error',
+          error: result.error || 'Unknown error'
+        }));
+        setCrawlStatuses(failedStatuses);
+        
         toast({
           title: "Scraping Error",
           description: result.error || "Failed to scrape URLs.",
@@ -250,6 +295,15 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       }
     } catch (error) {
       console.error('Error during scraping:', error);
+      
+      // Mark all as failed
+      const failedStatuses: CrawlStatus[] = urls.map((url: string) => ({
+        url,
+        status: 'error',
+        error: 'Network or system error'
+      }));
+      setCrawlStatuses(failedStatuses);
+      
       toast({
         title: "Scraping Error",
         description: "An error occurred while scraping URLs.",
@@ -376,6 +430,52 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         </div>
       </Card>
 
+      {/* Crawl Status Display */}
+      {crawlStatuses.length > 0 && (
+        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <div className="p-4">
+            <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <Globe className="w-5 h-5" />
+              URL Crawl Status
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-48 overflow-y-auto">
+              {crawlStatuses.map((status, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-3 bg-slate-700/50 rounded-lg p-3"
+                >
+                  <div className="flex-shrink-0">
+                    {status.status === 'success' && (
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    )}
+                    {status.status === 'error' && (
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    )}
+                    {status.status === 'pending' && (
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-sm truncate">{status.url}</p>
+                    {status.error && (
+                      <p className="text-red-400 text-xs truncate" title={status.error}>
+                        {status.error}
+                      </p>
+                    )}
+                  </div>
+                  {status.status === 'success' && (
+                    <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                  )}
+                  {status.status === 'error' && (
+                    <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+      )}
+
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
@@ -467,7 +567,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
                           <div className="flex justify-between items-end">
                             <div>
                               <p className="text-sm font-bold text-green-400">{transfer.fee}</p>
-                              <p className="text-xs text-gray-400">{new Date(transfer.date).toLocaleDateString()}</p>
+                              <p className="text-xs text-gray-300">{new Date(transfer.date).toLocaleDateString()}</p>
                             </div>
                             <p className="text-xs text-gray-300">{transfer.source}</p>
                           </div>
