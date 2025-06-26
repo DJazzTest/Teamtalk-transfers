@@ -30,6 +30,15 @@ interface MainTabsProps {
   countdownTarget: string;
   setCountdownTarget: (target: string) => void;
   mockTransfers: Transfer[];
+  // Auto-scraping props
+  autoScrapeInterval: number;
+  setAutoScrapeInterval: (interval: number) => void;
+  isAutoScrapeEnabled: boolean;
+  setIsAutoScrapeEnabled: (enabled: boolean) => void;
+  scrapeErrors: string[];
+  lastScrapeTime: Date | null;
+  onManualScrape: () => void;
+  onClearScrapeErrors: () => void;
 }
 
 export const MainTabs: React.FC<MainTabsProps> = ({
@@ -41,7 +50,16 @@ export const MainTabs: React.FC<MainTabsProps> = ({
   lastUpdated,
   countdownTarget,
   setCountdownTarget,
-  mockTransfers
+  mockTransfers,
+  // Auto-scraping props
+  autoScrapeInterval,
+  setAutoScrapeInterval,
+  isAutoScrapeEnabled,
+  setIsAutoScrapeEnabled,
+  scrapeErrors,
+  lastScrapeTime,
+  onManualScrape,
+  onClearScrapeErrors
 }) => {
   return (
     <Tabs defaultValue="transfers" className="space-y-4 sm:space-y-6">
@@ -70,6 +88,14 @@ export const MainTabs: React.FC<MainTabsProps> = ({
           isAutoRefresh={isAutoRefresh}
           setIsAutoRefresh={setIsAutoRefresh}
           onManualRefresh={onManualRefresh}
+          autoScrapeInterval={autoScrapeInterval}
+          setAutoScrapeInterval={setAutoScrapeInterval}
+          isAutoScrapeEnabled={isAutoScrapeEnabled}
+          setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
+          scrapeErrors={scrapeErrors}
+          lastScrapeTime={lastScrapeTime}
+          onManualScrape={onManualScrape}
+          onClearScrapeErrors={onClearScrapeErrors}
         />
         <TransferResults lastUpdated={lastUpdated} />
       </TabsContent>
