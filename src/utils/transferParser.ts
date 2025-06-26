@@ -3,7 +3,7 @@ import { Transfer } from '@/types/transfer';
 import { ParsedTransferData } from './transferParser/types';
 import { parseTransfersFromContent } from './transferParser/parser';
 
-export { ParsedTransferData } from './transferParser/types';
+export type { ParsedTransferData } from './transferParser/types';
 
 export class TransferParser {
   static parseTransfers(scrapedContent: string, sourceUrl: string): ParsedTransferData[] {
