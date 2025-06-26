@@ -76,7 +76,7 @@ const Index = () => {
           lastUpdated={lastUpdated}
           countdownTarget={countdownTarget}
           setCountdownTarget={setCountdownTarget}
-          mockTransfers={allTransfers}
+          mockTransfers={allTransfers as any}
         />
       </div>
     </div>
