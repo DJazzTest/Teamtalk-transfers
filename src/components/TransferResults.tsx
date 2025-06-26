@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -32,7 +31,7 @@ const premierLeagueClubs = [
   'Wolverhampton Wanderers'
 ];
 
-// Updated mock data with all Manchester United players mentioned
+// Updated mock data with Leeds United players and other missing transfers
 const mockTransfers: Transfer[] = [
   {
     id: '1',
@@ -133,6 +132,26 @@ const mockTransfers: Transfer[] = [
     date: '2025-06-21',
     source: 'Liverpool Echo',
     status: 'pending'
+  },
+  {
+    id: '11',
+    playerName: 'Georginio Rutter',
+    fromClub: 'Hoffenheim',
+    toClub: 'Leeds United',
+    fee: '£32M',
+    date: '2025-06-10',
+    source: 'Leeds Live',
+    status: 'confirmed'
+  },
+  {
+    id: '12',
+    playerName: 'Wilfried Gnonto',
+    fromClub: 'FC Zurich',
+    toClub: 'Leeds United',
+    fee: '£4.5M',
+    date: '2025-06-14',
+    source: 'Yorkshire Evening Post',
+    status: 'confirmed'
   }
 ];
 
