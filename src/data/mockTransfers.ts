@@ -2,189 +2,203 @@
 import { Transfer } from '@/types/transfer';
 
 export const mockTransfers: Transfer[] = [
+  // Manchester United - realistic current targets
   {
     id: '1',
-    playerName: 'Matheus Cunha',
-    fromClub: 'Atletico Madrid',
+    playerName: 'Viktor Gyökeres',
+    fromClub: 'Sporting CP',
     toClub: 'Manchester United',
-    fee: '£45M',
+    fee: '£63M',
     date: '2025-06-15',
     source: 'Sky Sports',
     status: 'confirmed'
   },
   {
     id: '2',
-    playerName: 'Diego León',
-    fromClub: 'Real Sociedad',
+    playerName: 'Jarrad Branthwaite',
+    fromClub: 'Everton',
     toClub: 'Manchester United',
-    fee: '£25M',
+    fee: '£75M',
     date: '2025-06-20',
     source: 'BBC Sport',
     status: 'confirmed'
   },
   {
     id: '3',
-    playerName: 'Chido Obi',
-    fromClub: 'Crystal Palace',
+    playerName: 'Alphonso Davies',
+    fromClub: 'Bayern Munich',
     toClub: 'Manchester United',
-    fee: '£18M',
+    fee: '£45M',
     date: '2025-06-12',
     source: 'Manchester Evening News',
     status: 'confirmed'
   },
   {
     id: '4',
-    playerName: 'Tyler Fredricson',
-    fromClub: 'Ajax',
+    playerName: 'Joao Neves',
+    fromClub: 'Benfica',
     toClub: 'Manchester United',
-    fee: '£35M',
+    fee: '£55M',
     date: '2025-06-25',
     source: 'Goal.com',
     status: 'pending'
   },
+
+  // Arsenal - current realistic targets
   {
     id: '5',
-    playerName: 'Marcus Rashford',
-    fromClub: 'PSG',
-    toClub: 'Manchester United',
-    fee: '£60M',
+    playerName: 'Benjamin Sesko',
+    fromClub: 'RB Leipzig',
+    toClub: 'Arsenal',
+    fee: '£65M',
     date: '2025-06-08',
     source: 'The Guardian',
     status: 'confirmed'
   },
   {
     id: '6',
-    playerName: 'Antony',
-    fromClub: 'Real Madrid',
-    toClub: 'Manchester United',
-    fee: '£40M',
+    playerName: 'Alexander Isak',
+    fromClub: 'Newcastle United',
+    toClub: 'Arsenal',
+    fee: '£90M',
     date: '2025-06-18',
     source: 'ESPN',
-    status: 'confirmed'
+    status: 'rumored'
   },
+
+  // Chelsea - realistic targets
   {
     id: '7',
-    playerName: 'Tyrell Malacia',
-    fromClub: 'AC Milan',
-    toClub: 'Manchester United',
-    fee: '£22M',
+    playerName: 'Victor Osimhen',
+    fromClub: 'Napoli',
+    toClub: 'Chelsea',
+    fee: '£85M',
     date: '2025-06-22',
     source: 'Sky Sports',
     status: 'confirmed'
   },
   {
     id: '8',
-    playerName: 'Marcus Silva',
-    fromClub: 'Porto',
-    toClub: 'Arsenal',
-    fee: '£28M',
+    playerName: 'Jamal Musiala',
+    fromClub: 'Bayern Munich',
+    toClub: 'Chelsea',
+    fee: '£95M',
     date: '2025-06-22',
     source: 'ESPN',
-    status: 'confirmed'
+    status: 'rumored'
   },
+
+  // Liverpool - realistic targets
   {
     id: '9',
-    playerName: 'João Santos',
-    fromClub: 'Benfica',
-    toClub: 'Chelsea',
-    fee: '£42M',
+    playerName: 'Rodrygo',
+    fromClub: 'Real Madrid',
+    toClub: 'Liverpool',
+    fee: '£75M',
     date: '2025-06-18',
     source: 'The Guardian',
     status: 'confirmed'
   },
   {
     id: '10',
-    playerName: 'Alex Thompson',
-    fromClub: 'Brighton',
+    playerName: 'Ryan Gravenberch',
+    fromClub: 'Bayern Munich',
     toClub: 'Liverpool',
-    fee: '£15M',
+    fee: '£35M',
     date: '2025-06-21',
     source: 'Liverpool Echo',
-    status: 'pending'
+    status: 'confirmed'
   },
+
+  // Manchester City - realistic targets
   {
     id: '11',
-    playerName: 'Georginio Rutter',
-    fromClub: 'Hoffenheim',
-    toClub: 'Leeds United',
-    fee: '£32M',
+    playerName: 'Bruno Guimaraes',
+    fromClub: 'Newcastle United',
+    toClub: 'Manchester City',
+    fee: '£85M',
     date: '2025-06-10',
-    source: 'Leeds Live',
+    source: 'Sky Sports',
     status: 'confirmed'
   },
   {
     id: '12',
-    playerName: 'Wilfried Gnonto',
-    fromClub: 'FC Zurich',
-    toClub: 'Leeds United',
-    fee: '£4.5M',
+    playerName: 'Florian Wirtz',
+    fromClub: 'Bayer Leverkusen',
+    toClub: 'Manchester City',
+    fee: '£100M',
     date: '2025-06-14',
-    source: 'Yorkshire Evening Post',
+    source: 'BBC Sport',
+    status: 'rumored'
+  },
+
+  // Tottenham - realistic targets
+  {
+    id: '13',
+    playerName: 'Ivan Toney',
+    fromClub: 'Brentford',
+    toClub: 'Tottenham Hotspur',
+    fee: '£40M',
+    date: '2025-06-28',
+    source: 'The Sun',
     status: 'confirmed'
   },
   {
-    id: '13',
-    playerName: 'Kylian Mbappé',
-    fromClub: 'PSG',
-    toClub: 'Liverpool',
-    fee: '£150M',
-    date: '2025-06-28',
-    source: 'The Sun',
-    status: 'rumored'
-  },
-  {
     id: '14',
-    playerName: 'Pedri',
-    fromClub: 'Barcelona',
-    toClub: 'Chelsea',
-    fee: '£80M',
+    playerName: 'Pedro Porro',
+    fromClub: 'Sporting CP',
+    toClub: 'Tottenham Hotspur',
+    fee: '£35M',
     date: '2025-06-30',
     source: 'Daily Mail',
-    status: 'rumored'
+    status: 'confirmed'
   },
+
+  // Newcastle - realistic targets
   {
     id: '15',
-    playerName: 'Neymar Jr',
-    fromClub: 'Al-Hilal',
-    toClub: 'Manchester United',
-    fee: '£25M',
+    playerName: 'Dominic Calvert-Lewin',
+    fromClub: 'Everton',
+    toClub: 'Newcastle United',
+    fee: '£35M',
     date: '2025-06-20',
     source: 'Sky Sports',
-    status: 'rejected',
-    rejectionReason: 'Failed medical - knee injury concerns'
+    status: 'confirmed'
   },
+
+  // Some rejected transfers (more realistic)
   {
     id: '16',
-    playerName: 'Paulo Dybala',
-    fromClub: 'AS Roma',
-    toClub: 'Arsenal',
-    fee: '£30M',
+    playerName: 'Declan Rice',
+    fromClub: 'West Ham United',
+    toClub: 'Manchester United',
+    fee: '£105M',
     date: '2025-06-18',
     source: 'BBC Sport',
     status: 'rejected',
-    rejectionReason: 'Personal terms disagreement'
+    rejectionReason: 'Player chose Arsenal instead'
   },
   {
     id: '17',
-    playerName: 'Ivan Toney',
-    fromClub: 'Brentford',
-    toClub: 'Newcastle United',
-    fee: '£40M',
+    playerName: 'Harry Kane',
+    fromClub: 'Bayern Munich',
+    toClub: 'Manchester United',
+    fee: '£80M',
     date: '2025-06-22',
     source: 'The Guardian',
     status: 'rejected',
-    rejectionReason: 'Club pulled out due to high wage demands'
+    rejectionReason: 'Bayern Munich refused to sell'
   },
   {
     id: '18',
-    playerName: 'Moussa Diaby',
-    fromClub: 'Aston Villa',
-    toClub: 'Chelsea',
-    fee: '£50M',
+    playerName: 'Jude Bellingham',
+    fromClub: 'Real Madrid',
+    toClub: 'Liverpool',
+    fee: '£120M',
     date: '2025-06-25',
     source: 'ESPN',
     status: 'rejected',
-    rejectionReason: 'Work permit issues'
+    rejectionReason: 'Player committed to Real Madrid long-term'
   }
 ];
 
