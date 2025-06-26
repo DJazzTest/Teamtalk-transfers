@@ -3,17 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, TrendingUp } from 'lucide-react';
-
-interface Transfer {
-  id: string;
-  playerName: string;
-  fromClub: string;
-  toClub: string;
-  fee: string;
-  date: string;
-  source: string;
-  status: 'confirmed' | 'rumored' | 'pending';
-}
+import { Transfer } from '@/types/transfer';
 
 interface RecentTransfersProps {
   transfers: Transfer[];
