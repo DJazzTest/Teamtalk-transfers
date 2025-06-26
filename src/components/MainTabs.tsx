@@ -44,26 +44,26 @@ export const MainTabs: React.FC<MainTabsProps> = ({
   mockTransfers
 }) => {
   return (
-    <Tabs defaultValue="transfers" className="space-y-6">
-      <TabsList className="grid w-full grid-cols-5 bg-white/90 border border-gray-200/50 shadow-sm">
-        <TabsTrigger value="transfers" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
+    <Tabs defaultValue="transfers" className="space-y-4 sm:space-y-6">
+      <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 bg-white/90 border border-gray-200/50 shadow-sm gap-0.5 sm:gap-0 h-auto p-1">
+        <TabsTrigger value="transfers" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3">
           Live Transfers
         </TabsTrigger>
-        <TabsTrigger value="completed" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
+        <TabsTrigger value="completed" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3">
           Completed
         </TabsTrigger>
-        <TabsTrigger value="sources" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
+        <TabsTrigger value="sources" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3 col-span-2 sm:col-span-1">
           Sources
         </TabsTrigger>
-        <TabsTrigger value="settings" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
+        <TabsTrigger value="settings" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3 lg:col-span-1 col-span-1">
           Settings
         </TabsTrigger>
-        <TabsTrigger value="api" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
+        <TabsTrigger value="api" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3 lg:col-span-1 col-span-1">
           API Config
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="transfers" className="space-y-6">
+      <TabsContent value="transfers" className="space-y-4 sm:space-y-6">
         <RefreshControl
           refreshRate={refreshRate}
           setRefreshRate={setRefreshRate}
@@ -82,16 +82,16 @@ export const MainTabs: React.FC<MainTabsProps> = ({
         <UrlManager />
       </TabsContent>
 
-      <TabsContent value="settings" className="space-y-6">
+      <TabsContent value="settings" className="space-y-4 sm:space-y-6">
         <CountdownSettings 
           targetDate={countdownTarget}
           onDateChange={setCountdownTarget}
         />
         
         <Card className="bg-white/95 backdrop-blur-md border-gray-200/50 shadow-lg">
-          <div className="p-6">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Transfer Settings</h3>
-            <div className="space-y-4">
+          <div className="p-4 sm:p-6">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">Transfer Settings</h3>
+            <div className="space-y-3 sm:space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
                 <p className="text-sm text-gray-600">June 1, 2025 - September 1, 2025</p>

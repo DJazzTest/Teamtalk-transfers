@@ -54,15 +54,15 @@ const Index = () => {
     <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
       <AppHeader lastUpdated={lastUpdated} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
         {/* Recent Transfers Highlight - Now using actual transfer data */}
-        <div className="mb-8">
+        <div className="mb-4 sm:mb-8">
           <RecentTransfers transfers={allTransfers} />
         </div>
 
         {/* Transfer Window Countdown */}
-        <Card className="mb-8 bg-white/95 backdrop-blur-md border-gray-200/50 shadow-lg">
-          <div className="p-6">
+        <Card className="mb-4 sm:mb-8 bg-white/95 backdrop-blur-md border-gray-200/50 shadow-lg">
+          <div className="p-3 sm:p-6">
             <TransferCountdown targetDate={countdownTarget} />
           </div>
         </Card>

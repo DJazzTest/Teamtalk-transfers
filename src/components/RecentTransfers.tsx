@@ -22,46 +22,46 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
 
   return (
     <Card className="border-gray-200/50 shadow-lg" style={{ backgroundColor: '#2F517A' }}>
-      <div className="p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-emerald-100 p-2 rounded-lg">
-            <TrendingUp className="w-5 h-5 text-emerald-600" />
+      <div className="p-3 sm:p-6">
+        <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+          <div className="bg-emerald-100 p-1.5 sm:p-2 rounded-lg">
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
           </div>
-          <h3 className="text-xl font-bold text-emerald-400">Latest Confirmed Transfers</h3>
+          <h3 className="text-lg sm:text-xl font-bold text-emerald-400">Latest Confirmed Transfers</h3>
           <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs">
             BREAKING
           </Badge>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {recentConfirmed.map((transfer, index) => (
             <Card key={transfer.id} className="bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:shadow-md transition-all duration-200">
-              <div className="p-4">
-                <div className="space-y-3">
+              <div className="p-3 sm:p-4">
+                <div className="space-y-2 sm:space-y-3">
                   <div className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-emerald-500" />
+                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-500" />
                     <Badge className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
                       #{index + 1} LATEST
                     </Badge>
                   </div>
                   
                   <div>
-                    <h4 className="font-bold text-gray-800 text-lg">{transfer.playerName}</h4>
-                    <div className="text-sm text-gray-600 mt-1">
-                      <div className="flex items-center gap-1">
-                        <span>{transfer.fromClub}</span>
+                    <h4 className="font-bold text-gray-800 text-base sm:text-lg leading-tight">{transfer.playerName}</h4>
+                    <div className="text-xs sm:text-sm text-gray-600 mt-1">
+                      <div className="flex items-center gap-1 flex-wrap">
+                        <span className="truncate">{transfer.fromClub}</span>
                         <span>→</span>
-                        <span className="font-semibold text-gray-800">{transfer.toClub}</span>
+                        <span className="font-semibold text-gray-800 truncate">{transfer.toClub}</span>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="flex justify-between items-end">
-                    <div>
-                      <p className="text-lg font-bold text-emerald-600">{transfer.fee}</p>
+                  <div className="flex justify-between items-end gap-2">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-base sm:text-lg font-bold text-emerald-600 truncate">{transfer.fee}</p>
                       <p className="text-xs text-gray-500">{new Date(transfer.date).toLocaleDateString()}</p>
                     </div>
-                    <p className="text-xs text-gray-600">{transfer.source}</p>
+                    <p className="text-xs text-gray-600 truncate max-w-20 sm:max-w-none">{transfer.source}</p>
                   </div>
                 </div>
               </div>
