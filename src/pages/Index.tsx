@@ -18,7 +18,16 @@ const Index = () => {
     isAutoRefresh,
     setIsAutoRefresh,
     handleManualRefresh,
-    refreshCounter
+    refreshCounter,
+    // Auto-scraping controls
+    autoScrapeInterval,
+    setAutoScrapeInterval,
+    isAutoScrapeEnabled,
+    setIsAutoScrapeEnabled,
+    scrapeErrors,
+    lastScrapeTime,
+    handleManualScrape,
+    clearScrapeErrors
   } = useRefreshControl();
 
   // Set countdown to Monday 1 September 2025 at 19:00 BST (18:00 UTC)
@@ -78,6 +87,15 @@ const Index = () => {
           countdownTarget={countdownTarget}
           setCountdownTarget={setCountdownTarget}
           mockTransfers={allTransfers as any}
+          // Auto-scraping props
+          autoScrapeInterval={autoScrapeInterval}
+          setAutoScrapeInterval={setAutoScrapeInterval}
+          isAutoScrapeEnabled={isAutoScrapeEnabled}
+          setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
+          scrapeErrors={scrapeErrors}
+          lastScrapeTime={lastScrapeTime}
+          onManualScrape={handleManualScrape}
+          onClearScrapeErrors={clearScrapeErrors}
         />
       </div>
     </div>
