@@ -43,33 +43,33 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
 
   return (
     <div className="text-center">
-      <h2 className="text-2xl font-bold text-white mb-2">Transfer Window Countdown</h2>
-      <p className="text-gray-300 mb-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-2">Transfer Window Countdown</h2>
+      <p className="text-gray-600 mb-6">
         {isExpired ? 'Transfer Window Closed' : `Countdown to ${target.toLocaleDateString()}`}
       </p>
       
       {isExpired ? (
-        <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-8 max-w-md mx-auto">
-          <p className="text-red-400 text-xl font-bold">Transfer Window Closed</p>
-          <p className="text-gray-300 text-sm mt-2">Configure a new date in the Settings tab</p>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-8 max-w-md mx-auto">
+          <p className="text-red-600 text-xl font-bold">Transfer Window Closed</p>
+          <p className="text-gray-600 text-sm mt-2">Configure a new date in the Settings tab</p>
         </div>
       ) : (
         <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg">
-            <div className="text-3xl font-bold text-green-400 drop-shadow-lg">{timeLeft.days}</div>
-            <div className="text-sm text-gray-200">Days</div>
+          <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg p-4 shadow-lg">
+            <div className="text-3xl font-bold text-white drop-shadow-lg">{timeLeft.days}</div>
+            <div className="text-sm text-blue-100">Days</div>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg">
-            <div className="text-3xl font-bold text-green-400 drop-shadow-lg">{timeLeft.hours}</div>
-            <div className="text-sm text-gray-200">Hours</div>
+          <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg p-4 shadow-lg">
+            <div className="text-3xl font-bold text-white drop-shadow-lg">{timeLeft.hours}</div>
+            <div className="text-sm text-emerald-100">Hours</div>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg">
-            <div className="text-3xl font-bold text-green-400 drop-shadow-lg">{timeLeft.minutes}</div>
-            <div className="text-sm text-gray-200">Minutes</div>
+          <div className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg p-4 shadow-lg">
+            <div className="text-3xl font-bold text-white drop-shadow-lg">{timeLeft.minutes}</div>
+            <div className="text-sm text-purple-100">Minutes</div>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg">
-            <div className="text-3xl font-bold text-green-400 drop-shadow-lg">{timeLeft.seconds}</div>
-            <div className="text-sm text-gray-200">Seconds</div>
+          <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-lg p-4 shadow-lg">
+            <div className="text-3xl font-bold text-white drop-shadow-lg">{timeLeft.seconds}</div>
+            <div className="text-sm text-orange-100">Seconds</div>
           </div>
         </div>
       )}

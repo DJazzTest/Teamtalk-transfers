@@ -174,18 +174,20 @@ const Index = () => {
   }, [isAutoRefresh, refreshRate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-100 to-blue-50">
       {/* Header */}
-      <header className="bg-slate-800/90 backdrop-blur-md border-b border-slate-700 sticky top-0 z-50">
+      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-white">PlanetSport Transfers</h1>
-              <p className="text-gray-300 text-sm">Live Transfer Tracking</p>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                PlanetSport Transfers
+              </h1>
+              <p className="text-gray-600 text-sm">Live Transfer Tracking</p>
             </div>
-            <div className="text-right text-white">
-              <p className="text-sm opacity-80">Last Updated</p>
-              <p className="text-xs">{lastUpdated.toLocaleTimeString()}</p>
+            <div className="text-right">
+              <p className="text-sm text-gray-500">Last Updated</p>
+              <p className="text-xs text-gray-700 font-medium">{lastUpdated.toLocaleTimeString()}</p>
             </div>
           </div>
         </div>
@@ -198,7 +200,7 @@ const Index = () => {
         </div>
 
         {/* Transfer Window Countdown */}
-        <Card className="mb-8 bg-slate-800/50 backdrop-blur-md border-slate-700">
+        <Card className="mb-8 bg-white/70 backdrop-blur-md border-gray-200/50 shadow-lg">
           <div className="p-6">
             <TransferCountdown targetDate={countdownTarget} />
           </div>
@@ -206,17 +208,17 @@ const Index = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="transfers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-slate-800 border border-slate-700">
-            <TabsTrigger value="transfers" className="text-gray-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+          <TabsList className="grid w-full grid-cols-4 bg-white/80 border border-gray-200/50 shadow-sm">
+            <TabsTrigger value="transfers" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
               Live Transfers
             </TabsTrigger>
-            <TabsTrigger value="sources" className="text-gray-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+            <TabsTrigger value="sources" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
               Sources
             </TabsTrigger>
-            <TabsTrigger value="settings" className="text-gray-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+            <TabsTrigger value="settings" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
               Settings
             </TabsTrigger>
-            <TabsTrigger value="api" className="text-gray-300 data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+            <TabsTrigger value="api" className="text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">
               API Config
             </TabsTrigger>
           </TabsList>
@@ -242,17 +244,17 @@ const Index = () => {
               onDateChange={setCountdownTarget}
             />
             
-            <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+            <Card className="bg-white/70 backdrop-blur-md border-gray-200/50 shadow-lg">
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-white mb-4">Transfer Settings</h3>
-                <div className="space-y-4 text-white">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">Transfer Settings</h3>
+                <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Date Range</label>
-                    <p className="text-sm text-gray-300">June 1, 2025 - September 1, 2025</p>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+                    <p className="text-sm text-gray-600">June 1, 2025 - September 1, 2025</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Transfer Type</label>
-                    <p className="text-sm text-gray-300">Players arriving at clubs only</p>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Transfer Type</label>
+                    <p className="text-sm text-gray-600">Players arriving at clubs only</p>
                   </div>
                 </div>
               </div>
