@@ -1,3 +1,4 @@
+
 import FirecrawlApp from '@mendable/firecrawl-js';
 
 interface ErrorResponse {
@@ -169,7 +170,7 @@ export class FirecrawlService {
             results.push({
               url,
               success: true,
-              data: response.data || response
+              data: response.markdown || response
             });
             console.log(`✓ Successfully crawled: ${url}`);
           } else {

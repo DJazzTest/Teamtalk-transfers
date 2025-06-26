@@ -7,7 +7,7 @@ import { Search, Users, Globe, CheckCircle, Clock, MessageCircle, X } from 'luci
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
 import { Transfer, CrawlStatus } from '@/types/transfer';
-import { mockTransfers, premierLeagueClubs } from '@/data/mockTransfers';
+import { mockTransfers as mockTransferData, premierLeagueClubs } from '@/data/mockTransfers';
 import { groupTransfersByClub, groupTransfersByStatus } from '@/utils/transferUtils';
 import { TransferCard } from './TransferCard';
 import { LanesView } from './LanesView';
@@ -20,10 +20,9 @@ interface TransferResultsProps {
 }
 
 export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated }) => {
-  const [mockTransfers] = useState<Transfer[]>(mockTransfers);
   const [allTransfers, setAllTransfers] = useState<Transfer[]>(() => {
     // Initialize with merged transfers (mock + parsed)
-    return TransferIntegrationService.mergeParsedWithMockTransfers(mockTransfers);
+    return TransferIntegrationService.mergeParsedWithMockTransfers(mockTransferData);
   });
   const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>(allTransfers);
   const [selectedClub, setSelectedClub] = useState<string>('all');
@@ -123,7 +122,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         const parsedTransfers = await TransferIntegrationService.processCrawlResults(result.data);
         
         // Merge with mock transfers and update state
-        const mergedTransfers = TransferIntegrationService.mergeParsedWithMockTransfers(mockTransfers);
+        const mergedTransfers = TransferIntegrationService.mergeParsedWithMockTransfers(mockTransferData);
         setAllTransfers(mergedTransfers);
         
         const successCount = updatedStatuses.filter(s => s.status === 'success').length;
