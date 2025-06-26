@@ -1,3 +1,4 @@
+
 import FirecrawlApp from '@mendable/firecrawl-js';
 
 interface ErrorResponse {
@@ -20,6 +21,7 @@ type CrawlResponse = CrawlStatusResponse | ErrorResponse;
 export class FirecrawlService {
   private static API_KEY_STORAGE_KEY = 'firecrawl_api_key';
   private static firecrawlApp: FirecrawlApp | null = null;
+  private static readonly RATE_LIMIT_DELAY = 2000; // 2 seconds between requests
 
   static saveApiKey(apiKey: string): void {
     localStorage.setItem(this.API_KEY_STORAGE_KEY, apiKey);
@@ -111,6 +113,8 @@ export class FirecrawlService {
           errorMessage = 'CORS policy blocks this request';
         } else if (errorStr.includes('invalid url')) {
           errorMessage = 'Invalid URL format';
+        } else if (errorStr.includes('429') || errorStr.includes('rate limit')) {
+          errorMessage = 'Rate limit exceeded - please wait before testing again';
         } else {
           errorMessage = error.message;
         }
@@ -123,27 +127,41 @@ export class FirecrawlService {
     }
   }
 
-  static async crawlTransferSources(urls: string[]): Promise<{ success: boolean; error?: string; data?: any }> {
+  private static async delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  static async crawlTransferSources(urls: string[], onProgress?: (progress: { completed: number; total: number; currentUrl: string }) => void): Promise<{ success: boolean; error?: string; data?: any }> {
     const apiKey = this.getApiKey();
     if (!apiKey) {
       return { success: false, error: 'Firecrawl API key not found' };
     }
 
     try {
-      console.log('Crawling transfer sources with Firecrawl API');
+      console.log('Crawling transfer sources with Firecrawl API (sequential processing)');
       if (!this.firecrawlApp) {
         this.firecrawlApp = new FirecrawlApp({ apiKey });
       }
 
-      const transferKeywords = [
-        'transfer', 'signing', 'signs', 'joins', 'move', 'deal', 'confirmed',
-        'Manchester United', 'Man United', 'Arsenal', 'Chelsea', 'Liverpool',
-        'Manchester City', 'Tottenham', 'Newcastle', 'Aston Villa'
-      ];
+      const results = [];
       
-      const crawlPromises = urls.map(async (url) => {
+      // Process URLs sequentially to avoid rate limits
+      for (let i = 0; i < urls.length; i++) {
+        const url = urls[i];
+        
+        // Report progress
+        if (onProgress) {
+          onProgress({
+            completed: i,
+            total: urls.length,
+            currentUrl: url
+          });
+        }
+
+        console.log(`Processing URL ${i + 1}/${urls.length}: ${url}`);
+        
         try {
-          const response = await this.firecrawlApp!.crawlUrl(url, {
+          const response = await this.firecrawlApp.crawlUrl(url, {
             limit: 10,
             scrapeOptions: {
               formats: ['markdown', 'html'],
@@ -152,37 +170,52 @@ export class FirecrawlService {
           }) as CrawlResponse;
           
           if (response.success) {
-            return {
+            results.push({
               url,
               success: true,
               data: response.data
-            };
+            });
+            console.log(`✓ Successfully crawled: ${url}`);
           } else {
-            return {
+            results.push({
               url,
               success: false,
               error: (response as ErrorResponse).error
-            };
+            });
+            console.log(`✗ Failed to crawl: ${url} - ${(response as ErrorResponse).error}`);
           }
         } catch (error) {
-          return {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          results.push({
             url,
             success: false,
-            error: error instanceof Error ? error.message : 'Unknown error'
-          };
+            error: errorMessage
+          });
+          console.log(`✗ Error crawling: ${url} - ${errorMessage}`);
         }
-      });
 
-      const results = await Promise.allSettled(crawlPromises);
-      const successfulCrawls = results
-        .filter(result => result.status === 'fulfilled' && result.value.success)
-        .map(result => (result as PromiseFulfilledResult<any>).value);
+        // Add delay between requests to respect rate limits (except for the last request)
+        if (i < urls.length - 1) {
+          console.log(`Waiting ${this.RATE_LIMIT_DELAY}ms before next request...`);
+          await this.delay(this.RATE_LIMIT_DELAY);
+        }
+      }
 
+      // Final progress update
+      if (onProgress) {
+        onProgress({
+          completed: urls.length,
+          total: urls.length,
+          currentUrl: 'Complete'
+        });
+      }
+
+      const successfulCrawls = results.filter(result => result.success);
       console.log(`Successfully crawled ${successfulCrawls.length} out of ${urls.length} sources`);
       
       return { 
         success: true,
-        data: successfulCrawls 
+        data: results 
       };
     } catch (error) {
       console.error('Error during transfer crawling:', error);

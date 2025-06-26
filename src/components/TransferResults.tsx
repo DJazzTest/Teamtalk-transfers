@@ -27,6 +27,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   const [viewMode, setViewMode] = useState<'list' | 'clubs' | 'lanes'>('lanes');
   const [isScraping, setIsScraping] = useState(false);
   const [crawlStatuses, setCrawlStatuses] = useState<CrawlStatus[]>([]);
+  const [crawlProgress, setCrawlProgress] = useState<{ completed: number; total: number; currentUrl: string } | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -76,6 +77,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
 
     const urls = JSON.parse(savedUrls);
     setIsScraping(true);
+    setCrawlProgress({ completed: 0, total: urls.length, currentUrl: 'Starting...' });
     
     // Initialize crawl statuses
     const initialStatuses: CrawlStatus[] = urls.map((url: string) => ({
@@ -87,30 +89,30 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
     try {
       toast({
         title: "Scraping Started",
-        description: `Starting to scrape ${urls.length} URLs for transfer data...`,
+        description: `Starting to scrape ${urls.length} URLs sequentially to avoid rate limits...`,
       });
 
-      const result = await FirecrawlService.crawlTransferSources(urls);
+      const result = await FirecrawlService.crawlTransferSources(urls, (progress) => {
+        setCrawlProgress(progress);
+        
+        // Update individual URL status as we go
+        setCrawlStatuses(prev => prev.map(status => {
+          if (status.url === progress.currentUrl) {
+            return { ...status, status: 'pending' as const };
+          }
+          return status;
+        }));
+      });
       
       if (result.success && result.data) {
         console.log('Successfully scraped URLs:', result.data);
         
         // Update crawl statuses based on results
-        const updatedStatuses: CrawlStatus[] = urls.map((url: string) => {
-          const crawlResult = result.data.find((r: any) => r.url === url);
-          if (crawlResult) {
-            return {
-              url,
-              status: crawlResult.success ? 'success' : 'error',
-              error: crawlResult.error
-            };
-          }
-          return {
-            url,
-            status: 'error',
-            error: 'No result returned'
-          };
-        });
+        const updatedStatuses: CrawlStatus[] = result.data.map((crawlResult: any) => ({
+          url: crawlResult.url,
+          status: crawlResult.success ? 'success' : 'error',
+          error: crawlResult.error
+        }));
         setCrawlStatuses(updatedStatuses);
         
         const successCount = updatedStatuses.filter(s => s.status === 'success').length;
@@ -118,7 +120,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         
         toast({
           title: "Scraping Complete",
-          description: `${successCount} successful, ${errorCount} failed. Check the status indicators below.`,
+          description: `${successCount} successful, ${errorCount} failed. Sequential processing completed.`,
         });
       } else {
         console.error('Failed to scrape URLs:', result.error);
@@ -155,6 +157,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       });
     } finally {
       setIsScraping(false);
+      setCrawlProgress(null);
     }
   };
 
@@ -210,6 +213,25 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
               {isScraping ? 'Scraping...' : 'Scrape URLs'}
             </Button>
           </div>
+          
+          {/* Progress indicator */}
+          {crawlProgress && (
+            <div className="mt-4 space-y-2">
+              <div className="flex justify-between text-sm text-blue-200">
+                <span>Progress: {crawlProgress.completed}/{crawlProgress.total}</span>
+                <span>{Math.round((crawlProgress.completed / crawlProgress.total) * 100)}%</span>
+              </div>
+              <div className="w-full bg-slate-700 rounded-full h-2">
+                <div 
+                  className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(crawlProgress.completed / crawlProgress.total) * 100}%` }}
+                ></div>
+              </div>
+              <p className="text-xs text-slate-300 truncate">
+                Current: {crawlProgress.currentUrl}
+              </p>
+            </div>
+          )}
         </div>
       </Card>
 
