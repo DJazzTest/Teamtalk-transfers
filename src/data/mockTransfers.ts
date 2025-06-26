@@ -56,7 +56,7 @@ export const mockTransfers: Transfer[] = [
     status: 'rumored'
   },
 
-  // Chelsea - Current realistic targets
+  // Chelsea - Current realistic targets (removed Victor Osimhen)
   {
     id: '6',
     playerName: 'Jamal Musiala',
