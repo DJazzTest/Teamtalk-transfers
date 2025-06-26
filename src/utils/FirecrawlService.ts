@@ -67,7 +67,7 @@ export class FirecrawlService {
         console.log('URL test successful:', url);
         return { 
           success: true,
-          data: response.data || response
+          data: response
         };
       } else {
         console.error('URL test failed:', response);
