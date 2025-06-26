@@ -1,5 +1,5 @@
 
-import { PREMIER_LEAGUE_CLUBS, TRANSFER_KEYWORDS, KNOWN_PLAYERS, FEE_PATTERNS, CLUB_VARIATIONS } from './constants';
+import { PREMIER_LEAGUE_CLUBS, CONFIRMED_TRANSFER_KEYWORDS, EXCLUDED_KEYWORDS, TRUSTED_SOURCES, KNOWN_PLAYERS, FEE_PATTERNS, CLUB_VARIATIONS } from './constants';
 
 export function extractSentences(content: string): string[] {
   console.log('Extracting sentences from content length:', content.length);
@@ -19,33 +19,44 @@ export function extractSentences(content: string): string[] {
   const structuredData = extractFromStructuredContent(content);
   
   const allSentences = [...sentences, ...structuredData]
-    .filter(s => containsRelevantContent(s));
+    .filter(s => containsRelevantConfirmedContent(s));
 
-  console.log(`Extracted ${allSentences.length} relevant sentences from ${sentences.length} total sentences`);
+  console.log(`Extracted ${allSentences.length} relevant CONFIRMED sentences from ${sentences.length} total sentences`);
   return allSentences;
 }
 
 export function extractFromStructuredContent(content: string): string[] {
   const results: string[] = [];
   
-  // Look for patterns like "PlayerName ClubName Transfer In"
-  const transferInPattern = /([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+Transfer In/gi;
+  // Look for patterns like "PlayerName ClubName Transfer In" but only with confirmation keywords
+  const transferInPattern = /([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+(has signed|officially joins|completed)/gi;
   let match;
   
   while ((match = transferInPattern.exec(content)) !== null) {
     const playerName = match[1].trim();
     const clubName = match[2].trim();
-    results.push(`${playerName} joins ${clubName} transfer in confirmed`);
-    console.log(`Found structured transfer: ${playerName} -> ${clubName}`);
+    const confirmationPhrase = match[3].trim();
+    results.push(`${playerName} ${confirmationPhrase} ${clubName} transfer confirmed`);
+    console.log(`Found structured CONFIRMED transfer: ${playerName} -> ${clubName}`);
   }
   
   return results;
 }
 
-export function containsRelevantContent(sentence: string): boolean {
+export function containsRelevantConfirmedContent(sentence: string): boolean {
   const lower = sentence.toLowerCase();
   
-  const hasTransferKeyword = TRANSFER_KEYWORDS.some(keyword => 
+  // MUST NOT contain excluded keywords
+  const hasExcludedKeyword = EXCLUDED_KEYWORDS.some(keyword => 
+    lower.includes(keyword.toLowerCase())
+  );
+  
+  if (hasExcludedKeyword) {
+    return false;
+  }
+  
+  // MUST contain confirmed transfer keywords
+  const hasConfirmedKeyword = CONFIRMED_TRANSFER_KEYWORDS.some(keyword => 
     lower.includes(keyword.toLowerCase())
   );
   
@@ -60,14 +71,25 @@ export function containsRelevantContent(sentence: string): boolean {
     lower.includes(player.toLowerCase())
   );
   
-  // Accept if it has transfer keywords + club, or if it has a known player
-  const isRelevant = (hasTransferKeyword && hasClubName) || hasKnownPlayer;
+  // Accept only if it has confirmed keywords + club, or confirmed keywords + known player
+  const isRelevant = hasConfirmedKeyword && (hasClubName || hasKnownPlayer);
   
   if (isRelevant) {
-    console.log(`Relevant sentence found: "${sentence.substring(0, 100)}..."`);
+    console.log(`Relevant CONFIRMED sentence found: "${sentence.substring(0, 100)}..."`);
   }
   
   return isRelevant;
+}
+
+export function isFromTrustedSource(sourceUrl: string): boolean {
+  const url = sourceUrl.toLowerCase();
+  
+  const isTrusted = TRUSTED_SOURCES.some(trustedDomain => 
+    url.includes(trustedDomain.toLowerCase())
+  );
+  
+  console.log(`Source verification for ${sourceUrl}: ${isTrusted ? 'TRUSTED' : 'NOT TRUSTED'}`);
+  return isTrusted;
 }
 
 export function extractPlayerName(sentence: string): string | null {
@@ -85,7 +107,7 @@ export function extractPlayerName(sentence: string): string | null {
   const capitalizedWords = words.filter(word => 
     /^[A-Z][a-z]+$/.test(word) && 
     word.length > 2 &&
-    !['The', 'A', 'An', 'In', 'On', 'At', 'To', 'From', 'For', 'With', 'By', 'United', 'City', 'Town', 'FC', 'Transfer'].includes(word)
+    !['The', 'A', 'An', 'In', 'On', 'At', 'To', 'From', 'For', 'With', 'By', 'United', 'City', 'Town', 'FC', 'Transfer', 'Has', 'Signed', 'Joins'].includes(word)
   );
 
   // Look for name patterns (2-3 consecutive capitalized words)

@@ -12,7 +12,7 @@ export class TransferIntegrationService {
   private static STORAGE_KEY = 'parsed_transfers';
 
   static async processCrawlResults(crawlResults: CrawlResult[]): Promise<Transfer[]> {
-    console.log('=== PROCESSING CRAWL RESULTS ===');
+    console.log('=== PROCESSING CRAWL RESULTS WITH VERIFICATION RULES ===');
     console.log('Number of crawl results:', crawlResults.length);
     
     const allTransfers: Transfer[] = [];
@@ -22,12 +22,14 @@ export class TransferIntegrationService {
         try {
           console.log(`\n--- Processing result from ${result.url} ---`);
           const transfers = this.extractTransfersFromCrawlData(result.data, result.url);
-          allTransfers.push(...transfers);
-          console.log(`✓ Extracted ${transfers.length} transfers from ${result.url}`);
+          // Only add CONFIRMED transfers
+          const confirmedTransfers = transfers.filter(t => t.status === 'confirmed');
+          allTransfers.push(...confirmedTransfers);
+          console.log(`✓ Extracted ${confirmedTransfers.length} CONFIRMED transfers from ${result.url} (${transfers.length} total found)`);
           
           // Log transfer details for debugging
-          transfers.forEach(transfer => {
-            console.log(`  - ${transfer.playerName}: ${transfer.fromClub} -> ${transfer.toClub} (${transfer.status})`);
+          confirmedTransfers.forEach(transfer => {
+            console.log(`  - CONFIRMED: ${transfer.playerName}: ${transfer.fromClub} -> ${transfer.toClub}`);
           });
         } catch (error) {
           console.error(`❌ Error processing transfers from ${result.url}:`, error);
@@ -37,14 +39,14 @@ export class TransferIntegrationService {
       }
     }
 
-    // Store parsed transfers
+    // Store parsed transfers (only confirmed ones)
     const deduplicated = this.deduplicateTransfers(allTransfers);
     this.storeParsedTransfers(deduplicated);
     
-    console.log(`\n=== CRAWL PROCESSING COMPLETE ===`);
-    console.log(`Total parsed transfers after deduplication: ${deduplicated.length}`);
+    console.log(`\n=== CRAWL PROCESSING COMPLETE WITH VERIFICATION ===`);
+    console.log(`Total CONFIRMED transfers after deduplication: ${deduplicated.length}`);
     deduplicated.forEach(transfer => {
-      console.log(`Final: ${transfer.playerName} (${transfer.fromClub} -> ${transfer.toClub})`);
+      console.log(`Final CONFIRMED: ${transfer.playerName} (${transfer.fromClub} -> ${transfer.toClub})`);
     });
     
     return deduplicated;
@@ -79,23 +81,31 @@ export class TransferIntegrationService {
     }
 
     console.log(`Content length for ${sourceUrl}: ${content.length} characters`);
-    console.log(`Content preview (first 300 chars): "${content.substring(0, 300).replace(/\n/g, ' ')}..."`);
     
-    // Log specific player name searches
-    const playersToCheck = ['Jaka Bijol', 'Lukas Nmecha', 'Giorgi Mamardashvili', 'Jeremie Frimpong', 'Rayan Ait-Nouri'];
-    playersToCheck.forEach(player => {
-      const found = content.toLowerCase().includes(player.toLowerCase());
-      console.log(`Player "${player}" found in content: ${found}`);
-    });
-
     if (!content) {
       console.warn(`❌ No content found for ${sourceUrl}`);
       return [];
     }
 
-    // Parse transfers from content
+    // Parse transfers from content with NEW VERIFICATION RULES
     const parsedTransfers = TransferParser.parseTransfers(content, sourceUrl);
-    return parsedTransfers.map(parsed => TransferParser.convertToTransfer(parsed, sourceUrl));
+    return parsedTransfers.map(parsed => this.convertToTransferWithVerification(parsed, sourceUrl));
+  }
+
+  static convertToTransferWithVerification(parsed: ParsedTransferData, sourceUrl: string): Transfer {
+    // Only convert to confirmed status if verification passes
+    const status = parsed.verificationStatus === 'confirmed' && parsed.confidence >= 0.8 ? 'confirmed' : 'rumored';
+    
+    return {
+      id: `verified-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      playerName: parsed.playerName,
+      fromClub: parsed.fromClub,
+      toClub: parsed.toClub,
+      fee: parsed.fee,
+      date: new Date().toISOString(),
+      source: new URL(sourceUrl).hostname,
+      status
+    };
   }
 
   private static deduplicateTransfers(transfers: Transfer[]): Transfer[] {

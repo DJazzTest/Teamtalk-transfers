@@ -1,33 +1,39 @@
 
 import { ParsedTransferData } from './types';
-import { TRANSFER_KEYWORDS, KNOWN_PLAYERS } from './constants';
-import { extractSentences, extractPlayerName, extractClubs, extractFee } from './extractors';
+import { CONFIRMED_TRANSFER_KEYWORDS, EXCLUDED_KEYWORDS, TRUSTED_SOURCES, KNOWN_PLAYERS } from './constants';
+import { extractSentences, extractPlayerName, extractClubs, extractFee, isFromTrustedSource } from './extractors';
 
 export function parseTransfersFromContent(scrapedContent: string, sourceUrl: string): ParsedTransferData[] {
   console.log('=== PARSING TRANSFERS FROM:', sourceUrl, '===');
   console.log('Content length:', scrapedContent.length);
   
+  // RULE 1: Check if source is trusted
+  if (!isFromTrustedSource(sourceUrl)) {
+    console.log('❌ Source not trusted, skipping:', sourceUrl);
+    return [];
+  }
+  
   const transfers: ParsedTransferData[] = [];
   
-  // Add specific known transfers based on content analysis
+  // Add specific known transfers based on content analysis (only if from trusted source)
   const knownTransfers = extractKnownTransfers(scrapedContent, sourceUrl);
   transfers.push(...knownTransfers);
 
   const sentences = extractSentences(scrapedContent);
-  console.log(`Processing ${sentences.length} sentences for transfer detection`);
+  console.log(`Processing ${sentences.length} sentences for CONFIRMED transfer detection`);
 
   for (const sentence of sentences) {
-    const parsedTransfer = parseSentence(sentence);
-    if (parsedTransfer && parsedTransfer.confidence > 0.5) {
+    const parsedTransfer = parseSentenceWithVerification(sentence);
+    if (parsedTransfer && parsedTransfer.confidence >= 0.8 && parsedTransfer.verificationStatus === 'confirmed') {
       transfers.push(parsedTransfer);
-      console.log(`✓ Found transfer: ${parsedTransfer.playerName} -> ${parsedTransfer.toClub}`);
+      console.log(`✓ Found CONFIRMED transfer: ${parsedTransfer.playerName} -> ${parsedTransfer.toClub}`);
     }
   }
 
   const deduped = deduplicateTransfers(transfers);
-  console.log(`=== FINAL RESULT: ${deduped.length} transfers after deduplication ===`);
+  console.log(`=== FINAL RESULT: ${deduped.length} CONFIRMED transfers after verification ===`);
   deduped.forEach(transfer => {
-    console.log(`- ${transfer.playerName}: ${transfer.fromClub} -> ${transfer.toClub} (confidence: ${transfer.confidence})`);
+    console.log(`- ${transfer.playerName}: ${transfer.fromClub} -> ${transfer.toClub} (confidence: ${transfer.confidence}, status: ${transfer.verificationStatus})`);
   });
   
   return deduped;
@@ -37,7 +43,7 @@ function extractKnownTransfers(content: string, sourceUrl: string): ParsedTransf
   const transfers: ParsedTransferData[] = [];
   const lowerContent = content.toLowerCase();
 
-  // Define specific known transfers with their details
+  // Only include known transfers if they appear with confirmation keywords
   const knownTransferMap = [
     // Leeds United
     { player: 'Jaka Bijol', from: 'Udinese', to: 'Leeds United', fee: '£15M' },
@@ -46,30 +52,30 @@ function extractKnownTransfers(content: string, sourceUrl: string): ParsedTransf
     // Liverpool  
     { player: 'Giorgi Mamardashvili', from: 'Valencia', to: 'Liverpool', fee: '£35M' },
     { player: 'Jeremie Frimpong', from: 'Bayer Leverkusen', to: 'Liverpool', fee: '£40M' },
-    { player: 'Armin Pecsi', from: 'Dinamo Zagreb', to: 'Liverpool', fee: '£12M' },
-    { player: 'Florian Wirtz', from: 'Bayer Leverkusen', to: 'Liverpool', fee: '£85M' },
     
     // Manchester City
     { player: 'Rayan Ait-Nouri', from: 'Wolverhampton Wanderers', to: 'Manchester City', fee: '£25M' },
-    { player: 'Marcus Bettinelli', from: 'Chelsea', to: 'Manchester City', fee: 'Free Transfer' },
-    { player: 'Rayan Cherki', from: 'Olympique Lyon', to: 'Manchester City', fee: '£30M' },
-    { player: 'Tijjani Reijnders', from: 'AC Milan', to: 'Manchester City', fee: '£45M' }
+    { player: 'Marcus Bettinelli', from: 'Chelsea', to: 'Manchester City', fee: 'Free Transfer' }
   ];
 
   for (const transfer of knownTransferMap) {
-    // Check if the player name appears in the content
     const playerFound = lowerContent.includes(transfer.player.toLowerCase());
-    const clubFound = lowerContent.includes(transfer.to.toLowerCase()) || 
-                     lowerContent.includes(transfer.to.replace(' ', '').toLowerCase());
+    const clubFound = lowerContent.includes(transfer.to.toLowerCase());
     
-    if (playerFound || (clubFound && transfer.to.toLowerCase().includes('leeds'))) {
-      console.log(`✓ Adding known transfer: ${transfer.player} -> ${transfer.to}`);
+    // Check for confirmation keywords near the player name
+    const hasConfirmationKeyword = CONFIRMED_TRANSFER_KEYWORDS.some(keyword => 
+      lowerContent.includes(keyword.toLowerCase())
+    );
+    
+    if (playerFound && clubFound && hasConfirmationKeyword) {
+      console.log(`✓ Adding CONFIRMED known transfer: ${transfer.player} -> ${transfer.to}`);
       transfers.push({
         playerName: transfer.player,
         fromClub: transfer.from,
         toClub: transfer.to,
         fee: transfer.fee,
-        confidence: 0.95 // High confidence for known transfers
+        confidence: 0.95,
+        verificationStatus: 'confirmed'
       });
     }
   }
@@ -77,15 +83,27 @@ function extractKnownTransfers(content: string, sourceUrl: string): ParsedTransf
   return transfers;
 }
 
-export function parseSentence(sentence: string): ParsedTransferData | null {
+export function parseSentenceWithVerification(sentence: string): ParsedTransferData | null {
   const lowerSentence = sentence.toLowerCase();
   
-  // Check if sentence contains transfer keywords
-  const hasTransferKeyword = TRANSFER_KEYWORDS.some(keyword => 
+  // RULE 2: Check for excluded keywords first (immediate disqualification)
+  const hasExcludedKeyword = EXCLUDED_KEYWORDS.some(keyword => 
+    lowerSentence.includes(keyword.toLowerCase())
+  );
+  
+  if (hasExcludedKeyword) {
+    console.log('❌ Sentence contains excluded keyword, skipping:', sentence.substring(0, 100));
+    return null;
+  }
+  
+  // RULE 3: Must contain confirmed transfer keywords
+  const hasConfirmedKeyword = CONFIRMED_TRANSFER_KEYWORDS.some(keyword => 
     lowerSentence.includes(keyword.toLowerCase())
   );
 
-  if (!hasTransferKeyword) return null;
+  if (!hasConfirmedKeyword) {
+    return null;
+  }
 
   // Extract potential player names
   const playerName = extractPlayerName(sentence);
@@ -117,39 +135,41 @@ export function parseSentence(sentence: string): ParsedTransferData | null {
     }
   }
 
-  const confidence = calculateConfidence(sentence, playerName, clubs, fee);
+  const confidence = calculateConfidenceWithVerification(sentence, playerName, clubs, fee);
+  const verificationStatus = confidence >= 0.8 ? 'confirmed' : 'unverified';
 
   return {
     playerName: cleanPlayerName(playerName),
     fromClub: cleanClubName(fromClub),
     toClub: cleanClubName(toClub),
     fee,
-    confidence
+    confidence,
+    verificationStatus
   };
 }
 
-function calculateConfidence(
+function calculateConfidenceWithVerification(
   sentence: string, 
   playerName: string, 
   clubs: string[], 
   fee: string
 ): number {
-  let confidence = 0.6;
+  let confidence = 0.5; // Start lower, require more verification
 
-  // Boost confidence for strong transfer keywords
-  const strongKeywords = ['signed', 'joins', 'officially', 'completed', 'confirmed', 'announced'];
-  if (strongKeywords.some(keyword => sentence.toLowerCase().includes(keyword))) {
+  // High boost for confirmed transfer keywords
+  const confirmedKeywords = ['has signed', 'officially joins', 'completed transfer', 'announces signing'];
+  if (confirmedKeywords.some(keyword => sentence.toLowerCase().includes(keyword))) {
+    confidence += 0.4;
+  }
+
+  // Boost for multiple clubs mentioned (clear transfer path)
+  if (clubs.length >= 2) {
     confidence += 0.2;
   }
 
-  // Boost for multiple clubs mentioned
-  if (clubs.length >= 2) {
-    confidence += 0.1;
-  }
-
-  // Boost for fee mentioned
+  // Boost for fee mentioned (more official)
   if (fee !== 'Undisclosed') {
-    confidence += 0.1;
+    confidence += 0.15;
   }
 
   // Boost for longer player names (more likely to be real)
@@ -159,7 +179,7 @@ function calculateConfidence(
 
   // Boost for known players
   if (KNOWN_PLAYERS.some(known => known.toLowerCase() === playerName.toLowerCase())) {
-    confidence += 0.2;
+    confidence += 0.15;
   }
 
   return Math.min(confidence, 1.0);
@@ -180,10 +200,12 @@ function deduplicateTransfers(transfers: ParsedTransferData[]): ParsedTransferDa
     const key = `${transfer.playerName.toLowerCase()}-${transfer.toClub.toLowerCase()}`;
     const existing = seen.get(key);
 
-    if (!existing || transfer.confidence > existing.confidence) {
+    if (!existing || 
+        (transfer.verificationStatus === 'confirmed' && existing.verificationStatus !== 'confirmed') ||
+        (transfer.verificationStatus === existing.verificationStatus && transfer.confidence > existing.confidence)) {
       seen.set(key, transfer);
     }
   }
 
-  return Array.from(seen.values());
+  return Array.from(seen.values()).filter(transfer => transfer.verificationStatus === 'confirmed');
 }

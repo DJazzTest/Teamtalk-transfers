@@ -1,3 +1,4 @@
+
 export const PREMIER_LEAGUE_CLUBS = [
   'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton', 'Brighton & Hove Albion',
   'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 'Leeds',
@@ -6,12 +7,35 @@ export const PREMIER_LEAGUE_CLUBS = [
   'Wolverhampton Wanderers', 'Wolves', 'Luton Town', 'Luton', 'Leicester City', 'Leicester'
 ];
 
-export const TRANSFER_KEYWORDS = [
-  'signed', 'joins', 'transferred', 'moves to', 'completes move', 'agrees deal',
-  'deal agreed', 'medical completed', 'officially joins', 'confirms signing',
-  'announced', 'completed', 'acquisition', 'signs for', 'recruited',
-  'lands at', 'moves from', 'switches to', 'deal done', 'transfer in',
-  'new signing', 'arrives at', 'signs', 'joined'
+// CONFIRMED TRANSFER KEYWORDS - Only phrases that indicate official completion
+export const CONFIRMED_TRANSFER_KEYWORDS = [
+  'has signed', 'officially joins', 'completed transfer', 'completes move', 
+  'signs for', 'announces signing of', 'confirmed signing', 'welcome to',
+  'pleased to announce', 'delighted to confirm', 'agreement reached',
+  'medical completed', 'contract signed', 'registration confirmed'
+];
+
+// EXCLUDED KEYWORDS - Phrases that indicate rumors or speculation
+export const EXCLUDED_KEYWORDS = [
+  'linked with', 'reportedly', 'in talks', 'could move', 'might sign',
+  'interested in', 'considering', 'exploring', 'rumored', 'speculation',
+  'potential target', 'looking at', 'monitoring', 'scouting', 'eyeing',
+  'set to', 'expected to', 'likely to', 'planning', 'preparing bid'
+];
+
+// TRUSTED SOURCES - Only official and verified sources
+export const TRUSTED_SOURCES = [
+  // Official Premier League clubs
+  'arsenal.com', 'avfc.co.uk', 'afcb.co.uk', 'brentfordfc.com', 'brightonandhovealbion.com',
+  'burnleyfc.com', 'chelseafc.com', 'cpfc.co.uk', 'evertonfc.com', 'fulhamfc.com',
+  'leedsunited.com', 'liverpoolfc.com', 'mancity.com', 'manutd.com', 'nufc.co.uk',
+  'nottinghamforest.co.uk', 'safc.com', 'tottenhamhotspur.com', 'whufc.com', 'wolves.co.uk',
+  
+  // Official league and transfer sites
+  'premierleague.com', 'transfermarkt.com', 'transfermarkt.co.uk',
+  
+  // Tier 1 trusted football news
+  'bbc.com/sport', 'skysports.com', 'theguardian.com/football'
 ];
 
 export const KNOWN_PLAYERS = [
