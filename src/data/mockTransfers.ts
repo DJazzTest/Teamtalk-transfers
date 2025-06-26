@@ -2,7 +2,7 @@
 import { Transfer } from '@/types/transfer';
 
 export const mockTransfers: Transfer[] = [
-  // Manchester United - realistic current targets
+  // Manchester United - Current realistic targets
   {
     id: '1',
     playerName: 'Viktor Gyökeres',
@@ -11,7 +11,7 @@ export const mockTransfers: Transfer[] = [
     fee: '£63M',
     date: '2025-06-15',
     source: 'Sky Sports',
-    status: 'confirmed'
+    status: 'rumored'
   },
   {
     id: '2',
@@ -21,7 +21,7 @@ export const mockTransfers: Transfer[] = [
     fee: '£75M',
     date: '2025-06-20',
     source: 'BBC Sport',
-    status: 'confirmed'
+    status: 'rumored'
   },
   {
     id: '3',
@@ -31,32 +31,22 @@ export const mockTransfers: Transfer[] = [
     fee: '£45M',
     date: '2025-06-12',
     source: 'Manchester Evening News',
-    status: 'confirmed'
-  },
-  {
-    id: '4',
-    playerName: 'Joao Neves',
-    fromClub: 'Benfica',
-    toClub: 'Manchester United',
-    fee: '£55M',
-    date: '2025-06-25',
-    source: 'Goal.com',
-    status: 'pending'
+    status: 'rumored'
   },
 
-  // Arsenal - current realistic targets
+  // Arsenal - Current realistic targets
   {
-    id: '5',
+    id: '4',
     playerName: 'Benjamin Sesko',
     fromClub: 'RB Leipzig',
     toClub: 'Arsenal',
     fee: '£65M',
     date: '2025-06-08',
     source: 'The Guardian',
-    status: 'confirmed'
+    status: 'rumored'
   },
   {
-    id: '6',
+    id: '5',
     playerName: 'Alexander Isak',
     fromClub: 'Newcastle United',
     toClub: 'Arsenal',
@@ -66,19 +56,9 @@ export const mockTransfers: Transfer[] = [
     status: 'rumored'
   },
 
-  // Chelsea - realistic targets
+  // Chelsea - Current realistic targets
   {
-    id: '7',
-    playerName: 'Victor Osimhen',
-    fromClub: 'Napoli',
-    toClub: 'Chelsea',
-    fee: '£85M',
-    date: '2025-06-22',
-    source: 'Sky Sports',
-    status: 'confirmed'
-  },
-  {
-    id: '8',
+    id: '6',
     playerName: 'Jamal Musiala',
     fromClub: 'Bayern Munich',
     toClub: 'Chelsea',
@@ -87,20 +67,30 @@ export const mockTransfers: Transfer[] = [
     source: 'ESPN',
     status: 'rumored'
   },
-
-  // Liverpool - realistic targets
   {
-    id: '9',
-    playerName: 'Rodrygo',
-    fromClub: 'Real Madrid',
-    toClub: 'Liverpool',
+    id: '7',
+    playerName: 'Rafael Leao',
+    fromClub: 'AC Milan',
+    toClub: 'Chelsea',
     fee: '£75M',
+    date: '2025-06-25',
+    source: 'Sky Sports',
+    status: 'rumored'
+  },
+
+  // Liverpool - Current realistic targets
+  {
+    id: '8',
+    playerName: 'Florian Wirtz',
+    fromClub: 'Bayer Leverkusen',
+    toClub: 'Liverpool',
+    fee: '£85M',
     date: '2025-06-18',
     source: 'The Guardian',
-    status: 'confirmed'
+    status: 'rumored'
   },
   {
-    id: '10',
+    id: '9',
     playerName: 'Ryan Gravenberch',
     fromClub: 'Bayern Munich',
     toClub: 'Liverpool',
@@ -110,63 +100,75 @@ export const mockTransfers: Transfer[] = [
     status: 'confirmed'
   },
 
-  // Manchester City - realistic targets
+  // Manchester City - Current realistic targets
   {
-    id: '11',
+    id: '10',
     playerName: 'Bruno Guimaraes',
     fromClub: 'Newcastle United',
     toClub: 'Manchester City',
     fee: '£85M',
     date: '2025-06-10',
     source: 'Sky Sports',
-    status: 'confirmed'
-  },
-  {
-    id: '12',
-    playerName: 'Florian Wirtz',
-    fromClub: 'Bayer Leverkusen',
-    toClub: 'Manchester City',
-    fee: '£100M',
-    date: '2025-06-14',
-    source: 'BBC Sport',
     status: 'rumored'
   },
-
-  // Tottenham - realistic targets
   {
-    id: '13',
-    playerName: 'Ivan Toney',
-    fromClub: 'Brentford',
+    id: '11',
+    playerName: 'Josko Gvardiol',
+    fromClub: 'RB Leipzig',
+    toClub: 'Manchester City',
+    fee: '£77M',
+    date: '2025-06-14',
+    source: 'BBC Sport',
+    status: 'confirmed'
+  },
+
+  // Tottenham - Current realistic targets
+  {
+    id: '12',
+    playerName: 'Eberechi Eze',
+    fromClub: 'Crystal Palace',
     toClub: 'Tottenham Hotspur',
     fee: '£40M',
     date: '2025-06-28',
-    source: 'The Sun',
-    status: 'confirmed'
+    source: 'The Athletic',
+    status: 'rumored'
   },
   {
-    id: '14',
-    playerName: 'Pedro Porro',
-    fromClub: 'Sporting CP',
+    id: '13',
+    playerName: 'Dominic Solanke',
+    fromClub: 'Bournemouth',
     toClub: 'Tottenham Hotspur',
-    fee: '£35M',
+    fee: '£55M',
     date: '2025-06-30',
-    source: 'Daily Mail',
+    source: 'Sky Sports',
     status: 'confirmed'
   },
 
-  // Newcastle - realistic targets
+  // Newcastle - Current realistic targets
   {
-    id: '15',
-    playerName: 'Dominic Calvert-Lewin',
+    id: '14',
+    playerName: 'Anthony Gordon',
     fromClub: 'Everton',
     toClub: 'Newcastle United',
-    fee: '£35M',
+    fee: '£45M',
     date: '2025-06-20',
     source: 'Sky Sports',
     status: 'confirmed'
   },
 
-  // Some rejected transfers (more realistic)
+  // West Ham - Current realistic targets
+  {
+    id: '15',
+    playerName: 'Jhon Duran',
+    fromClub: 'Aston Villa',
+    toClub: 'West Ham United',
+    fee: '£35M',
+    date: '2025-06-25',
+    source: 'BBC Sport',
+    status: 'rumored'
+  },
+
+  // Some realistic rejected transfers
   {
     id: '16',
     playerName: 'Declan Rice',
@@ -180,25 +182,25 @@ export const mockTransfers: Transfer[] = [
   },
   {
     id: '17',
-    playerName: 'Harry Kane',
-    fromClub: 'Bayern Munich',
-    toClub: 'Manchester United',
-    fee: '£80M',
+    playerName: 'Moises Caicedo',
+    fromClub: 'Brighton & Hove Albion',
+    toClub: 'Liverpool',
+    fee: '£110M',
     date: '2025-06-22',
     source: 'The Guardian',
     status: 'rejected',
-    rejectionReason: 'Bayern Munich refused to sell'
+    rejectionReason: 'Player chose Chelsea instead'
   },
   {
     id: '18',
     playerName: 'Jude Bellingham',
-    fromClub: 'Real Madrid',
-    toClub: 'Liverpool',
+    fromClub: 'Borussia Dortmund',
+    toClub: 'Manchester City',
     fee: '£120M',
     date: '2025-06-25',
     source: 'ESPN',
     status: 'rejected',
-    rejectionReason: 'Player committed to Real Madrid long-term'
+    rejectionReason: 'Player chose Real Madrid instead'
   }
 ];
 
