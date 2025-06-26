@@ -55,19 +55,19 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
         </div>
       ) : (
         <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg">
+          <div className="rounded-lg p-4 border border-white/20 shadow-lg" style={{backgroundColor: '#A358FF'}}>
             <div className="text-3xl font-bold text-green-400 drop-shadow-lg">{timeLeft.days}</div>
             <div className="text-sm text-gray-200">Days</div>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg">
+          <div className="rounded-lg p-4 border border-white/20 shadow-lg" style={{backgroundColor: '#A358FF'}}>
             <div className="text-3xl font-bold text-green-400 drop-shadow-lg">{timeLeft.hours}</div>
             <div className="text-sm text-gray-200">Hours</div>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg">
+          <div className="rounded-lg p-4 border border-white/20 shadow-lg" style={{backgroundColor: '#A358FF'}}>
             <div className="text-3xl font-bold text-green-400 drop-shadow-lg">{timeLeft.minutes}</div>
             <div className="text-sm text-gray-200">Minutes</div>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-lg">
+          <div className="rounded-lg p-4 border border-white/20 shadow-lg" style={{backgroundColor: '#A358FF'}}>
             <div className="text-3xl font-bold text-green-400 drop-shadow-lg">{timeLeft.seconds}</div>
             <div className="text-sm text-gray-200">Seconds</div>
           </div>
