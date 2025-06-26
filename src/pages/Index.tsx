@@ -174,7 +174,7 @@ const Index = () => {
   }, [isAutoRefresh, refreshRate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-gray-900">
+    <div className="min-h-screen" style={{background: 'linear-gradient(to bottom right, #A358FF, #8B46E6, #6B2FC7)'}}>
       {/* Header */}
       <header className="bg-slate-800/90 backdrop-blur-md border-b border-slate-700 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
