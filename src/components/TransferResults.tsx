@@ -2,9 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Search, Users, TrendingUp, CheckCircle, Clock } from 'lucide-react';
+import { Search, Users, TrendingUp, CheckCircle, Clock, Globe } from 'lucide-react';
+import { FirecrawlService } from '@/utils/FirecrawlService';
+import { useToast } from '@/hooks/use-toast';
 
 interface Transfer {
   id: string;
@@ -29,7 +32,7 @@ const premierLeagueClubs = [
   'Wolverhampton Wanderers'
 ];
 
-// Mock data for demonstration - expanded with more clubs
+// Updated mock data with all Manchester United players mentioned
 const mockTransfers: Transfer[] = [
   {
     id: '1',
@@ -53,16 +56,56 @@ const mockTransfers: Transfer[] = [
   },
   {
     id: '3',
+    playerName: 'Chido Obi',
+    fromClub: 'Crystal Palace',
+    toClub: 'Manchester United',
+    fee: '£18M',
+    date: '2025-06-12',
+    source: 'Manchester Evening News',
+    status: 'confirmed'
+  },
+  {
+    id: '4',
     playerName: 'Tyler Fredricson',
     fromClub: 'Ajax',
-    toClub: 'Arsenal',
+    toClub: 'Manchester United',
     fee: '£35M',
     date: '2025-06-25',
     source: 'Goal.com',
     status: 'pending'
   },
   {
-    id: '4',
+    id: '5',
+    playerName: 'Marcus Rashford',
+    fromClub: 'PSG',
+    toClub: 'Manchester United',
+    fee: '£60M',
+    date: '2025-06-08',
+    source: 'The Guardian',
+    status: 'confirmed'
+  },
+  {
+    id: '6',
+    playerName: 'Antony',
+    fromClub: 'Real Madrid',
+    toClub: 'Manchester United',
+    fee: '£40M',
+    date: '2025-06-18',
+    source: 'ESPN',
+    status: 'confirmed'
+  },
+  {
+    id: '7',
+    playerName: 'Tyrell Malacia',
+    fromClub: 'AC Milan',
+    toClub: 'Manchester United',
+    fee: '£22M',
+    date: '2025-06-22',
+    source: 'Sky Sports',
+    status: 'confirmed'
+  },
+  {
+    id: '8',
     playerName: 'Marcus Silva',
     fromClub: 'Porto',
     toClub: 'Arsenal',
@@ -72,7 +115,7 @@ const mockTransfers: Transfer[] = [
     status: 'confirmed'
   },
   {
-    id: '5',
+    id: '9',
     playerName: 'João Santos',
     fromClub: 'Benfica',
     toClub: 'Chelsea',
@@ -82,7 +125,7 @@ const mockTransfers: Transfer[] = [
     status: 'confirmed'
   },
   {
-    id: '6',
+    id: '10',
     playerName: 'Alex Thompson',
     fromClub: 'Brighton',
     toClub: 'Liverpool',
@@ -99,6 +142,8 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   const [selectedClub, setSelectedClub] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'list' | 'clubs'>('clubs');
+  const [isScraping, setIsScraping] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     let filtered = transfers;
@@ -117,6 +162,63 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
 
     setFilteredTransfers(filtered);
   }, [transfers, selectedClub, searchTerm]);
+
+  const handleScrapeUrls = async () => {
+    const apiKey = FirecrawlService.getApiKey();
+    if (!apiKey) {
+      toast({
+        title: "API Key Required",
+        description: "Please set your Firecrawl API key in the API Config tab first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const savedUrls = localStorage.getItem('transfer_urls');
+    if (!savedUrls) {
+      toast({
+        title: "No URLs Found",
+        description: "Please add URLs to scrape in the Sources tab first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const urls = JSON.parse(savedUrls);
+    setIsScraping(true);
+
+    try {
+      toast({
+        title: "Scraping Started",
+        description: `Starting to scrape ${urls.length} URLs for transfer data...`,
+      });
+
+      for (const url of urls) {
+        console.log(`Scraping URL: ${url}`);
+        const result = await FirecrawlService.crawlWebsite(url);
+        
+        if (result.success && result.data) {
+          console.log(`Successfully scraped ${url}:`, result.data);
+        } else {
+          console.error(`Failed to scrape ${url}:`, result.error);
+        }
+      }
+
+      toast({
+        title: "Scraping Complete",
+        description: "All URLs have been scraped. Check console for detailed results.",
+      });
+    } catch (error) {
+      console.error('Error during scraping:', error);
+      toast({
+        title: "Scraping Error",
+        description: "An error occurred while scraping URLs.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsScraping(false);
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -179,6 +281,14 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
                 <SelectItem value="list">List View</SelectItem>
               </SelectContent>
             </Select>
+            <Button
+              onClick={handleScrapeUrls}
+              disabled={isScraping}
+              className="bg-slate-600 hover:bg-slate-700 text-white"
+            >
+              <Globe className="w-4 h-4 mr-2" />
+              {isScraping ? 'Scraping...' : 'Scrape URLs'}
+            </Button>
           </div>
         </div>
       </Card>
