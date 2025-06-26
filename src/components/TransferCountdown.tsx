@@ -1,8 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/card';
 
-export const TransferCountdown = () => {
+interface TransferCountdownProps {
+  targetDate: string;
+}
+
+export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -11,11 +14,11 @@ export const TransferCountdown = () => {
   });
 
   useEffect(() => {
-    const targetDate = new Date('2025-09-01T00:00:00');
+    const target = new Date(targetDate);
     
     const updateTimer = () => {
       const now = new Date();
-      const difference = targetDate.getTime() - now.getTime();
+      const difference = target.getTime() - now.getTime();
       
       if (difference > 0) {
         setTimeLeft({
@@ -33,31 +36,43 @@ export const TransferCountdown = () => {
     const interval = setInterval(updateTimer, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [targetDate]);
+
+  const target = new Date(targetDate);
+  const isExpired = target.getTime() < new Date().getTime();
 
   return (
     <div className="text-center">
       <h2 className="text-2xl font-bold text-white mb-2">Transfer Window Countdown</h2>
-      <p className="text-gray-300 mb-6">June 1, 2025 - September 1, 2025</p>
+      <p className="text-gray-300 mb-6">
+        {isExpired ? 'Transfer Window Closed' : `Countdown to ${target.toLocaleDateString()}`}
+      </p>
       
-      <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
-        <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-          <div className="text-3xl font-bold text-green-400">{timeLeft.days}</div>
-          <div className="text-sm text-gray-300">Days</div>
+      {isExpired ? (
+        <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-8 max-w-md mx-auto">
+          <p className="text-red-400 text-xl font-bold">Transfer Window Closed</p>
+          <p className="text-gray-300 text-sm mt-2">Configure a new date in the Settings tab</p>
         </div>
-        <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-          <div className="text-3xl font-bold text-green-400">{timeLeft.hours}</div>
-          <div className="text-sm text-gray-300">Hours</div>
+      ) : (
+        <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
+          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <div className="text-3xl font-bold text-blue-400">{timeLeft.days}</div>
+            <div className="text-sm text-gray-300">Days</div>
+          </div>
+          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <div className="text-3xl font-bold text-blue-400">{timeLeft.hours}</div>
+            <div className="text-sm text-gray-300">Hours</div>
+          </div>
+          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <div className="text-3xl font-bold text-blue-400">{timeLeft.minutes}</div>
+            <div className="text-sm text-gray-300">Minutes</div>
+          </div>
+          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <div className="text-3xl font-bold text-blue-400">{timeLeft.seconds}</div>
+            <div className="text-sm text-gray-300">Seconds</div>
+          </div>
         </div>
-        <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-          <div className="text-3xl font-bold text-green-400">{timeLeft.minutes}</div>
-          <div className="text-sm text-gray-300">Minutes</div>
-        </div>
-        <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-          <div className="text-3xl font-bold text-green-400">{timeLeft.seconds}</div>
-          <div className="text-sm text-gray-300">Seconds</div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

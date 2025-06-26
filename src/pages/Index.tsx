@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { TransferCountdown } from '@/components/TransferCountdown';
+import { CountdownSettings } from '@/components/CountdownSettings';
 import { UrlManager } from '@/components/UrlManager';
 import { TransferResults } from '@/components/TransferResults';
 import { RecentTransfers } from '@/components/RecentTransfers';
@@ -157,6 +158,7 @@ const Index = () => {
   const [refreshRate, setRefreshRate] = useState(300000); // 5 minutes default
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [isAutoRefresh, setIsAutoRefresh] = useState(false);
+  const [countdownTarget, setCountdownTarget] = useState('2025-09-01T23:59:00');
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -198,7 +200,7 @@ const Index = () => {
         {/* Transfer Window Countdown */}
         <Card className="mb-8 bg-slate-800/50 backdrop-blur-md border-slate-700">
           <div className="p-6">
-            <TransferCountdown />
+            <TransferCountdown targetDate={countdownTarget} />
           </div>
         </Card>
 
@@ -234,7 +236,12 @@ const Index = () => {
             <UrlManager />
           </TabsContent>
 
-          <TabsContent value="settings">
+          <TabsContent value="settings" className="space-y-6">
+            <CountdownSettings 
+              targetDate={countdownTarget}
+              onDateChange={setCountdownTarget}
+            />
+            
             <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
               <div className="p-6">
                 <h3 className="text-xl font-semibold text-white mb-4">Transfer Settings</h3>
