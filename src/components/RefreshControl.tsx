@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { RefreshCw, Play, Pause } from 'lucide-react';
+import { RefreshCw, Play, Pause, Clock } from 'lucide-react';
 
 interface RefreshControlProps {
   refreshRate: number;
@@ -40,9 +40,15 @@ export const RefreshControl: React.FC<RefreshControlProps> = ({
                 onCheckedChange={setIsAutoRefresh}
               />
               <span className="text-gray-700 text-sm">
-                {isAutoRefresh ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
+                {isAutoRefresh ? <Play className="w-4 h-4 text-green-600" /> : <Pause className="w-4 h-4 text-red-500" />}
               </span>
               <span className="text-gray-700 text-sm">Auto Refresh</span>
+              {isAutoRefresh && (
+                <div className="flex items-center gap-1 text-xs text-green-600">
+                  <Clock className="w-3 h-3" />
+                  <span>Active</span>
+                </div>
+              )}
             </div>
             
             <div className="flex items-center gap-2">
