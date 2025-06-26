@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { CheckCircle, Clock, MessageCircle, X, Verified } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 
