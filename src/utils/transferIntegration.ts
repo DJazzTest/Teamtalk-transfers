@@ -1,3 +1,4 @@
+
 import { Transfer } from '@/types/transfer';
 import { TransferParser, ParsedTransferData } from './transferParser';
 
@@ -12,14 +13,21 @@ export class TransferIntegrationService {
   private static STORAGE_KEY = 'parsed_transfers';
 
   static async processCrawlResults(crawlResults: CrawlResult[]): Promise<Transfer[]> {
+    console.log('Processing crawl results:', crawlResults.length, 'results');
     const allTransfers: Transfer[] = [];
 
     for (const result of crawlResults) {
       if (result.success && result.data) {
         try {
+          console.log(`Processing result from ${result.url}`);
           const transfers = this.extractTransfersFromCrawlData(result.data, result.url);
           allTransfers.push(...transfers);
           console.log(`Extracted ${transfers.length} transfers from ${result.url}`);
+          
+          // Log transfer details for debugging
+          transfers.forEach(transfer => {
+            console.log(`Found transfer: ${transfer.playerName} -> ${transfer.toClub} (${transfer.status})`);
+          });
         } catch (error) {
           console.error(`Error processing transfers from ${result.url}:`, error);
         }
@@ -30,12 +38,20 @@ export class TransferIntegrationService {
     const deduplicated = this.deduplicateTransfers(allTransfers);
     this.storeParsedTransfers(deduplicated);
     
-    console.log(`Total parsed transfers: ${deduplicated.length}`);
+    console.log(`Total parsed transfers after deduplication: ${deduplicated.length}`);
+    deduplicated.forEach(transfer => {
+      console.log(`Final transfer: ${transfer.playerName} from ${transfer.fromClub} to ${transfer.toClub}`);
+    });
+    
     return deduplicated;
   }
 
   private static extractTransfersFromCrawlData(crawlData: any, sourceUrl: string): Transfer[] {
     let content = '';
+
+    console.log('Extracting content from crawl data for:', sourceUrl);
+    console.log('Crawl data type:', typeof crawlData);
+    console.log('Crawl data keys:', Object.keys(crawlData || {}));
 
     // Handle different data structures from Firecrawl
     if (Array.isArray(crawlData)) {
@@ -53,6 +69,9 @@ export class TransferIntegrationService {
       // Direct content string
       content = crawlData;
     }
+
+    console.log(`Content length for ${sourceUrl}: ${content.length} characters`);
+    console.log(`Content preview: ${content.substring(0, 200)}...`);
 
     if (!content) {
       console.warn(`No content found for ${sourceUrl}`);
@@ -89,7 +108,9 @@ export class TransferIntegrationService {
   static getParsedTransfers(): Transfer[] {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
+      const transfers = stored ? JSON.parse(stored) : [];
+      console.log(`Retrieved ${transfers.length} parsed transfers from storage`);
+      return transfers;
     } catch (error) {
       console.error('Error loading parsed transfers:', error);
       return [];
@@ -99,6 +120,7 @@ export class TransferIntegrationService {
   private static storeParsedTransfers(transfers: Transfer[]): void {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(transfers));
+      console.log(`Stored ${transfers.length} parsed transfers to localStorage`);
     } catch (error) {
       console.error('Error storing parsed transfers:', error);
     }
@@ -106,11 +128,18 @@ export class TransferIntegrationService {
 
   static mergeParsedWithMockTransfers(mockTransfers: Transfer[]): Transfer[] {
     const parsedTransfers = this.getParsedTransfers();
+    console.log(`Merging ${parsedTransfers.length} parsed transfers with ${mockTransfers.length} mock transfers`);
+    
     const combined = [...parsedTransfers, ...mockTransfers];
-    return this.deduplicateTransfers(combined);
+    const merged = this.deduplicateTransfers(combined);
+    
+    console.log(`Final merged transfers: ${merged.length} total`);
+    return merged;
   }
 
   static clearParsedTransfers(): void {
     localStorage.removeItem(this.STORAGE_KEY);
+    console.log('Cleared parsed transfers from storage');
   }
 }
+
