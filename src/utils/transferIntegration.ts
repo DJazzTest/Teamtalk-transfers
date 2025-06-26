@@ -1,4 +1,3 @@
-
 import { Transfer } from '@/types/transfer';
 import { TransferParser, ParsedTransferData } from './transferParser';
 
@@ -13,24 +12,28 @@ export class TransferIntegrationService {
   private static STORAGE_KEY = 'parsed_transfers';
 
   static async processCrawlResults(crawlResults: CrawlResult[]): Promise<Transfer[]> {
-    console.log('Processing crawl results:', crawlResults.length, 'results');
+    console.log('=== PROCESSING CRAWL RESULTS ===');
+    console.log('Number of crawl results:', crawlResults.length);
+    
     const allTransfers: Transfer[] = [];
 
     for (const result of crawlResults) {
       if (result.success && result.data) {
         try {
-          console.log(`Processing result from ${result.url}`);
+          console.log(`\n--- Processing result from ${result.url} ---`);
           const transfers = this.extractTransfersFromCrawlData(result.data, result.url);
           allTransfers.push(...transfers);
-          console.log(`Extracted ${transfers.length} transfers from ${result.url}`);
+          console.log(`✓ Extracted ${transfers.length} transfers from ${result.url}`);
           
           // Log transfer details for debugging
           transfers.forEach(transfer => {
-            console.log(`Found transfer: ${transfer.playerName} -> ${transfer.toClub} (${transfer.status})`);
+            console.log(`  - ${transfer.playerName}: ${transfer.fromClub} -> ${transfer.toClub} (${transfer.status})`);
           });
         } catch (error) {
-          console.error(`Error processing transfers from ${result.url}:`, error);
+          console.error(`❌ Error processing transfers from ${result.url}:`, error);
         }
+      } else if (!result.success) {
+        console.log(`❌ Crawl failed for ${result.url}: ${result.error}`);
       }
     }
 
@@ -38,9 +41,10 @@ export class TransferIntegrationService {
     const deduplicated = this.deduplicateTransfers(allTransfers);
     this.storeParsedTransfers(deduplicated);
     
+    console.log(`\n=== CRAWL PROCESSING COMPLETE ===`);
     console.log(`Total parsed transfers after deduplication: ${deduplicated.length}`);
     deduplicated.forEach(transfer => {
-      console.log(`Final transfer: ${transfer.playerName} from ${transfer.fromClub} to ${transfer.toClub}`);
+      console.log(`Final: ${transfer.playerName} (${transfer.fromClub} -> ${transfer.toClub})`);
     });
     
     return deduplicated;
@@ -49,7 +53,7 @@ export class TransferIntegrationService {
   private static extractTransfersFromCrawlData(crawlData: any, sourceUrl: string): Transfer[] {
     let content = '';
 
-    console.log('Extracting content from crawl data for:', sourceUrl);
+    console.log(`\n--- Extracting content from crawl data for: ${sourceUrl} ---`);
     console.log('Crawl data type:', typeof crawlData);
     console.log('Crawl data keys:', Object.keys(crawlData || {}));
 
@@ -59,22 +63,33 @@ export class TransferIntegrationService {
       content = crawlData
         .map(page => page.markdown || page.content || '')
         .join('\n\n');
+      console.log(`Processed ${crawlData.length} pages from array`);
     } else if (crawlData.markdown) {
       // Single page with markdown
       content = crawlData.markdown;
+      console.log('Using markdown content');
     } else if (crawlData.content) {
       // Single page with content
       content = crawlData.content;
+      console.log('Using content field');
     } else if (typeof crawlData === 'string') {
       // Direct content string
       content = crawlData;
+      console.log('Using direct string content');
     }
 
     console.log(`Content length for ${sourceUrl}: ${content.length} characters`);
-    console.log(`Content preview: ${content.substring(0, 200)}...`);
+    console.log(`Content preview (first 300 chars): "${content.substring(0, 300).replace(/\n/g, ' ')}..."`);
+    
+    // Log specific player name searches
+    const playersToCheck = ['Jaka Bijol', 'Lukas Nmecha', 'Giorgi Mamardashvili', 'Jeremie Frimpong', 'Rayan Ait-Nouri'];
+    playersToCheck.forEach(player => {
+      const found = content.toLowerCase().includes(player.toLowerCase());
+      console.log(`Player "${player}" found in content: ${found}`);
+    });
 
     if (!content) {
-      console.warn(`No content found for ${sourceUrl}`);
+      console.warn(`❌ No content found for ${sourceUrl}`);
       return [];
     }
 
@@ -142,4 +157,3 @@ export class TransferIntegrationService {
     console.log('Cleared parsed transfers from storage');
   }
 }
-
