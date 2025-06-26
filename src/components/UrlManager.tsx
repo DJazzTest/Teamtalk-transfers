@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Trash2, Plus, Globe, CheckCircle, AlertCircle } from 'lucide-react';
+import { Trash2, Plus, Globe, CheckCircle, AlertCircle, TestTube } from 'lucide-react';
+import { FirecrawlService } from '@/utils/FirecrawlService';
 
 interface CrawlStatus {
   url: string;
@@ -11,10 +13,17 @@ interface CrawlStatus {
   error?: string;
 }
 
+interface UrlTestStatus {
+  url: string;
+  status: 'testing' | 'success' | 'error';
+  error?: string;
+}
+
 export const UrlManager = () => {
   const [urls, setUrls] = useState<string[]>([]);
   const [newUrl, setNewUrl] = useState('');
   const [crawlStatuses, setCrawlStatuses] = useState<CrawlStatus[]>([]);
+  const [testStatuses, setTestStatuses] = useState<UrlTestStatus[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -66,37 +75,126 @@ export const UrlManager = () => {
     };
   }, []);
 
+  const isValidUrl = (url: string): boolean => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const addUrl = () => {
-    if (newUrl.trim() && !urls.includes(newUrl.trim())) {
-      const updatedUrls = [...urls, newUrl.trim()];
-      setUrls(updatedUrls);
-      localStorage.setItem('transfer_urls', JSON.stringify(updatedUrls));
-      setNewUrl('');
+    if (!newUrl.trim()) {
       toast({
-        title: "URL Added",
-        description: "New source URL has been added successfully.",
+        title: "Invalid URL",
+        description: "Please enter a valid URL.",
+        variant: "destructive",
       });
-    } else if (urls.includes(newUrl.trim())) {
+      return;
+    }
+
+    if (!isValidUrl(newUrl.trim())) {
+      toast({
+        title: "Invalid URL Format",
+        description: "Please enter a valid URL (e.g., https://example.com).",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (urls.includes(newUrl.trim())) {
       toast({
         title: "Duplicate URL",
         description: "This URL is already in your sources list.",
         variant: "destructive",
       });
+      return;
     }
+
+    const updatedUrls = [...urls, newUrl.trim()];
+    setUrls(updatedUrls);
+    localStorage.setItem('transfer_urls', JSON.stringify(updatedUrls));
+    setNewUrl('');
+    toast({
+      title: "URL Added",
+      description: "New source URL has been added successfully.",
+    });
   };
 
   const removeUrl = (urlToRemove: string) => {
     const updatedUrls = urls.filter(url => url !== urlToRemove);
     setUrls(updatedUrls);
     localStorage.setItem('transfer_urls', JSON.stringify(updatedUrls));
+    // Remove test status for this URL
+    setTestStatuses(prev => prev.filter(status => status.url !== urlToRemove));
     toast({
       title: "URL Removed",
       description: "Source URL has been removed successfully.",
     });
   };
 
+  const testUrl = async (url: string) => {
+    const apiKey = FirecrawlService.getApiKey();
+    if (!apiKey) {
+      toast({
+        title: "API Key Required",
+        description: "Please set your Firecrawl API key in the API Config tab first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Set testing status
+    setTestStatuses(prev => [
+      ...prev.filter(status => status.url !== url),
+      { url, status: 'testing' }
+    ]);
+
+    try {
+      console.log('Testing URL:', url);
+      const result = await FirecrawlService.testUrlScraping(url);
+      
+      if (result.success) {
+        setTestStatuses(prev => [
+          ...prev.filter(status => status.url !== url),
+          { url, status: 'success' }
+        ]);
+        toast({
+          title: "URL Test Successful",
+          description: "This URL can be scraped successfully.",
+        });
+      } else {
+        setTestStatuses(prev => [
+          ...prev.filter(status => status.url !== url),
+          { url, status: 'error', error: result.error }
+        ]);
+        toast({
+          title: "URL Test Failed",
+          description: result.error || "This URL cannot be scraped.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error testing URL:', error);
+      setTestStatuses(prev => [
+        ...prev.filter(status => status.url !== url),
+        { url, status: 'error', error: 'Network error or API failure' }
+      ]);
+      toast({
+        title: "Test Error",
+        description: "Failed to test URL. Please check your connection.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getUrlStatus = (url: string) => {
     return crawlStatuses.find(status => status.url === url);
+  };
+
+  const getTestStatus = (url: string) => {
+    return testStatuses.find(status => status.url === url);
   };
 
   const getStatusIcon = (status?: CrawlStatus) => {
@@ -109,6 +207,21 @@ export const UrlManager = () => {
         return <div className="w-3 h-3 bg-red-500 rounded-full flex-shrink-0" title={`Error: ${status.error}`} />;
       case 'pending':
         return <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse flex-shrink-0" title="Crawling in progress" />;
+      default:
+        return null;
+    }
+  };
+
+  const getTestIcon = (testStatus?: UrlTestStatus) => {
+    if (!testStatus) return null;
+    
+    switch (testStatus.status) {
+      case 'testing':
+        return <TestTube className="w-4 h-4 text-yellow-500 animate-pulse flex-shrink-0" title="Testing URL..." />;
+      case 'success':
+        return <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" title="URL test successful" />;
+      case 'error':
+        return <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" title={`Test failed: ${testStatus.error}`} />;
       default:
         return null;
     }
@@ -148,6 +261,7 @@ export const UrlManager = () => {
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {urls.map((url, index) => {
                   const status = getUrlStatus(url);
+                  const testStatus = getTestStatus(url);
                   return (
                     <div
                       key={index}
@@ -155,23 +269,40 @@ export const UrlManager = () => {
                     >
                       <div className="flex items-center gap-3 flex-1 mr-2">
                         {getStatusIcon(status)}
+                        {getTestIcon(testStatus)}
                         <div className="flex-1">
                           <span className="text-white text-sm truncate block">{url}</span>
                           {status?.error && (
                             <span className="text-red-400 text-xs truncate block" title={status.error}>
-                              {status.error}
+                              Crawl Error: {status.error}
+                            </span>
+                          )}
+                          {testStatus?.error && (
+                            <span className="text-orange-400 text-xs truncate block" title={testStatus.error}>
+                              Test Error: {testStatus.error}
                             </span>
                           )}
                         </div>
                       </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeUrl(url)}
-                        className="border-red-400 text-red-400 hover:bg-red-400 hover:text-white flex-shrink-0"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                      <div className="flex gap-2 flex-shrink-0">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => testUrl(url)}
+                          disabled={testStatus?.status === 'testing'}
+                          className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white"
+                        >
+                          <TestTube className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeUrl(url)}
+                          className="border-red-400 text-red-400 hover:bg-red-400 hover:text-white"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                   );
                 })}

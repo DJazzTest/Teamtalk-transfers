@@ -1,4 +1,3 @@
-
 import FirecrawlApp from '@mendable/firecrawl-js';
 
 interface ErrorResponse {
@@ -43,6 +42,84 @@ export class FirecrawlService {
     } catch (error) {
       console.error('Error testing Firecrawl API key:', error);
       return false;
+    }
+  }
+
+  static async testUrlScraping(url: string): Promise<{ success: boolean; error?: string; data?: any }> {
+    const apiKey = this.getApiKey();
+    if (!apiKey) {
+      return { success: false, error: 'Firecrawl API key not found' };
+    }
+
+    try {
+      console.log('Testing URL scraping:', url);
+      if (!this.firecrawlApp) {
+        this.firecrawlApp = new FirecrawlApp({ apiKey });
+      }
+
+      // Test with a single page scrape first
+      const response = await this.firecrawlApp.scrapeUrl(url, {
+        formats: ['markdown'],
+        onlyMainContent: true
+      });
+
+      if (response.success) {
+        console.log('URL test successful:', url);
+        return { 
+          success: true,
+          data: response.data 
+        };
+      } else {
+        console.error('URL test failed:', response);
+        let errorMessage = 'Unknown error';
+        
+        if (response.error) {
+          const error = response.error.toLowerCase();
+          if (error.includes('timeout') || error.includes('timed out')) {
+            errorMessage = 'URL timeout - site may be slow or blocking requests';
+          } else if (error.includes('403') || error.includes('forbidden')) {
+            errorMessage = 'Access forbidden - site blocks scraping';
+          } else if (error.includes('404') || error.includes('not found')) {
+            errorMessage = 'URL not found - check if the URL is correct';
+          } else if (error.includes('500') || error.includes('server error')) {
+            errorMessage = 'Server error - try again later';
+          } else if (error.includes('cloudflare') || error.includes('captcha')) {
+            errorMessage = 'Site protected by anti-bot measures';
+          } else if (error.includes('ssl') || error.includes('certificate')) {
+            errorMessage = 'SSL certificate issue';
+          } else if (error.includes('dns') || error.includes('resolve')) {
+            errorMessage = 'Cannot resolve domain - check URL';
+          } else {
+            errorMessage = response.error;
+          }
+        }
+        
+        return { 
+          success: false, 
+          error: errorMessage
+        };
+      }
+    } catch (error) {
+      console.error('Error testing URL scraping:', error);
+      let errorMessage = 'Unknown error occurred';
+      
+      if (error instanceof Error) {
+        const errorStr = error.message.toLowerCase();
+        if (errorStr.includes('network') || errorStr.includes('fetch')) {
+          errorMessage = 'Network error - check internet connection';
+        } else if (errorStr.includes('cors')) {
+          errorMessage = 'CORS policy blocks this request';
+        } else if (errorStr.includes('invalid url')) {
+          errorMessage = 'Invalid URL format';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      return { 
+        success: false, 
+        error: errorMessage
+      };
     }
   }
 
