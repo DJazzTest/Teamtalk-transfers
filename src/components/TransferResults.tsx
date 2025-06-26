@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,14 +13,19 @@ import { TransferCard } from './TransferCard';
 import { LanesView } from './LanesView';
 import { ClubsView } from './ClubsView';
 import { CrawlStatusDisplay } from './CrawlStatusDisplay';
+import { TransferIntegrationService } from '@/utils/transferIntegration';
 
 interface TransferResultsProps {
   lastUpdated: Date;
 }
 
 export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated }) => {
-  const [transfers] = useState<Transfer[]>(mockTransfers);
-  const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>(mockTransfers);
+  const [mockTransfers] = useState<Transfer[]>(mockTransfers);
+  const [allTransfers, setAllTransfers] = useState<Transfer[]>(() => {
+    // Initialize with merged transfers (mock + parsed)
+    return TransferIntegrationService.mergeParsedWithMockTransfers(mockTransfers);
+  });
+  const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>(allTransfers);
   const [selectedClub, setSelectedClub] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'list' | 'clubs' | 'lanes'>('lanes');
@@ -31,7 +35,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   const { toast } = useToast();
 
   useEffect(() => {
-    let filtered = transfers;
+    let filtered = allTransfers;
 
     if (selectedClub !== 'all') {
       filtered = filtered.filter(transfer => transfer.toClub === selectedClub);
@@ -46,7 +50,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
     }
 
     setFilteredTransfers(filtered);
-  }, [transfers, selectedClub, searchTerm]);
+  }, [allTransfers, selectedClub, searchTerm]);
 
   // Dispatch crawl status updates to other components
   useEffect(() => {
@@ -115,12 +119,19 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         }));
         setCrawlStatuses(updatedStatuses);
         
+        // Process crawled data to extract transfers
+        const parsedTransfers = await TransferIntegrationService.processCrawlResults(result.data);
+        
+        // Merge with mock transfers and update state
+        const mergedTransfers = TransferIntegrationService.mergeParsedWithMockTransfers(mockTransfers);
+        setAllTransfers(mergedTransfers);
+        
         const successCount = updatedStatuses.filter(s => s.status === 'success').length;
         const errorCount = updatedStatuses.filter(s => s.status === 'error').length;
         
         toast({
           title: "Scraping Complete",
-          description: `${successCount} successful, ${errorCount} failed. Sequential processing completed.`,
+          description: `${successCount} successful, ${errorCount} failed. Found ${parsedTransfers.length} new transfers.`,
         });
       } else {
         console.error('Failed to scrape URLs:', result.error);

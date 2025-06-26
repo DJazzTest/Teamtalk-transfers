@@ -1,4 +1,3 @@
-
 import FirecrawlApp from '@mendable/firecrawl-js';
 
 interface ErrorResponse {
@@ -161,28 +160,25 @@ export class FirecrawlService {
         console.log(`Processing URL ${i + 1}/${urls.length}: ${url}`);
         
         try {
-          const response = await this.firecrawlApp.crawlUrl(url, {
-            limit: 10,
-            scrapeOptions: {
-              formats: ['markdown', 'html'],
-              onlyMainContent: true
-            }
-          }) as CrawlResponse;
+          const response = await this.firecrawlApp.scrapeUrl(url, {
+            formats: ['markdown'],
+            onlyMainContent: true
+          });
           
           if (response.success) {
             results.push({
               url,
               success: true,
-              data: response.data
+              data: response.data || response
             });
             console.log(`✓ Successfully crawled: ${url}`);
           } else {
             results.push({
               url,
               success: false,
-              error: (response as ErrorResponse).error
+              error: response.error || 'Unknown error'
             });
-            console.log(`✗ Failed to crawl: ${url} - ${(response as ErrorResponse).error}`);
+            console.log(`✗ Failed to crawl: ${url} - ${response.error}`);
           }
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Unknown error';
