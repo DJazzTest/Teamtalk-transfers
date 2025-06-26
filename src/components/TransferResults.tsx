@@ -209,6 +209,12 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
     setFilteredTransfers(filtered);
   }, [transfers, selectedClub, searchTerm]);
 
+  // Dispatch crawl status updates to other components
+  useEffect(() => {
+    const event = new CustomEvent('crawlStatusUpdate', { detail: crawlStatuses });
+    window.dispatchEvent(event);
+  }, [crawlStatuses]);
+
   const handleScrapeUrls = async () => {
     const apiKey = FirecrawlService.getApiKey();
     if (!apiKey) {

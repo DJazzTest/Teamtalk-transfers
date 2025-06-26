@@ -3,11 +3,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Trash2, Plus, Globe } from 'lucide-react';
+import { Trash2, Plus, Globe, CheckCircle, AlertCircle } from 'lucide-react';
+
+interface CrawlStatus {
+  url: string;
+  status: 'success' | 'error' | 'pending';
+  error?: string;
+}
 
 export const UrlManager = () => {
   const [urls, setUrls] = useState<string[]>([]);
   const [newUrl, setNewUrl] = useState('');
+  const [crawlStatuses, setCrawlStatuses] = useState<CrawlStatus[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -46,6 +53,17 @@ export const UrlManager = () => {
       setUrls(defaultUrls);
       localStorage.setItem('transfer_urls', JSON.stringify(defaultUrls));
     }
+
+    // Listen for crawl status updates from other components
+    const handleCrawlStatusUpdate = (event: CustomEvent) => {
+      setCrawlStatuses(event.detail);
+    };
+
+    window.addEventListener('crawlStatusUpdate', handleCrawlStatusUpdate as EventListener);
+    
+    return () => {
+      window.removeEventListener('crawlStatusUpdate', handleCrawlStatusUpdate as EventListener);
+    };
   }, []);
 
   const addUrl = () => {
@@ -75,6 +93,25 @@ export const UrlManager = () => {
       title: "URL Removed",
       description: "Source URL has been removed successfully.",
     });
+  };
+
+  const getUrlStatus = (url: string) => {
+    return crawlStatuses.find(status => status.url === url);
+  };
+
+  const getStatusIcon = (status?: CrawlStatus) => {
+    if (!status) return null;
+    
+    switch (status.status) {
+      case 'success':
+        return <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0" title="Successfully crawled" />;
+      case 'error':
+        return <div className="w-3 h-3 bg-red-500 rounded-full flex-shrink-0" title={`Error: ${status.error}`} />;
+      case 'pending':
+        return <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse flex-shrink-0" title="Crawling in progress" />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -109,25 +146,57 @@ export const UrlManager = () => {
               <p className="text-white/60 text-sm">No URLs added yet</p>
             ) : (
               <div className="space-y-2 max-h-64 overflow-y-auto">
-                {urls.map((url, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between bg-white/10 rounded-lg p-3"
-                  >
-                    <span className="text-white text-sm truncate flex-1 mr-2">{url}</span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => removeUrl(url)}
-                      className="border-red-400 text-red-400 hover:bg-red-400 hover:text-white"
+                {urls.map((url, index) => {
+                  const status = getUrlStatus(url);
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between bg-white/10 rounded-lg p-3"
                     >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                ))}
+                      <div className="flex items-center gap-3 flex-1 mr-2">
+                        {getStatusIcon(status)}
+                        <div className="flex-1">
+                          <span className="text-white text-sm truncate block">{url}</span>
+                          {status?.error && (
+                            <span className="text-red-400 text-xs truncate block" title={status.error}>
+                              {status.error}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeUrl(url)}
+                        className="border-red-400 text-red-400 hover:bg-red-400 hover:text-white flex-shrink-0"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
+
+          {crawlStatuses.length > 0 && (
+            <div className="border-t border-white/20 pt-4">
+              <div className="flex items-center gap-4 text-sm text-blue-200">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span>Success: {crawlStatuses.filter(s => s.status === 'success').length}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <span>Failed: {crawlStatuses.filter(s => s.status === 'error').length}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <span>Pending: {crawlStatuses.filter(s => s.status === 'pending').length}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Card>
