@@ -419,7 +419,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       case 'confirmed': return 'Confirmed Transfers';
       case 'rumored': return 'Transfer Gossip';
       case 'pending': return 'Pending Deals';
-      case 'rejected': return 'Rejected Deals';
+      case 'rejected': return 'Failed Transfers';
       default: return status;
     }
   };
@@ -583,7 +583,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
               <p className="text-white font-semibold">
                 {filteredTransfers.filter(t => t.status === 'rejected').length}
               </p>
-              <p className="text-gray-300 text-sm">Rejected</p>
+              <p className="text-gray-300 text-sm">Failed</p>
             </div>
           </div>
         </Card>
