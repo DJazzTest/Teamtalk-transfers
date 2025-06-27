@@ -1,0 +1,113 @@
+
+import { Transfer } from '@/types/transfer';
+import { arsenalTransfers } from './arsenal';
+import { astonVillaTransfers } from './astonVilla';
+import { bournemouthTransfers } from './bournemouth';
+import { brentfordTransfers } from './brentford';
+import { brightonTransfers } from './brighton';
+import { latestRumors } from './rumors';
+
+// Import additional club transfers
+const burnleyTransfers: Transfer[] = [
+  {
+    id: 'burnley-humphreys-2025',
+    playerName: 'Bashir Humphreys',
+    fromClub: 'Chelsea',
+    toClub: 'Burnley',
+    fee: '£5M',
+    date: '2025-01-15T16:00:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-anthony-2025',
+    playerName: 'Jaidon Anthony',
+    fromClub: 'Bournemouth',
+    toClub: 'Burnley',
+    fee: '£6M',
+    date: '2025-01-12T15:45:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-edwards-2025',
+    playerName: 'Marcus Edwards',
+    fromClub: 'Sporting CP',
+    toClub: 'Burnley',
+    fee: '£12M',
+    date: '2025-01-10T13:30:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-flemming-2025',
+    playerName: 'Zian Flemming',
+    fromClub: 'Millwall',
+    toClub: 'Burnley',
+    fee: '£3M',
+    date: '2025-01-08T11:15:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-weiss-2025',
+    playerName: 'Max Weiss',
+    fromClub: 'Karlsruher SC',
+    toClub: 'Burnley',
+    fee: '£1.5M',
+    date: '2025-01-06T14:45:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-redmond-2025',
+    playerName: 'Nathan Redmond',
+    fromClub: 'Burnley',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-05T10:00:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-shelvey-2025',
+    playerName: 'Jonjo Shelvey',
+    fromClub: 'Burnley',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-05T10:00:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-sarmiento-2025',
+    playerName: 'Jeremy Sarmiento',
+    fromClub: 'Burnley',
+    toClub: 'Brighton & Hove Albion',
+    fee: 'End of loan',
+    date: '2025-01-05T10:00:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-egan-riley-2025',
+    playerName: 'CJ Egan-Riley',
+    fromClub: 'Burnley',
+    toClub: 'Marseille',
+    fee: 'Released',
+    date: '2025-01-05T10:00:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  }
+];
+
+// Combine all transfers
+export const allClubTransfers: Transfer[] = [
+  ...latestRumors,
+  ...arsenalTransfers,
+  ...astonVillaTransfers,
+  ...bournemouthTransfers,
+  ...brentfordTransfers,
+  ...brightonTransfers,
+  ...burnleyTransfers
+];
