@@ -89,28 +89,44 @@ export const ScrapeDebugger: React.FC = () => {
 
   const isSourceTrusted = (url: string): boolean => {
     const trustedSources = [
+      // Official clubs
       'arsenal.com', 'avfc.co.uk', 'afcb.co.uk', 'brentfordfc.com', 'brightonandhovealbion.com',
       'burnleyfc.com', 'chelseafc.com', 'cpfc.co.uk', 'evertonfc.com', 'fulhamfc.com',
       'leedsunited.com', 'liverpoolfc.com', 'mancity.com', 'manutd.com', 'nufc.co.uk',
-      'premierleague.com', 'bbc.com/sport', 'skysports.com', 'theguardian.com/football'
+      'premierleague.com', 'bbc.com/sport', 'skysports.com', 'theguardian.com/football',
+      // Extended trusted sources
+      'manchestereveningnews.co.uk', 'football.london', 'liverpoolecho.co.uk',
+      'birminghammail.co.uk', 'chroniclelive.co.uk', 'yorkshireeveningpost.co.uk',
+      'express.co.uk/sport', 'mirror.co.uk/sport', 'dailymail.co.uk/sport',
+      'goal.com', 'espn.com', 'talksport.com', 'givemesport.com'
     ];
     return trustedSources.some(trusted => url.toLowerCase().includes(trusted));
   };
 
   const checkForTransferKeywords = (content: string): string[] => {
-    const keywords = ['has signed', 'officially joins', 'completed transfer', 'signs for', 'welcome to'];
+    const keywords = [
+      'has signed', 'officially joins', 'completed transfer', 'signs for', 'welcome to',
+      'transfer news', 'transfer wait', 'make major announcement', 'signing'
+    ];
     const found = keywords.filter(keyword => content.toLowerCase().includes(keyword));
     return found;
   };
 
   const checkForClubNames = (content: string): string[] => {
-    const clubs = ['Arsenal', 'Aston Villa', 'Bournemouth', 'Chelsea', 'Liverpool', 'Manchester City'];
+    const clubs = [
+      'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Chelsea', 'Liverpool', 
+      'Manchester City', 'Manchester United', 'Man United', 'Man City', 'Newcastle',
+      'Tottenham', 'West Ham', 'Brighton', 'Everton', 'Crystal Palace'
+    ];
     const found = clubs.filter(club => content.toLowerCase().includes(club.toLowerCase()));
     return found;
   };
 
   const checkForPlayerNames = (content: string): string[] => {
-    const players = ['Jaka Bijol', 'Lukas Nmecha', 'Giorgi Mamardashvili', 'Jeremie Frimpong'];
+    const players = [
+      'Jaka Bijol', 'Lukas Nmecha', 'Giorgi Mamardashvili', 'Jeremie Frimpong',
+      'Bryan Mbeumo', 'Caoimhin Kelleher', 'Michael Kayode', 'Romelle Donovan'
+    ];
     const found = players.filter(player => content.toLowerCase().includes(player.toLowerCase()));
     return found;
   };

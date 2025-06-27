@@ -12,7 +12,8 @@ export const CONFIRMED_TRANSFER_KEYWORDS = [
   'has signed', 'officially joins', 'completed transfer', 'completes move', 
   'signs for', 'announces signing of', 'confirmed signing', 'welcome to',
   'pleased to announce', 'delighted to confirm', 'agreement reached',
-  'medical completed', 'contract signed', 'registration confirmed'
+  'medical completed', 'contract signed', 'registration confirmed',
+  'transfer news', 'transfer wait', 'make major announcement', 'signing'
 ];
 
 // EXCLUDED KEYWORDS - Phrases that indicate rumors or speculation
@@ -23,7 +24,7 @@ export const EXCLUDED_KEYWORDS = [
   'set to', 'expected to', 'likely to', 'planning', 'preparing bid'
 ];
 
-// TRUSTED SOURCES - Only official and verified sources
+// TRUSTED SOURCES - Extended list including major football news outlets
 export const TRUSTED_SOURCES = [
   // Official Premier League clubs
   'arsenal.com', 'avfc.co.uk', 'afcb.co.uk', 'brentfordfc.com', 'brightonandhovealbion.com',
@@ -35,7 +36,14 @@ export const TRUSTED_SOURCES = [
   'premierleague.com', 'transfermarkt.com', 'transfermarkt.co.uk',
   
   // Tier 1 trusted football news
-  'bbc.com/sport', 'skysports.com', 'theguardian.com/football'
+  'bbc.com/sport', 'skysports.com', 'theguardian.com/football',
+  
+  // Major football news outlets
+  'manchestereveningnews.co.uk', 'football.london', 'liverpoolecho.co.uk',
+  'birminghammail.co.uk', 'chroniclelive.co.uk', 'yorkshireeveningpost.co.uk',
+  'express.co.uk/sport', 'mirror.co.uk/sport', 'dailymail.co.uk/sport',
+  'goal.com', 'espn.com', 'talksport.com', 'givemesport.com',
+  'teamtalk.com', 'footballinsider247.com', '90min.com'
 ];
 
 export const KNOWN_PLAYERS = [
@@ -52,7 +60,7 @@ export const KNOWN_PLAYERS = [
   
   // Brentford
   'Ben Mee', 'Michael Kayode', 'Ben Winterbottom', 'Romelle Donovan',
-  'Caoimhin Kelleher', 'Mark Flekken',
+  'Caoimhin Kelleher', 'Mark Flekken', 'Bryan Mbeumo',
   
   // Brighton
   'Tommy Watson', 'Yun Do-young', 'Charalampos Kostoulas', 'Diego Coppola',
@@ -125,14 +133,15 @@ export const FEE_PATTERNS = [
   /permanent/gi
 ];
 
-// Common club name variations
+// Common club name variations and abbreviations
 export const CLUB_VARIATIONS: { [key: string]: string[] } = {
   'Leeds United': ['Leeds', 'LUFC'],
   'Manchester City': ['Man City', 'City'],
-  'Manchester United': ['Man United', 'United', 'MUFC'],
+  'Manchester United': ['Man United', 'United', 'MUFC', 'Man Utd'],
   'Liverpool': ['LFC'],
   'Brighton & Hove Albion': ['Brighton'],
   'Tottenham Hotspur': ['Tottenham', 'Spurs'],
   'West Ham United': ['West Ham'],
-  'Wolverhampton Wanderers': ['Wolves']
+  'Wolverhampton Wanderers': ['Wolves'],
+  'Brentford': ['Brentford FC', 'The Bees']
 };
