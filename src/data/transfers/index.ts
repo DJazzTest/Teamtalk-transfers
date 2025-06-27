@@ -1,3 +1,4 @@
+
 import { Transfer } from '@/types/transfer';
 import { arsenalTransfers } from './arsenal';
 import { astonVillaTransfers } from './astonVilla';
@@ -6,8 +7,21 @@ import { brentfordTransfers } from './brentford';
 import { brightonTransfers } from './brighton';
 import { leedsTransfers } from './leeds';
 import { latestRumors } from './rumors';
+import { chelseaTransfers } from './chelsea';
+import { crystalPalaceTransfers } from './crystalPalace';
+import { evertonTransfers } from './everton';
+import { fulhamTransfers } from './fulham';
+import { liverpoolTransfers } from './liverpool';
+import { manchesterCityTransfers } from './manchesterCity';
+import { manchesterUnitedTransfers } from './manchesterUnited';
+import { newcastleTransfers } from './newcastle';
+import { nottinghamForestTransfers } from './nottinghamForest';
+import { sunderlandTransfers } from './sunderland';
+import { tottenhamTransfers } from './tottenham';
+import { westHamTransfers } from './westHam';
+import { wolvesTransfers } from './wolves';
 
-// Import additional club transfers
+// Additional club transfers
 const burnleyTransfers: Transfer[] = [
   {
     id: 'burnley-humphreys-2025',
@@ -101,7 +115,7 @@ const burnleyTransfers: Transfer[] = [
   }
 ];
 
-// Combine all transfers - REMOVED BOT/MOCK DATA, ONLY REAL TRANSFERS
+// Combine all transfers - ONLY REAL TRANSFERS
 export const allClubTransfers: Transfer[] = [
   ...latestRumors,
   ...arsenalTransfers,
@@ -109,6 +123,19 @@ export const allClubTransfers: Transfer[] = [
   ...bournemouthTransfers,
   ...brentfordTransfers,
   ...brightonTransfers,
+  ...chelseaTransfers,
+  ...crystalPalaceTransfers,
+  ...evertonTransfers,
+  ...fulhamTransfers,
   ...leedsTransfers,
+  ...liverpoolTransfers,
+  ...manchesterCityTransfers,
+  ...manchesterUnitedTransfers,
+  ...newcastleTransfers,
+  ...nottinghamForestTransfers,
+  ...sunderlandTransfers,
+  ...tottenhamTransfers,
+  ...westHamTransfers,
+  ...wolvesTransfers,
   ...burnleyTransfers
 ];
