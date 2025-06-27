@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
-import { mockTransfers as mockTransferData } from '@/data/mockTransfers';
+import { allClubTransfers } from '@/data/transfers';
 
 export const useRefreshControl = () => {
   const [refreshRate, setRefreshRate] = useState(300000); // 5 minutes default
@@ -26,7 +25,7 @@ export const useRefreshControl = () => {
       interval = setInterval(() => {
         setLastUpdated(new Date());
         setRefreshCounter(prev => prev + 1);
-        console.log('Auto-refreshing transfer data...');
+        console.log('Auto-refreshing with real transfer data only...');
         
         // Dispatch a custom event to notify other components
         window.dispatchEvent(new CustomEvent('autoRefresh'));
@@ -119,12 +118,12 @@ export const useRefreshControl = () => {
   };
 
   const handleManualRefresh = () => {
-    console.log('Manual refresh triggered');
+    console.log('Manual refresh triggered - using real transfer data');
     setLastUpdated(new Date());
     setRefreshCounter(prev => prev + 1);
     // Dispatch a custom event to notify other components
     window.dispatchEvent(new CustomEvent('manualRefresh'));
-    console.log('Manual refresh completed, event dispatched');
+    console.log('Manual refresh completed with real data, event dispatched');
   };
 
   const handleManualScrape = async () => {

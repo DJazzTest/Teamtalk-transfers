@@ -7,7 +7,8 @@ import { Search, Users, Globe, CheckCircle, Clock, MessageCircle, X } from 'luci
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
 import { Transfer, CrawlStatus } from '@/types/transfer';
-import { mockTransfers as mockTransferData, premierLeagueClubs } from '@/data/mockTransfers';
+import { allClubTransfers } from '@/data/transfers';
+import { premierLeagueClubs } from '@/data/mockTransfers';
 import { groupTransfersByClub, groupTransfersByStatus } from '@/utils/transferUtils';
 import { TransferCard } from './TransferCard';
 import { LanesView } from './LanesView';
@@ -21,8 +22,9 @@ interface TransferResultsProps {
 
 export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated }) => {
   const [allTransfers, setAllTransfers] = useState<Transfer[]>(() => {
-    // Initialize with merged transfers (mock + parsed)
-    return TransferIntegrationService.mergeParsedWithMockTransfers(mockTransferData);
+    // Use only real transfers data, no mock data
+    console.log('Initializing with real transfer data only');
+    return allClubTransfers;
   });
   const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>(allTransfers);
   const [selectedClub, setSelectedClub] = useState<string>('all');
@@ -32,6 +34,22 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   const [crawlStatuses, setCrawlStatuses] = useState<CrawlStatus[]>([]);
   const [crawlProgress, setCrawlProgress] = useState<{ completed: number; total: number; currentUrl: string } | null>(null);
   const { toast } = useToast();
+
+  // Listen for refresh events to update data
+  useEffect(() => {
+    const handleRefresh = () => {
+      console.log('Refreshing transfer data with latest real transfers');
+      setAllTransfers([...allClubTransfers]);
+    };
+
+    window.addEventListener('autoRefresh', handleRefresh);
+    window.addEventListener('manualRefresh', handleRefresh);
+    
+    return () => {
+      window.removeEventListener('autoRefresh', handleRefresh);
+      window.removeEventListener('manualRefresh', handleRefresh);
+    };
+  }, []);
 
   useEffect(() => {
     let filtered = allTransfers;
@@ -122,7 +140,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         const parsedTransfers = await TransferIntegrationService.processCrawlResults(result.data);
         
         // Merge with mock transfers and update state
-        const mergedTransfers = TransferIntegrationService.mergeParsedWithMockTransfers(mockTransferData);
+        const mergedTransfers = TransferIntegrationService.mergeParsedWithMockTransfers(allClubTransfers);
         setAllTransfers(mergedTransfers);
         
         const successCount = updatedStatuses.filter(s => s.status === 'success').length;
