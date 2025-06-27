@@ -138,9 +138,9 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         // Process crawled data to extract transfers
         const parsedTransfers = await TransferIntegrationService.processCrawlResults(result.data);
         
-        // Merge with mock transfers and update state
-        const mergedTransfers = TransferIntegrationService.mergeParsedWithMockTransfers(allClubTransfers);
-        setAllTransfers(mergedTransfers);
+        // Get all transfers including parsed ones
+        const allLatestTransfers = TransferIntegrationService.getAllTransfers();
+        setAllTransfers(allLatestTransfers);
         
         const successCount = updatedStatuses.filter(s => s.status === 'success').length;
         const errorCount = updatedStatuses.filter(s => s.status === 'error').length;
