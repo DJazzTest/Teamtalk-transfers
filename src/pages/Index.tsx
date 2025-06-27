@@ -86,7 +86,7 @@ const Index = () => {
           lastUpdated={lastUpdated}
           countdownTarget={countdownTarget}
           setCountdownTarget={setCountdownTarget}
-          mockTransfers={allTransfers as any}
+          transfers={allTransfers}
           // Auto-scraping props
           autoScrapeInterval={autoScrapeInterval}
           setAutoScrapeInterval={setAutoScrapeInterval}

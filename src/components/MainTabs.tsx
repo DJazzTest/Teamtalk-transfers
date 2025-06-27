@@ -10,6 +10,7 @@ import { CrawlErrors } from './CrawlErrors';
 import { CountdownConfig } from './CountdownConfig';
 import { ScrapeDebugger } from './ScrapeDebugger';
 import { Shield, Users, Settings, Globe, RefreshCw, AlertTriangle, Clock, Search } from 'lucide-react';
+import { Transfer } from '@/types/transfer';
 
 interface MainTabsProps {
   refreshRate: number;
@@ -28,6 +29,7 @@ interface MainTabsProps {
   countdownTarget: string;
   setCountdownTarget: (target: string) => void;
   lastUpdated: Date;
+  transfers: Transfer[];
 }
 
 export const MainTabs: React.FC<MainTabsProps> = (props) => {
@@ -69,7 +71,7 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
       </TabsList>
 
       <TabsContent value="teams">
-        <TeamTransferView />
+        <TeamTransferView transfers={props.transfers} />
       </TabsContent>
 
       <TabsContent value="transfers">
