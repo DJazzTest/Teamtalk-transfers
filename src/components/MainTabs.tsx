@@ -1,36 +1,24 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card } from '@/components/ui/card';
-import { RefreshControl } from '@/components/RefreshControl';
-import { TransferResults } from '@/components/TransferResults';
-import { CompletedTransfers } from '@/components/CompletedTransfers';
-import { UrlManager } from '@/components/UrlManager';
-import { CountdownSettings } from '@/components/CountdownSettings';
-import { ApiKeyManager } from '@/components/ApiKeyManager';
-
-interface Transfer {
-  id: string;
-  playerName: string;
-  fromClub: string;
-  toClub: string;
-  fee: string;
-  date: string;
-  source: string;
-  status: 'confirmed' | 'rumored' | 'pending';
-}
+import { TransferResults } from './TransferResults';
+import { CompletedTransfers } from './CompletedTransfers';
+import { TeamTransferView } from './TeamTransferView';
+import { ApiConfig } from './ApiConfig';
+import { SourcesConfig } from './SourcesConfig';
+import { RefreshConfig } from './RefreshConfig';
+import { CrawlErrors } from './CrawlErrors';
+import { CountdownConfig } from './CountdownConfig';
 
 interface MainTabsProps {
   refreshRate: number;
   setRefreshRate: (rate: number) => void;
   isAutoRefresh: boolean;
-  setIsAutoRefresh: (auto: boolean) => void;
+  setIsAutoRefresh: (enabled: boolean) => void;
   onManualRefresh: () => void;
   lastUpdated: Date;
   countdownTarget: string;
   setCountdownTarget: (target: string) => void;
-  mockTransfers: Transfer[];
-  // Auto-scraping props
+  mockTransfers: any[];
   autoScrapeInterval: number;
   setAutoScrapeInterval: (interval: number) => void;
   isAutoScrapeEnabled: boolean;
@@ -51,7 +39,6 @@ export const MainTabs: React.FC<MainTabsProps> = ({
   countdownTarget,
   setCountdownTarget,
   mockTransfers,
-  // Auto-scraping props
   autoScrapeInterval,
   setAutoScrapeInterval,
   isAutoScrapeEnabled,
@@ -62,27 +49,50 @@ export const MainTabs: React.FC<MainTabsProps> = ({
   onClearScrapeErrors
 }) => {
   return (
-    <Tabs defaultValue="transfers" className="space-y-4 sm:space-y-6">
-      <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 bg-white/90 border border-gray-200/50 shadow-sm gap-0.5 sm:gap-0 h-auto p-1">
-        <TabsTrigger value="transfers" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3">
-          Live Transfers
+    <Tabs defaultValue="teams" className="w-full space-y-4">
+      <TabsList className="grid w-full grid-cols-6 lg:grid-cols-6 bg-slate-800/50 backdrop-blur-md border-slate-700">
+        <TabsTrigger value="teams" className="text-white data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+          Teams
         </TabsTrigger>
-        <TabsTrigger value="completed" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3">
+        <TabsTrigger value="transfers" className="text-white data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+          All Transfers
+        </TabsTrigger>
+        <TabsTrigger value="completed" className="text-white data-[state=active]:bg-slate-700 data-[state=active]:text-white">
           Completed
         </TabsTrigger>
-        <TabsTrigger value="sources" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3 col-span-2 sm:col-span-1">
+        <TabsTrigger value="api" className="text-white data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+          API Config
+        </TabsTrigger>
+        <TabsTrigger value="sources" className="text-white data-[state=active]:bg-slate-700 data-[state=active]:text-white">
           Sources
         </TabsTrigger>
-        <TabsTrigger value="settings" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3 lg:col-span-1 col-span-1">
-          Settings
-        </TabsTrigger>
-        <TabsTrigger value="api" className="text-xs sm:text-sm text-gray-600 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm px-2 py-2 sm:px-3 lg:col-span-1 col-span-1">
-          API Config
+        <TabsTrigger value="refresh" className="text-white data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+          Refresh
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="transfers" className="space-y-4 sm:space-y-6">
-        <RefreshControl
+      <TabsContent value="teams" className="space-y-4">
+        <TeamTransferView transfers={mockTransfers} />
+      </TabsContent>
+
+      <TabsContent value="transfers" className="space-y-4">
+        <TransferResults lastUpdated={lastUpdated} />
+      </TabsContent>
+
+      <TabsContent value="completed" className="space-y-4">
+        <CompletedTransfers transfers={mockTransfers} />
+      </TabsContent>
+
+      <TabsContent value="api" className="space-y-4">
+        <ApiConfig />
+      </TabsContent>
+
+      <TabsContent value="sources" className="space-y-4">
+        <SourcesConfig />
+      </TabsContent>
+
+      <TabsContent value="refresh" className="space-y-4">
+        <RefreshConfig
           refreshRate={refreshRate}
           setRefreshRate={setRefreshRate}
           isAutoRefresh={isAutoRefresh}
@@ -92,47 +102,19 @@ export const MainTabs: React.FC<MainTabsProps> = ({
           setAutoScrapeInterval={setAutoScrapeInterval}
           isAutoScrapeEnabled={isAutoScrapeEnabled}
           setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
-          scrapeErrors={scrapeErrors}
           lastScrapeTime={lastScrapeTime}
           onManualScrape={onManualScrape}
-          onClearScrapeErrors={onClearScrapeErrors}
         />
-        <TransferResults lastUpdated={lastUpdated} />
-      </TabsContent>
-
-      <TabsContent value="completed">
-        <CompletedTransfers transfers={mockTransfers} />
-      </TabsContent>
-
-      <TabsContent value="sources">
-        <UrlManager />
-      </TabsContent>
-
-      <TabsContent value="settings" className="space-y-4 sm:space-y-6">
-        <CountdownSettings 
-          targetDate={countdownTarget}
-          onDateChange={setCountdownTarget}
+        <CountdownConfig
+          countdownTarget={countdownTarget}
+          setCountdownTarget={setCountdownTarget}
         />
-        
-        <Card className="bg-white/95 backdrop-blur-md border-gray-200/50 shadow-lg">
-          <div className="p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">Transfer Settings</h3>
-            <div className="space-y-3 sm:space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
-                <p className="text-sm text-gray-600">June 1, 2025 - September 1, 2025</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Transfer Type</label>
-                <p className="text-sm text-gray-600">Players arriving at clubs only</p>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </TabsContent>
-
-      <TabsContent value="api">
-        <ApiKeyManager />
+        {scrapeErrors.length > 0 && (
+          <CrawlErrors
+            scrapeErrors={scrapeErrors}
+            onClearScrapeErrors={onClearScrapeErrors}
+          />
+        )}
       </TabsContent>
     </Tabs>
   );
