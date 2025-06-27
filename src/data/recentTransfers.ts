@@ -1,7 +1,68 @@
-
 import { Transfer } from '@/types/transfer';
 
 export const recentTransfers: Transfer[] = [
+  // Latest Rumours (added at the top for recent display)
+  {
+    id: 'rumor-osimhen-2025',
+    playerName: 'Victor Osimhen',
+    fromClub: 'Napoli',
+    toClub: 'Chelsea',
+    fee: '£85M',
+    date: '2025-01-17T09:00:00Z',
+    source: 'sky sports',
+    status: 'rumored'
+  },
+  {
+    id: 'rumor-kvaratskhelia-2025',
+    playerName: 'Khvicha Kvaratskhelia',
+    fromClub: 'Napoli',
+    toClub: 'Liverpool',
+    fee: '£70M',
+    date: '2025-01-17T08:30:00Z',
+    source: 'the guardian',
+    status: 'rumored'
+  },
+  {
+    id: 'rumor-darwin-2025',
+    playerName: 'Darwin Nunez',
+    fromClub: 'Liverpool',
+    toClub: 'AC Milan',
+    fee: '£60M',
+    date: '2025-01-17T07:45:00Z',
+    source: 'bbc sport',
+    status: 'rumored'
+  },
+  {
+    id: 'rumor-grealish-2025',
+    playerName: 'Jack Grealish',
+    fromClub: 'Manchester City',
+    toClub: 'Aston Villa',
+    fee: '£50M',
+    date: '2025-01-16T22:15:00Z',
+    source: 'sky sports',
+    status: 'rumored'
+  },
+  {
+    id: 'rumor-rashford-2025',
+    playerName: 'Marcus Rashford',
+    fromClub: 'Manchester United',
+    toClub: 'Paris Saint-Germain',
+    fee: '£75M',
+    date: '2025-01-16T21:30:00Z',
+    source: 'the guardian',
+    status: 'rumored'
+  },
+  {
+    id: 'rumor-maddison-2025',
+    playerName: 'James Maddison',
+    fromClub: 'Tottenham Hotspur',
+    toClub: 'Newcastle United',
+    fee: '£40M',
+    date: '2025-01-16T20:45:00Z',
+    source: 'bbc sport',
+    status: 'rumored'
+  },
+
   // Arsenal
   {
     id: 'arsenal-jorginho-2025',
@@ -60,6 +121,26 @@ export const recentTransfers: Transfer[] = [
     toClub: 'Cruzeiro',
     fee: '£5M',
     date: '2025-01-03T11:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-butler-oyedeji-2025',
+    playerName: 'Nathan Butler-Oyedeji',
+    fromClub: 'Arsenal',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-02T12:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-quesada-thorn-2025',
+    playerName: 'Elian Quesada-Thorn',
+    fromClub: 'Arsenal',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-02T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -209,6 +290,26 @@ export const recentTransfers: Transfer[] = [
     source: 'brentfordfc.com',
     status: 'confirmed'
   },
+  {
+    id: 'brentford-mee-2025',
+    playerName: 'Ben Mee',
+    fromClub: 'Brentford',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'brentfordfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'brentford-winterbottom-2025',
+    playerName: 'Ben Winterbottom',
+    fromClub: 'Brentford',
+    toClub: 'Barrow',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'brentfordfc.com',
+    status: 'confirmed'
+  },
 
   // Brighton
   {
@@ -303,6 +404,46 @@ export const recentTransfers: Transfer[] = [
     source: 'burnleyfc.com',
     status: 'confirmed'
   },
+  {
+    id: 'burnley-redmond-2025',
+    playerName: 'Nathan Redmond',
+    fromClub: 'Burnley',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-05T10:00:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-shelvey-2025',
+    playerName: 'Jonjo Shelvey',
+    fromClub: 'Burnley',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-05T10:00:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-sarmiento-2025',
+    playerName: 'Jeremy Sarmiento',
+    fromClub: 'Burnley',
+    toClub: 'Brighton & Hove Albion',
+    fee: 'End of loan',
+    date: '2025-01-05T10:00:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'burnley-egan-riley-2025',
+    playerName: 'CJ Egan-Riley',
+    fromClub: 'Burnley',
+    toClub: 'Marseille',
+    fee: 'Released',
+    date: '2025-01-05T10:00:00Z',
+    source: 'burnleyfc.com',
+    status: 'confirmed'
+  },
 
   // Chelsea
   {
@@ -367,6 +508,36 @@ export const recentTransfers: Transfer[] = [
     source: 'cpfc.co.uk',
     status: 'confirmed'
   },
+  {
+    id: 'palace-ward-2025',
+    playerName: 'Joel Ward',
+    fromClub: 'Crystal Palace',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-12T10:00:00Z',
+    source: 'cpfc.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'palace-schlupp-2025',
+    playerName: 'Jeffrey Schlupp',
+    fromClub: 'Crystal Palace',
+    toClub: 'Celtic',
+    fee: 'Released',
+    date: '2025-01-12T10:00:00Z',
+    source: 'cpfc.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'palace-moulden-2025',
+    playerName: 'Louie Moulden',
+    fromClub: 'Crystal Palace',
+    toClub: 'Norwich',
+    fee: 'Released',
+    date: '2025-01-12T10:00:00Z',
+    source: 'cpfc.co.uk',
+    status: 'confirmed'
+  },
 
   // Everton
   {
@@ -377,6 +548,138 @@ export const recentTransfers: Transfer[] = [
     fee: '£7M',
     date: '2025-01-13T15:00:00Z',
     source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-young-2025',
+    playerName: 'Ashley Young',
+    fromClub: 'Everton',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-begovic-2025',
+    playerName: 'Asmir Begovic',
+    fromClub: 'Everton',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-virginia-2025',
+    playerName: 'Joao Virginia',
+    fromClub: 'Everton',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-doucoure-2025',
+    playerName: 'Abdoulaye Doucoure',
+    fromClub: 'Everton',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-harrison-2025',
+    playerName: 'Jack Harrison',
+    fromClub: 'Everton',
+    toClub: 'Leeds United',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-lindstrom-2025',
+    playerName: 'Jesper Lindstrom',
+    fromClub: 'Everton',
+    toClub: 'Napoli',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-mangala-2025',
+    playerName: 'Orel Mangala',
+    fromClub: 'Everton',
+    toClub: 'Lyon',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-broja-2025',
+    playerName: 'Armando Broja',
+    fromClub: 'Everton',
+    toClub: 'Chelsea',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-holgate-2025',
+    playerName: 'Mason Holgate',
+    fromClub: 'Everton',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-maupay-2025',
+    playerName: 'Neal Maupay',
+    fromClub: 'Everton',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+
+  // Fulham
+  {
+    id: 'fulham-vinicius-2025',
+    playerName: 'Carlos Vinicius',
+    fromClub: 'Fulham',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'fulhamfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'fulham-willian-2025',
+    playerName: 'Willian',
+    fromClub: 'Fulham',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'fulhamfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'fulham-ashby-hammond-2025',
+    playerName: 'Luca Ashby-Hammond',
+    fromClub: 'Fulham',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'fulhamfc.com',
     status: 'confirmed'
   },
 
@@ -398,6 +701,46 @@ export const recentTransfers: Transfer[] = [
     toClub: 'Leeds United',
     fee: '£15M',
     date: '2025-01-14T12:30:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'leeds-guilavogui-2025',
+    playerName: 'Josuha Guilavogui',
+    fromClub: 'Leeds United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'leeds-rothwell-2025',
+    playerName: 'Joe Rothwell',
+    fromClub: 'Leeds United',
+    toClub: 'Bournemouth',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'leeds-solomon-2025',
+    playerName: 'Manor Solomon',
+    fromClub: 'Leeds United',
+    toClub: 'Tottenham Hotspur',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'leeds-snowdon-2025',
+    playerName: 'Joe Snowdon',
+    fromClub: 'Leeds United',
+    toClub: 'Swindon',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
     source: 'leedsunited.com',
     status: 'confirmed'
   },
@@ -463,6 +806,46 @@ export const recentTransfers: Transfer[] = [
     source: 'liverpoolfc.com',
     status: 'confirmed'
   },
+  {
+    id: 'liverpool-corness-2025',
+    playerName: 'Dominic Corness',
+    fromClub: 'Liverpool',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-05T10:00:00Z',
+    source: 'liverpoolfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'liverpool-ojrzynski-2025',
+    playerName: 'Jakub Ojrzynski',
+    fromClub: 'Liverpool',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-05T10:00:00Z',
+    source: 'liverpoolfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'liverpool-jaros-2025',
+    playerName: 'Vitezslav Jaros',
+    fromClub: 'Liverpool',
+    toClub: 'Ajax',
+    fee: 'Loan',
+    date: '2025-01-05T10:00:00Z',
+    source: 'liverpoolfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'liverpool-davies-2025',
+    playerName: 'Harvey Davies',
+    fromClub: 'Liverpool',
+    toClub: 'Crawley',
+    fee: 'Loan',
+    date: '2025-01-05T10:00:00Z',
+    source: 'liverpoolfc.com',
+    status: 'confirmed'
+  },
 
   // Manchester City
   {
@@ -515,6 +898,26 @@ export const recentTransfers: Transfer[] = [
     source: 'mancity.com',
     status: 'confirmed'
   },
+  {
+    id: 'city-wright-2025',
+    playerName: 'Jacob Wright',
+    fromClub: 'Manchester City',
+    toClub: 'Norwich City',
+    fee: '£2M',
+    date: '2025-01-06T10:00:00Z',
+    source: 'mancity.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'city-carson-2025',
+    playerName: 'Scott Carson',
+    fromClub: 'Manchester City',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-05T10:00:00Z',
+    source: 'mancity.com',
+    status: 'confirmed'
+  },
 
   // Manchester United
   {
@@ -524,6 +927,36 @@ export const recentTransfers: Transfer[] = [
     toClub: 'Manchester United',
     fee: '£35M',
     date: '2025-01-15T12:15:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'united-eriksen-2025',
+    playerName: 'Christian Eriksen',
+    fromClub: 'Manchester United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'united-evans-2025',
+    playerName: 'Jonny Evans',
+    fromClub: 'Manchester United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'united-lindelof-2025',
+    playerName: 'Victor Lindelof',
+    fromClub: 'Manchester United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'
   },
@@ -549,6 +982,16 @@ export const recentTransfers: Transfer[] = [
     source: 'nufc.co.uk',
     status: 'confirmed'
   },
+  {
+    id: 'newcastle-lewis-2025',
+    playerName: 'Jamal Lewis',
+    fromClub: 'Newcastle United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'nufc.co.uk',
+    status: 'confirmed'
+  },
 
   // Nottingham Forest
   {
@@ -568,6 +1011,26 @@ export const recentTransfers: Transfer[] = [
     toClub: 'Strasbourg',
     fee: '£4M',
     date: '2025-01-11T15:30:00Z',
+    source: 'nottinghamforest.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'forest-toffolo-2025',
+    playerName: 'Harry Toffolo',
+    fromClub: 'Nottingham Forest',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'nottinghamforest.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'forest-moreno-2025',
+    playerName: 'Alex Moreno',
+    fromClub: 'Nottingham Forest',
+    toClub: 'Aston Villa',
+    fee: 'End of loan',
+    date: '2025-01-08T10:00:00Z',
     source: 'nottinghamforest.co.uk',
     status: 'confirmed'
   },
@@ -635,6 +1098,56 @@ export const recentTransfers: Transfer[] = [
     source: 'tottenhamhotspur.com',
     status: 'confirmed'
   },
+  {
+    id: 'spurs-forster-2025',
+    playerName: 'Fraser Forster',
+    fromClub: 'Tottenham Hotspur',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'tottenhamhotspur.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'spurs-reguilon-2025',
+    playerName: 'Sergio Reguilon',
+    fromClub: 'Tottenham Hotspur',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'tottenhamhotspur.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'spurs-whiteman-2025',
+    playerName: 'Alfie Whiteman',
+    fromClub: 'Tottenham Hotspur',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'tottenhamhotspur.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'spurs-werner-2025',
+    playerName: 'Timo Werner',
+    fromClub: 'Tottenham Hotspur',
+    toClub: 'RB Leipzig',
+    fee: 'End of loan',
+    date: '2025-01-08T10:00:00Z',
+    source: 'tottenhamhotspur.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'spurs-ajayi-2025',
+    playerName: 'Damola Ajayi',
+    fromClub: 'Tottenham Hotspur',
+    toClub: 'Doncaster Rovers',
+    fee: 'Loan',
+    date: '2025-01-08T10:00:00Z',
+    source: 'tottenhamhotspur.com',
+    status: 'confirmed'
+  },
 
   // West Ham
   {
@@ -647,6 +1160,96 @@ export const recentTransfers: Transfer[] = [
     source: 'whufc.com',
     status: 'confirmed'
   },
+  {
+    id: 'westham-cresswell-2025',
+    playerName: 'Aaron Cresswell',
+    fromClub: 'West Ham United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'whufc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'westham-fabianski-2025',
+    playerName: 'Lukasz Fabianski',
+    fromClub: 'West Ham United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'whufc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'westham-coufal-2025',
+    playerName: 'Vladimir Coufal',
+    fromClub: 'West Ham United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'whufc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'westham-ings-2025',
+    playerName: 'Danny Ings',
+    fromClub: 'West Ham United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'whufc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'westham-swyer-2025',
+    playerName: 'Kamarai Swyer',
+    fromClub: 'West Ham United',
+    toClub: 'Northampton Town',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'whufc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'westham-soler-2025',
+    playerName: 'Carlos Soler',
+    fromClub: 'West Ham United',
+    toClub: 'PSG',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'whufc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'westham-ferguson-2025',
+    playerName: 'Evan Ferguson',
+    fromClub: 'West Ham United',
+    toClub: 'Brighton & Hove Albion',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'whufc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'westham-zouma-2025',
+    playerName: 'Kurt Zouma',
+    fromClub: 'West Ham United',
+    toClub: 'Al-Orobah',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'whufc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'westham-dolaghan-2025',
+    playerName: 'Brad Dolaghan',
+    fromClub: 'West Ham United',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'whufc.com',
+    status: 'confirmed'
+  },
 
   // Wolverhampton Wanderers  
   {
@@ -656,6 +1259,66 @@ export const recentTransfers: Transfer[] = [
     toClub: 'Wolverhampton Wanderers',
     fee: '£6M',
     date: '2025-01-13T14:20:00Z',
+    source: 'wolves.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'wolves-sarabia-2025',
+    playerName: 'Pablo Sarabia',
+    fromClub: 'Wolverhampton Wanderers',
+    toClub: 'Al-Arabi',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'wolves.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'wolves-dawson-2025',
+    playerName: 'Craig Dawson',
+    fromClub: 'Wolverhampton Wanderers',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'wolves.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'wolves-forbs-2025',
+    playerName: 'Carlos Forbs',
+    fromClub: 'Wolverhampton Wanderers',
+    toClub: 'Ajax',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'wolves.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'wolves-whittingham-2025',
+    playerName: 'Matty Whittingham',
+    fromClub: 'Wolverhampton Wanderers',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-10T10:00:00Z',
+    source: 'wolves.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'wolves-bueno-2025',
+    playerName: 'Hugo Bueno',
+    fromClub: 'Wolverhampton Wanderers',
+    toClub: 'Feyenoord',
+    fee: 'End of loan',
+    date: '2025-01-10T10:00:00Z',
+    source: 'wolves.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'wolves-campbell-2025',
+    playerName: 'Chem Campbell',
+    fromClub: 'Wolverhampton Wanderers',
+    toClub: 'Free Agent',
+    fee: 'Transfer Out',
+    date: '2025-01-10T10:00:00Z',
     source: 'wolves.co.uk',
     status: 'confirmed'
   }
