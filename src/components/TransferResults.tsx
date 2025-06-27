@@ -1,20 +1,19 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Search, Users, Globe, CheckCircle, Clock, MessageCircle, X } from 'lucide-react';
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
 import { Transfer, CrawlStatus } from '@/types/transfer';
 import { allClubTransfers } from '@/data/transfers';
-import { premierLeagueClubs } from '@/data/mockTransfers';
 import { groupTransfersByClub, groupTransfersByStatus } from '@/utils/transferUtils';
 import { TransferCard } from './TransferCard';
 import { LanesView } from './LanesView';
 import { ClubsView } from './ClubsView';
 import { CrawlStatusDisplay } from './CrawlStatusDisplay';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
+import { TransferFilters } from './TransferFilters';
+import { TransferStats } from './TransferStats';
+import { ScrapeControls } from './ScrapeControls';
 
 interface TransferResultsProps {
   lastUpdated: Date;
@@ -195,133 +194,25 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   return (
     <div className="space-y-6">
       {/* Filter Controls */}
-      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-        <div className="p-4">
-          <div className="flex gap-4 flex-wrap items-center">
-            <div className="flex-1 min-w-48">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search players, clubs..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-slate-700 border-slate-600 text-white placeholder:text-gray-400"
-                />
-              </div>
-            </div>
-            <Select value={selectedClub} onValueChange={setSelectedClub}>
-              <SelectTrigger className="w-48 bg-slate-700 border-slate-600 text-white">
-                <SelectValue placeholder="Filter by club" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Clubs</SelectItem>
-                {premierLeagueClubs.map((club) => (
-                  <SelectItem key={club} value={club}>
-                    {club}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={viewMode} onValueChange={(value: 'list' | 'clubs' | 'lanes') => setViewMode(value)}>
-              <SelectTrigger className="w-32 bg-slate-700 border-slate-600 text-white">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="lanes">Lanes</SelectItem>
-                <SelectItem value="clubs">By Club</SelectItem>
-                <SelectItem value="list">List View</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button
-              onClick={handleScrapeUrls}
-              disabled={isScraping}
-              className="bg-slate-600 hover:bg-slate-700 text-white"
-            >
-              <Globe className="w-4 h-4 mr-2" />
-              {isScraping ? 'Scraping...' : 'Scrape URLs'}
-            </Button>
-          </div>
-          
-          {/* Progress indicator */}
-          {crawlProgress && (
-            <div className="mt-4 space-y-2">
-              <div className="flex justify-between text-sm text-blue-200">
-                <span>Progress: {crawlProgress.completed}/{crawlProgress.total}</span>
-                <span>{Math.round((crawlProgress.completed / crawlProgress.total) * 100)}%</span>
-              </div>
-              <div className="w-full bg-slate-700 rounded-full h-2">
-                <div 
-                  className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${(crawlProgress.completed / crawlProgress.total) * 100}%` }}
-                ></div>
-              </div>
-              <p className="text-xs text-slate-300 truncate">
-                Current: {crawlProgress.currentUrl}
-              </p>
-            </div>
-          )}
-        </div>
-      </Card>
+      <TransferFilters
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        selectedClub={selectedClub}
+        setSelectedClub={setSelectedClub}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+        onScrapeUrls={handleScrapeUrls}
+        isScraping={isScraping}
+      />
+      
+      {/* Progress indicator */}
+      <ScrapeControls crawlProgress={crawlProgress} />
 
       {/* Crawl Status Display */}
       <CrawlStatusDisplay crawlStatuses={crawlStatuses} />
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-          <div className="p-4 flex items-center gap-3">
-            <div className="bg-blue-500/20 p-2 rounded-lg">
-              <Users className="w-5 h-5 text-blue-400" />
-            </div>
-            <div>
-              <p className="text-white font-semibold">{filteredTransfers.length}</p>
-              <p className="text-gray-300 text-sm">Total Transfers</p>
-            </div>
-          </div>
-        </Card>
-        
-        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-          <div className="p-4 flex items-center gap-3">
-            <div className="bg-green-500/20 p-2 rounded-lg">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-            </div>
-            <div>
-              <p className="text-white font-semibold">
-                {filteredTransfers.filter(t => t.status === 'confirmed').length}
-              </p>
-              <p className="text-gray-300 text-sm">Confirmed</p>
-            </div>
-          </div>
-        </Card>
-        
-        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-          <div className="p-4 flex items-center gap-3">
-            <div className="bg-blue-500/20 p-2 rounded-lg">
-              <MessageCircle className="w-5 h-5 text-blue-400" />
-            </div>
-            <div>
-              <p className="text-white font-semibold">
-                {filteredTransfers.filter(t => t.status === 'rumored').length}
-              </p>
-              <p className="text-gray-300 text-sm">Gossip</p>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-          <div className="p-4 flex items-center gap-3">
-            <div className="bg-red-500/20 p-2 rounded-lg">
-              <X className="w-5 h-5 text-red-400" />
-            </div>
-            <div>
-              <p className="text-white font-semibold">
-                {filteredTransfers.filter(t => t.status === 'rejected').length}
-              </p>
-              <p className="text-gray-300 text-sm">Failed</p>
-            </div>
-          </div>
-        </Card>
-      </div>
+      <TransferStats transfers={filteredTransfers} />
 
       {/* Transfer Display */}
       <div className="space-y-4">
