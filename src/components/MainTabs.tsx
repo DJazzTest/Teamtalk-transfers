@@ -9,7 +9,8 @@ import { RefreshConfig } from './RefreshConfig';
 import { CrawlErrors } from './CrawlErrors';
 import { CountdownConfig } from './CountdownConfig';
 import { ScrapeDebugger } from './ScrapeDebugger';
-import { Shield, Users, Settings, Globe, RefreshCw, AlertTriangle, Clock, Search } from 'lucide-react';
+import { TransferDataDebugger } from './TransferDataDebugger';
+import { Shield, Users, Settings, Globe, RefreshCw, AlertTriangle, Clock, Search, Database } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 
 interface MainTabsProps {
@@ -35,7 +36,7 @@ interface MainTabsProps {
 export const MainTabs: React.FC<MainTabsProps> = (props) => {
   return (
     <Tabs defaultValue="teams" className="w-full">
-      <TabsList className="grid w-full grid-cols-8 bg-slate-800/50 backdrop-blur-md border-slate-700">
+      <TabsList className="grid w-full grid-cols-9 bg-slate-800/50 backdrop-blur-md border-slate-700">
         <TabsTrigger value="teams" className="flex items-center gap-2">
           <Shield className="w-4 h-4" />
           Teams
@@ -44,9 +45,13 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
           <Users className="w-4 h-4" />
           All Transfers
         </TabsTrigger>
+        <TabsTrigger value="data-debug" className="flex items-center gap-2">
+          <Database className="w-4 h-4" />
+          Data Debug
+        </TabsTrigger>
         <TabsTrigger value="debug" className="flex items-center gap-2">
           <Search className="w-4 h-4" />
-          Debug
+          Scrape Debug
         </TabsTrigger>
         <TabsTrigger value="sources" className="flex items-center gap-2">
           <Globe className="w-4 h-4" />
@@ -76,6 +81,10 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
 
       <TabsContent value="transfers">
         <TransferResults lastUpdated={props.lastUpdated} />
+      </TabsContent>
+
+      <TabsContent value="data-debug">
+        <TransferDataDebugger transfers={props.transfers} />
       </TabsContent>
 
       <TabsContent value="debug">
