@@ -1,7 +1,8 @@
+
 import { Transfer } from '@/types/transfer';
 import { TransferParser, ParsedTransferData } from './transferParser';
 import { PREMIER_LEAGUE_CLUBS, CLUB_VARIATIONS } from './transferParser/constants';
-import { recentTransfers } from '@/data/recentTransfers';
+import { allClubTransfers } from '@/data/transfers';
 
 export interface CrawlResult {
   url: string;
@@ -197,15 +198,16 @@ export class TransferIntegrationService {
     }
   }
 
-  static mergeParsedWithMockTransfers(mockTransfers: Transfer[]): Transfer[] {
+  // Updated to only use real transfer data
+  static getAllTransfers(): Transfer[] {
     const parsedTransfers = this.getParsedTransfers();
-    console.log(`Merging ${parsedTransfers.length} parsed transfers with ${mockTransfers.length} mock transfers and ${recentTransfers.length} recent transfers`);
+    console.log(`Using ${parsedTransfers.length} parsed transfers with ${allClubTransfers.length} real transfers`);
     
-    // Combine all transfer sources
-    const combined = [...parsedTransfers, ...mockTransfers, ...recentTransfers];
+    // Combine only real transfers with parsed transfers
+    const combined = [...parsedTransfers, ...allClubTransfers];
     const merged = this.deduplicateTransfers(combined);
     
-    console.log(`Final merged transfers: ${merged.length} total`);
+    console.log(`Final transfers: ${merged.length} total`);
     return merged;
   }
 

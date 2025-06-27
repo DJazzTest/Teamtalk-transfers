@@ -21,7 +21,7 @@ interface TransferResultsProps {
 
 export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated }) => {
   const [allTransfers, setAllTransfers] = useState<Transfer[]>(() => {
-    // Use only real transfers data, no mock data
+    // Use only real transfers data
     console.log('Initializing with real transfer data only');
     return allClubTransfers;
   });

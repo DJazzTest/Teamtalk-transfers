@@ -7,7 +7,6 @@ import { MainTabs } from '@/components/MainTabs';
 import { Card } from '@/components/ui/card';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { Transfer } from '@/types/transfer';
-import { mockTransfers as mockTransferData } from '@/data/mockTransfers';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
 
 const Index = () => {
@@ -33,16 +32,16 @@ const Index = () => {
   // Set countdown to Monday 1 September 2025 at 19:00 BST (18:00 UTC)
   const [countdownTarget, setCountdownTarget] = useState('2025-09-01T18:00:00Z');
   const [allTransfers, setAllTransfers] = useState<Transfer[]>(() => {
-    // Initialize with merged transfers (mock + parsed)
-    return TransferIntegrationService.mergeParsedWithMockTransfers(mockTransferData);
+    // Initialize with only real transfers
+    return TransferIntegrationService.getAllTransfers();
   });
 
   // Listen for refresh events and update transfers
   useEffect(() => {
     const handleRefresh = () => {
       console.log('Refreshing all transfers data...');
-      const mergedTransfers = TransferIntegrationService.mergeParsedWithMockTransfers(mockTransferData);
-      setAllTransfers(mergedTransfers);
+      const realTransfers = TransferIntegrationService.getAllTransfers();
+      setAllTransfers(realTransfers);
     };
 
     // Listen for both auto and manual refresh events
@@ -64,7 +63,7 @@ const Index = () => {
       <AppHeader lastUpdated={lastUpdated} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
-        {/* Recent Transfers Highlight - Now using actual transfer data */}
+        {/* Recent Transfers Highlight - Now using only real transfer data */}
         <div className="mb-4 sm:mb-8">
           <RecentTransfers transfers={allTransfers} />
         </div>
