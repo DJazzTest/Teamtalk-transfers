@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
@@ -20,6 +20,8 @@ export const DataRefreshSection: React.FC<DataRefreshSectionProps> = ({
   setIsAutoRefresh,
   onManualRefresh
 }) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
   const refreshOptions = [
     { value: 60000, label: '1 minute' },
     { value: 300000, label: '5 minutes' },
@@ -29,8 +31,14 @@ export const DataRefreshSection: React.FC<DataRefreshSectionProps> = ({
   ];
 
   const handleRefreshClick = () => {
-    console.log('Refresh Now button clicked');
-    onManualRefresh();
+    console.log('🔄 Manual Refresh button clicked - triggering refresh');
+    setIsRefreshing(true);
+    
+    // Add visual feedback
+    setTimeout(() => {
+      onManualRefresh();
+      setIsRefreshing(false);
+    }, 200);
   };
 
   return (
@@ -78,11 +86,12 @@ export const DataRefreshSection: React.FC<DataRefreshSectionProps> = ({
         
         <Button
           onClick={handleRefreshClick}
+          disabled={isRefreshing}
           className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm w-full sm:w-auto"
           size="sm"
         >
-          <RefreshCw className="w-4 h-4 mr-2" />
-          Refresh Now
+          <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+          {isRefreshing ? 'Refreshing...' : 'Refresh Now'}
         </Button>
       </div>
     </div>

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
@@ -22,6 +22,8 @@ export const AutoScrapeSection: React.FC<AutoScrapeSectionProps> = ({
   lastScrapeTime,
   onManualScrape
 }) => {
+  const [isScraping, setIsScraping] = useState(false);
+
   const scrapeIntervalOptions = [
     { value: 0, label: 'None' },
     { value: 300000, label: '5 minutes' },
@@ -31,9 +33,15 @@ export const AutoScrapeSection: React.FC<AutoScrapeSectionProps> = ({
     { value: 7200000, label: '2 hours' }
   ];
 
-  const handleScrapeClick = () => {
-    console.log('Scrape Now button clicked');
-    onManualScrape();
+  const handleScrapeClick = async () => {
+    console.log('🔍 Manual Scrape button clicked - triggering scrape');
+    setIsScraping(true);
+    
+    try {
+      await onManualScrape();
+    } finally {
+      setIsScraping(false);
+    }
   };
 
   return (
@@ -86,11 +94,12 @@ export const AutoScrapeSection: React.FC<AutoScrapeSectionProps> = ({
         
         <Button
           onClick={handleScrapeClick}
+          disabled={isScraping}
           className="bg-green-600 hover:bg-green-700 text-white shadow-sm w-full sm:w-auto"
           size="sm"
         >
-          <Globe className="w-4 h-4 mr-2" />
-          Scrape Now
+          <Globe className={`w-4 h-4 mr-2 ${isScraping ? 'animate-spin' : ''}`} />
+          {isScraping ? 'Scraping...' : 'Scrape Now'}
         </Button>
       </div>
     </div>
