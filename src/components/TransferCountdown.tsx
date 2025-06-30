@@ -1,4 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Star, X } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import { MyClubSelector } from './MyClubSelector';
 
 interface TransferCountdownProps {
@@ -13,6 +18,8 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
     seconds: 0
   });
   const [myClub, setMyClub] = useState<string | null>(null);
+  const [starredClubs, setStarredClubs] = useState<string[]>([]);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Load saved club from localStorage
@@ -20,7 +27,39 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
     if (savedClub) {
       setMyClub(savedClub);
     }
+
+    // Load starred clubs
+    const savedStarredClubs = localStorage.getItem('starredClubs');
+    if (savedStarredClubs) {
+      setStarredClubs(JSON.parse(savedStarredClubs));
+    }
   }, []);
+
+  // Listen for starred clubs updates
+  useEffect(() => {
+    const handleStarredClubsUpdate = (event: CustomEvent) => {
+      setStarredClubs(event.detail);
+    };
+
+    window.addEventListener('starredClubsUpdate', handleStarredClubsUpdate as EventListener);
+    return () => {
+      window.removeEventListener('starredClubsUpdate', handleStarredClubsUpdate as EventListener);
+    };
+  }, []);
+
+  const handleRemoveStarredClub = (clubName: string) => {
+    const newStarredClubs = starredClubs.filter(club => club !== clubName);
+    setStarredClubs(newStarredClubs);
+    localStorage.setItem('starredClubs', JSON.stringify(newStarredClubs));
+    
+    // Dispatch event to update other components
+    window.dispatchEvent(new CustomEvent('starredClubsUpdate', { detail: newStarredClubs }));
+    
+    toast({
+      title: "Club Unstarred",
+      description: `${clubName} has been removed from your starred clubs.`,
+    });
+  };
 
   useEffect(() => {
     const target = new Date(targetDate);
@@ -57,6 +96,37 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
         selectedClub={myClub} 
         onClubChange={setMyClub} 
       />
+
+      {/* Starred Clubs Section */}
+      {starredClubs.length > 0 && (
+        <Card className="bg-gradient-to-r from-yellow-600 to-amber-600 border-none shadow-lg">
+          <div className="p-4">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-white/20 p-2 rounded-lg">
+                <Star className="w-5 h-5 text-white fill-current" />
+              </div>
+              <h3 className="text-lg font-semibold text-white">Starred Clubs</h3>
+            </div>
+            
+            <div className="flex flex-wrap gap-2">
+              {starredClubs.map((club) => (
+                <div key={club} className="bg-white/10 backdrop-blur-sm rounded-lg p-2 flex items-center gap-2">
+                  <Star className="w-4 h-4 text-yellow-300 fill-current" />
+                  <span className="text-white font-medium text-sm">{club}</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleRemoveStarredClub(club)}
+                    className="h-auto w-auto p-1 text-white/70 hover:text-white hover:bg-white/10"
+                  >
+                    <X className="w-3 h-3" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Transfer Window Countdown */}
       <div className="text-center" style={{ backgroundColor: '#2F517A', borderRadius: '0.5rem', padding: '1rem sm:2rem' }}>
