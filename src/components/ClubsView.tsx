@@ -48,10 +48,10 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers }) => {
                 variant="ghost"
                 size="sm"
                 onClick={() => handleStarClub(club)}
-                className="text-gray-400 hover:text-yellow-400 hover:bg-yellow-400/10"
+                className="text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50"
               >
                 <Star 
-                  className={`w-5 h-5 ${starredClubs.includes(club) ? 'fill-yellow-400 text-yellow-400' : ''}`}
+                  className={`w-5 h-5 ${starredClubs.includes(club) ? 'fill-yellow-400 text-yellow-400' : 'text-yellow-400'}`}
                 />
               </Button>
             </div>
