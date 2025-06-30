@@ -262,7 +262,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         ) : viewMode === 'lanes' ? (
           <LanesView statusTransfers={statusTransfers} />
         ) : viewMode === 'clubs' ? (
-          <ClubsView clubTransfers={clubTransfers} />
+          <ClubsView clubTransfers={clubTransfers} allTransfers={allTransfers} />
         ) : (
           // List View
           filteredTransfers.map((transfer) => (
