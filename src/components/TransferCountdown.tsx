@@ -1,10 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Star, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { MyClubSelector } from './MyClubSelector';
 
 interface TransferCountdownProps {
   targetDate: string;
@@ -17,17 +15,10 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
     minutes: 0,
     seconds: 0
   });
-  const [myClub, setMyClub] = useState<string | null>(null);
   const [starredClubs, setStarredClubs] = useState<string[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load saved club from localStorage
-    const savedClub = localStorage.getItem('myFavoriteClub');
-    if (savedClub) {
-      setMyClub(savedClub);
-    }
-
     // Load starred clubs
     const savedStarredClubs = localStorage.getItem('starredClubs');
     if (savedStarredClubs) {
@@ -91,12 +82,6 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
 
   return (
     <div className="space-y-6">
-      {/* My Club Section - Always at the top */}
-      <MyClubSelector 
-        selectedClub={myClub} 
-        onClubChange={setMyClub} 
-      />
-
       {/* Starred Clubs Section */}
       {starredClubs.length > 0 && (
         <Card className="bg-gradient-to-r from-yellow-600 to-amber-600 border-none shadow-lg">
