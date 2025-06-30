@@ -1,5 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
+import { MyClubSelector } from './MyClubSelector';
 
 interface TransferCountdownProps {
   targetDate: string;
@@ -12,6 +12,15 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
     minutes: 0,
     seconds: 0
   });
+  const [myClub, setMyClub] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Load saved club from localStorage
+    const savedClub = localStorage.getItem('myFavoriteClub');
+    if (savedClub) {
+      setMyClub(savedClub);
+    }
+  }, []);
 
   useEffect(() => {
     const target = new Date(targetDate);
@@ -42,34 +51,43 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
   const isExpired = target.getTime() < new Date().getTime();
 
   return (
-    <div className="text-center" style={{ backgroundColor: '#2F517A', borderRadius: '0.5rem', padding: '1rem sm:2rem' }}>
-      <h2 className="text-lg sm:text-2xl font-bold text-blue-400 mb-2 sm:mb-4">Transfer Window Countdown</h2>
-      
-      {isExpired ? (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 sm:p-8 max-w-md mx-auto">
-          <p className="text-red-600 text-lg sm:text-xl font-bold">Transfer Window Closed</p>
-          <p className="text-gray-600 text-xs sm:text-sm mt-2">Configure a new date in the Settings tab</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 max-w-2xl mx-auto">
-          <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg p-2 sm:p-4 shadow-lg">
-            <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg">{timeLeft.days}</div>
-            <div className="text-xs sm:text-sm text-blue-100">Days</div>
+    <div className="space-y-6">
+      {/* My Club Section - Always at the top */}
+      <MyClubSelector 
+        selectedClub={myClub} 
+        onClubChange={setMyClub} 
+      />
+
+      {/* Transfer Window Countdown */}
+      <div className="text-center" style={{ backgroundColor: '#2F517A', borderRadius: '0.5rem', padding: '1rem sm:2rem' }}>
+        <h2 className="text-lg sm:text-2xl font-bold text-blue-400 mb-2 sm:mb-4">Transfer Window Countdown</h2>
+        
+        {isExpired ? (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 sm:p-8 max-w-md mx-auto">
+            <p className="text-red-600 text-lg sm:text-xl font-bold">Transfer Window Closed</p>
+            <p className="text-gray-600 text-xs sm:text-sm mt-2">Configure a new date in the Settings tab</p>
           </div>
-          <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg p-2 sm:p-4 shadow-lg">
-            <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg">{timeLeft.hours}</div>
-            <div className="text-xs sm:text-sm text-emerald-100">Hours</div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 max-w-2xl mx-auto">
+            <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg p-2 sm:p-4 shadow-lg">
+              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg">{timeLeft.days}</div>
+              <div className="text-xs sm:text-sm text-blue-100">Days</div>
+            </div>
+            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg p-2 sm:p-4 shadow-lg">
+              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg">{timeLeft.hours}</div>
+              <div className="text-xs sm:text-sm text-emerald-100">Hours</div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg p-2 sm:p-4 shadow-lg">
+              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg">{timeLeft.minutes}</div>
+              <div className="text-xs sm:text-sm text-purple-100">Minutes</div>
+            </div>
+            <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-lg p-2 sm:p-4 shadow-lg">
+              <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg">{timeLeft.seconds}</div>
+              <div className="text-xs sm:text-sm text-orange-100">Seconds</div>
+            </div>
           </div>
-          <div className="bg-gradient-to-br from-purple-500 to-violet-600 rounded-lg p-2 sm:p-4 shadow-lg">
-            <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg">{timeLeft.minutes}</div>
-            <div className="text-xs sm:text-sm text-purple-100">Minutes</div>
-          </div>
-          <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-lg p-2 sm:p-4 shadow-lg">
-            <div className="text-xl sm:text-3xl font-bold text-white drop-shadow-lg">{timeLeft.seconds}</div>
-            <div className="text-xs sm:text-sm text-orange-100">Seconds</div>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
