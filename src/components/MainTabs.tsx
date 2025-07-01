@@ -80,7 +80,7 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
       </TabsContent>
 
       <TabsContent value="transfers">
-        <TransferResults lastUpdated={props.lastUpdated} />
+        <TransferResults lastUpdated={props.lastUpdated} currentLeague="premier" />
       </TabsContent>
 
       <TabsContent value="data-debug">
@@ -112,7 +112,25 @@ export const MainTabs: React.FC<MainTabsProps> = (props) => {
       </TabsContent>
 
       <TabsContent value="api">
-        <ApiConfig />
+        <ApiConfig
+          refreshRate={props.refreshRate}
+          setRefreshRate={props.setRefreshRate}
+          isAutoRefresh={props.isAutoRefresh}
+          setIsAutoRefresh={props.setIsAutoRefresh}
+          onManualRefresh={props.onManualRefresh}
+          autoScrapeInterval={props.autoScrapeInterval}
+          setAutoScrapeInterval={props.setAutoScrapeInterval}
+          isAutoScrapeEnabled={props.isAutoScrapeEnabled}
+          setIsAutoScrapeEnabled={props.setIsAutoScrapeEnabled}
+          lastScrapeTime={props.lastScrapeTime}
+          onManualScrape={props.onManualScrape}
+          scrapeErrors={props.scrapeErrors}
+          onClearScrapeErrors={props.onClearScrapeErrors}
+          countdownTarget={props.countdownTarget}
+          setCountdownTarget={props.setCountdownTarget}
+          lastUpdated={props.lastUpdated}
+          transfers={props.transfers}
+        />
       </TabsContent>
 
       <TabsContent value="errors">

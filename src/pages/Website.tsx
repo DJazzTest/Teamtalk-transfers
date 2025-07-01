@@ -4,7 +4,6 @@ import { TransferCountdown } from '@/components/TransferCountdown';
 import { RecentTransfers } from '@/components/RecentTransfers';
 import { AppHeader } from '@/components/AppHeader';
 import { AdminNavigation } from '@/components/AdminNavigation';
-import { LeagueToggle } from '@/components/LeagueToggle';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Shield, Users } from 'lucide-react';
@@ -15,7 +14,7 @@ import { useLeagueData } from '@/hooks/useLeagueData';
 
 const Website = () => {
   const { lastUpdated, refreshCounter } = useRefreshControl();
-  const { currentLeague, setCurrentLeague, leagueTransfers } = useLeagueData();
+  const { leagueTransfers } = useLeagueData();
   
   // Set countdown to Monday 1 September 2025 at 19:00 BST (18:00 UTC)
   const [countdownTarget] = useState('2025-09-01T18:00:00Z');
@@ -23,7 +22,7 @@ const Website = () => {
   // Listen for refresh events and update transfers
   useEffect(() => {
     const handleRefresh = () => {
-      console.log('Refreshing transfers data for league:', currentLeague);
+      console.log('Refreshing transfers data for Premier League');
       // The useLeagueData hook will handle the refresh automatically
     };
 
@@ -36,7 +35,7 @@ const Website = () => {
       window.removeEventListener('manualRefresh', handleRefresh);
       window.removeEventListener('crawlStatusUpdate', handleRefresh);
     };
-  }, [refreshCounter, currentLeague]);
+  }, [refreshCounter]);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
@@ -44,12 +43,6 @@ const Website = () => {
       <AppHeader lastUpdated={lastUpdated} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
-        {/* League Toggle */}
-        <LeagueToggle 
-          currentLeague={currentLeague} 
-          onLeagueChange={setCurrentLeague} 
-        />
-
         {/* Recent Transfers Highlight */}
         <div className="mb-4 sm:mb-8">
           <RecentTransfers transfers={leagueTransfers} />
@@ -82,7 +75,7 @@ const Website = () => {
           <TabsContent value="transfers">
             <TransferResults 
               lastUpdated={lastUpdated} 
-              currentLeague={currentLeague}
+              currentLeague="premier"
             />
           </TabsContent>
         </Tabs>
