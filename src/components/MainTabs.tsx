@@ -12,10 +12,42 @@ import { League } from '@/hooks/useLeagueData';
 interface MainTabsProps {
   transfers: Transfer[];
   lastUpdated: Date;
-  currentLeague: League;
+  refreshRate: number;
+  setRefreshRate: (rate: number) => void;
+  isAutoRefresh: boolean;
+  setIsAutoRefresh: (enabled: boolean) => void;
+  onManualRefresh: () => void;
+  countdownTarget: string;
+  setCountdownTarget: (target: string) => void;
+  autoScrapeInterval: number;
+  setAutoScrapeInterval: (interval: number) => void;
+  isAutoScrapeEnabled: boolean;
+  setIsAutoScrapeEnabled: (enabled: boolean) => void;
+  scrapeErrors: string[];
+  lastScrapeTime: Date | null;
+  onManualScrape: () => void;
+  onClearScrapeErrors: () => void;
 }
 
-export const MainTabs: React.FC<MainTabsProps> = ({ transfers, lastUpdated, currentLeague }) => {
+export const MainTabs: React.FC<MainTabsProps> = ({ 
+  transfers, 
+  lastUpdated,
+  refreshRate,
+  setRefreshRate,
+  isAutoRefresh,
+  setIsAutoRefresh,
+  onManualRefresh,
+  countdownTarget,
+  setCountdownTarget,
+  autoScrapeInterval,
+  setAutoScrapeInterval,
+  isAutoScrapeEnabled,
+  setIsAutoScrapeEnabled,
+  scrapeErrors,
+  lastScrapeTime,
+  onManualScrape,
+  onClearScrapeErrors
+}) => {
   return (
     <Tabs defaultValue="teams" className="w-full">
       <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 backdrop-blur-md border-slate-700">
@@ -44,7 +76,7 @@ export const MainTabs: React.FC<MainTabsProps> = ({ transfers, lastUpdated, curr
       <TabsContent value="transfers">
         <TransferResults 
           lastUpdated={lastUpdated} 
-          currentLeague={currentLeague}
+          currentLeague="premier"
         />
       </TabsContent>
 
@@ -53,7 +85,23 @@ export const MainTabs: React.FC<MainTabsProps> = ({ transfers, lastUpdated, curr
       </TabsContent>
 
       <TabsContent value="api">
-        <ApiConfig />
+        <ApiConfig 
+          refreshRate={refreshRate}
+          setRefreshRate={setRefreshRate}
+          isAutoRefresh={isAutoRefresh}
+          setIsAutoRefresh={setIsAutoRefresh}
+          onManualRefresh={onManualRefresh}
+          countdownTarget={countdownTarget}
+          setCountdownTarget={setCountdownTarget}
+          autoScrapeInterval={autoScrapeInterval}
+          setAutoScrapeInterval={setAutoScrapeInterval}
+          isAutoScrapeEnabled={isAutoScrapeEnabled}
+          setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
+          scrapeErrors={scrapeErrors}
+          lastScrapeTime={lastScrapeTime}
+          onManualScrape={onManualScrape}
+          onClearScrapeErrors={onClearScrapeErrors}
+        />
       </TabsContent>
     </Tabs>
   );
