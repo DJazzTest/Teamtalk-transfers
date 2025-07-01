@@ -31,12 +31,12 @@ export const useLeagueData = () => {
       ];
     } else {
       return [
-        'Birmingham City', 'Blackburn Rovers', 'Bristol City', 'Charlton Athletic',
-        'Coventry City', 'Derby County', 'Hull City', 'Ipswich Town',
-        'Leicester City', 'Middlesbrough', 'Millwall', 'Norwich City',
-        'Oxford United', 'Portsmouth', 'Preston North End', 'Queens Park Rangers',
-        'Sheffield United', 'Sheffield Wednesday', 'Southampton', 'Stoke City',
-        'Swansea City', 'Watford', 'West Bromwich Albion', 'Wrexham'
+        'Leeds United', 'Burnley', 'Sheffield United', 'Luton Town',
+        'Middlesbrough', 'West Bromwich Albion', 'Millwall', 'Blackburn Rovers',
+        'Norwich City', 'Coventry City', 'Hull City', 'Swansea City',
+        'Stoke City', 'Watford', 'Bristol City', 'Preston North End',
+        'Queens Park Rangers', 'Oxford United', 'Derby County', 'Sheffield Wednesday',
+        'Sunderland', 'Plymouth Argyle', 'Portsmouth', 'Cardiff City'
       ];
     }
   }, [currentLeague]);
