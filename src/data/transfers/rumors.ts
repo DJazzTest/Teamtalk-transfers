@@ -13,14 +13,14 @@ export const latestRumors: Transfer[] = [
     status: 'rumored'
   },
   {
-    id: 'rumor-kvaratskhelia-2025',
+    id: 'confirmed-kvaratskhelia-2025',
     playerName: 'Khvicha Kvaratskhelia',
     fromClub: 'Napoli',
-    toClub: 'Liverpool',
+    toClub: 'Paris Saint-Germain',
     fee: '£70M',
     date: '2025-01-17T08:30:00Z',
-    source: 'the guardian',
-    status: 'rumored'
+    source: 'psg.fr',
+    status: 'confirmed'
   },
   {
     id: 'rumor-darwin-2025',
