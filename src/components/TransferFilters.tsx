@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Search, Globe } from 'lucide-react';
-import { premierLeagueClubs } from '@/data/mockTransfers';
 
 interface TransferFiltersProps {
   searchTerm: string;
@@ -16,6 +15,7 @@ interface TransferFiltersProps {
   setViewMode: (mode: 'list' | 'clubs' | 'lanes') => void;
   onScrapeUrls: () => void;
   isScraping: boolean;
+  availableClubs: string[];
 }
 
 export const TransferFilters: React.FC<TransferFiltersProps> = ({
@@ -26,7 +26,8 @@ export const TransferFilters: React.FC<TransferFiltersProps> = ({
   viewMode,
   setViewMode,
   onScrapeUrls,
-  isScraping
+  isScraping,
+  availableClubs
 }) => {
   return (
     <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
@@ -49,7 +50,7 @@ export const TransferFilters: React.FC<TransferFiltersProps> = ({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Clubs</SelectItem>
-              {premierLeagueClubs.map((club) => (
+              {availableClubs.map((club) => (
                 <SelectItem key={club} value={club}>
                   {club}
                 </SelectItem>

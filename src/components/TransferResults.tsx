@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
 import { Transfer, CrawlStatus } from '@/types/transfer';
-import { allClubTransfers } from '@/data/transfers';
+import { useLeagueData, League } from '@/hooks/useLeagueData';
 import { groupTransfersByClub, groupTransfersByStatus } from '@/utils/transferUtils';
 import { TransferCard } from './TransferCard';
 import { LanesView } from './LanesView';
@@ -17,15 +16,13 @@ import { ScrapeControls } from './ScrapeControls';
 
 interface TransferResultsProps {
   lastUpdated: Date;
+  currentLeague: League;
 }
 
-export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated }) => {
-  const [allTransfers, setAllTransfers] = useState<Transfer[]>(() => {
-    // Use only real transfers data
-    console.log('Initializing with real transfer data only');
-    return allClubTransfers;
-  });
-  const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>(allTransfers);
+export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated, currentLeague }) => {
+  const { leagueTransfers, leagueClubs } = useLeagueData();
+  const [allTransfers, setAllTransfers] = useState<Transfer[]>(leagueTransfers);
+  const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>(leagueTransfers);
   const [selectedClub, setSelectedClub] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'list' | 'clubs' | 'lanes'>('lanes');
@@ -34,6 +31,12 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   const [crawlStatuses, setCrawlStatuses] = useState<CrawlStatus[]>([]);
   const [crawlProgress, setCrawlProgress] = useState<{ completed: number; total: number; currentUrl: string } | null>(null);
   const { toast } = useToast();
+
+  // Update transfers when league changes
+  useEffect(() => {
+    setAllTransfers(leagueTransfers);
+    setSelectedClub('all'); // Reset club filter when league changes
+  }, [leagueTransfers, currentLeague]);
 
   // Listen for refresh events to update data
   useEffect(() => {
@@ -44,7 +47,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       // Add a small delay to show the loading state
       setTimeout(() => {
         console.log('📊 Refreshing transfer data with latest real transfers');
-        setAllTransfers([...allClubTransfers]);
+        setAllTransfers([...leagueTransfers]);
         setIsRefreshing(false);
         
         toast({
@@ -61,7 +64,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       window.removeEventListener('autoRefresh', handleRefresh);
       window.removeEventListener('manualRefresh', handleRefresh);
     };
-  }, [toast]);
+  }, [toast, leagueTransfers]);
 
   useEffect(() => {
     let filtered = allTransfers;
@@ -228,6 +231,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
         setViewMode={setViewMode}
         onScrapeUrls={handleScrapeUrls}
         isScraping={isScraping}
+        availableClubs={leagueClubs}
       />
       
       {/* Loading indicators */}

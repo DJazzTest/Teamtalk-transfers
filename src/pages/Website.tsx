@@ -4,30 +4,27 @@ import { TransferCountdown } from '@/components/TransferCountdown';
 import { RecentTransfers } from '@/components/RecentTransfers';
 import { AppHeader } from '@/components/AppHeader';
 import { AdminNavigation } from '@/components/AdminNavigation';
+import { LeagueToggle } from '@/components/LeagueToggle';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Shield, Users } from 'lucide-react';
 import { TeamTransferView } from '@/components/TeamTransferView';
 import { TransferResults } from '@/components/TransferResults';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
-import { Transfer } from '@/types/transfer';
-import { TransferIntegrationService } from '@/utils/transferIntegration';
+import { useLeagueData } from '@/hooks/useLeagueData';
 
 const Website = () => {
   const { lastUpdated, refreshCounter } = useRefreshControl();
+  const { currentLeague, setCurrentLeague, leagueTransfers } = useLeagueData();
   
   // Set countdown to Monday 1 September 2025 at 19:00 BST (18:00 UTC)
   const [countdownTarget] = useState('2025-09-01T18:00:00Z');
-  const [allTransfers, setAllTransfers] = useState<Transfer[]>(() => {
-    return TransferIntegrationService.getAllTransfers();
-  });
 
   // Listen for refresh events and update transfers
   useEffect(() => {
     const handleRefresh = () => {
-      console.log('Refreshing all transfers data...');
-      const realTransfers = TransferIntegrationService.getAllTransfers();
-      setAllTransfers(realTransfers);
+      console.log('Refreshing transfers data for league:', currentLeague);
+      // The useLeagueData hook will handle the refresh automatically
     };
 
     window.addEventListener('autoRefresh', handleRefresh);
@@ -39,7 +36,7 @@ const Website = () => {
       window.removeEventListener('manualRefresh', handleRefresh);
       window.removeEventListener('crawlStatusUpdate', handleRefresh);
     };
-  }, [refreshCounter]);
+  }, [refreshCounter, currentLeague]);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
@@ -47,9 +44,15 @@ const Website = () => {
       <AppHeader lastUpdated={lastUpdated} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
+        {/* League Toggle */}
+        <LeagueToggle 
+          currentLeague={currentLeague} 
+          onLeagueChange={setCurrentLeague} 
+        />
+
         {/* Recent Transfers Highlight */}
         <div className="mb-4 sm:mb-8">
-          <RecentTransfers transfers={allTransfers} />
+          <RecentTransfers transfers={leagueTransfers} />
         </div>
 
         {/* Transfer Window Countdown */}
@@ -73,11 +76,14 @@ const Website = () => {
           </TabsList>
 
           <TabsContent value="teams">
-            <TeamTransferView transfers={allTransfers} />
+            <TeamTransferView transfers={leagueTransfers} />
           </TabsContent>
 
           <TabsContent value="transfers">
-            <TransferResults lastUpdated={lastUpdated} />
+            <TransferResults 
+              lastUpdated={lastUpdated} 
+              currentLeague={currentLeague}
+            />
           </TabsContent>
         </Tabs>
       </div>
