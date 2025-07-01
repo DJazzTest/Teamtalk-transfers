@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Shield, Users, Settings, Globe } from 'lucide-react';
 import { TeamTransferView } from './TeamTransferView';
 import { TransferResults } from './TransferResults';
-import { RefreshConfig } from './RefreshConfig';
+import { ApiConfig } from './ApiConfig';
 import { SourcesConfig } from './SourcesConfig';
 import { Transfer } from '@/types/transfer';
 import { League } from '@/hooks/useLeagueData';
@@ -13,45 +13,9 @@ interface MainTabsProps {
   transfers: Transfer[];
   lastUpdated: Date;
   currentLeague: League;
-  // Refresh control props
-  refreshRate: number;
-  setRefreshRate: (rate: number) => void;
-  isAutoRefresh: boolean;
-  setIsAutoRefresh: (enabled: boolean) => void;
-  onManualRefresh: () => void;
-  countdownTarget: string;
-  setCountdownTarget: (target: string) => void;
-  // Auto-scraping props
-  autoScrapeInterval: number;
-  setAutoScrapeInterval: (interval: number) => void;
-  isAutoScrapeEnabled: boolean;
-  setIsAutoScrapeEnabled: (enabled: boolean) => void;
-  scrapeErrors: string[];
-  lastScrapeTime: Date | null;
-  onManualScrape: () => void;
-  onClearScrapeErrors: () => void;
 }
 
-export const MainTabs: React.FC<MainTabsProps> = ({ 
-  transfers, 
-  lastUpdated, 
-  currentLeague,
-  refreshRate,
-  setRefreshRate,
-  isAutoRefresh,
-  setIsAutoRefresh,
-  onManualRefresh,
-  countdownTarget,
-  setCountdownTarget,
-  autoScrapeInterval,
-  setAutoScrapeInterval,
-  isAutoScrapeEnabled,
-  setIsAutoScrapeEnabled,
-  scrapeErrors,
-  lastScrapeTime,
-  onManualScrape,
-  onClearScrapeErrors
-}) => {
+export const MainTabs: React.FC<MainTabsProps> = ({ transfers, lastUpdated, currentLeague }) => {
   return (
     <Tabs defaultValue="teams" className="w-full">
       <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 backdrop-blur-md border-slate-700">
@@ -89,19 +53,7 @@ export const MainTabs: React.FC<MainTabsProps> = ({
       </TabsContent>
 
       <TabsContent value="api">
-        <RefreshConfig
-          refreshRate={refreshRate}
-          setRefreshRate={setRefreshRate}
-          isAutoRefresh={isAutoRefresh}
-          setIsAutoRefresh={setIsAutoRefresh}
-          onManualRefresh={onManualRefresh}
-          autoScrapeInterval={autoScrapeInterval}
-          setAutoScrapeInterval={setAutoScrapeInterval}
-          isAutoScrapeEnabled={isAutoScrapeEnabled}
-          setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
-          lastScrapeTime={lastScrapeTime}
-          onManualScrape={onManualScrape}
-        />
+        <ApiConfig />
       </TabsContent>
     </Tabs>
   );
