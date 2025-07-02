@@ -42,8 +42,8 @@ const Website = () => {
       <AppHeader lastUpdated={lastUpdated} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
-        {/* Recent Transfers Highlight */}
-        <div className="mb-4 sm:mb-8">
+        {/* Latest Rumours */}
+        <div className="mb-4">
           <RecentTransfers transfers={leagueTransfers} />
         </div>
 
