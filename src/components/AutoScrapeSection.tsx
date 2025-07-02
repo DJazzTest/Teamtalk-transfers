@@ -26,9 +26,8 @@ export const AutoScrapeSection: React.FC<AutoScrapeSectionProps> = ({
 
   const scrapeIntervalOptions = [
     { value: 0, label: 'None' },
-    { value: 300000, label: '5 minutes' },
     { value: 900000, label: '15 minutes' },
-    { value: 1500000, label: '25 minutes' },
+    { value: 1800000, label: '30 minutes' },
     { value: 3600000, label: '1 hour' },
     { value: 7200000, label: '2 hours' }
   ];

@@ -57,11 +57,6 @@ export const ApiConfig: React.FC<ApiConfigProps> = ({
       </Card>
 
       <RefreshConfig
-        refreshRate={refreshRate}
-        setRefreshRate={setRefreshRate}
-        isAutoRefresh={isAutoRefresh}
-        setIsAutoRefresh={setIsAutoRefresh}
-        onManualRefresh={onManualRefresh}
         autoScrapeInterval={autoScrapeInterval}
         setAutoScrapeInterval={setAutoScrapeInterval}
         isAutoScrapeEnabled={isAutoScrapeEnabled}

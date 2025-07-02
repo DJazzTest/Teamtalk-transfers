@@ -71,12 +71,8 @@ const Admin = () => {
         </div>
 
         {/* Admin Management Tabs */}
-        <Tabs defaultValue="data-debug" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <TabsTrigger value="data-debug" className="flex items-center gap-2">
-              <Database className="w-4 h-4" />
-              Data Debug
-            </TabsTrigger>
+        <Tabs defaultValue="scrape-debug" className="w-full">
+          <TabsList className="grid w-full grid-cols-5 bg-slate-800/50 backdrop-blur-md border-slate-700">
             <TabsTrigger value="scrape-debug" className="flex items-center gap-2">
               <Search className="w-4 h-4" />
               Scrape Debug
@@ -87,7 +83,7 @@ const Admin = () => {
             </TabsTrigger>
             <TabsTrigger value="refresh" className="flex items-center gap-2">
               <RefreshCw className="w-4 h-4" />
-              Refresh
+              Scrape
             </TabsTrigger>
             <TabsTrigger value="api" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
@@ -99,10 +95,6 @@ const Admin = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="data-debug">
-            <TransferDataDebugger transfers={allTransfers} />
-          </TabsContent>
-
           <TabsContent value="scrape-debug">
             <ScrapeDebugger />
           </TabsContent>
@@ -113,11 +105,6 @@ const Admin = () => {
 
           <TabsContent value="refresh">
             <RefreshConfig
-              refreshRate={refreshRate}
-              setRefreshRate={setRefreshRate}
-              isAutoRefresh={isAutoRefresh}
-              setIsAutoRefresh={setIsAutoRefresh}
-              onManualRefresh={handleManualRefresh}
               autoScrapeInterval={autoScrapeInterval}
               setAutoScrapeInterval={setAutoScrapeInterval}
               isAutoScrapeEnabled={isAutoScrapeEnabled}

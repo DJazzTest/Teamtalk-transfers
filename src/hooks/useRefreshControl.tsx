@@ -5,13 +5,13 @@ import { useToast } from '@/hooks/use-toast';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
 
 export const useRefreshControl = () => {
-  const [refreshRate, setRefreshRate] = useState(300000); // 5 minutes default
+  const [refreshRate, setRefreshRate] = useState(300000); // 5 minutes default (for confirmed transfers)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [isAutoRefresh, setIsAutoRefresh] = useState(true); // Enable by default
   const [refreshCounter, setRefreshCounter] = useState(0);
   
   // Auto-scraping states
-  const [autoScrapeInterval, setAutoScrapeInterval] = useState(300000); // 5 minutes default
+  const [autoScrapeInterval, setAutoScrapeInterval] = useState(900000); // 15 minutes default
   const [isAutoScrapeEnabled, setIsAutoScrapeEnabled] = useState(false);
   const [scrapeErrors, setScrapeErrors] = useState<string[]>([]);
   const [lastScrapeTime, setLastScrapeTime] = useState<Date | null>(null);

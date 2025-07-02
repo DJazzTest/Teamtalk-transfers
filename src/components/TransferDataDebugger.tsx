@@ -79,13 +79,6 @@ export const TransferDataDebugger: React.FC<TransferDataDebuggerProps> = ({ tran
     });
   };
 
-  const getTransfersByClub = (clubName: string) => {
-    const transfersIn = transfers.filter(t => t.toClub === clubName);
-    const transfersOut = transfers.filter(t => t.fromClub === clubName);
-    return { transfersIn, transfersOut };
-  };
-
-  const bournemouthData = getTransfersByClub('Bournemouth');
 
   return (
     <div className="space-y-6">
@@ -127,9 +120,8 @@ export const TransferDataDebugger: React.FC<TransferDataDebuggerProps> = ({ tran
           )}
 
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-slate-700">
+            <TabsList className="grid w-full grid-cols-3 bg-slate-700">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="bournemouth">Bournemouth</TabsTrigger>
               <TabsTrigger value="parsed">Parsed Data</TabsTrigger>
               <TabsTrigger value="sources">Data Sources</TabsTrigger>
             </TabsList>
@@ -161,69 +153,8 @@ export const TransferDataDebugger: React.FC<TransferDataDebuggerProps> = ({ tran
                 </Card>
               </div>
 
-              <div className="bg-slate-700/50 p-4 rounded-lg">
-                <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-orange-400" />
-                  Data Flow Analysis
-                </h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Sources being scraped:</span>
-                    <Badge variant="secondary">Club websites + News sites</Badge>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Parsing success rate:</span>
-                    <Badge variant={parsedTransfers.length > 0 ? 'default' : 'destructive'}>
-                      {parsedTransfers.length > 0 ? 'Some data found' : 'No parsed data'}
-                    </Badge>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-300">Last storage update:</span>
-                    <span className="text-gray-400">Check browser localStorage</span>
-                  </div>
-                </div>
-              </div>
             </TabsContent>
 
-            <TabsContent value="bournemouth" className="space-y-4">
-              <div className="bg-slate-700/50 p-4 rounded-lg">
-                <h3 className="text-white font-semibold mb-3">Bournemouth Transfer Data</h3>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-sm text-gray-300 mb-1">Current Transfers In:</p>
-                    <p className="text-white">{bournemouthData.transfersIn.length} transfers</p>
-                    {bournemouthData.transfersIn.map(t => (
-                      <div key={t.id} className="text-xs text-gray-400 ml-2">
-                        • {t.playerName} from {t.fromClub} ({t.source})
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div>
-                    <p className="text-sm text-gray-300 mb-1">Current Transfers Out:</p>
-                    <p className="text-white">{bournemouthData.transfersOut.length} transfers</p>
-                    {bournemouthData.transfersOut.map(t => (
-                      <div key={t.id} className="text-xs text-gray-400 ml-2">
-                        • {t.playerName} to {t.toClub} ({t.source})
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="border-t border-slate-600 pt-3">
-                    <p className="text-sm text-yellow-400 font-semibold mb-2">Expected Bournemouth Transfers:</p>
-                    <div className="text-xs text-gray-300 space-y-1">
-                      <div>• Eli Junior Kroupi (Transfer In from Lorient)</div>
-                      <div>• Dean Huijsen (Transfer Out to Real Madrid)</div>
-                      <div>• Jaidon Anthony (Transfer Out to Burnley)</div>
-                      <div>• Kepa Arrizabalaga (End of loan to Chelsea)</div>
-                      <div>• Adrien Truffert (Transfer In from Rennes)</div>
-                      <div>• Daniel Jebbison (Loan Out to Preston)</div>
-                      <div>• Max Aarons (Loan Out to Rangers)</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
 
             <TabsContent value="parsed" className="space-y-4">
               <div className="space-y-3">
