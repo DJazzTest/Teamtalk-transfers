@@ -3,6 +3,7 @@ import { TransferCountdown } from '@/components/TransferCountdown';
 import { RecentTransfers } from '@/components/RecentTransfers';
 import { RecentConfirmedTransfers } from '@/components/RecentConfirmedTransfers';
 import { TransferDataDebugger } from '@/components/TransferDataDebugger';
+import { ReliableSources } from '@/components/ReliableSources';
 import { AppHeader } from '@/components/AppHeader';
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { Card } from '@/components/ui/card';
@@ -53,6 +54,9 @@ const Website = () => {
         <div className="mb-4">
           <RecentTransfers transfers={leagueTransfers} />
         </div>
+
+        {/* Reliable Sources */}
+        <ReliableSources />
 
         {/* Transfer Window Countdown */}
         <Card className="mb-4 sm:mb-8 bg-white/95 backdrop-blur-md border-gray-200/50 shadow-lg">

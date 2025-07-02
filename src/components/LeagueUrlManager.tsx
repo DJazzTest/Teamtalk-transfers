@@ -38,15 +38,18 @@ export const LeagueUrlManager: React.FC<LeagueUrlManagerProps> = () => {
     if (savedUrls) {
       setUrls(JSON.parse(savedUrls));
     } else {
-      // Set default Premier League URLs
+      // Set default Premier League URLs - reliable sources
       const defaultUrls = [
+        'https://www.skysports.com/football/transfers',
+        'https://www.football365.com/transfers',
+        'https://www.bbc.com/sport/football',
         'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Arsenal/Transfer+News',
         'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Chelsea/Transfer+News',
         'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Liverpool/Transfer+News',
         'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Manchester+City/Transfer+News',
         'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Manchester+United/Transfer+News',
-        'https://www.skysports.com/football/transfers',
-        'https://www.bbc.com/sport/football'
+        'https://www.transfermarkt.com/premier-league/transfers/wettbewerb/GB1',
+        'https://www.goal.com/en/transfers'
       ];
       
       setUrls(defaultUrls);
