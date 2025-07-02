@@ -7,7 +7,7 @@ import { TransferResults } from './TransferResults';
 import { ApiConfig } from './ApiConfig';
 import { SourcesConfig } from './SourcesConfig';
 import { Transfer } from '@/types/transfer';
-import { League } from '@/hooks/useLeagueData';
+// Removed League type as championship is no longer supported
 
 interface MainTabsProps {
   transfers: Transfer[];
@@ -76,7 +76,6 @@ export const MainTabs: React.FC<MainTabsProps> = ({
       <TabsContent value="transfers">
         <TransferResults 
           lastUpdated={lastUpdated} 
-          currentLeague="premier"
         />
       </TabsContent>
 

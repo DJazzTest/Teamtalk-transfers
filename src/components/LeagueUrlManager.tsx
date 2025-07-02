@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Trash2, Plus, Globe, CheckCircle, AlertCircle, TestTube } from 'lucide-react';
 import { FirecrawlService } from '@/utils/FirecrawlService';
-import { League } from '@/hooks/useLeagueData';
+// Removed League import as championship is no longer supported
 
 interface CrawlStatus {
   url: string;
@@ -21,25 +21,25 @@ interface UrlTestStatus {
 }
 
 interface LeagueUrlManagerProps {
-  currentLeague: League;
+  // No league selection needed - Premier League only
 }
 
-export const LeagueUrlManager: React.FC<LeagueUrlManagerProps> = ({ currentLeague }) => {
+export const LeagueUrlManager: React.FC<LeagueUrlManagerProps> = () => {
   const [urls, setUrls] = useState<string[]>([]);
   const [newUrl, setNewUrl] = useState('');
   const [crawlStatuses, setCrawlStatuses] = useState<CrawlStatus[]>([]);
   const [testStatuses, setTestStatuses] = useState<UrlTestStatus[]>([]);
   const { toast } = useToast();
 
-  const getStorageKey = () => `${currentLeague}_transfer_urls`;
+  const getStorageKey = () => 'transfer_urls';
 
   useEffect(() => {
     const savedUrls = localStorage.getItem(getStorageKey());
     if (savedUrls) {
       setUrls(JSON.parse(savedUrls));
     } else {
-      // Set default URLs based on league
-      const defaultUrls = currentLeague === 'premier' ? [
+      // Set default Premier League URLs
+      const defaultUrls = [
         'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Arsenal/Transfer+News',
         'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Chelsea/Transfer+News',
         'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Liverpool/Transfer+News',
@@ -47,13 +47,6 @@ export const LeagueUrlManager: React.FC<LeagueUrlManagerProps> = ({ currentLeagu
         'https://www.newsnow.co.uk/h/Sport/Football/Premier+League/Manchester+United/Transfer+News',
         'https://www.skysports.com/football/transfers',
         'https://www.bbc.com/sport/football'
-      ] : [
-        'https://www.newsnow.co.uk/h/Sport/Football/Championship/Birmingham+City/Transfer+News',
-        'https://www.newsnow.co.uk/h/Sport/Football/Championship/Leeds+United/Transfer+News',
-        'https://www.newsnow.co.uk/h/Sport/Football/Championship/Leicester+City/Transfer+News',
-        'https://www.newsnow.co.uk/h/Sport/Football/Championship/Southampton/Transfer+News',
-        'https://www.skysports.com/football/championship/transfers',
-        'https://www.bbc.com/sport/football/championship'
       ];
       
       setUrls(defaultUrls);
@@ -70,7 +63,7 @@ export const LeagueUrlManager: React.FC<LeagueUrlManagerProps> = ({ currentLeagu
     return () => {
       window.removeEventListener('crawlStatusUpdate', handleCrawlStatusUpdate as EventListener);
     };
-  }, [currentLeague]);
+  }, []);
 
   const isValidUrl = (url: string): boolean => {
     try {
@@ -220,7 +213,7 @@ export const LeagueUrlManager: React.FC<LeagueUrlManagerProps> = ({ currentLeagu
     }
   };
 
-  const leagueName = currentLeague === 'premier' ? 'Premier League' : 'Championship';
+  const leagueName = 'Premier League';
 
   return (
     <Card className="bg-white/10 backdrop-blur-md border-white/20">
