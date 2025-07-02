@@ -13,6 +13,7 @@ import { TransferIntegrationService } from '@/utils/transferIntegration';
 import { TransferFilters } from './TransferFilters';
 import { TransferStats } from './TransferStats';
 import { ScrapeControls } from './ScrapeControls';
+import { EnhancedScrapeControls } from './EnhancedScrapeControls';
 
 interface TransferResultsProps {
   lastUpdated: Date;
@@ -30,6 +31,7 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [crawlStatuses, setCrawlStatuses] = useState<CrawlStatus[]>([]);
   const [crawlProgress, setCrawlProgress] = useState<{ completed: number; total: number; currentUrl: string } | null>(null);
+  const [isEnhancedScrapeEnabled, setIsEnhancedScrapeEnabled] = useState(false);
   const { toast } = useToast();
 
   // Update transfers when data changes
@@ -245,6 +247,12 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
           </div>
         </Card>
       )}
+      
+      {/* Enhanced Transfer Detection */}
+      <EnhancedScrapeControls 
+        isEnabled={isEnhancedScrapeEnabled}
+        onToggle={setIsEnhancedScrapeEnabled}
+      />
       
       {/* Progress indicator */}
       <ScrapeControls crawlProgress={crawlProgress} />

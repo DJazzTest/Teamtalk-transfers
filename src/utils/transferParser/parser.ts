@@ -2,6 +2,7 @@
 import { ParsedTransferData } from './types';
 import { CONFIRMED_TRANSFER_KEYWORDS, EXCLUDED_KEYWORDS, TRUSTED_SOURCES, KNOWN_PLAYERS } from './constants';
 import { extractSentences, extractPlayerName, extractClubs, extractFee, isFromTrustedSource } from './extractors';
+import { EnhancedTransferParser } from '../transferDetection/enhancedParser';
 
 export function parseTransfersFromContent(scrapedContent: string, sourceUrl: string): ParsedTransferData[] {
   console.log('=== PARSING TRANSFERS FROM:', sourceUrl, '===');
@@ -14,6 +15,10 @@ export function parseTransfersFromContent(scrapedContent: string, sourceUrl: str
   }
   
   const transfers: ParsedTransferData[] = [];
+  
+  // Use enhanced parsing first for better detection
+  const enhancedTransfers = EnhancedTransferParser.parseEnhancedContent(scrapedContent, sourceUrl);
+  transfers.push(...enhancedTransfers);
   
   // Add specific known transfers based on content analysis (only if from trusted source)
   const knownTransfers = extractKnownTransfers(scrapedContent, sourceUrl);
