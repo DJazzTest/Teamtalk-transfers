@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const chelseaTransfers: Transfer[] = [
   {
+    id: 'chelsea-joao-pedro-2025',
+    playerName: 'Joao Pedro',
+    fromClub: 'Brighton & Hove Albion',
+    toClub: 'Chelsea',
+    fee: 'Over £50M',
+    date: '2025-01-18T15:00:00Z',
+    source: 'chelseafc.com',
+    status: 'confirmed'
+  },
+  {
     id: 'chelsea-essugo-2025',
     playerName: 'Dario Essugo',
     fromClub: 'Sporting CP',
@@ -17,7 +27,7 @@ export const chelseaTransfers: Transfer[] = [
     playerName: 'Estevao Willian',
     fromClub: 'Palmeiras',
     toClub: 'Chelsea',
-    fee: '£51M',
+    fee: '£29.1M',
     date: '2025-01-15T11:30:00Z',
     source: 'chelseafc.com',
     status: 'confirmed'
@@ -27,7 +37,7 @@ export const chelseaTransfers: Transfer[] = [
     playerName: 'Liam Delap',
     fromClub: 'Ipswich Town',
     toClub: 'Chelsea',
-    fee: '£20M',
+    fee: '£30M',
     date: '2025-01-12T16:00:00Z',
     source: 'chelseafc.com',
     status: 'confirmed'

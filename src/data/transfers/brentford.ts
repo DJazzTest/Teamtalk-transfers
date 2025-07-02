@@ -7,7 +7,7 @@ export const brentfordTransfers: Transfer[] = [
     playerName: 'Michael Kayode',
     fromClub: 'Fiorentina',
     toClub: 'Brentford',
-    fee: '£8M',
+    fee: 'Undisclosed',
     date: '2025-01-15T14:30:00Z',
     source: 'brentfordfc.com',
     status: 'confirmed'
@@ -17,7 +17,7 @@ export const brentfordTransfers: Transfer[] = [
     playerName: 'Romelle Donovan',
     fromClub: 'Birmingham City',
     toClub: 'Brentford',
-    fee: '£2M',
+    fee: 'Undisclosed',
     date: '2025-01-14T10:00:00Z',
     source: 'brentfordfc.com',
     status: 'confirmed'

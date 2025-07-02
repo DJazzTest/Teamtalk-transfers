@@ -3,6 +3,26 @@ import { Transfer } from '@/types/transfer';
 
 export const arsenalTransfers: Transfer[] = [
   {
+    id: 'arsenal-kepa-2025',
+    playerName: 'Kepa Arrizabalaga',
+    fromClub: 'Chelsea',
+    toClub: 'Arsenal',
+    fee: '£5M',
+    date: '2025-01-18T12:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-partey-2025',
+    playerName: 'Thomas Partey',
+    fromClub: 'Arsenal',
+    toClub: 'Free Agent',
+    fee: 'Released',
+    date: '2025-01-16T10:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
     id: 'arsenal-jorginho-2025',
     playerName: 'Jorginho',
     fromClub: 'Arsenal',

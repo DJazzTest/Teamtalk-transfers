@@ -3,11 +3,21 @@ import { Transfer } from '@/types/transfer';
 
 export const astonVillaTransfers: Transfer[] = [
   {
+    id: 'villa-redmond-2025',
+    playerName: 'Zepiqueno Redmond',
+    fromClub: 'Feyenoord',
+    toClub: 'Aston Villa',
+    fee: 'Free Transfer',
+    date: '2025-01-17T11:00:00Z',
+    source: 'avfc.co.uk',
+    status: 'confirmed'
+  },
+  {
     id: 'villa-ozcan-2025',
     playerName: 'Yasin Ozcan',
     fromClub: 'Kasimpasa',
     toClub: 'Aston Villa',
-    fee: '£3M',
+    fee: '£5.8M',
     date: '2025-01-14T13:00:00Z',
     source: 'avfc.co.uk',
     status: 'confirmed'

@@ -3,6 +3,26 @@ import { Transfer } from '@/types/transfer';
 
 export const liverpoolTransfers: Transfer[] = [
   {
+    id: 'liverpool-quansah-2025',
+    playerName: 'Jarell Quansah',
+    fromClub: 'Liverpool',
+    toClub: 'Bayer Leverkusen',
+    fee: '£30M rising to £35M',
+    date: '2025-01-18T14:00:00Z',
+    source: 'liverpoolfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'liverpool-kelleher-2025',
+    playerName: 'Caoimhin Kelleher',
+    fromClub: 'Liverpool',
+    toClub: 'Brentford',
+    fee: '£18M',
+    date: '2025-01-17T16:30:00Z',
+    source: 'liverpoolfc.com',
+    status: 'confirmed'
+  },
+  {
     id: 'liverpool-mamardashvili-2025',
     playerName: 'Giorgi Mamardashvili',
     fromClub: 'Valencia',
