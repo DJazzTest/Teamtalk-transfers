@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TransferCountdown } from '@/components/TransferCountdown';
 import { RecentTransfers } from '@/components/RecentTransfers';
+import { RecentConfirmedTransfers } from '@/components/RecentConfirmedTransfers';
 import { AppHeader } from '@/components/AppHeader';
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { Card } from '@/components/ui/card';
@@ -42,6 +43,11 @@ const Website = () => {
       <AppHeader lastUpdated={lastUpdated} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
+        {/* Latest Confirmed Transfers */}
+        <div className="mb-4">
+          <RecentConfirmedTransfers transfers={leagueTransfers} />
+        </div>
+
         {/* Latest Rumours */}
         <div className="mb-4">
           <RecentTransfers transfers={leagueTransfers} />
