@@ -2,8 +2,10 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { ApiKeyManager } from './ApiKeyManager';
+import { RefreshConfig } from './RefreshConfig';
+import { CountdownConfig } from './CountdownConfig';
+import { CrawlErrors } from './CrawlErrors';
 import { Settings } from 'lucide-react';
-import { Transfer } from '@/types/transfer';
 
 interface ApiConfigProps {
   refreshRate: number;
@@ -11,21 +13,35 @@ interface ApiConfigProps {
   isAutoRefresh: boolean;
   setIsAutoRefresh: (enabled: boolean) => void;
   onManualRefresh: () => void;
+  countdownTarget: string;
+  setCountdownTarget: (target: string) => void;
   autoScrapeInterval: number;
   setAutoScrapeInterval: (interval: number) => void;
   isAutoScrapeEnabled: boolean;
   setIsAutoScrapeEnabled: (enabled: boolean) => void;
+  scrapeErrors: string[];
   lastScrapeTime: Date | null;
   onManualScrape: () => void;
-  scrapeErrors: string[];
   onClearScrapeErrors: () => void;
-  countdownTarget: string;
-  setCountdownTarget: (target: string) => void;
-  lastUpdated: Date;
-  transfers: Transfer[];
 }
 
-export const ApiConfig: React.FC<ApiConfigProps> = () => {
+export const ApiConfig: React.FC<ApiConfigProps> = ({
+  refreshRate,
+  setRefreshRate,
+  isAutoRefresh,
+  setIsAutoRefresh,
+  onManualRefresh,
+  countdownTarget,
+  setCountdownTarget,
+  autoScrapeInterval,
+  setAutoScrapeInterval,
+  isAutoScrapeEnabled,
+  setIsAutoScrapeEnabled,
+  scrapeErrors,
+  lastScrapeTime,
+  onManualScrape,
+  onClearScrapeErrors
+}) => {
   return (
     <div className="space-y-6">
       <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
@@ -39,6 +55,32 @@ export const ApiConfig: React.FC<ApiConfigProps> = () => {
           <ApiKeyManager />
         </div>
       </Card>
+
+      <RefreshConfig
+        refreshRate={refreshRate}
+        setRefreshRate={setRefreshRate}
+        isAutoRefresh={isAutoRefresh}
+        setIsAutoRefresh={setIsAutoRefresh}
+        onManualRefresh={onManualRefresh}
+        autoScrapeInterval={autoScrapeInterval}
+        setAutoScrapeInterval={setAutoScrapeInterval}
+        isAutoScrapeEnabled={isAutoScrapeEnabled}
+        setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
+        lastScrapeTime={lastScrapeTime}
+        onManualScrape={onManualScrape}
+      />
+
+      <CountdownConfig
+        countdownTarget={countdownTarget}
+        setCountdownTarget={setCountdownTarget}
+      />
+
+      {scrapeErrors.length > 0 && (
+        <CrawlErrors
+          scrapeErrors={scrapeErrors}
+          onClearScrapeErrors={onClearScrapeErrors}
+        />
+      )}
     </div>
   );
 };

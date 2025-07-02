@@ -128,25 +128,7 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="api">
-            <ApiConfig
-              refreshRate={refreshRate}
-              setRefreshRate={setRefreshRate}
-              isAutoRefresh={isAutoRefresh}
-              setIsAutoRefresh={setIsAutoRefresh}
-              onManualRefresh={handleManualRefresh}
-              autoScrapeInterval={autoScrapeInterval}
-              setAutoScrapeInterval={setAutoScrapeInterval}
-              isAutoScrapeEnabled={isAutoScrapeEnabled}
-              setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
-              lastScrapeTime={lastScrapeTime}
-              onManualScrape={handleManualScrape}
-              scrapeErrors={scrapeErrors}
-              onClearScrapeErrors={clearScrapeErrors}
-              countdownTarget={countdownTarget}
-              setCountdownTarget={setCountdownTarget}
-              lastUpdated={lastUpdated}
-              transfers={allTransfers}
-            />
+            <ApiConfig />
           </TabsContent>
 
           <TabsContent value="errors">

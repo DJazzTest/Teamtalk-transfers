@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
 import { Transfer, CrawlStatus } from '@/types/transfer';
-import { useLeagueData } from '@/hooks/useLeagueData';
+import { useLeagueData, League } from '@/hooks/useLeagueData';
 import { groupTransfersByClub, groupTransfersByStatus } from '@/utils/transferUtils';
 import { TransferCard } from './TransferCard';
 import { LanesView } from './LanesView';
@@ -17,7 +16,7 @@ import { ScrapeControls } from './ScrapeControls';
 
 interface TransferResultsProps {
   lastUpdated: Date;
-  currentLeague: 'premier';
+  currentLeague: League;
 }
 
 export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated, currentLeague }) => {

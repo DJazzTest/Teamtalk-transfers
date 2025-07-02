@@ -1,8 +1,8 @@
+
 import { Transfer } from '@/types/transfer';
 import { TransferParser, ParsedTransferData } from './transferParser';
 import { PREMIER_LEAGUE_CLUBS, CLUB_VARIATIONS } from './transferParser/constants';
 import { allClubTransfers } from '@/data/transfers';
-import { updateRumorsFromOfficialSources } from '@/data/transfers/rumors';
 
 export interface CrawlResult {
   url: string;
@@ -15,45 +15,44 @@ export class TransferIntegrationService {
   private static STORAGE_KEY = 'parsed_transfers';
 
   static async processCrawlResults(crawlResults: CrawlResult[]): Promise<Transfer[]> {
-    console.log('=== PROCESSING CRAWL RESULTS WITH OFFICIAL RUMORS ===');
+    console.log('=== PROCESSING CRAWL RESULTS WITH VERIFICATION RULES ===');
     console.log('Number of crawl results:', crawlResults.length);
     
-    const confirmedTransfers: Transfer[] = [];
-    const officialRumors: Transfer[] = [];
+    const allTransfers: Transfer[] = [];
 
     for (const result of crawlResults) {
       if (result.success && result.data) {
         try {
           console.log(`\n--- Processing result from ${result.url} ---`);
           const transfers = this.extractTransfersFromCrawlData(result.data, result.url);
+          // Only add CONFIRMED transfers
+          const confirmedTransfers = transfers.filter(t => t.status === 'confirmed');
+          allTransfers.push(...confirmedTransfers);
+          console.log(`✓ Extracted ${confirmedTransfers.length} CONFIRMED transfers from ${result.url} (${transfers.length} total found)`);
           
-          // Separate confirmed transfers from rumors
-          const confirmed = transfers.filter(t => t.status === 'confirmed');
-          const rumors = transfers.filter(t => t.status === 'rumored');
-          
-          confirmedTransfers.push(...confirmed);
-          officialRumors.push(...rumors);
-          
-          console.log(`✓ Extracted ${confirmed.length} CONFIRMED transfers and ${rumors.length} OFFICIAL RUMORS from ${result.url}`);
+          // Log transfer details for debugging
+          confirmedTransfers.forEach(transfer => {
+            console.log(`  - CONFIRMED: ${transfer.playerName}: ${transfer.fromClub} -> ${transfer.toClub}`);
+          });
         } catch (error) {
           console.error(`❌ Error processing transfers from ${result.url}:`, error);
         }
+      } else if (!result.success) {
+        console.log(`❌ Crawl failed for ${result.url}: ${result.error}`);
       }
     }
 
-    // Store confirmed transfers
-    const deduplicatedConfirmed = this.deduplicateTransfers(confirmedTransfers);
-    this.storeParsedTransfers(deduplicatedConfirmed);
+    // Store parsed transfers (only confirmed ones)
+    const deduplicated = this.deduplicateTransfers(allTransfers);
+    this.storeParsedTransfers(deduplicated);
     
-    // Update official rumors
-    const deduplicatedRumors = this.deduplicateTransfers(officialRumors);
-    updateRumorsFromOfficialSources(deduplicatedRumors);
+    console.log(`\n=== CRAWL PROCESSING COMPLETE WITH VERIFICATION ===`);
+    console.log(`Total CONFIRMED transfers after deduplication: ${deduplicated.length}`);
+    deduplicated.forEach(transfer => {
+      console.log(`Final CONFIRMED: ${transfer.playerName} (${transfer.fromClub} -> ${transfer.toClub})`);
+    });
     
-    console.log(`\n=== CRAWL PROCESSING COMPLETE ===`);
-    console.log(`Total CONFIRMED transfers: ${deduplicatedConfirmed.length}`);
-    console.log(`Total OFFICIAL RUMORS: ${deduplicatedRumors.length}`);
-    
-    return [...deduplicatedConfirmed, ...deduplicatedRumors];
+    return deduplicated;
   }
 
   private static extractTransfersFromCrawlData(crawlData: any, sourceUrl: string): Transfer[] {
@@ -199,12 +198,12 @@ export class TransferIntegrationService {
     }
   }
 
-  // Updated to include official rumors
+  // Updated to only use real transfer data
   static getAllTransfers(): Transfer[] {
     const parsedTransfers = this.getParsedTransfers();
     console.log(`Using ${parsedTransfers.length} parsed transfers with ${allClubTransfers.length} real transfers`);
     
-    // Combine real transfers with parsed transfers (includes official rumors)
+    // Combine only real transfers with parsed transfers
     const combined = [...parsedTransfers, ...allClubTransfers];
     const merged = this.deduplicateTransfers(combined);
     

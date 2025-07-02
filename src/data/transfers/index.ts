@@ -1,3 +1,4 @@
+
 import { Transfer } from '@/types/transfer';
 import { arsenalTransfers } from './arsenal';
 import { astonVillaTransfers } from './astonVilla';
@@ -114,11 +115,9 @@ const burnleyTransfers: Transfer[] = [
   }
 ];
 
-// Combine all REAL transfers including official rumors from trusted sources
+// Combine all transfers - ONLY REAL TRANSFERS
 export const allClubTransfers: Transfer[] = [
-  // Official rumors from trusted sources (populated by scraping)
   ...latestRumors,
-  // Real confirmed transfers from individual club files
   ...arsenalTransfers,
   ...astonVillaTransfers,
   ...bournemouthTransfers,

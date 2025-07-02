@@ -1,10 +1,13 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { UrlManager } from './UrlManager';
+import { LeagueUrlManager } from './LeagueUrlManager';
 import { Globe } from 'lucide-react';
+import { useLeagueData } from '@/hooks/useLeagueData';
 
 export const SourcesConfig: React.FC = () => {
+  const { currentLeague } = useLeagueData();
+
   return (
     <div className="space-y-6">
       <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
@@ -15,7 +18,7 @@ export const SourcesConfig: React.FC = () => {
             </div>
             <h2 className="text-2xl font-bold text-white">Transfer Sources</h2>
           </div>
-          <UrlManager />
+          <LeagueUrlManager currentLeague={currentLeague} />
         </div>
       </Card>
     </div>
