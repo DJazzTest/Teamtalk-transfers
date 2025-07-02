@@ -14,6 +14,8 @@ import { TransferFilters } from './TransferFilters';
 import { TransferStats } from './TransferStats';
 import { ScrapeControls } from './ScrapeControls';
 import { EnhancedScrapeControls } from './EnhancedScrapeControls';
+import { TransferActivityLog } from './TransferActivityLog';
+import { TransferTracker } from '@/utils/transferTracker';
 
 interface TransferResultsProps {
   lastUpdated: Date;
@@ -46,16 +48,57 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
       console.log('🔄 Refresh event received - updating transfer data');
       setIsRefreshing(true);
       
+      // Check for new transfers before updating
+      const previousTransfers = allTransfers;
+      
       // Add a small delay to show the loading state
       setTimeout(() => {
         console.log('📊 Refreshing transfer data with latest real transfers');
-        setAllTransfers([...leagueTransfers]);
+        const newTransferData = [...leagueTransfers];
+        setAllTransfers(newTransferData);
+        
+        // Check for new transfers and log them
+        const newTransfers = newTransferData.filter(transfer => 
+          !previousTransfers.some(prev => prev.id === transfer.id)
+        );
+        
+        const updatedTransfers = newTransferData.filter(transfer => {
+          const prevTransfer = previousTransfers.find(prev => prev.id === transfer.id);
+          return prevTransfer && (
+            prevTransfer.status !== transfer.status ||
+            prevTransfer.fee !== transfer.fee ||
+            prevTransfer.source !== transfer.source
+          );
+        });
+
+        // Log new and updated transfers
+        newTransfers.forEach(transfer => {
+          TransferTracker.logTransfer(transfer, 'added');
+        });
+        
+        updatedTransfers.forEach(transfer => {
+          const action = transfer.status === 'confirmed' ? 'confirmed' : 'updated';
+          TransferTracker.logTransfer(transfer, action);
+        });
+
         setIsRefreshing(false);
         
-        toast({
-          title: "Data Refreshed",
-          description: "Transfer data has been updated successfully",
-        });
+        // Show notification with new transfer count
+        const totalNew = newTransfers.length + updatedTransfers.length;
+        if (totalNew > 0) {
+          toast({
+            title: "New Transfer Activity Detected",
+            description: `${newTransfers.length} new transfers, ${updatedTransfers.length} updates found`,
+          });
+          
+          // Dispatch event for activity log to update
+          window.dispatchEvent(new CustomEvent('transferLogged'));
+        } else {
+          toast({
+            title: "Data Refreshed",
+            description: "No new transfer activity detected",
+          });
+        }
       }, 500);
     };
 
@@ -259,6 +302,9 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
 
       {/* Crawl Status Display */}
       <CrawlStatusDisplay crawlStatuses={crawlStatuses} />
+
+      {/* Transfer Activity Log */}
+      <TransferActivityLog />
 
       {/* Stats */}
       <TransferStats transfers={filteredTransfers} />
