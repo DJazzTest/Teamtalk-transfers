@@ -2,7 +2,8 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, TrendingUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { MessageCircle, TrendingUp, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 
 interface RecentTransfersProps {
@@ -10,11 +11,15 @@ interface RecentTransfersProps {
 }
 
 export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) => {
-  // Get the most recent rumored transfers (last 3)
+  // Get the most recent rumored transfers (show more players)
   const recentRumors = transfers
     .filter(transfer => transfer.status === 'rumored')
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3);
+    .slice(0, 6);
+
+  const handleRefresh = () => {
+    window.dispatchEvent(new CustomEvent('manualRefresh'));
+  };
 
   if (recentRumors.length === 0) {
     return null;
@@ -23,14 +28,24 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
   return (
     <Card className="border-gray-200/50 shadow-lg" style={{ backgroundColor: '#2F517A' }}>
       <div className="p-3 sm:p-6">
-        <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-          <div className="bg-blue-100 p-1.5 sm:p-2 rounded-lg">
-            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="bg-blue-100 p-1.5 sm:p-2 rounded-lg">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-blue-400">Latest Rumours</h3>
+            <Badge className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+              BREAKING
+            </Badge>
           </div>
-          <h3 className="text-lg sm:text-xl font-bold text-blue-400">Latest Rumours</h3>
-          <Badge className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
-            BREAKING
-          </Badge>
+          <Button 
+            onClick={handleRefresh}
+            variant="outline" 
+            size="sm"
+            className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white"
+          >
+            <RefreshCw className="w-4 h-4" />
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">

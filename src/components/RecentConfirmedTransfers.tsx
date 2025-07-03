@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, TrendingUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { CheckCircle, TrendingUp, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 
 interface RecentConfirmedTransfersProps {
@@ -15,6 +16,10 @@ export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> =
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3);
 
+  const handleRefresh = () => {
+    window.dispatchEvent(new CustomEvent('manualRefresh'));
+  };
+
   if (recentConfirmed.length === 0) {
     return null;
   }
@@ -22,14 +27,24 @@ export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> =
   return (
     <Card className="border-gray-200/50 shadow-lg" style={{ backgroundColor: '#2F517A' }}>
       <div className="p-3 sm:p-6">
-        <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-          <div className="bg-green-100 p-1.5 sm:p-2 rounded-lg">
-            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="bg-green-100 p-1.5 sm:p-2 rounded-lg">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-green-400">Latest Confirmed Transfers</h3>
+            <Badge className="bg-green-600 hover:bg-green-700 text-white text-xs">
+              CONFIRMED
+            </Badge>
           </div>
-          <h3 className="text-lg sm:text-xl font-bold text-green-400">Latest Confirmed Transfers</h3>
-          <Badge className="bg-green-600 hover:bg-green-700 text-white text-xs">
-            CONFIRMED
-          </Badge>
+          <Button 
+            onClick={handleRefresh}
+            variant="outline" 
+            size="sm"
+            className="border-green-400 text-green-400 hover:bg-green-400 hover:text-white"
+          >
+            <RefreshCw className="w-4 h-4" />
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
