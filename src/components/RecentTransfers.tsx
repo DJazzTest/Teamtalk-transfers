@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,14 +11,32 @@ interface RecentTransfersProps {
 }
 
 export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) => {
-  // Get the most recent rumored transfers (show more players)
+  // Get the most recent rumored transfers (keep to 3)
   const recentRumors = transfers
     .filter(transfer => transfer.status === 'rumored')
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 6);
+    .slice(0, 3);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleRefresh = () => {
+    setIsRefreshing(true);
+    const previousCount = recentRumors.length;
+    
     window.dispatchEvent(new CustomEvent('manualRefresh'));
+    
+    // Show feedback after refresh
+    setTimeout(() => {
+      setIsRefreshing(false);
+      const currentRumors = transfers
+        .filter(transfer => transfer.status === 'rumored')
+        .slice(0, 3);
+      
+      if (currentRumors.length > previousCount) {
+        // Could add toast notification here if needed
+        console.log(`Found ${currentRumors.length - previousCount} new rumours`);
+      }
+    }, 1000);
   };
 
   if (recentRumors.length === 0) {
@@ -40,11 +58,12 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
           </div>
           <Button 
             onClick={handleRefresh}
+            disabled={isRefreshing}
             variant="outline" 
             size="sm"
-            className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white"
+            className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white disabled:opacity-50"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           </Button>
         </div>
 

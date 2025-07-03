@@ -7,26 +7,32 @@ export const ReliableSources = () => {
     {
       name: 'Sky Sports',
       url: 'https://www.skysports.com/football/transfers',
-      description: 'Breaking transfer news and rumors',
+      description: 'Fast delivery & transparent fees',
       color: 'bg-blue-500'
     },
     {
       name: 'Football365',
       url: 'https://www.football365.com/transfers',
-      description: 'In-depth transfer analysis',
+      description: 'In-depth analysis & FCA regulated',
       color: 'bg-green-500'
     },
     {
       name: 'TeamTalk',
       url: 'https://www.teamtalk.com/transfers',
-      description: 'Latest transfer gossip',
+      description: 'Latest gossip & wide coverage',
       color: 'bg-purple-500'
     },
     {
-      name: 'PlanetSport',
-      url: 'https://www.planetsport.com/football/transfers',
-      description: 'Transfer news and insights',
-      color: 'bg-orange-500'
+      name: 'BBC Sport',
+      url: 'https://www.bbc.com/sport/football/transfers',
+      description: 'Trusted source & instant updates',
+      color: 'bg-red-500'
+    },
+    {
+      name: 'ESPN',
+      url: 'https://www.espn.com/soccer/transfers',
+      description: 'Global coverage & expert analysis',
+      color: 'bg-indigo-500'
     }
   ];
 
@@ -37,9 +43,9 @@ export const ReliableSources = () => {
           <div className="p-2 bg-blue-100 rounded-lg">
             <Globe className="w-6 h-6 text-blue-600" />
           </div>
-          <h3 className="text-xl font-bold text-gray-800">Reliable Sources for transfers in out gossip and rumors</h3>
+          <h3 className="text-xl font-bold text-gray-800">Top 5 Reliable Transfer Sources</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {reliableSources.map((source, index) => (
             <a
               key={index}

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { TransferCountdown } from '@/components/TransferCountdown';
 import { RecentTransfers } from '@/components/RecentTransfers';
 import { RecentConfirmedTransfers } from '@/components/RecentConfirmedTransfers';
-import { TransferDataDebugger } from '@/components/TransferDataDebugger';
+
 import { ReliableSources } from '@/components/ReliableSources';
 import { AppHeader } from '@/components/AppHeader';
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Users, Database } from 'lucide-react';
+import { Shield, Users } from 'lucide-react';
 import { TeamTransferView } from '@/components/TeamTransferView';
 import { TransferResults } from '@/components/TransferResults';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
@@ -65,9 +65,9 @@ const Website = () => {
           </div>
         </Card>
 
-        {/* Main Content Tabs - Teams, Transfers, and Data Debug */}
+        {/* Main Content Tabs - Teams and Transfers */}
         <Tabs defaultValue="teams" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 backdrop-blur-md border-slate-700">
             <TabsTrigger value="teams" className="flex items-center gap-2">
               <Shield className="w-4 h-4" />
               Teams
@@ -75,10 +75,6 @@ const Website = () => {
             <TabsTrigger value="transfers" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
               All Transfers
-            </TabsTrigger>
-            <TabsTrigger value="data-debug" className="flex items-center gap-2">
-              <Database className="w-4 h-4" />
-              Data Debug
             </TabsTrigger>
           </TabsList>
 
@@ -90,10 +86,6 @@ const Website = () => {
             <TransferResults 
               lastUpdated={lastUpdated} 
             />
-          </TabsContent>
-
-          <TabsContent value="data-debug">
-            <TransferDataDebugger transfers={leagueTransfers} />
           </TabsContent>
         </Tabs>
       </div>

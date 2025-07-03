@@ -12,7 +12,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
         <div className="flex items-center justify-between">
           <div className="min-w-0 flex-1">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent truncate drop-shadow-md">
-              Planet sport Reliable Sources for Transfer News, Gossip, and Rumours
+              Top Transfer News Hub - Latest Rumours & Confirmed Deals
             </h1>
             <p className="text-gray-600 text-xs sm:text-sm drop-shadow-sm">Live Transfer Tracking</p>
           </div>

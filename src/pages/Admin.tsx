@@ -83,10 +83,14 @@ const Admin = () => {
 
         {/* Admin Management Tabs */}
         <Tabs defaultValue="scrape-debug" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <TabsList className="grid w-full grid-cols-6 bg-slate-800/50 backdrop-blur-md border-slate-700">
             <TabsTrigger value="scrape-debug" className="flex items-center gap-2">
               <Search className="w-4 h-4" />
               Scrape Debug
+            </TabsTrigger>
+            <TabsTrigger value="data-debug" className="flex items-center gap-2">
+              <Database className="w-4 h-4" />
+              Data Debug
             </TabsTrigger>
             <TabsTrigger value="sources" className="flex items-center gap-2">
               <Globe className="w-4 h-4" />
@@ -108,6 +112,10 @@ const Admin = () => {
 
           <TabsContent value="scrape-debug">
             <ScrapeDebugger />
+          </TabsContent>
+
+          <TabsContent value="data-debug">
+            <TransferDataDebugger transfers={allTransfers} />
           </TabsContent>
 
           <TabsContent value="sources">
