@@ -10,8 +10,6 @@ import { TransferStats } from './TransferStats';
 import { ScrapeControls } from './ScrapeControls';
 import { EnhancedScrapeControls } from './EnhancedScrapeControls';
 import { TransferActivityLog } from './TransferActivityLog';
-import { RumorTracker } from './RumorTracker';
-import { RssIntegration } from './RssIntegration';
 import { useTransferData } from '@/hooks/useTransferData';
 import { useTransferScraping } from '@/hooks/useTransferScraping';
 
@@ -94,15 +92,6 @@ export const TransferResults: React.FC<TransferResultsProps> = ({ lastUpdated })
 
       {/* Crawl Status Display */}
       <CrawlStatusDisplay crawlStatuses={crawlStatuses} />
-
-      {/* Enhanced Rumor Tracker */}
-      <RumorTracker 
-        transfers={filteredTransfers} 
-        onFiltersChange={(filters) => console.log('Filters applied:', filters)}
-      />
-
-      {/* RSS & API Integration */}
-      <RssIntegration />
 
       {/* Transfer Activity Log */}
       <TransferActivityLog />
