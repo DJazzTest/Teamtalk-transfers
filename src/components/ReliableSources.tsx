@@ -6,19 +6,19 @@ export const ReliableSources = () => {
   const reliableSources = [
     {
       name: 'Sky Sports',
-      url: 'https://www.skysports.com/football/transfers',
+      url: 'https://www.skysports.com/transfer-centre',
       description: 'Fast delivery & transparent fees',
       color: 'bg-blue-500'
     },
     {
       name: 'Football365',
-      url: 'https://www.football365.com/transfers',
+      url: 'https://www.football365.com/transfer-gossip',
       description: 'In-depth analysis & FCA regulated',
       color: 'bg-green-500'
     },
     {
       name: 'TeamTalk',
-      url: 'https://www.teamtalk.com/transfers',
+      url: 'https://www.teamtalk.com/transfer-news',
       description: 'Latest gossip & wide coverage',
       color: 'bg-purple-500'
     },

@@ -10,7 +10,8 @@ import { CrawlErrors } from '@/components/CrawlErrors';
 import { CountdownConfig } from '@/components/CountdownConfig';
 import { ScrapeDebugger } from '@/components/ScrapeDebugger';
 import { TransferDataDebugger } from '@/components/TransferDataDebugger';
-import { Settings, Globe, RefreshCw, AlertTriangle, Clock, Search, Database } from 'lucide-react';
+import { UrlTester } from '@/components/UrlTester';
+import { Settings, Globe, RefreshCw, AlertTriangle, Clock, Search, Database, TestTube } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
@@ -83,7 +84,7 @@ const Admin = () => {
 
         {/* Admin Management Tabs */}
         <Tabs defaultValue="scrape-debug" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <TabsList className="grid w-full grid-cols-7 bg-slate-800/50 backdrop-blur-md border-slate-700">
             <TabsTrigger value="scrape-debug" className="flex items-center gap-2">
               <Search className="w-4 h-4" />
               Scrape Debug
@@ -107,6 +108,10 @@ const Admin = () => {
             <TabsTrigger value="errors" className="flex items-center gap-2">
               <AlertTriangle className="w-4 h-4" />
               Errors
+            </TabsTrigger>
+            <TabsTrigger value="url-test" className="flex items-center gap-2">
+              <TestTube className="w-4 h-4" />
+              URL Test
             </TabsTrigger>
           </TabsList>
 
@@ -158,6 +163,10 @@ const Admin = () => {
               scrapeErrors={scrapeErrors}
               onClearScrapeErrors={clearScrapeErrors}
             />
+          </TabsContent>
+
+          <TabsContent value="url-test">
+            <UrlTester />
           </TabsContent>
         </Tabs>
 
