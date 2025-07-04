@@ -15,12 +15,29 @@ export const UrlTester = () => {
   const [isTestingAll, setIsTestingAll] = useState(false);
   const { toast } = useToast();
 
-  const reliableSourceUrls = [
+  const allSourceUrls = [
+    // Top 5 Reliable Sources
     'https://www.skysports.com/transfer-centre',
     'https://www.football365.com/transfer-gossip',
     'https://www.teamtalk.com/transfer-news',
     'https://www.bbc.com/sport/football/transfers',
-    'https://www.espn.com/soccer/transfers'
+    'https://www.espn.com/soccer/transfers',
+    
+    // Additional Transfer Sources
+    'https://www.premierleague.com/news',
+    'https://www.transfermarkt.com/premier-league/transfers/wettbewerb/GB1',
+    'https://www.goal.com/en/transfers',
+    'https://www.planetsport.com/football/transfers',
+    'https://www.givemesport.com/transfer-news',
+    'https://talksport.com/football/transfer-news',
+    
+    // Club Official Sites
+    'https://www.arsenal.com/news',
+    'https://www.chelseafc.com/en/news',
+    'https://www.liverpoolfc.com/news',
+    'https://www.manutd.com/en/news',
+    'https://www.mancity.com/news',
+    'https://www.tottenhamhotspur.com/news'
   ];
 
   const testUrl = async (url: string): Promise<UrlTestResult> => {
@@ -47,7 +64,7 @@ export const UrlTester = () => {
 
     const results: UrlTestResult[] = [];
     
-    for (const url of reliableSourceUrls) {
+    for (const url of allSourceUrls) {
       // Set testing status
       setTestResults(prev => [...prev.filter(r => r.url !== url), { url, status: 'testing' }]);
       
@@ -93,13 +110,13 @@ export const UrlTester = () => {
       <div className="p-6">
         <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
           <TestTube className="w-5 h-5" />
-          Reliable Sources URL Tester
+          All Transfer Sources URL Tester
         </h3>
         
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <p className="text-sm text-blue-200">
-              Test all reliable source URLs for accessibility and 404 errors
+              Test all transfer source URLs (including top 5 + additional sources) for accessibility and 404 errors
             </p>
             <Button 
               onClick={testAllUrls}

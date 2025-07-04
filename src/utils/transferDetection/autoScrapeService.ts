@@ -18,7 +18,9 @@ export class AutoScrapeService {
         'Football transfer window done deals site:bbc.co.uk',
         'Premier League official transfers January 2025',
         'confirmed signings Premier League winter 2025',
-        'done deals January transfer window 2025'
+        'done deals January transfer window 2025',
+        'medical completed fee agreed Premier League',
+        'official announcement transfer Premier League'
       ]
     },
     
@@ -28,10 +30,12 @@ export class AutoScrapeService {
       priority: 2,
       queries: [
         'Fabrizio Romano transfer news January 2025',
-        'medical completed fee agreed Premier League',
         'here we go transfers January 2025',
         'transfer breakthrough Premier League clubs',
-        'official announcement transfer Premier League'
+        'BREAKING transfer news Premier League',
+        'linked with preparing bid Premier League',
+        'interested in talks ongoing Premier League',
+        'advanced negotiations transfer Premier League'
       ]
     },
     
@@ -41,13 +45,23 @@ export class AutoScrapeService {
       priority: 3,
       queries: [
         'Football gossip transfer news 2025',
-        'Deadline day speculation site:skysports.com',
         'Premier League transfer rumours January',
         'transfer targets Premier League clubs',
-        'January transfer window gossip 2025'
+        'January transfer window gossip 2025',
+        'linked with interested in Premier League',
+        'preparing bid considering move Premier League',
+        'rumour mill transfer gossip Premier League'
       ]
     }
   ];
+
+  // Source reliability tiers for confidence scoring
+  private static SOURCE_TIERS = {
+    tier1: ['bbc.co.uk', 'sky sports', 'guardian.com', 'espn.com'], // Highest reliability
+    tier2: ['goal.com', 'transfermarkt.com', 'football365.com', 'talksport.com'], // Medium reliability  
+    tier3: ['teamtalk.com', 'givemesport.com', 'planetsport.com'], // Lower reliability
+    tier4: ['twitter.com', 'instagram.com', 'facebook.com'] // Social media - lowest
+  };
 
   private static CLUB_SPECIFIC_PATTERNS = [
     'Arsenal ins and outs summer 2025',
@@ -131,12 +145,12 @@ export class AutoScrapeService {
   private static generateTargetUrls(): string[] {
     const baseUrls = [
       'https://www.bbc.com/sport/football/transfers',
-      'https://www.skysports.com/football/transfers',
+      'https://www.skysports.com/transfer-centre',
       'https://www.premierleague.com/news',
       'https://www.transfermarkt.com/premier-league/transfers/wettbewerb/GB1',
       'https://www.goal.com/en/transfers',
-      'https://www.football365.com/transfers',
-      'https://www.teamtalk.com/transfers',
+      'https://www.football365.com/transfer-gossip',
+      'https://www.teamtalk.com/transfer-news',
       'https://www.planetsport.com/football/transfers',
       'https://www.givemesport.com/transfer-news',
       'https://talksport.com/football/transfer-news'
@@ -181,17 +195,83 @@ export class AutoScrapeService {
     }
   }
 
-  static async schedulePeriodicScrape(intervalMinutes: number = 30): Promise<void> {
-    console.log(`📅 Scheduling periodic enhanced scrape every ${intervalMinutes} minutes`);
+  // Calculate confidence score based on source reliability
+  static calculateConfidenceScore(source: string): number {
+    const sourceLower = source.toLowerCase();
+    
+    if (this.SOURCE_TIERS.tier1.some(t => sourceLower.includes(t))) return 90;
+    if (this.SOURCE_TIERS.tier2.some(t => sourceLower.includes(t))) return 70;
+    if (this.SOURCE_TIERS.tier3.some(t => sourceLower.includes(t))) return 50;
+    if (this.SOURCE_TIERS.tier4.some(t => sourceLower.includes(t))) return 20;
+    
+    return 40; // Default for unknown sources
+  }
+
+  // Enhanced filtering with smart criteria
+  static filterTransfers(transfers: any[], filters: {
+    minFee?: number;
+    clubs?: string[];
+    positions?: string[];
+    minConfidence?: number;
+  }) {
+    return transfers.filter(transfer => {
+      // Fee filter
+      if (filters.minFee && transfer.fee) {
+        const feeNum = this.extractFeeNumber(transfer.fee);
+        if (feeNum < filters.minFee) return false;
+      }
+
+      // Club filter
+      if (filters.clubs && filters.clubs.length > 0) {
+        if (!filters.clubs.includes(transfer.toClub) && !filters.clubs.includes(transfer.fromClub)) {
+          return false;
+        }
+      }
+
+      // Confidence filter
+      if (filters.minConfidence) {
+        const confidence = this.calculateConfidenceScore(transfer.source);
+        if (confidence < filters.minConfidence) return false;
+      }
+
+      return true;
+    });
+  }
+
+  private static extractFeeNumber(fee: string): number {
+    const match = fee.match(/£(\d+(?:\.\d+)?)([KkMm])?/);
+    if (!match) return 0;
+    
+    const num = parseFloat(match[1]);
+    const unit = match[2]?.toLowerCase();
+    
+    if (unit === 'k') return num * 1000;
+    if (unit === 'm') return num * 1000000;
+    return num;
+  }
+
+  static async schedulePeriodicScrape(intervalMinutes: number = 15): Promise<void> {
+    console.log(`📅 Scheduling enhanced periodic scrape every ${intervalMinutes} minutes`);
     
     setInterval(async () => {
       console.log('⏰ Running scheduled enhanced transfer scrape...');
       const result = await this.performEnhancedScrape();
       
-      if (result.success) {
+      if (result.success && result.transfersFound > 0) {
         console.log(`✅ Scheduled scrape found ${result.transfersFound} new transfers`);
         
-        // Dispatch event to notify UI
+        // Real-time notification
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('newTransfersFound', { 
+            detail: { 
+              count: result.transfersFound,
+              sources: result.sources,
+              message: `🚨 ${result.transfersFound} new transfer${result.transfersFound > 1 ? 's' : ''} detected!`
+            } 
+          }));
+        }
+        
+        // Dispatch refresh event
         window.dispatchEvent(new CustomEvent('autoRefresh', { 
           detail: { 
             type: 'enhanced-scrape',
@@ -200,7 +280,7 @@ export class AutoScrapeService {
           } 
         }));
       } else {
-        console.log(`❌ Scheduled scrape failed: ${result.error}`);
+        console.log(`❌ Scheduled scrape failed: ${result.error || 'No new transfers found'}`);
       }
     }, intervalMinutes * 60 * 1000);
   }
