@@ -106,21 +106,72 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers })
           </Card>
         </div>
 
-        {/* Transfer Categories */}
-        <div className="space-y-6">
-          {/* Transfers In */}
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+        {/* Enhanced Transfer Categories with Collapsible Sections */}
+        <div className="space-y-4">
+          {/* Incoming Rumors */}
+          <Card className="bg-gradient-to-r from-blue-600/20 to-blue-800/20 backdrop-blur-md border-blue-500/30">
             <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-blue-300 mb-4 flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-blue-400" />
+                Incoming Players Linked ({stats.rumors.filter(r => r.toClub === selectedTeam).length})
+                {stats.rumors.filter(r => r.toClub === selectedTeam).length > 0 && (
+                  <Badge className="bg-blue-500 text-white text-xs ml-2">NEW</Badge>
+                )}
+              </h3>
+              {stats.rumors.filter(r => r.toClub === selectedTeam).length === 0 ? (
+                <p className="text-gray-400 text-center py-8">No incoming transfer rumors</p>
+              ) : (
+                <div className="space-y-3">
+                  {stats.rumors.filter(r => r.toClub === selectedTeam).map((transfer) => (
+                    <div key={transfer.id} className="bg-blue-900/30 rounded-lg p-4 border border-blue-500/20">
+                      <TransferCard transfer={transfer} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Transfers In */}
+          <Card className="bg-gradient-to-r from-green-600/20 to-green-800/20 backdrop-blur-md border-green-500/30">
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-green-300 mb-4 flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-green-400" />
-                Transfers In ({stats.transfersIn.length})
+                Confirmed Transfers In ({stats.transfersIn.length})
+                {stats.transfersIn.length > 0 && (
+                  <Badge className="bg-green-500 text-white text-xs ml-2">{stats.transfersIn.length}</Badge>
+                )}
               </h3>
               {stats.transfersIn.length === 0 ? (
                 <p className="text-gray-400 text-center py-8">No confirmed transfers in</p>
               ) : (
                 <div className="space-y-3">
                   {stats.transfersIn.map((transfer) => (
-                    <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4">
+                    <div key={transfer.id} className="bg-green-900/30 rounded-lg p-4 border border-green-500/20">
+                      <TransferCard transfer={transfer} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Outgoing Rumors */}
+          <Card className="bg-gradient-to-r from-orange-600/20 to-orange-800/20 backdrop-blur-md border-orange-500/30">
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-orange-300 mb-4 flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-orange-400" />
+                Potential Departures ({stats.rumors.filter(r => r.fromClub === selectedTeam).length})
+                {stats.rumors.filter(r => r.fromClub === selectedTeam).length > 0 && (
+                  <Badge className="bg-orange-500 text-white text-xs ml-2">WATCH</Badge>
+                )}
+              </h3>
+              {stats.rumors.filter(r => r.fromClub === selectedTeam).length === 0 ? (
+                <p className="text-gray-400 text-center py-8">No outgoing transfer rumors</p>
+              ) : (
+                <div className="space-y-3">
+                  {stats.rumors.filter(r => r.fromClub === selectedTeam).map((transfer) => (
+                    <div key={transfer.id} className="bg-orange-900/30 rounded-lg p-4 border border-orange-500/20">
                       <TransferCard transfer={transfer} />
                     </div>
                   ))}
@@ -130,39 +181,21 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers })
           </Card>
 
           {/* Transfers Out */}
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <Card className="bg-gradient-to-r from-red-600/20 to-red-800/20 backdrop-blur-md border-red-500/30">
             <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-red-300 mb-4 flex items-center gap-2">
                 <TrendingDown className="w-5 h-5 text-red-400" />
-                Transfers Out ({stats.transfersOut.length})
+                Confirmed Transfers Out ({stats.transfersOut.length})
+                {stats.transfersOut.length > 0 && (
+                  <Badge className="bg-red-500 text-white text-xs ml-2">{stats.transfersOut.length}</Badge>
+                )}
               </h3>
               {stats.transfersOut.length === 0 ? (
                 <p className="text-gray-400 text-center py-8">No confirmed transfers out</p>
               ) : (
                 <div className="space-y-3">
                   {stats.transfersOut.map((transfer) => (
-                    <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4">
-                      <TransferCard transfer={transfer} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </Card>
-
-          {/* Rumors & Gossip */}
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <MessageCircle className="w-5 h-5 text-blue-400" />
-                Rumors & Gossip ({stats.rumors.length})
-              </h3>
-              {stats.rumors.length === 0 ? (
-                <p className="text-gray-400 text-center py-8">No transfer rumors found</p>
-              ) : (
-                <div className="space-y-3">
-                  {stats.rumors.map((transfer) => (
-                    <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4">
+                    <div key={transfer.id} className="bg-red-900/30 rounded-lg p-4 border border-red-500/20">
                       <TransferCard transfer={transfer} />
                     </div>
                   ))}
