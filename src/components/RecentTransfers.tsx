@@ -11,11 +11,12 @@ interface RecentTransfersProps {
 }
 
 export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) => {
-  // Get the most recent rumored transfers (keep to 3)
+  // Get all rumored transfers, not just 3
   const recentRumors = transfers
     .filter(transfer => transfer.status === 'rumored')
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3);
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const shouldScroll = recentRumors.length > 3;
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -29,8 +30,7 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
     setTimeout(() => {
       setIsRefreshing(false);
       const currentRumors = transfers
-        .filter(transfer => transfer.status === 'rumored')
-        .slice(0, 3);
+        .filter(transfer => transfer.status === 'rumored');
       
       if (currentRumors.length > previousCount) {
         // Could add toast notification here if needed
@@ -67,7 +67,7 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div className={`${shouldScroll ? 'max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100' : ''} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4`}>
           {recentRumors.map((transfer, index) => (
             <Card key={transfer.id} className="bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:shadow-md transition-all duration-200">
               <div className="p-3 sm:p-4">

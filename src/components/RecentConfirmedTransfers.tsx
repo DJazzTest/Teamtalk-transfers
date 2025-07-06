@@ -10,11 +10,12 @@ interface RecentConfirmedTransfersProps {
 }
 
 export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> = ({ transfers }) => {
-  // Get the most recent confirmed transfers (last 3)
+  // Get all confirmed transfers, not just 3
   const recentConfirmed = transfers
     .filter(transfer => transfer.status === 'confirmed')
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3);
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const shouldScroll = recentConfirmed.length > 3;
 
   const handleRefresh = () => {
     window.dispatchEvent(new CustomEvent('manualRefresh'));
@@ -47,7 +48,7 @@ export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> =
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div className={`${shouldScroll ? 'max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-green-300 scrollbar-track-green-100' : ''} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4`}>
           {recentConfirmed.map((transfer, index) => (
             <Card key={transfer.id} className="bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:shadow-md transition-all duration-200">
               <div className="p-3 sm:p-4">
