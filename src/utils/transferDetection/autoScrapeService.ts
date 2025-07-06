@@ -35,16 +35,41 @@ export class AutoScrapeService {
       ]
     },
     
-    // 🤐 Gossip & Rumours (Lower Priority)
+    // 🤐 Gossip & Rumours (Enhanced Keywords)
     {
       type: 'rumor',
       priority: 3,
       queries: [
-        'Football gossip transfer news 2025',
-        'Deadline day speculation site:skysports.com',
-        'Premier League transfer rumours January',
-        'transfer targets Premier League clubs',
-        'January transfer window gossip 2025'
+        // Transfer Activity
+        'Premier League linked with monitoring eyeing targeting 2025',
+        'set to sign close to signing on the verge',
+        'advanced talks negotiations ongoing personal terms',
+        'medical scheduled breakthrough Premier League',
+        
+        // Deal Structure
+        'loan move loan-to-buy Premier League January 2025',
+        'free transfer release clause Premier League',
+        'bid submitted rejected offer counter-offer',
+        'swap deal player-plus-cash Premier League',
+        
+        // Market Dynamics
+        'valuation gap deal hijacked stumbling block',
+        'emerging interest revived interest reignited talks',
+        'deadline day last-minute deal Premier League',
+        
+        // Source-Based
+        'sources close to trusted journalist Premier League',
+        'multiple outlets reliable insiders transfer',
+        'reportedly according to believed rumored',
+        
+        // Club-Specific Rumor Patterns
+        'Arsenal linked with monitoring targeting',
+        'Chelsea set to sign close to signing',
+        'Liverpool advanced talks negotiations',
+        'Manchester United bid submitted preparing',
+        'Manchester City eyeing tracking scouted',
+        'Tottenham poised ready breakthrough',
+        'Newcastle medical scheduled terms agreed'
       ]
     }
   ];

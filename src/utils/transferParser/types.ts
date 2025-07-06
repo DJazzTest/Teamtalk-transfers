@@ -5,5 +5,5 @@ export interface ParsedTransferData {
   toClub: string;
   fee: string;
   confidence: number;
-  verificationStatus: 'confirmed' | 'unverified';
+  verificationStatus: 'confirmed' | 'unverified' | 'rumored';
 }

@@ -1,5 +1,5 @@
 
-import { PREMIER_LEAGUE_CLUBS, CONFIRMED_TRANSFER_KEYWORDS, EXCLUDED_KEYWORDS, TRUSTED_SOURCES, KNOWN_PLAYERS, FEE_PATTERNS, CLUB_VARIATIONS } from './constants';
+import { PREMIER_LEAGUE_CLUBS, CONFIRMED_TRANSFER_KEYWORDS, RUMOR_KEYWORDS, EXCLUDED_KEYWORDS, TRUSTED_SOURCES, KNOWN_PLAYERS, FEE_PATTERNS, CLUB_VARIATIONS } from './constants';
 
 export function extractSentences(content: string): string[] {
   console.log('Extracting sentences from content length:', content.length);
@@ -78,6 +78,44 @@ export function containsRelevantConfirmedContent(sentence: string): boolean {
   
   if (isRelevant) {
     console.log(`Relevant CONFIRMED sentence found: "${sentence.substring(0, 100)}..."`);
+  }
+  
+  return isRelevant;
+}
+
+export function containsRelevantRumorContent(sentence: string): boolean {
+  const lower = sentence.toLowerCase();
+  
+  // MUST NOT contain excluded keywords
+  const hasExcludedKeyword = EXCLUDED_KEYWORDS.some(keyword => 
+    lower.includes(keyword.toLowerCase())
+  );
+  
+  if (hasExcludedKeyword) {
+    return false;
+  }
+  
+  // Check for rumor-specific keywords
+  const hasRumorKeyword = RUMOR_KEYWORDS.some(keyword => 
+    lower.includes(keyword.toLowerCase())
+  );
+  
+  const hasClubName = PREMIER_LEAGUE_CLUBS.some(club => 
+    lower.includes(club.toLowerCase())
+  ) || Object.keys(CLUB_VARIATIONS).some(club =>
+    lower.includes(club.toLowerCase()) || 
+    CLUB_VARIATIONS[club].some(variation => lower.includes(variation.toLowerCase()))
+  );
+  
+  const hasKnownPlayer = KNOWN_PLAYERS.some(player =>
+    lower.includes(player.toLowerCase())
+  );
+  
+  // Accept if it has rumor keywords + club, or rumor keywords + known player
+  const isRelevant = hasRumorKeyword && (hasClubName || hasKnownPlayer);
+  
+  if (isRelevant) {
+    console.log(`Relevant RUMOR sentence found: "${sentence.substring(0, 100)}..."`);
   }
   
   return isRelevant;

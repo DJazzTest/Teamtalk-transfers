@@ -16,12 +16,37 @@ export const CONFIRMED_TRANSFER_KEYWORDS = [
   'transfer news', 'transfer wait', 'make major announcement', 'signing'
 ];
 
-// EXCLUDED KEYWORDS - Phrases that indicate rumors or speculation
+// RUMOR KEYWORDS - Phrases that indicate transfer rumors and gossip
+export const RUMOR_KEYWORDS = [
+  // Transfer Activity Indicators
+  'linked with', 'monitoring', 'eyeing', 'targeting', 'tracking', 'scouted', 'keeping tabs',
+  'set to sign', 'close to signing', 'on the verge', 'poised', 'ready', 'preparing a bid',
+  'advanced talks', 'negotiations ongoing', 'discussions underway', 'in talks',
+  'medical scheduled', 'personal terms agreed', 'breakthrough', 'twist', 'U-turn',
+  
+  // Deal Structure Keywords
+  'loan move', 'loan with option', 'loan-to-buy deal', 'free transfer', 'Bosman deal',
+  'out of contract', 'undisclosed fee', 'record signing', 'cut-price deal',
+  'release clause', 'trigger clause', 'buyout clause', 'swap deal', 'player-plus-cash',
+  
+  // Market Dynamics
+  'bid submitted', 'rejected offer', 'counter-offer', 'valuation gap', 'deal hijacked',
+  'stumbling block', 'emerging interest', 'revived interest', 'reignited talks',
+  
+  // Timing & Priority
+  'deadline day', 'last-minute deal', 'January window', 'summer window',
+  'long-term target', 'short-term cover', 'emergency signing', 'dream move',
+  'top priority', 'marquee signing', 'shock transfer',
+  
+  // Source Credibility
+  'sources close to', 'trusted journalist', 'multiple outlets', 'reliable insiders',
+  'reportedly', 'according to', 'understood', 'believed', 'rumored', 'speculation'
+];
+
+// EXCLUDED KEYWORDS - Only phrases that indicate fake news or non-transfers
 export const EXCLUDED_KEYWORDS = [
-  'linked with', 'reportedly', 'in talks', 'could move', 'might sign',
-  'interested in', 'considering', 'exploring', 'rumored', 'speculation',
-  'potential target', 'looking at', 'monitoring', 'scouting', 'eyeing',
-  'set to', 'expected to', 'likely to', 'planning', 'preparing bid'
+  'fabricated story', 'unsubstantiated rumours', 'paper talk', 'clickbait',
+  'false news', 'denied by club', 'agent denies', 'player denies'
 ];
 
 // TRUSTED SOURCES - Extended list including major football news outlets

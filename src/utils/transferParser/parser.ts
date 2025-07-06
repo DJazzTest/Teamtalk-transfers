@@ -1,7 +1,7 @@
 
 import { ParsedTransferData } from './types';
-import { CONFIRMED_TRANSFER_KEYWORDS, EXCLUDED_KEYWORDS, TRUSTED_SOURCES, KNOWN_PLAYERS } from './constants';
-import { extractSentences, extractPlayerName, extractClubs, extractFee, isFromTrustedSource } from './extractors';
+import { CONFIRMED_TRANSFER_KEYWORDS, RUMOR_KEYWORDS, EXCLUDED_KEYWORDS, TRUSTED_SOURCES, KNOWN_PLAYERS } from './constants';
+import { extractSentences, extractPlayerName, extractClubs, extractFee, isFromTrustedSource, containsRelevantRumorContent } from './extractors';
 import { EnhancedTransferParser } from '../transferDetection/enhancedParser';
 
 export function parseTransfersFromContent(scrapedContent: string, sourceUrl: string): ParsedTransferData[] {
@@ -25,13 +25,29 @@ export function parseTransfersFromContent(scrapedContent: string, sourceUrl: str
   transfers.push(...knownTransfers);
 
   const sentences = extractSentences(scrapedContent);
-  console.log(`Processing ${sentences.length} sentences for CONFIRMED transfer detection`);
+  console.log(`Processing ${sentences.length} sentences for transfer detection`);
 
+  // Process confirmed transfers
   for (const sentence of sentences) {
     const parsedTransfer = parseSentenceWithVerification(sentence);
     if (parsedTransfer && parsedTransfer.confidence >= 0.8 && parsedTransfer.verificationStatus === 'confirmed') {
       transfers.push(parsedTransfer);
       console.log(`✓ Found CONFIRMED transfer: ${parsedTransfer.playerName} -> ${parsedTransfer.toClub}`);
+    }
+  }
+
+  // Process rumors with enhanced detection
+  const rumorSentences = scrapedContent.split(/[.!?\n]+/)
+    .map(s => s.trim())
+    .filter(s => s.length > 10 && containsRelevantRumorContent(s));
+  
+  console.log(`Processing ${rumorSentences.length} sentences for RUMOR detection`);
+  
+  for (const sentence of rumorSentences) {
+    const rumorTransfer = parseRumorSentence(sentence);
+    if (rumorTransfer && rumorTransfer.confidence >= 0.5) {
+      transfers.push(rumorTransfer);
+      console.log(`✓ Found RUMOR: ${rumorTransfer.playerName} -> ${rumorTransfer.toClub}`);
     }
   }
 
@@ -231,6 +247,97 @@ function cleanClubName(name: string): string {
   return name.replace(/[^\w\s]/g, '').trim();
 }
 
+export function parseRumorSentence(sentence: string): ParsedTransferData | null {
+  const lowerSentence = sentence.toLowerCase();
+  
+  // Check for rumor keywords
+  const hasRumorKeyword = RUMOR_KEYWORDS.some(keyword => 
+    lowerSentence.includes(keyword.toLowerCase())
+  );
+
+  if (!hasRumorKeyword) {
+    return null;
+  }
+
+  // Extract potential player names
+  const playerName = extractPlayerName(sentence);
+  if (!playerName) return null;
+
+  // Extract clubs
+  const clubs = extractClubs(sentence);
+  if (clubs.length < 1) return null;
+
+  // Extract fee
+  const fee = extractFee(sentence);
+
+  // Determine from/to clubs based on context
+  let fromClub = 'Unknown';
+  let toClub = clubs[0];
+
+  if (clubs.length >= 2) {
+    // Look for patterns like "from X to Y"
+    const fromToMatch = sentence.match(/from\s+([^,]+?)\s+to\s+([^,]+)/i);
+    if (fromToMatch) {
+      fromClub = cleanClubName(fromToMatch[1].trim());
+      toClub = cleanClubName(fromToMatch[2].trim());
+    } else {
+      toClub = clubs[0];
+      if (clubs.length > 1) {
+        fromClub = clubs[1];
+      }
+    }
+  }
+
+  const confidence = calculateRumorConfidence(sentence, playerName, clubs, fee);
+
+  return {
+    playerName: cleanPlayerName(playerName),
+    fromClub: cleanClubName(fromClub),
+    toClub: cleanClubName(toClub),
+    fee,
+    confidence,
+    verificationStatus: 'rumored'
+  };
+}
+
+function calculateRumorConfidence(
+  sentence: string, 
+  playerName: string, 
+  clubs: string[], 
+  fee: string
+): number {
+  let confidence = 0.3; // Start lower for rumors
+
+  // High-confidence rumor keywords
+  const highConfidenceKeywords = ['set to sign', 'close to signing', 'medical scheduled', 'personal terms agreed', 'breakthrough'];
+  if (highConfidenceKeywords.some(keyword => sentence.toLowerCase().includes(keyword))) {
+    confidence += 0.3;
+  }
+
+  // Medium-confidence rumor keywords
+  const mediumConfidenceKeywords = ['advanced talks', 'negotiations ongoing', 'preparing bid', 'ready to sign'];
+  if (mediumConfidenceKeywords.some(keyword => sentence.toLowerCase().includes(keyword))) {
+    confidence += 0.2;
+  }
+
+  // Boost for multiple clubs mentioned
+  if (clubs.length >= 2) {
+    confidence += 0.1;
+  }
+
+  // Boost for fee mentioned
+  if (fee !== 'Undisclosed') {
+    confidence += 0.1;
+  }
+
+  // Boost for known players
+  if (KNOWN_PLAYERS.some(known => known.toLowerCase() === playerName.toLowerCase())) {
+    confidence += 0.1;
+  }
+
+  return Math.min(confidence, 0.9); // Cap at 0.9 for rumors
+}
+
 function deduplicateTransfers(transfers: ParsedTransferData[]): ParsedTransferData[] {
   const seen = new Map<string, ParsedTransferData>();
 
@@ -245,5 +352,6 @@ function deduplicateTransfers(transfers: ParsedTransferData[]): ParsedTransferDa
     }
   }
 
-  return Array.from(seen.values()).filter(transfer => transfer.verificationStatus === 'confirmed');
+  // Return both confirmed and rumored transfers (removed the filter)
+  return Array.from(seen.values());
 }
