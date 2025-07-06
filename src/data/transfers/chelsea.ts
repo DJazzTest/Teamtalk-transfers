@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const chelseaTransfers: Transfer[] = [
   {
+    id: 'chelsea-uefa-punishment-2025',
+    playerName: 'João Pedro',
+    fromClub: 'Brighton & Hove Albion',
+    toClub: 'Chelsea',
+    fee: 'UEFA investigation',
+    date: '2025-01-19T12:00:00Z',
+    source: 'uefa.com',
+    status: 'rumored'
+  },
+  {
     id: 'chelsea-joao-pedro-2025',
     playerName: 'Joao Pedro',
     fromClub: 'Brighton & Hove Albion',

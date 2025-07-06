@@ -3,6 +3,26 @@ import { Transfer } from '@/types/transfer';
 
 export const manchesterUnitedTransfers: Transfer[] = [
   {
+    id: 'united-rashford-barcelona-2025',
+    playerName: 'Marcus Rashford',
+    fromClub: 'Manchester United',
+    toClub: 'Barcelona',
+    fee: '€40M loan-to-buy',
+    date: '2025-01-19T10:00:00Z',
+    source: 'sport.es',
+    status: 'rumored'
+  },
+  {
+    id: 'united-branthwaite-2026',
+    playerName: 'Jarrad Branthwaite',
+    fromClub: 'Everton',
+    toClub: 'Manchester United',
+    fee: 'Talks for 2026',
+    date: '2025-01-19T09:30:00Z',
+    source: 'skysports.com',
+    status: 'rumored'
+  },
+  {
     id: 'united-mbeumo-2025',
     playerName: 'Bryan Mbeumo',
     fromClub: 'Brentford',

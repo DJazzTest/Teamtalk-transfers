@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const newcastleTransfers: Transfer[] = [
   {
+    id: 'newcastle-serie-a-defender-2025',
+    playerName: 'Serie A Defender',
+    fromClub: 'Serie A Club',
+    toClub: 'Newcastle United',
+    fee: 'Top target identified',
+    date: '2025-01-19T13:00:00Z',
+    source: 'chronicle.co.uk',
+    status: 'rumored'
+  },
+  {
     id: 'newcastle-cordero-2025',
     playerName: 'Antonio Cordero',
     fromClub: 'Malaga',

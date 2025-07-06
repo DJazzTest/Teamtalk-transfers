@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const liverpoolTransfers: Transfer[] = [
   {
+    id: 'liverpool-diaz-barcelona-2025',
+    playerName: 'Luis Díaz',
+    fromClub: 'Liverpool',
+    toClub: 'Barcelona',
+    fee: 'Interest reported',
+    date: '2025-01-19T11:00:00Z',
+    source: 'marca.com',
+    status: 'rumored'
+  },
+  {
     id: 'liverpool-quansah-2025',
     playerName: 'Jarell Quansah',
     fromClub: 'Liverpool',
