@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const leedsTransfers: Transfer[] = [
   {
+    id: 'leeds-bornauw-2025',
+    playerName: 'Sebastiaan Bornauw',
+    fromClub: 'VfL Wolfsburg',
+    toClub: 'Leeds United',
+    fee: '£12M',
+    date: '2025-01-16T14:00:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+  {
     id: 'leeds-guilavogui-2025',
     playerName: 'Josuha Guilavogui',
     fromClub: 'Leeds United',
