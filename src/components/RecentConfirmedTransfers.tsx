@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,11 +10,14 @@ interface RecentConfirmedTransfersProps {
 }
 
 export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> = ({ transfers }) => {
+  const [showAll, setShowAll] = useState(false);
+  
   // Get all confirmed transfers, not just 3
-  const recentConfirmed = transfers
+  const allConfirmed = transfers
     .filter(transfer => transfer.status === 'confirmed')
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  const recentConfirmed = showAll ? allConfirmed : allConfirmed.slice(0, 10);
   const shouldScroll = recentConfirmed.length > 3;
 
   const handleRefresh = () => {
@@ -48,10 +51,11 @@ export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> =
           </Button>
         </div>
 
-        <div className={`${shouldScroll ? 'max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-green-300 scrollbar-track-green-100' : ''} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4`}>
-          {recentConfirmed.map((transfer, index) => (
-            <Card key={transfer.id} className="bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:shadow-md transition-all duration-200">
-              <div className="p-3 sm:p-4">
+        <div className={`${shouldScroll ? 'max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-green-300 scrollbar-track-green-100' : ''} space-y-4`}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {recentConfirmed.map((transfer, index) => (
+              <Card key={transfer.id} className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-md transition-all duration-200 hover:border-green-300">
+                <div className="p-3 sm:p-4">
                 <div className="space-y-2 sm:space-y-3">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
@@ -79,9 +83,23 @@ export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> =
                     <p className="text-xs text-gray-600 truncate max-w-20 sm:max-w-none">{transfer.source}</p>
                   </div>
                 </div>
-              </div>
-            </Card>
-          ))}
+                </div>
+              </Card>
+            ))}
+          </div>
+          
+          {allConfirmed.length > 10 && (
+            <div className="flex justify-center pt-2">
+              <Button
+                onClick={() => setShowAll(!showAll)}
+                variant="outline"
+                size="sm"
+                className="border-green-400 text-green-600 hover:bg-green-50"
+              >
+                {showAll ? 'Show Less' : `Show More (${allConfirmed.length - 10} more)`}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </Card>

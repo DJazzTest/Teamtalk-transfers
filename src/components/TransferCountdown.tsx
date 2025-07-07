@@ -115,7 +115,7 @@ export const TransferCountdown: React.FC<TransferCountdownProps> = ({ targetDate
 
       {/* Transfer Window Countdown */}
       <div className="text-center" style={{ backgroundColor: '#2F517A', borderRadius: '0.5rem', padding: '1rem sm:2rem' }}>
-        <h2 className="text-lg sm:text-2xl font-bold text-blue-400 mb-2 sm:mb-4">Transfer Window Countdown</h2>
+        <h2 className="text-lg sm:text-2xl font-bold text-blue-400 mb-2 sm:mb-4">Transfer Window Closes</h2>
         
         {isExpired ? (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 sm:p-8 max-w-md mx-auto">

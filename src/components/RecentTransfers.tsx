@@ -11,18 +11,21 @@ interface RecentTransfersProps {
 }
 
 export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) => {
+  const [showAll, setShowAll] = useState(false);
+  
   // Get all rumored transfers, not just 3
-  const recentRumors = transfers
+  const allRumors = transfers
     .filter(transfer => transfer.status === 'rumored')
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  const recentRumors = showAll ? allRumors : allRumors.slice(0, 10);
   const shouldScroll = recentRumors.length > 3;
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
-    const previousCount = recentRumors.length;
+    const previousCount = allRumors.length;
     
     window.dispatchEvent(new CustomEvent('manualRefresh'));
     
@@ -67,10 +70,11 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
           </Button>
         </div>
 
-        <div className={`${shouldScroll ? 'max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100' : ''} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4`}>
-          {recentRumors.map((transfer, index) => (
-            <Card key={transfer.id} className="bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:shadow-md transition-all duration-200">
-              <div className="p-3 sm:p-4">
+        <div className={`${shouldScroll ? 'max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100' : ''} space-y-4`}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {recentRumors.map((transfer, index) => (
+              <Card key={transfer.id} className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 hover:shadow-md transition-all duration-200 hover:border-blue-300">
+                <div className="p-3 sm:p-4">
                 <div className="space-y-2 sm:space-y-3">
                   <div className="flex items-center gap-2">
                     <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500" />
@@ -98,9 +102,23 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
                     <p className="text-xs text-gray-600 truncate max-w-20 sm:max-w-none">{transfer.source}</p>
                   </div>
                 </div>
-              </div>
-            </Card>
-          ))}
+                </div>
+              </Card>
+            ))}
+          </div>
+          
+          {allRumors.length > 10 && (
+            <div className="flex justify-center pt-2">
+              <Button
+                onClick={() => setShowAll(!showAll)}
+                variant="outline"
+                size="sm"
+                className="border-blue-400 text-blue-600 hover:bg-blue-50"
+              >
+                {showAll ? 'Show Less' : `Show More (${allRumors.length - 10} more)`}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </Card>

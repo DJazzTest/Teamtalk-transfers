@@ -50,7 +50,7 @@ export const CountdownSettings: React.FC<CountdownSettingsProps> = ({
           <div className="bg-blue-500/20 p-2 rounded-lg">
             <Calendar className="w-5 h-5 text-blue-400" />
           </div>
-          <h3 className="text-xl font-semibold text-white">Transfer Window Countdown Settings</h3>
+          <h3 className="text-xl font-semibold text-white">Transfer Window Settings</h3>
         </div>
 
         <div className="space-y-6">
@@ -102,42 +102,94 @@ export const CountdownSettings: React.FC<CountdownSettingsProps> = ({
           </div>
 
           <div className="bg-slate-700/50 p-4 rounded-lg">
-            <h4 className="text-white font-medium mb-2">Quick Presets</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  const summerEnd = new Date();
-                  summerEnd.setMonth(8, 1); // September 1st
-                  summerEnd.setHours(23, 59, 0, 0);
-                  if (summerEnd < new Date()) {
-                    summerEnd.setFullYear(summerEnd.getFullYear() + 1);
-                  }
-                  setLocalDate(formatDateForInput(summerEnd));
-                  setLocalTime('23:59');
-                }}
-                className="text-gray-300 border-slate-600 hover:bg-slate-600"
-              >
-                Summer Window End
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  const winterEnd = new Date();
-                  winterEnd.setMonth(1, 1); // February 1st
-                  winterEnd.setHours(23, 59, 0, 0);
-                  if (winterEnd < new Date()) {
-                    winterEnd.setFullYear(winterEnd.getFullYear() + 1);
-                  }
-                  setLocalDate(formatDateForInput(winterEnd));
-                  setLocalTime('23:59');
-                }}
-                className="text-gray-300 border-slate-600 hover:bg-slate-600"
-              >
-                Winter Window End
-              </Button>
+            <h4 className="text-white font-medium mb-4">Transfer Window Presets</h4>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-white text-sm font-medium">Summer Window</Label>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const summerEnd = new Date();
+                        summerEnd.setMonth(8, 1); // September 1st
+                        summerEnd.setHours(23, 59, 0, 0);
+                        if (summerEnd < new Date()) {
+                          summerEnd.setFullYear(summerEnd.getFullYear() + 1);
+                        }
+                        setLocalDate(formatDateForInput(summerEnd));
+                        setLocalTime('23:59');
+                      }}
+                      className="text-gray-300 border-slate-600 hover:bg-slate-600 flex-1"
+                    >
+                      Set End Date
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const summerOpen = new Date();
+                        summerOpen.setMonth(5, 14); // June 14th
+                        summerOpen.setHours(0, 0, 0, 0);
+                        if (summerOpen < new Date()) {
+                          summerOpen.setFullYear(summerOpen.getFullYear() + 1);
+                        }
+                        setLocalDate(formatDateForInput(summerOpen));
+                        setLocalTime('00:00');
+                      }}
+                      className="text-gray-300 border-slate-600 hover:bg-slate-600 flex-1"
+                    >
+                      Set Open Date
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label className="text-white text-sm font-medium">Winter Window</Label>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const winterEnd = new Date();
+                        winterEnd.setMonth(1, 1); // February 1st
+                        winterEnd.setHours(23, 59, 0, 0);
+                        if (winterEnd < new Date()) {
+                          winterEnd.setFullYear(winterEnd.getFullYear() + 1);
+                        }
+                        setLocalDate(formatDateForInput(winterEnd));
+                        setLocalTime('23:59');
+                      }}
+                      className="text-gray-300 border-slate-600 hover:bg-slate-600 flex-1"
+                    >
+                      Set End Date
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const winterOpen = new Date();
+                        winterOpen.setMonth(0, 1); // January 1st
+                        winterOpen.setHours(0, 0, 0, 0);
+                        if (winterOpen < new Date()) {
+                          winterOpen.setFullYear(winterOpen.getFullYear() + 1);
+                        }
+                        setLocalDate(formatDateForInput(winterOpen));
+                        setLocalTime('00:00');
+                      }}
+                      className="text-gray-300 border-slate-600 hover:bg-slate-600 flex-1"
+                    >
+                      Set Open Date
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-xs text-gray-400 mt-2">
+                <p>• Summer window typically: June 14 - September 1</p>
+                <p>• Winter window typically: January 1 - February 1</p>
+              </div>
             </div>
           </div>
         </div>
