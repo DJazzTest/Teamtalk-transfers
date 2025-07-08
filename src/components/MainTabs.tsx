@@ -2,7 +2,7 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Shield, Users, Settings, Globe, Clock, Bell } from 'lucide-react';
-import { TeamTransferView } from './TeamTransferView';
+import { ClubsView } from './ClubsView';
 import { TransferResults } from './TransferResults';
 import { ApiConfig } from './ApiConfig';
 import { SourcesConfig } from './SourcesConfig';
@@ -80,7 +80,7 @@ export const MainTabs: React.FC<MainTabsProps> = ({
       </TabsList>
 
       <TabsContent value="teams">
-        <TeamTransferView transfers={transfers} />
+        <ClubsView clubTransfers={{}} allTransfers={transfers} />
       </TabsContent>
 
       <TabsContent value="transfers">
