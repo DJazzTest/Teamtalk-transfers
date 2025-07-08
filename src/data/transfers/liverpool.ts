@@ -131,5 +131,25 @@ export const liverpoolTransfers: Transfer[] = [
     date: '2025-01-05T13:15:00Z',
     source: 'liverpoolfc.com',
     status: 'confirmed'
+  },
+  {
+    id: 'liverpool-luis-diaz-out-rumor',
+    playerName: 'Luis Díaz',
+    fromClub: 'Liverpool',
+    toClub: 'Bayern Munich',
+    fee: 'Personal terms agreed',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
+  },
+  {
+    id: 'liverpool-marc-guehi-in-rumor',
+    playerName: 'Marc Guehi',
+    fromClub: 'Crystal Palace',
+    toClub: 'Liverpool',
+    fee: '£50m+ wanted',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
   }
 ];

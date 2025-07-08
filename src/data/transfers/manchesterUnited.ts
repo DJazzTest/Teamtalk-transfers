@@ -91,5 +91,35 @@ export const manchesterUnitedTransfers: Transfer[] = [
     date: '2025-01-12T15:30:00Z',
     source: 'manutd.com',
     status: 'confirmed'
+  },
+  {
+    id: 'manutd-rashford-barcelona-rumor',
+    playerName: 'Marcus Rashford',
+    fromClub: 'Manchester United',
+    toClub: 'Barcelona',
+    fee: 'Late-window loan',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
+  },
+  {
+    id: 'manutd-watkins-in-rumor',
+    playerName: 'Ollie Watkins',
+    fromClub: 'Aston Villa',
+    toClub: 'Manchester United',
+    fee: 'Amorim target',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
+  },
+  {
+    id: 'manutd-sancho-juventus-rumor',
+    playerName: 'Jadon Sancho',
+    fromClub: 'Manchester United',
+    toClub: 'Juventus',
+    fee: 'Salary negotiations ongoing',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
   }
 ];

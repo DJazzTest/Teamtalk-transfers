@@ -101,5 +101,35 @@ export const arsenalTransfers: Transfer[] = [
     date: '2025-01-02T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
+  },
+  {
+    id: 'arsenal-sesko-in-rumor',
+    playerName: 'Benjamin Šeško',
+    fromClub: 'RB Leipzig',
+    toClub: 'Arsenal',
+    fee: 'May pivot to Gyökeres',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
+  },
+  {
+    id: 'arsenal-rodrygo-in-rumor',
+    playerName: 'Rodrygo',
+    fromClub: 'Real Madrid',
+    toClub: 'Arsenal',
+    fee: 'Dream target - dependent on Martinelli sale',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
+  },
+  {
+    id: 'arsenal-eze-in-rumor',
+    playerName: 'Eberechi Eze',
+    fromClub: 'Crystal Palace',
+    toClub: 'Arsenal',
+    fee: 'Release clause required',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
   }
 ];

@@ -91,5 +91,15 @@ export const tottenhamTransfers: Transfer[] = [
     date: '2025-01-06T10:00:00Z',
     source: 'tottenhamhotspur.com',
     status: 'confirmed'
+  },
+  {
+    id: 'tottenham-kudus-in-rumor',
+    playerName: 'Mohammed Kudus',
+    fromClub: 'West Ham',
+    toClub: 'Tottenham',
+    fee: 'Personal terms agreed',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
   }
 ];

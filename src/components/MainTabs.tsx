@@ -1,13 +1,14 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Users, Settings, Globe, Clock, Bell } from 'lucide-react';
+import { Shield, Users, Settings, Globe, Clock, Bell, Star } from 'lucide-react';
 import { ClubsView } from './ClubsView';
 import { TransferResults } from './TransferResults';
 import { ApiConfig } from './ApiConfig';
 import { SourcesConfig } from './SourcesConfig';
 import { TransferActivityLog } from './TransferActivityLog';
 import { TransferNotifications } from './TransferNotifications';
+import { FavouritesView } from './FavouritesView';
 import { Transfer } from '@/types/transfer';
 // Removed League type as championship is no longer supported
 
@@ -52,10 +53,14 @@ export const MainTabs: React.FC<MainTabsProps> = ({
 }) => {
   return (
     <Tabs defaultValue="teams" className="w-full">
-      <TabsList className="grid w-full grid-cols-6 bg-slate-800/50 backdrop-blur-md border-slate-700">
+      <TabsList className="grid w-full grid-cols-7 bg-slate-800/50 backdrop-blur-md border-slate-700">
         <TabsTrigger value="teams" className="flex items-center gap-2">
           <Shield className="w-4 h-4" />
           Teams
+        </TabsTrigger>
+        <TabsTrigger value="favourites" className="flex items-center gap-2">
+          <Star className="w-4 h-4" />
+          Favourites
         </TabsTrigger>
         <TabsTrigger value="transfers" className="flex items-center gap-2">
           <Users className="w-4 h-4" />
@@ -81,6 +86,10 @@ export const MainTabs: React.FC<MainTabsProps> = ({
 
       <TabsContent value="teams">
         <ClubsView clubTransfers={{}} allTransfers={transfers} />
+      </TabsContent>
+
+      <TabsContent value="favourites">
+        <FavouritesView transfers={transfers} />
       </TabsContent>
 
       <TabsContent value="transfers">

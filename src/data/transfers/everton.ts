@@ -111,5 +111,15 @@ export const evertonTransfers: Transfer[] = [
     date: '2025-01-05T11:15:00Z',
     source: 'evertonfc.com',
     status: 'confirmed'
+  },
+  {
+    id: 'everton-barry-in-rumor',
+    playerName: 'Thierno Barry',
+    fromClub: 'Villarreal',
+    toClub: 'Everton',
+    fee: 'Deal nearly done - DCL replacement',
+    status: 'rumored' as const,
+    date: '2025-01-08',
+    source: 'Transfer Rumors'
   }
 ];
