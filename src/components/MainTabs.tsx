@@ -1,12 +1,13 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Users, Settings, Globe, Clock } from 'lucide-react';
+import { Shield, Users, Settings, Globe, Clock, Bell } from 'lucide-react';
 import { TeamTransferView } from './TeamTransferView';
 import { TransferResults } from './TransferResults';
 import { ApiConfig } from './ApiConfig';
 import { SourcesConfig } from './SourcesConfig';
 import { TransferActivityLog } from './TransferActivityLog';
+import { TransferNotifications } from './TransferNotifications';
 import { Transfer } from '@/types/transfer';
 // Removed League type as championship is no longer supported
 
@@ -51,7 +52,7 @@ export const MainTabs: React.FC<MainTabsProps> = ({
 }) => {
   return (
     <Tabs defaultValue="teams" className="w-full">
-      <TabsList className="grid w-full grid-cols-5 bg-slate-800/50 backdrop-blur-md border-slate-700">
+      <TabsList className="grid w-full grid-cols-6 bg-slate-800/50 backdrop-blur-md border-slate-700">
         <TabsTrigger value="teams" className="flex items-center gap-2">
           <Shield className="w-4 h-4" />
           Teams
@@ -63,6 +64,10 @@ export const MainTabs: React.FC<MainTabsProps> = ({
         <TabsTrigger value="activity" className="flex items-center gap-2">
           <Clock className="w-4 h-4" />
           Activity
+        </TabsTrigger>
+        <TabsTrigger value="updates" className="flex items-center gap-2">
+          <Bell className="w-4 h-4" />
+          Updates
         </TabsTrigger>
         <TabsTrigger value="sources" className="flex items-center gap-2">
           <Globe className="w-4 h-4" />
@@ -86,6 +91,10 @@ export const MainTabs: React.FC<MainTabsProps> = ({
 
       <TabsContent value="activity">
         <TransferActivityLog />
+      </TabsContent>
+
+      <TabsContent value="updates">
+        <TransferNotifications transfers={transfers} />
       </TabsContent>
 
       <TabsContent value="sources">
