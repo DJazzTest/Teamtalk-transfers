@@ -26,10 +26,28 @@ const parseTransferFee = (fee: string): number => {
   return number; // Assume millions if no unit
 };
 
+const getBarColor = (spending: number): string => {
+  if (spending >= 51) return '#DC2626'; // Fiery red (£51m+)
+  if (spending >= 16) return '#F87171'; // Coral pink (£16-£50m)
+  return '#9CA3AF'; // Light gray (£0-£15m)
+};
+
 export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ transfers }) => {
-  // Calculate spending per club (only incoming transfers)
+  // Premier League clubs only
+  const premierLeagueClubs = [
+    'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
+    'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham',
+    'Leeds United', 'Liverpool', 'Manchester City', 'Manchester United',
+    'Newcastle United', 'Nottingham Forest', 'Sunderland', 'Tottenham Hotspur',
+    'West Ham United', 'Wolverhampton Wanderers'
+  ];
+
+  // Calculate spending per Premier League club (only incoming transfers)
   const clubSpending = transfers
-    .filter(transfer => transfer.status === 'confirmed')
+    .filter(transfer => 
+      transfer.status === 'confirmed' && 
+      premierLeagueClubs.includes(transfer.toClub)
+    )
     .reduce((acc, transfer) => {
       const fee = parseTransferFee(transfer.fee);
       if (fee > 0) {
@@ -38,32 +56,16 @@ export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ tr
       return acc;
     }, {} as Record<string, number>);
 
-  // Convert to chart data and sort by spending
-  const chartData = Object.entries(clubSpending)
-    .map(([club, spending]) => ({
+  // Create chart data for ALL Premier League clubs (including £0 spenders)
+  const chartData = premierLeagueClubs.map(club => {
+    const spending = clubSpending[club] || 0;
+    return {
       club: club.length > 15 ? club.substring(0, 15) + '...' : club,
       fullClub: club,
-      spending: Number(spending.toFixed(1))
-    }))
-    .sort((a, b) => b.spending - a.spending)
-    .slice(0, 10); // Top 10 spenders
-
-  const colors = [
-    'hsl(var(--chart-1))',
-    'hsl(var(--chart-2))',
-    'hsl(var(--chart-3))',
-    'hsl(var(--chart-4))',
-    'hsl(var(--chart-5))',
-    'hsl(220, 70%, 50%)',
-    'hsl(280, 65%, 55%)',
-    'hsl(340, 75%, 55%)',
-    'hsl(25, 85%, 55%)',
-    'hsl(120, 70%, 45%)'
-  ];
-
-  if (chartData.length === 0) {
-    return null;
-  }
+      spending: Number(spending.toFixed(1)),
+      color: getBarColor(spending)
+    };
+  }).sort((a, b) => b.spending - a.spending); // Sort by spending (highest first)
 
   return (
     <Card className="border-gray-200/50 shadow-lg mb-6" style={{ backgroundColor: '#2F517A' }}>
@@ -107,15 +109,12 @@ export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ tr
               />
               <Bar 
                 dataKey="spending" 
-                fill="url(#colorGradient)"
                 radius={[4, 4, 0, 0]}
-              />
-              <defs>
-                <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(var(--chart-1))" />
-                  <stop offset="100%" stopColor="hsl(var(--chart-2))" />
-                </linearGradient>
-              </defs>
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
