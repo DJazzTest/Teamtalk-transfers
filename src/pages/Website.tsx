@@ -8,8 +8,9 @@ import { AppHeader } from '@/components/AppHeader';
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Users } from 'lucide-react';
-import { TeamTransferView } from '@/components/TeamTransferView';
+import { Shield, Users, Star } from 'lucide-react';
+import { ClubsView } from '@/components/ClubsView';
+import { FavouritesView } from '@/components/FavouritesView';
 import { TransferResults } from '@/components/TransferResults';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { useLeagueData } from '@/hooks/useLeagueData';
@@ -45,12 +46,7 @@ const Website = () => {
       <AppHeader lastUpdated={lastUpdated} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
-        {/* Latest Confirmed Transfers */}
-        <div className="mb-4">
-          <RecentConfirmedTransfers transfers={leagueTransfers} />
-        </div>
-
-        {/* Latest Rumours */}
+        {/* Recent Transfers (includes both confirmed and rumors) */}
         <div className="mb-4">
           <RecentTransfers transfers={leagueTransfers} />
         </div>
@@ -65,12 +61,16 @@ const Website = () => {
           </div>
         </Card>
 
-        {/* Main Content Tabs - Teams and Transfers */}
+        {/* Main Content Tabs - Teams, Favourites and Transfers */}
         <Tabs defaultValue="teams" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 backdrop-blur-md border-slate-700">
             <TabsTrigger value="teams" className="flex items-center gap-2">
               <Shield className="w-4 h-4" />
               Teams
+            </TabsTrigger>
+            <TabsTrigger value="favourites" className="flex items-center gap-2">
+              <Star className="w-4 h-4" />
+              My Favourites
             </TabsTrigger>
             <TabsTrigger value="transfers" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
@@ -79,7 +79,11 @@ const Website = () => {
           </TabsList>
 
           <TabsContent value="teams">
-            <TeamTransferView transfers={leagueTransfers} />
+            <ClubsView clubTransfers={{}} allTransfers={leagueTransfers} />
+          </TabsContent>
+
+          <TabsContent value="favourites">
+            <FavouritesView transfers={leagueTransfers} />
           </TabsContent>
 
           <TabsContent value="transfers">
