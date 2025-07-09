@@ -74,7 +74,7 @@ export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ tr
           <div className="bg-blue-100 p-2 rounded-lg">
             <TrendingUp className="w-5 h-5 text-blue-600" />
           </div>
-          <h3 className="text-xl font-bold text-blue-400">Transfer Spending 2025</h3>
+          <h3 className="text-xl font-bold text-blue-400">Transfer Spending 2025/26</h3>
         </div>
         
         <div className="h-96">
