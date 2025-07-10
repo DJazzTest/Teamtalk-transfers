@@ -23,26 +23,6 @@ export const arsenalTransfers: Transfer[] = [
     status: 'confirmed'
   },
   {
-    id: 'arsenal-jorginho-2025',
-    playerName: 'Jorginho',
-    fromClub: 'Arsenal',
-    toClub: 'Flamengo',
-    fee: 'Free Transfer',
-    date: '2025-01-15T10:00:00Z',
-    source: 'arsenal.com',
-    status: 'confirmed'
-  },
-  {
-    id: 'arsenal-tierney-2025',
-    playerName: 'Kieran Tierney',
-    fromClub: 'Arsenal',
-    toClub: 'Celtic',
-    fee: 'Free Transfer',
-    date: '2025-01-12T14:30:00Z',
-    source: 'arsenal.com',
-    status: 'confirmed'
-  },
-  {
     id: 'arsenal-sterling-2025',
     playerName: 'Raheem Sterling',
     fromClub: 'Arsenal',
@@ -59,26 +39,6 @@ export const arsenalTransfers: Transfer[] = [
     toClub: 'Bournemouth',
     fee: 'End of loan',
     date: '2025-01-08T12:00:00Z',
-    source: 'arsenal.com',
-    status: 'confirmed'
-  },
-  {
-    id: 'arsenal-tavares-2025',
-    playerName: 'Nuno Tavares',
-    fromClub: 'Arsenal',
-    toClub: 'Lazio',
-    fee: '£8M',
-    date: '2025-01-05T15:00:00Z',
-    source: 'arsenal.com',
-    status: 'confirmed'
-  },
-  {
-    id: 'arsenal-marquinhos-2025',
-    playerName: 'Marquinhos',
-    fromClub: 'Arsenal',
-    toClub: 'Cruzeiro',
-    fee: '£5M',
-    date: '2025-01-03T11:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
