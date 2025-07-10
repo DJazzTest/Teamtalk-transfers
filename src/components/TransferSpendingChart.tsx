@@ -36,11 +36,11 @@ const getBarColor = (spending: number): string => {
 export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ transfers }) => {
   // Premier League clubs only
   const premierLeagueClubs = [
-    'Arsenal', 'Aston Villa', 'Brentford', 'Brighton & Hove Albion', 'Chelsea',
-    'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town', 'Leeds United',
-    'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United',
-    'Newcastle United', 'Nottingham Forest', 'Sheffield United', 'Southampton',
-    'Tottenham Hotspur', 'West Ham United'
+    'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
+    'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham',
+    'Leeds United', 'Liverpool', 'Manchester City', 'Manchester United',
+    'Newcastle United', 'Nottingham Forest', 'Sunderland', 'Tottenham Hotspur',
+    'West Ham United', 'Wolverhampton Wanderers'
   ];
 
   // Calculate spending per Premier League club (only incoming transfers)

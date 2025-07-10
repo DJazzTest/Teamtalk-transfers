@@ -52,4 +52,14 @@ export const brentfordTransfers: Transfer[] = [
     source: 'brentfordfc.com',
     status: 'confirmed'
   },
+  {
+    id: 'brentford-winterbottom-2025',
+    playerName: 'Ben Winterbottom',
+    fromClub: 'Brentford',
+    toClub: 'Barrow',
+    fee: 'Released',
+    date: '2025-01-08T10:00:00Z',
+    source: 'brentfordfc.com',
+    status: 'confirmed'
+  }
 ];

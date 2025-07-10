@@ -31,21 +31,11 @@ const parseTransferFee = (fee: string): number => {
 export const TopMoneyTransfers: React.FC<TopMoneyTransfersProps> = ({ transfers }) => {
   const [showAll, setShowAll] = useState(false);
   
-  // Premier League clubs only
-  const premierLeagueClubs = [
-    'Arsenal', 'Aston Villa', 'Brentford', 'Brighton & Hove Albion', 'Chelsea',
-    'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town', 'Leeds United',
-    'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United',
-    'Newcastle United', 'Nottingham Forest', 'Sheffield United', 'Southampton',
-    'Tottenham Hotspur', 'West Ham United'
-  ];
-
-  // Get top money transfers (only confirmed ones with actual fees and Premier League clubs)
+  // Get top money transfers (only confirmed ones with actual fees)
   const moneyTransfers = transfers
     .filter(transfer => 
       transfer.status === 'confirmed' && 
-      parseTransferFee(transfer.fee) > 0 &&
-      (premierLeagueClubs.includes(transfer.toClub) || premierLeagueClubs.includes(transfer.fromClub))
+      parseTransferFee(transfer.fee) > 0
     )
     .sort((a, b) => parseTransferFee(b.fee) - parseTransferFee(a.fee))
     .slice(0, 10); // Top 10
