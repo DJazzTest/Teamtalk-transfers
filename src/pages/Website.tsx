@@ -1,17 +1,16 @@
+
 import React, { useState, useEffect } from 'react';
 import { TransferCountdown } from '@/components/TransferCountdown';
 import { RecentTransfers } from '@/components/RecentTransfers';
-import { RecentConfirmedTransfers } from '@/components/RecentConfirmedTransfers';
-
 import { ReliableSources } from '@/components/ReliableSources';
 import { AppHeader } from '@/components/AppHeader';
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Users, Star } from 'lucide-react';
+import { Shield, Users, Star, DollarSign } from 'lucide-react';
 import { ClubsView } from '@/components/ClubsView';
 import { FavouritesView } from '@/components/FavouritesView';
-import { TransferResults } from '@/components/TransferResults';
+import { TopMoneyTransfers } from '@/components/TopMoneyTransfers';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { useLeagueData } from '@/hooks/useLeagueData';
 
@@ -61,7 +60,7 @@ const Website = () => {
           </div>
         </Card>
 
-        {/* Main Content Tabs - Teams, Favourites and Transfers */}
+        {/* Main Content Tabs - Teams, My Favourites and Top 10 Money Transfers */}
         <Tabs defaultValue="teams" className="w-full">
           <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 backdrop-blur-md border-slate-700">
             <TabsTrigger value="teams" className="flex items-center gap-2">
@@ -73,8 +72,8 @@ const Website = () => {
               My Favourites
             </TabsTrigger>
             <TabsTrigger value="transfers" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              All Transfers
+              <DollarSign className="w-4 h-4" />
+              Top 10 Money Transfers
             </TabsTrigger>
           </TabsList>
 
@@ -87,9 +86,7 @@ const Website = () => {
           </TabsContent>
 
           <TabsContent value="transfers">
-            <TransferResults 
-              lastUpdated={lastUpdated} 
-            />
+            <TopMoneyTransfers transfers={leagueTransfers} />
           </TabsContent>
         </Tabs>
       </div>

@@ -1,4 +1,3 @@
-
 import { Transfer } from '@/types/transfer';
 import { arsenalTransfers } from './arsenal';
 import { astonVillaTransfers } from './astonVilla';
@@ -7,6 +6,7 @@ import { brentfordTransfers } from './brentford';
 import { brightonTransfers } from './brighton';
 import { leedsTransfers } from './leeds';
 import { latestRumors } from './rumors';
+import { latestJuly2025Transfers } from './latestJuly2025';
 import { chelseaTransfers } from './chelsea';
 import { crystalPalaceTransfers } from './crystalPalace';
 import { evertonTransfers } from './everton';
@@ -115,8 +115,9 @@ const burnleyTransfers: Transfer[] = [
   }
 ];
 
-// Combine all transfers - ONLY REAL TRANSFERS
+// Combine all transfers - LATEST TRANSFERS FIRST
 export const allClubTransfers: Transfer[] = [
+  ...latestJuly2025Transfers,
   ...latestRumors,
   ...arsenalTransfers,
   ...astonVillaTransfers,
