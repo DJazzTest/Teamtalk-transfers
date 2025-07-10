@@ -1,16 +1,16 @@
-
 import React, { useState, useEffect } from 'react';
 import { TransferCountdown } from '@/components/TransferCountdown';
 import { RecentTransfers } from '@/components/RecentTransfers';
+import { RecentConfirmedTransfers } from '@/components/RecentConfirmedTransfers';
+
 import { ReliableSources } from '@/components/ReliableSources';
 import { AppHeader } from '@/components/AppHeader';
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Users, Star, DollarSign } from 'lucide-react';
-import { ClubsView } from '@/components/ClubsView';
-import { FavouritesView } from '@/components/FavouritesView';
-import { TopMoneyTransfers } from '@/components/TopMoneyTransfers';
+import { Shield, Users } from 'lucide-react';
+import { TeamTransferView } from '@/components/TeamTransferView';
+import { TransferResults } from '@/components/TransferResults';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { useLeagueData } from '@/hooks/useLeagueData';
 
@@ -45,7 +45,12 @@ const Website = () => {
       <AppHeader lastUpdated={lastUpdated} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
-        {/* Recent Transfers (includes both confirmed and rumors) */}
+        {/* Latest Confirmed Transfers */}
+        <div className="mb-4">
+          <RecentConfirmedTransfers transfers={leagueTransfers} />
+        </div>
+
+        {/* Latest Rumours */}
         <div className="mb-4">
           <RecentTransfers transfers={leagueTransfers} />
         </div>
@@ -60,33 +65,27 @@ const Website = () => {
           </div>
         </Card>
 
-        {/* Main Content Tabs - Teams, My Favourites and Top 10 Money Transfers */}
+        {/* Main Content Tabs - Teams and Transfers */}
         <Tabs defaultValue="teams" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 backdrop-blur-md border-slate-700">
             <TabsTrigger value="teams" className="flex items-center gap-2">
               <Shield className="w-4 h-4" />
               Teams
             </TabsTrigger>
-            <TabsTrigger value="favourites" className="flex items-center gap-2">
-              <Star className="w-4 h-4" />
-              My Favourites
-            </TabsTrigger>
             <TabsTrigger value="transfers" className="flex items-center gap-2">
-              <DollarSign className="w-4 h-4" />
-              Top 10 Money Transfers
+              <Users className="w-4 h-4" />
+              All Transfers
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="teams">
-            <ClubsView clubTransfers={{}} allTransfers={leagueTransfers} />
-          </TabsContent>
-
-          <TabsContent value="favourites">
-            <FavouritesView transfers={leagueTransfers} />
+            <TeamTransferView transfers={leagueTransfers} />
           </TabsContent>
 
           <TabsContent value="transfers">
-            <TopMoneyTransfers transfers={leagueTransfers} />
+            <TransferResults 
+              lastUpdated={lastUpdated} 
+            />
           </TabsContent>
         </Tabs>
       </div>
