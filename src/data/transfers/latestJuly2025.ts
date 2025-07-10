@@ -37,7 +37,7 @@ export const latestJuly2025Transfers: Transfer[] = [
     playerName: 'Gabriel Gudmundsson',
     fromClub: 'Lille',
     toClub: 'Leeds United',
-    fee: '€11.6M',
+    fee: '£11.6M',
     date: '2025-07-08T10:15:00Z',
     source: 'leedsunited.com',
     status: 'confirmed'
@@ -47,7 +47,7 @@ export const latestJuly2025Transfers: Transfer[] = [
     playerName: 'Kota Takai',
     fromClub: 'Kawasaki Frontale',
     toClub: 'Tottenham Hotspur',
-    fee: '€5.8M',
+    fee: '£5.8M',
     date: '2025-07-08T11:00:00Z',
     source: 'tottenhamhotspur.com',
     status: 'confirmed'
@@ -60,26 +60,6 @@ export const latestJuly2025Transfers: Transfer[] = [
     fee: 'Free Transfer',
     date: '2025-07-08T09:30:00Z',
     source: 'safc.com',
-    status: 'confirmed'
-  },
-  {
-    id: 'alejo-veliz-rosario-2025',
-    playerName: 'Alejo Veliz',
-    fromClub: 'Tottenham Hotspur',
-    toClub: 'Rosario Central',
-    fee: 'Loan',
-    date: '2025-07-08T13:45:00Z',
-    source: 'tottenhamhotspur.com',
-    status: 'confirmed'
-  },
-  {
-    id: 'andreas-hountondji-stpauli-2025',
-    playerName: 'Andreas Hountondji',
-    fromClub: 'Burnley',
-    toClub: 'St Pauli',
-    fee: 'Loan',
-    date: '2025-07-08T15:20:00Z',
-    source: 'burnleyfc.com',
     status: 'confirmed'
   }
 ];

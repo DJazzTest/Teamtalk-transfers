@@ -7,7 +7,6 @@ import { MessageCircle, TrendingUp, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferSpendingChart } from './TransferSpendingChart';
 import { RecentConfirmedTransfers } from './RecentConfirmedTransfers';
-import { TopMoneyTransfers } from './TopMoneyTransfers';
 
 interface RecentTransfersProps {
   transfers: Transfer[];
@@ -48,9 +47,6 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
     <div className="space-y-6">
       {/* Transfer Spending Chart */}
       <TransferSpendingChart transfers={transfers} />
-      
-      {/* Top Money Transfers */}
-      <TopMoneyTransfers transfers={transfers} />
       
       {/* Latest Confirmed Transfers */}
       <RecentConfirmedTransfers transfers={transfers} />
