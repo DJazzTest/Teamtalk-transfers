@@ -8,7 +8,7 @@ export const fulhamTransfers: Transfer[] = [
     fromClub: 'Fulham',
     toClub: 'Free Agent',
     fee: 'Released',
-    date: '2025-01-15T10:00:00Z',
+    date: '2025-07-04T12:00:00Z',
     source: 'fulhamfc.com',
     status: 'confirmed'
   },
@@ -17,8 +17,8 @@ export const fulhamTransfers: Transfer[] = [
     playerName: 'Willian',
     fromClub: 'Fulham',
     toClub: 'Olympiacos',
-    fee: 'Free Transfer',
-    date: '2025-01-12T14:00:00Z',
+    fee: 'Free',
+    date: '2025-07-04T12:00:00Z',
     source: 'fulhamfc.com',
     status: 'confirmed'
   },

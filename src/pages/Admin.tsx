@@ -15,6 +15,7 @@ import { Settings, Globe, RefreshCw, AlertTriangle, Clock, Search, Database, Tes
 import { Transfer } from '@/types/transfer';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
+import TransferDataAdmin from '@/components/TransferDataAdmin';
 
 const Admin = () => {
   const {
@@ -83,23 +84,15 @@ const Admin = () => {
         </div>
 
         {/* Admin Management Tabs */}
-        <Tabs defaultValue="scrape-debug" className="w-full">
-          <TabsList className="grid w-full grid-cols-7 bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <TabsTrigger value="scrape-debug" className="flex items-center gap-2">
+        <Tabs defaultValue="debug-scrape" className="w-full">
+          <TabsList className="grid w-full grid-cols-5 bg-slate-800/50 backdrop-blur-md border-slate-700">
+            <TabsTrigger value="debug-scrape" className="flex items-center gap-2">
               <Search className="w-4 h-4" />
-              Scrape Debug
-            </TabsTrigger>
-            <TabsTrigger value="data-debug" className="flex items-center gap-2">
-              <Database className="w-4 h-4" />
-              Data Debug
+              Debug & Scrape
             </TabsTrigger>
             <TabsTrigger value="sources" className="flex items-center gap-2">
               <Globe className="w-4 h-4" />
               Sources
-            </TabsTrigger>
-            <TabsTrigger value="refresh" className="flex items-center gap-2">
-              <RefreshCw className="w-4 h-4" />
-              Scrape
             </TabsTrigger>
             <TabsTrigger value="api" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
@@ -109,33 +102,48 @@ const Admin = () => {
               <AlertTriangle className="w-4 h-4" />
               Errors
             </TabsTrigger>
-            <TabsTrigger value="url-test" className="flex items-center gap-2">
-              <TestTube className="w-4 h-4" />
-              URL Test
+            <TabsTrigger value="manual-entry" className="flex items-center gap-2">
+              <Database className="w-4 h-4" />
+              Manual Entry
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="scrape-debug">
-            <ScrapeDebugger />
-          </TabsContent>
-
-          <TabsContent value="data-debug">
-            <TransferDataDebugger transfers={allTransfers} />
+          <TabsContent value="debug-scrape">
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-2">Scrape Debug</h3>
+                <ScrapeDebugger />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-2">Data Debug</h3>
+                <TransferDataDebugger transfers={allTransfers} />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-2">Scrape Controls</h3>
+                <RefreshConfig
+                  autoScrapeInterval={autoScrapeInterval}
+                  setAutoScrapeInterval={setAutoScrapeInterval}
+                  isAutoScrapeEnabled={isAutoScrapeEnabled}
+                  setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
+                  lastScrapeTime={lastScrapeTime}
+                  onManualScrape={handleManualScrape}
+                />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-2">URL Test</h3>
+                <UrlTester />
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="sources">
             <SourcesConfig />
-          </TabsContent>
-
-          <TabsContent value="refresh">
-            <RefreshConfig
-              autoScrapeInterval={autoScrapeInterval}
-              setAutoScrapeInterval={setAutoScrapeInterval}
-              isAutoScrapeEnabled={isAutoScrapeEnabled}
-              setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
-              lastScrapeTime={lastScrapeTime}
-              onManualScrape={handleManualScrape}
-            />
+            <div className="mt-8">
+              <CountdownConfig
+                countdownTarget={countdownTarget}
+                setCountdownTarget={setCountdownTarget}
+              />
+            </div>
           </TabsContent>
 
           <TabsContent value="api">
@@ -145,8 +153,6 @@ const Admin = () => {
               isAutoRefresh={isAutoRefresh}
               setIsAutoRefresh={setIsAutoRefresh}
               onManualRefresh={handleManualRefresh}
-              countdownTarget={countdownTarget}
-              setCountdownTarget={setCountdownTarget}
               autoScrapeInterval={autoScrapeInterval}
               setAutoScrapeInterval={setAutoScrapeInterval}
               isAutoScrapeEnabled={isAutoScrapeEnabled}
@@ -165,8 +171,8 @@ const Admin = () => {
             />
           </TabsContent>
 
-          <TabsContent value="url-test">
-            <UrlTester />
+          <TabsContent value="manual-entry">
+            <TransferDataAdmin />
           </TabsContent>
         </Tabs>
 

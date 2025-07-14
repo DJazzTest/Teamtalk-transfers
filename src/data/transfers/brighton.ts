@@ -7,8 +7,8 @@ export const brightonTransfers: Transfer[] = [
     playerName: 'Tommy Watson',
     fromClub: 'Sunderland',
     toClub: 'Brighton & Hove Albion',
-    fee: '£4M',
-    date: '2025-01-16T11:00:00Z',
+    fee: '£4m',
+    date: '2025-07-04T12:00:00Z',
     source: 'brightonandhovealbion.com',
     status: 'confirmed'
   },
@@ -27,8 +27,8 @@ export const brightonTransfers: Transfer[] = [
     playerName: 'Charalampos Kostoulas',
     fromClub: 'Olympiacos',
     toClub: 'Brighton & Hove Albion',
-    fee: '£6M',
-    date: '2025-01-13T12:45:00Z',
+    fee: '£6m',
+    date: '2025-07-04T12:00:00Z',
     source: 'brightonandhovealbion.com',
     status: 'confirmed'
   },

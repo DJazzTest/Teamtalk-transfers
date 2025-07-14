@@ -3,6 +3,26 @@ import { Transfer } from '@/types/transfer';
 
 export const tottenhamTransfers: Transfer[] = [
   {
+    id: 'tottenham-veliz-2025',
+    playerName: 'Alejo Veliz',
+    fromClub: 'Tottenham Hotspur',
+    toClub: 'Sevilla FC',
+    fee: 'Loan',
+    date: '2025-07-08T12:00:00Z',
+    source: 'tottenhamhotspur.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'tottenham-takai-2025',
+    playerName: 'Kota Takai',
+    fromClub: 'Kawasaki Frontale',
+    toClub: 'Tottenham Hotspur',
+    fee: '€5.8m',
+    date: '2025-07-08T12:00:00Z',
+    source: 'tottenhamhotspur.com',
+    status: 'confirmed'
+  },
+  {
     id: 'spurs-vuskovic-2025',
     playerName: 'Luka Vuskovic',
     fromClub: 'Hajduk Split',
@@ -100,6 +120,16 @@ export const tottenhamTransfers: Transfer[] = [
     fee: 'Personal terms agreed',
     status: 'rumored' as const,
     date: '2025-01-08',
+    source: 'Transfer Rumors'
+  },
+  {
+    id: 'tottenham-gibbswhite-in-rumor',
+    playerName: 'Morgan Gibbs-White',
+    fromClub: 'Nottingham Forest',
+    toClub: 'Tottenham',
+    fee: '',
+    status: 'rumored' as const,
+    date: '2025-07-11',
     source: 'Transfer Rumors'
   }
 ];

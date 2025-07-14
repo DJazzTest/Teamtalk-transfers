@@ -1,0 +1,61 @@
+import React, { useState } from 'react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { CheckCircle } from 'lucide-react';
+import { Transfer } from '@/types/transfer';
+
+interface HomeRecentConfirmedProps {
+  transfers: Transfer[];
+}
+
+export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transfers }) => {
+  const [showAll, setShowAll] = useState(false);
+  const allConfirmed = transfers.filter(t => t.status === 'confirmed').sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const displayConfirmed = showAll ? allConfirmed : allConfirmed.slice(0, 3);
+
+  if (allConfirmed.length === 0) return null;
+
+  return (
+    <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#eafbee' }}>
+      <div className="p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <CheckCircle className="w-5 h-5 text-green-600" />
+          <h2 className="text-lg font-bold text-green-800">Confirmed Transfers In</h2>
+          <Badge className="bg-green-700 text-white text-xs">CONFIRMED</Badge>
+        </div>
+        <div className="flex gap-4 overflow-x-auto pb-2">
+          {displayConfirmed.map((transfer) => (
+            <Card key={transfer.id} className="min-w-[240px] max-w-xs bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-md transition-all duration-200 hover:border-green-300">
+              <div className="p-3 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-gray-800 text-base truncate">{transfer.playerName}</span>
+                </div>
+                <div className="text-xs text-gray-600">
+                  <span>{transfer.fromClub}</span> → <span className="font-semibold text-gray-800">{transfer.toClub}</span>
+                </div>
+                <div className="flex justify-between items-end gap-2">
+                  <span className="text-green-700 font-bold">{transfer.fee}</span>
+                  <span className="text-xs text-gray-500">{new Date(transfer.date).toLocaleDateString()}</span>
+                </div>
+                <span className="text-xs text-gray-400 truncate">{transfer.source}</span>
+              </div>
+            </Card>
+          ))}
+          {allConfirmed.length > 3 && (
+            <div className="flex items-center">
+              <Button
+                onClick={() => setShowAll(!showAll)}
+                variant="outline"
+                size="sm"
+                className="border-green-400 text-green-700 hover:bg-green-50 ml-2"
+              >
+                {showAll ? 'Show Less' : `Show More (${allConfirmed.length - 3} more)`}
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    </Card>
+  );
+};

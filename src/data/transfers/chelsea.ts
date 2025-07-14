@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const chelseaTransfers: Transfer[] = [
   {
+    id: 'chelsea-gittens-2025',
+    playerName: 'Jamie Gittens',
+    fromClub: 'Borussia Dortmund',
+    toClub: 'Chelsea',
+    fee: '£48.5m',
+    date: '2025-07-06T12:00:00Z',
+    source: 'chelseafc.com',
+    status: 'confirmed'
+  },
+  {
     id: 'chelsea-uefa-punishment-2025',
     playerName: 'João Pedro',
     fromClub: 'Brighton & Hove Albion',
@@ -71,5 +81,15 @@ export const chelseaTransfers: Transfer[] = [
     date: '2025-01-08T10:00:00Z',
     source: 'chelseafc.com',
     status: 'confirmed'
+  },
+  {
+    id: 'chelsea-madueke-out-rumor',
+    playerName: 'Noni Madueke',
+    fromClub: 'Chelsea',
+    toClub: 'Arsenal',
+    fee: '',
+    status: 'rumored' as const,
+    date: '2025-07-11',
+    source: 'Transfer Rumors'
   }
 ];

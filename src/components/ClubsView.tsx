@@ -1,6 +1,31 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
+
+// Maps club names to badge filenames for special cases
+export const clubBadgeMap: Record<string, string> = {
+  'Arsenal': 'arsenal.png',
+  'Aston Villa': 'astonvilla.png',
+  'Bournemouth': 'bournemouth.png',
+  'Brentford': 'brentford.png',
+  'Brighton & Hove Albion': 'brightonhovealbion.png',
+  'Burnley': 'burnley.png',
+  'Chelsea': 'chelsea.png',
+  'Crystal Palace': 'crystalpalace.png',
+  'Everton': 'everton.png',
+  'Fulham': 'fulham.png',
+  'Leeds United': 'leedsunited.png',
+  'Liverpool': 'liverpool.png',
+  'Manchester City': 'manchestercity.png',
+  'Manchester United': 'manchesterunited.png',
+  'Newcastle United': 'newcastleunited.png',
+  'Nottingham Forest': 'nottinghamforest.png',
+  'Sunderland': 'sunderland.png',
+  'Tottenham Hotspur': 'tottenhamhotspur.png',
+  'West Ham United': 'westhamunited.png',
+  'Wolverhampton Wanderers': 'wolverhamptonwanderers.png',
+};
+
 import { Button } from '@/components/ui/button';
 import { Star, ArrowLeft } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
@@ -82,7 +107,15 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               >
                 <ArrowLeft className="w-4 h-4" />
               </Button>
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <img
+                  src={`/badges/${selectedClub?.toLowerCase().replace(/[^a-z]/g, '')}.png`}
+                  alt={`${selectedClub} badge`}
+                  className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
+                  onError={e => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
                 {selectedClub} ({clubTransferList.length} transfers)
               </h3>
             </div>
@@ -117,6 +150,7 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
       onStarClub={handleStarClub}
       onViewClubTransfers={handleViewClubTransfers}
       myClub={myClub}
+      clubBadgeMap={clubBadgeMap}
     />
   );
 };

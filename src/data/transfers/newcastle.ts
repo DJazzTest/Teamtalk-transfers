@@ -41,5 +41,25 @@ export const newcastleTransfers: Transfer[] = [
     date: '2025-01-08T15:45:00Z',
     source: 'nufc.co.uk',
     status: 'confirmed'
+  },
+  {
+    id: 'newcastle-elanga-in-2025',
+    playerName: 'Anthony Elanga',
+    fromClub: 'Nottingham Forest',
+    toClub: 'Newcastle United',
+    fee: '£55m',
+    date: '2025-07-11',
+    source: 'nufc.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'newcastle-trafford-in-rumor',
+    playerName: 'James Trafford',
+    fromClub: 'Burnley',
+    toClub: 'Newcastle United',
+    fee: '',
+    status: 'rumored' as const,
+    date: '2025-07-11',
+    source: 'Transfer Rumors'
   }
 ];

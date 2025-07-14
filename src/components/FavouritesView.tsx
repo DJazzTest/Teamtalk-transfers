@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Star, Heart, TrendingUp, TrendingDown } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
+import { clubBadgeMap } from './ClubsView';
 import { groupTransfersByNormalizedClub } from '@/utils/clubNormalizer';
 
 interface FavouritesViewProps {
@@ -64,7 +65,14 @@ export const FavouritesView: React.FC<FavouritesViewProps> = ({ transfers }) => 
                   ← Back to Favourites
                 </Button>
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                  <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                  <img
+                    src={`/badges/${clubBadgeMap[selectedClub!] || selectedClub?.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                    alt={`${selectedClub} badge`}
+                    className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
+                    onError={e => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
                   {selectedClub}
                 </h3>
               </div>
@@ -140,10 +148,11 @@ export const FavouritesView: React.FC<FavouritesViewProps> = ({ transfers }) => 
     <div className="space-y-6">
       <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
         <div className="p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
-            <h2 className="text-2xl font-bold text-white">My Favourite Clubs</h2>
-            <Badge className="bg-yellow-500/20 text-yellow-400">
+          {/* Responsive horizontally scrollable nav bar */}
+          <div className="flex overflow-x-auto no-scrollbar gap-3 items-center mb-4 px-1" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <Star className="flex-shrink-0 w-6 h-6 text-yellow-400 fill-yellow-400" />
+            <h2 className="flex-shrink-0 text-2xl font-bold text-white whitespace-nowrap">My Favourite Clubs</h2>
+            <Badge className="flex-shrink-0 bg-yellow-500/20 text-yellow-400 whitespace-nowrap">
               {favouriteClubTransfers.length} clubs
             </Badge>
           </div>
@@ -163,7 +172,14 @@ export const FavouritesView: React.FC<FavouritesViewProps> = ({ transfers }) => 
               <div className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                    <img
+                      src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                      alt={`${club} badge`}
+                      className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
+                      onError={e => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
                     <h3 className="font-bold text-lg text-yellow-300">{club}</h3>
                   </div>
                   <Button

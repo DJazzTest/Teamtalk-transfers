@@ -1,9 +1,11 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
+import { clubBadgeMap } from './ClubsView';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, ArrowRight } from 'lucide-react';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { Transfer } from '@/types/transfer';
 import { useToast } from '@/hooks/use-toast';
 
@@ -13,6 +15,7 @@ interface TeamTransferStatsProps {
   onStarClub: (clubName: string) => void;
   onViewClubTransfers: (clubName: string) => void;
   myClub: string | null;
+  clubBadgeMap: Record<string, string>;
 }
 
 export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
@@ -20,7 +23,8 @@ export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
   starredClubs,
   onStarClub,
   onViewClubTransfers,
-  myClub
+  myClub,
+  clubBadgeMap
 }) => {
   const { toast } = useToast();
 
@@ -67,7 +71,15 @@ export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
               <div className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className={`font-bold text-lg ${isMyClub ? 'text-blue-300' : 'text-white'}`}>
+                    <h3 className={`font-bold text-lg flex items-center gap-2 ${isMyClub ? 'text-blue-300' : 'text-white'}`}>
+                      <img
+                        src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '')}.png`}
+                        alt={`${club} badge`}
+                        className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
+                        onError={e => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
                       {club}
                     </h3>
                     {isMyClub && (
@@ -76,16 +88,30 @@ export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
                       </Badge>
                     )}
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleStarClick(club)}
-                    className="text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50"
-                  >
-                    <Star 
-                      className={`w-5 h-5 ${isStarred ? 'fill-yellow-400 text-yellow-400' : 'text-yellow-400'}`}
-                    />
-                  </Button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={e => {
+                            e.currentTarget.classList.add('scale-110');
+                            setTimeout(() => e.currentTarget.classList.remove('scale-110'), 150);
+                            handleStarClick(club);
+                          }}
+                          className="text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50 transition-transform duration-150"
+                          aria-label={isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
+                        >
+                          <Star 
+                            className={`w-5 h-5 ${isStarred ? 'fill-yellow-400 text-yellow-400' : 'text-yellow-400'}`}
+                          />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom">
+                        {isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
 
                 <div className="space-y-2 mb-4">

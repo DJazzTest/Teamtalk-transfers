@@ -2,6 +2,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { ApiKeyManager } from './ApiKeyManager';
+import ApiEndpointManager from './ApiEndpointManager';
 import { RefreshConfig } from './RefreshConfig';
 import { CountdownConfig } from './CountdownConfig';
 import { CrawlErrors } from './CrawlErrors';
@@ -13,8 +14,6 @@ interface ApiConfigProps {
   isAutoRefresh: boolean;
   setIsAutoRefresh: (enabled: boolean) => void;
   onManualRefresh: () => void;
-  countdownTarget: string;
-  setCountdownTarget: (target: string) => void;
   autoScrapeInterval: number;
   setAutoScrapeInterval: (interval: number) => void;
   isAutoScrapeEnabled: boolean;
@@ -31,8 +30,6 @@ export const ApiConfig: React.FC<ApiConfigProps> = ({
   isAutoRefresh,
   setIsAutoRefresh,
   onManualRefresh,
-  countdownTarget,
-  setCountdownTarget,
   autoScrapeInterval,
   setAutoScrapeInterval,
   isAutoScrapeEnabled,
@@ -56,6 +53,14 @@ export const ApiConfig: React.FC<ApiConfigProps> = ({
         </div>
       </Card>
 
+      {/* Custom API Endpoints Manager */}
+      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 mt-6">
+        <div className="p-6">
+          <h3 className="text-xl font-semibold text-white mb-4">Custom Transfer APIs</h3>
+          <ApiEndpointManager />
+        </div>
+      </Card>
+
       <RefreshConfig
         autoScrapeInterval={autoScrapeInterval}
         setAutoScrapeInterval={setAutoScrapeInterval}
@@ -63,11 +68,6 @@ export const ApiConfig: React.FC<ApiConfigProps> = ({
         setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
         lastScrapeTime={lastScrapeTime}
         onManualScrape={onManualScrape}
-      />
-
-      <CountdownConfig
-        countdownTarget={countdownTarget}
-        setCountdownTarget={setCountdownTarget}
       />
 
       {scrapeErrors.length > 0 && (

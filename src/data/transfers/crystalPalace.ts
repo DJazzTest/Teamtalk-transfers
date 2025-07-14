@@ -8,7 +8,7 @@ export const crystalPalaceTransfers: Transfer[] = [
     fromClub: 'Crystal Palace',
     toClub: 'Free Agent',
     fee: 'Released',
-    date: '2025-01-15T10:00:00Z',
+    date: '2025-07-04T12:00:00Z',
     source: 'cpfc.co.uk',
     status: 'confirmed'
   },
@@ -18,7 +18,7 @@ export const crystalPalaceTransfers: Transfer[] = [
     fromClub: 'Crystal Palace',
     toClub: 'Free Agent',
     fee: 'Released',
-    date: '2025-01-15T10:00:00Z',
+    date: '2025-07-04T12:00:00Z',
     source: 'cpfc.co.uk',
     status: 'confirmed'
   },
@@ -27,8 +27,8 @@ export const crystalPalaceTransfers: Transfer[] = [
     playerName: 'Louie Moulden',
     fromClub: 'Manchester City',
     toClub: 'Crystal Palace',
-    fee: '£1M',
-    date: '2025-01-12T14:30:00Z',
+    fee: '£1m',
+    date: '2025-07-04T12:00:00Z',
     source: 'cpfc.co.uk',
     status: 'confirmed'
   },
@@ -37,8 +37,8 @@ export const crystalPalaceTransfers: Transfer[] = [
     playerName: 'Walter Benitez',
     fromClub: 'PSV Eindhoven',
     toClub: 'Crystal Palace',
-    fee: '£8M',
-    date: '2025-01-08T15:00:00Z',
+    fee: '£8m',
+    date: '2025-07-04T12:00:00Z',
     source: 'cpfc.co.uk',
     status: 'confirmed'
   }

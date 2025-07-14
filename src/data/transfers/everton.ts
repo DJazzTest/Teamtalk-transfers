@@ -8,7 +8,7 @@ export const evertonTransfers: Transfer[] = [
     fromClub: 'Everton',
     toClub: 'Free Agent',
     fee: 'Released',
-    date: '2025-01-16T10:00:00Z',
+    date: '2025-07-04T12:00:00Z',
     source: 'evertonfc.com',
     status: 'confirmed'
   },
@@ -18,7 +18,7 @@ export const evertonTransfers: Transfer[] = [
     fromClub: 'Everton',
     toClub: 'Free Agent',
     fee: 'Released',
-    date: '2025-01-16T10:00:00Z',
+    date: '2025-07-04T12:00:00Z',
     source: 'evertonfc.com',
     status: 'confirmed'
   },
@@ -28,7 +28,7 @@ export const evertonTransfers: Transfer[] = [
     fromClub: 'Everton',
     toClub: 'Free Agent',
     fee: 'Released',
-    date: '2025-01-16T10:00:00Z',
+    date: '2025-07-04T12:00:00Z',
     source: 'evertonfc.com',
     status: 'confirmed'
   },

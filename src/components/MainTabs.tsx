@@ -53,7 +53,7 @@ export const MainTabs: React.FC<MainTabsProps> = ({
 }) => {
   return (
     <Tabs defaultValue="teams" className="w-full">
-      <TabsList className="grid w-full grid-cols-7 bg-slate-800/50 backdrop-blur-md border-slate-700">
+      <TabsList className="w-full flex overflow-x-scroll scrollbar scrollbar-thumb-green-400 scrollbar-track-slate-800 bg-slate-800/50 backdrop-blur-md border-slate-700 whitespace-nowrap min-w-max">
         <TabsTrigger value="teams" className="flex items-center gap-2">
           <Shield className="w-4 h-4" />
           Teams
@@ -85,49 +85,63 @@ export const MainTabs: React.FC<MainTabsProps> = ({
       </TabsList>
 
       <TabsContent value="teams">
-        <ClubsView clubTransfers={{}} allTransfers={transfers} />
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-800">
+          <ClubsView clubTransfers={{}} allTransfers={transfers} />
+        </div>
       </TabsContent>
 
       <TabsContent value="favourites">
-        <FavouritesView transfers={transfers} />
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-yellow-400 scrollbar-track-yellow-100">
+          <FavouritesView transfers={transfers} />
+        </div>
       </TabsContent>
 
       <TabsContent value="transfers">
-        <TransferResults 
-          lastUpdated={lastUpdated} 
-        />
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-100">
+          <TransferResults 
+            lastUpdated={lastUpdated} 
+          />
+        </div>
       </TabsContent>
 
       <TabsContent value="activity">
-        <TransferActivityLog />
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-purple-100">
+          <TransferActivityLog />
+        </div>
       </TabsContent>
 
       <TabsContent value="updates">
-        <TransferNotifications transfers={transfers} />
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-green-100">
+          <TransferNotifications transfers={transfers} />
+        </div>
       </TabsContent>
 
       <TabsContent value="sources">
-        <SourcesConfig />
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+          <SourcesConfig />
+        </div>
       </TabsContent>
 
       <TabsContent value="api">
-        <ApiConfig 
-          refreshRate={refreshRate}
-          setRefreshRate={setRefreshRate}
-          isAutoRefresh={isAutoRefresh}
-          setIsAutoRefresh={setIsAutoRefresh}
-          onManualRefresh={onManualRefresh}
-          countdownTarget={countdownTarget}
-          setCountdownTarget={setCountdownTarget}
-          autoScrapeInterval={autoScrapeInterval}
-          setAutoScrapeInterval={setAutoScrapeInterval}
-          isAutoScrapeEnabled={isAutoScrapeEnabled}
-          setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
-          scrapeErrors={scrapeErrors}
-          lastScrapeTime={lastScrapeTime}
-          onManualScrape={onManualScrape}
-          onClearScrapeErrors={onClearScrapeErrors}
-        />
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-cyan-100">
+          <ApiConfig 
+            refreshRate={refreshRate}
+            setRefreshRate={setRefreshRate}
+            isAutoRefresh={isAutoRefresh}
+            setIsAutoRefresh={setIsAutoRefresh}
+            onManualRefresh={onManualRefresh}
+            countdownTarget={countdownTarget}
+            setCountdownTarget={setCountdownTarget}
+            autoScrapeInterval={autoScrapeInterval}
+            setAutoScrapeInterval={setAutoScrapeInterval}
+            isAutoScrapeEnabled={isAutoScrapeEnabled}
+            setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
+            scrapeErrors={scrapeErrors}
+            lastScrapeTime={lastScrapeTime}
+            onManualScrape={onManualScrape}
+            onClearScrapeErrors={onClearScrapeErrors}
+          />
+        </div>
       </TabsContent>
     </Tabs>
   );

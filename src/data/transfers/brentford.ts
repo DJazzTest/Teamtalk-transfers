@@ -27,8 +27,8 @@ export const brentfordTransfers: Transfer[] = [
     playerName: 'Caoimhin Kelleher',
     fromClub: 'Liverpool',
     toClub: 'Brentford',
-    fee: '£25M',
-    date: '2025-01-12T16:00:00Z',
+    fee: '£18m',
+    date: '2025-07-04T12:00:00Z',
     source: 'brentfordfc.com',
     status: 'confirmed'
   },

@@ -7,8 +7,8 @@ export const bournemouthTransfers: Transfer[] = [
     playerName: 'Eli Junior Kroupi',
     fromClub: 'Lorient',
     toClub: 'Bournemouth',
-    fee: '£12M',
-    date: '2025-01-16T14:00:00Z',
+    fee: '£12m',
+    date: '2025-07-04T12:00:00Z',
     source: 'afcb.co.uk',
     status: 'confirmed'
   },

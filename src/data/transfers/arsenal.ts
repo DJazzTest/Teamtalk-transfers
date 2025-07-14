@@ -3,12 +3,22 @@ import { Transfer } from '@/types/transfer';
 
 export const arsenalTransfers: Transfer[] = [
   {
+    id: 'arsenal-zubimendi-2025',
+    playerName: 'Martin Zubimendi',
+    fromClub: 'Real Sociedad',
+    toClub: 'Arsenal',
+    fee: '£56m',
+    date: '2025-07-06T12:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
     id: 'arsenal-kepa-2025',
     playerName: 'Kepa Arrizabalaga',
     fromClub: 'Chelsea',
     toClub: 'Arsenal',
-    fee: '£5M',
-    date: '2025-01-18T12:00:00Z',
+    fee: '£5m',
+    date: '2025-07-04T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -16,9 +26,9 @@ export const arsenalTransfers: Transfer[] = [
     id: 'arsenal-partey-2025',
     playerName: 'Thomas Partey',
     fromClub: 'Arsenal',
-    toClub: 'Free Agent',
+    toClub: 'Released',
     fee: 'Released',
-    date: '2025-01-16T10:00:00Z',
+    date: '2025-07-06T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -27,8 +37,8 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Jorginho',
     fromClub: 'Arsenal',
     toClub: 'Flamengo',
-    fee: 'Free Transfer',
-    date: '2025-01-15T10:00:00Z',
+    fee: 'Free',
+    date: '2025-07-06T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -37,8 +47,8 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Kieran Tierney',
     fromClub: 'Arsenal',
     toClub: 'Celtic',
-    fee: 'Free Transfer',
-    date: '2025-01-12T14:30:00Z',
+    fee: 'Free',
+    date: '2025-07-06T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -67,8 +77,8 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Nuno Tavares',
     fromClub: 'Arsenal',
     toClub: 'Lazio',
-    fee: '£8M',
-    date: '2025-01-05T15:00:00Z',
+    fee: '£6.5m',
+    date: '2025-07-05T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -77,8 +87,8 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Marquinhos',
     fromClub: 'Arsenal',
     toClub: 'Cruzeiro',
-    fee: '£5M',
-    date: '2025-01-03T11:00:00Z',
+    fee: '£2.5m',
+    date: '2025-07-05T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -130,6 +140,26 @@ export const arsenalTransfers: Transfer[] = [
     fee: 'Release clause required',
     status: 'rumored' as const,
     date: '2025-01-08',
+    source: 'Transfer Rumors'
+  },
+  {
+    id: 'arsenal-madueke-in-rumor',
+    playerName: 'Noni Madueke',
+    fromClub: 'Chelsea',
+    toClub: 'Arsenal',
+    fee: '',
+    status: 'rumored' as const,
+    date: '2025-07-11',
+    source: 'Transfer Rumors'
+  },
+  {
+    id: 'arsenal-gyokeres-in-rumor',
+    playerName: 'Viktor Gyokeres',
+    fromClub: 'Sporting',
+    toClub: 'Arsenal',
+    fee: '',
+    status: 'rumored' as const,
+    date: '2025-07-11',
     source: 'Transfer Rumors'
   }
 ];

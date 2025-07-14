@@ -7,8 +7,8 @@ export const astonVillaTransfers: Transfer[] = [
     playerName: 'Zepiqueno Redmond',
     fromClub: 'Feyenoord',
     toClub: 'Aston Villa',
-    fee: 'Free Transfer',
-    date: '2025-01-17T11:00:00Z',
+    fee: 'Free',
+    date: '2025-07-04T12:00:00Z',
     source: 'avfc.co.uk',
     status: 'confirmed'
   },
@@ -17,8 +17,8 @@ export const astonVillaTransfers: Transfer[] = [
     playerName: 'Yasin Ozcan',
     fromClub: 'Kasimpasa',
     toClub: 'Aston Villa',
-    fee: '£5.8M',
-    date: '2025-01-14T13:00:00Z',
+    fee: '£5.8m',
+    date: '2025-07-04T12:00:00Z',
     source: 'avfc.co.uk',
     status: 'confirmed'
   },
@@ -39,6 +39,16 @@ export const astonVillaTransfers: Transfer[] = [
     toClub: 'Huddersfield',
     fee: 'Loan',
     date: '2025-01-09T16:30:00Z',
+    source: 'avfc.co.uk',
+    status: 'confirmed'
+  },
+  {
+    id: 'villa-bizot-in-2025',
+    playerName: 'Marco Bizot',
+    fromClub: 'Brest',
+    toClub: 'Aston Villa',
+    fee: '',
+    date: '2025-07-11',
     source: 'avfc.co.uk',
     status: 'confirmed'
   }

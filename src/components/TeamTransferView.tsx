@@ -7,6 +7,7 @@ import { Search, TrendingUp, TrendingDown, MessageCircle, Users } from 'lucide-r
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { premierLeagueClubs } from '@/data/mockTransfers';
+import { clubBadgeMap } from './ClubsView';
 
 interface TeamTransferViewProps {
   transfers: Transfer[];
@@ -63,7 +64,17 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers })
                 {stats.totalActivity} Total Activities
               </Badge>
             </div>
-            <h2 className="text-2xl font-bold text-white">{selectedTeam}</h2>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <img
+                src={`/badges/${clubBadgeMap[selectedTeam!] || selectedTeam?.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                alt={`${selectedTeam} badge`}
+                className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
+                onError={e => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+              {selectedTeam}
+            </h2>
           </div>
         </Card>
 
@@ -207,7 +218,17 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers })
               onClick={() => setSelectedTeam(club)}
             >
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-3">{club}</h3>
+                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                  <img
+                    src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                    alt={`${club} badge`}
+                    className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
+                    onError={e => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                  {club}
+                </h3>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-300">Transfers In:</span>
