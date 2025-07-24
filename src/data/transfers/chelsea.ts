@@ -3,6 +3,26 @@ import { Transfer } from '@/types/transfer';
 
 export const chelseaTransfers: Transfer[] = [
   {
+    id: 'chelsea-pedro-2025-july',
+    playerName: 'Joao Pedro',
+    fromClub: 'Brighton',
+    toClub: 'Chelsea',
+    fee: '£60m',
+    date: '2025-07-18T16:00:00Z',
+    source: 'chelseafc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'chelsea-joao-pedro-2025',
+    playerName: 'Joao Pedro',
+    fromClub: 'Brighton',
+    toClub: 'Chelsea',
+    fee: '£60m',
+    date: '2025-01-21T14:00:00Z',
+    source: 'chelseafc.com',
+    status: 'confirmed'
+  },
+  {
     id: 'chelsea-gittens-2025',
     playerName: 'Jamie Gittens',
     fromClub: 'Borussia Dortmund',

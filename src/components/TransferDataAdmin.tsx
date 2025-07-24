@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTransferDataStore } from '@/store/transferDataStore';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import FileUpload from '@/components/ui/file-upload';
@@ -90,12 +91,14 @@ const defaultTransfer = {
 };
 
 export const TransferDataAdmin: React.FC = () => {
+  const { overrideTransfers } = useTransferDataStore();
   const [transfer, setTransfer] = useState<any>({ ...defaultTransfer });
   const [club, setClub] = useState('Arsenal');
   const [copied, setCopied] = useState(false);
   const [entries, setEntries] = useState<any[]>([]);
   const [bulkText, setBulkText] = useState('');
   const [message, setMessage] = useState<string | null>(null);
+  const [debugInfo, setDebugInfo] = useState<string[]>([]);
 
   // Helper to check for duplicates in allTransfers and current entries
   const isDuplicate = (playerName: string, toClub: string) => {
@@ -138,9 +141,33 @@ export const TransferDataAdmin: React.FC = () => {
 // "Anthony Elanga – Nottingham Forest → Newcastle United – £55m"
 // "Jonathan David – LOSC Lille → Juventus – Free transfer"
 // "Morgan Gibbs-White – Forest → Tottenham"
+// "Sean Longstaff has officially joined Leeds United from Newcastle"
+// "Lukas Nmecha\tTransfer In\tWolfsburg" (tab-separated format)
 // And also original "Raheem Sterling to Chelsea £45m rumored"
 const parseBulkLine = (line: string) => {
-  // Try new format first: Player – FromClub → ToClub – Fee
+  // Try tab-separated format first: Player\tTransfer In/Out\tClub
+  if (line.includes('\t')) {
+    const parts = line.split('\t').map(p => p.trim());
+    if (parts.length >= 3) {
+      const [playerName, transferType, club] = parts;
+      const isTransferIn = transferType.toLowerCase().includes('in');
+      const isTransferOut = transferType.toLowerCase().includes('out');
+      
+      // For Transfer In: player comes FROM the club TO the current team
+      // For Transfer Out: player goes FROM current team TO the club
+      return {
+        playerName: playerName?.trim() || '',
+        fromClub: isTransferIn ? club?.trim() || '' : '', // FROM club for Transfer In
+        toClub: isTransferOut ? club?.trim() || '' : '', // TO club for Transfer Out
+        fee: 'Undisclosed',
+        date: '',
+        source: '',
+        status: 'confirmed',
+      };
+    }
+  }
+
+  // Try new format: Player – FromClub → ToClub – Fee
   const arrowRegex = /^(.*?)\s+[–-]\s+(.+?)\s+→\s+(.+?)(?:\s+[–-]\s+(.+))?$/;
   const matchArrow = line.match(arrowRegex);
   if (matchArrow) {
@@ -156,8 +183,26 @@ const parseBulkLine = (line: string) => {
       status: fee ? 'confirmed' : 'rumored',
     };
   }
+
+  // Try "joined/from" format: Player has officially joined ToClub from FromClub
+  // Handles various fee formats: "for £X", "in a deal worth £X", "worth £X", etc.
+  const joinedRegex = /^(.*?)\s+has\s+(?:officially\s+)?joined\s+(.+?)\s+from\s+(.+?)(?:\s+(?:for|in\s+a\s+deal\s+worth\s+(?:around\s+)?|worth\s+(?:around\s+)?)(.+?))?(?:[,.]\s*)?$/i;
+  const matchJoined = line.match(joinedRegex);
+  if (matchJoined) {
+    const [, playerName, toClub, fromClub, fee] = matchJoined;
+    return {
+      playerName: playerName?.trim() || '',
+      fromClub: fromClub?.trim() || '',
+      toClub: toClub?.trim() || '',
+      fee: fee?.trim() || '',
+      date: '',
+      source: '',
+      status: 'confirmed', // "officially joined" implies confirmed
+    };
+  }
+
   // Fallback to original format: Player to Club £fee rumored
-  const regex = /^(.*?)\s+to\s+([A-Za-z \u0026]+)\s+([£€$]?[\d\.]+[mMkK]?|Free|Free transfer|Undisclosed|Loan)?\s*(confirmed|rumored|pending|rejected)?/i;
+  const regex = /^(.*?)\s+to\s+([A-Za-z \&]+)\s+([£€$]?[\d\.]+[mMkK]?|Free|Free transfer|Undisclosed|Loan)?\s*(confirmed|rumored|pending|rejected)?/i;
   const match = line.match(regex);
   if (match) {
     const [, playerName, toClub, fee, status] = match;
@@ -259,103 +304,7 @@ const parseBulkLine = (line: string) => {
 
   return (
     <>
-      <Card className="max-w-xl mx-auto mt-8 p-6 bg-slate-900 text-white border-slate-700">
-        <h2 className="text-2xl font-bold mb-4">Manual Transfer Entry</h2>
-        <div className="mb-4">
-          <label className="block mb-2 font-semibold">Bulk Paste or Type Transfers (one per line):</label>
-          <textarea
-            value={bulkText}
-            onChange={e => setBulkText(e.target.value)}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-700 mb-2 text-white"
-            rows={4}
-            placeholder="e.g. Raheem Sterling to Chelsea £45m rumored"
-          />
-          <Button onClick={handleBulkAdd} className="w-full bg-green-700 hover:bg-green-600 mb-4">Add Bulk Entries</Button>
-          {message && <div className="mb-2 text-yellow-400 text-sm">{message}</div>}
-        </div>
-      </Card>
-      <Card className="bg-slate-800/50 p-6 rounded-xl border border-slate-700 max-w-2xl mx-auto mt-6">
-        <h2 className="text-2xl font-bold mb-4 text-white">Manual Transfer Entry</h2>
-        {/* Player Search/Autocomplete */}
-        <div className="mb-4">
-          <label className="block text-white font-medium mb-1">Search Player</label>
-          <input
-            type="text"
-            value={playerSearch}
-            onChange={e => {
-              setPlayerSearch(e.target.value);
-              setShowSuggestions(true);
-            }}
-            onFocus={() => setShowSuggestions(true)}
-            className="w-full p-2 rounded bg-slate-800 border border-slate-700"
-            placeholder="Start typing a player's name..."
-          />
-          {showSuggestions && filteredPlayers.length > 0 && (
-            <ul className="bg-slate-900 border border-slate-700 mt-1 rounded shadow max-h-40 overflow-y-auto z-10 relative">
-              {filteredPlayers.map((player, idx) => (
-                <li
-                  key={player.playerName + idx}
-                  className="px-3 py-2 hover:bg-slate-700 cursor-pointer text-white"
-                  onClick={() => handlePlayerSelect(player)}
-                >
-                  {player.playerName} {player.country ? <span className="text-gray-400 text-xs">({player.country})</span> : null}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        {/* ...rest of your form fields and buttons here, all properly closed... */}
-        <label className="block text-white font-medium mb-1">To Club:</label>
-        <select
-          value={club}
-          onChange={handleClubChange}
-          className="w-full p-2 rounded bg-slate-800 border border-slate-700 mb-2 text-white"
-        >
-          <option value="Arsenal">Arsenal</option>
-          <option value="Aston Villa">Aston Villa</option>
-          <option value="Bournemouth">Bournemouth</option>
-          <option value="Brentford">Brentford</option>
-          <option value="Brighton & Hove Albion">Brighton & Hove Albion</option>
-          <option value="Chelsea">Chelsea</option>
-          <option value="Crystal Palace">Crystal Palace</option>
-          <option value="Everton">Everton</option>
-          <option value="Fulham">Fulham</option>
-          <option value="Leeds United">Leeds United</option>
-          <option value="Leicester City">Leicester City</option>
-          <option value="Liverpool">Liverpool</option>
-          <option value="Manchester City">Manchester City</option>
-          <option value="Manchester United">Manchester United</option>
-          <option value="Newcastle United">Newcastle United</option>
-          <option value="Nottingham Forest">Nottingham Forest</option>
-          <option value="Southampton">Southampton</option>
-          <option value="Tottenham Hotspur">Tottenham Hotspur</option>
-          <option value="West Ham United">West Ham United</option>
-          <option value="Wolverhampton Wanderers">Wolverhampton Wanderers</option>
-        </select>
-        <label className="block text-white font-medium mb-1">Status:</label>
-        <select
-          value={transfer.status}
-          onChange={handleChange}
-          name="status"
-          className="w-full p-2 rounded bg-slate-800 border border-slate-700 mb-2 text-white"
-        >
-          <option value="confirmed">Confirmed</option>
-          <option value="rumored">Rumored</option>
-          <option value="pending">Pending</option>
-          <option value="rejected">Rejected</option>
-        </select>
-        <Button onClick={handleAdd} className="w-full bg-green-700 hover:bg-green-600 mb-4">Add Entry</Button>
-        {entries.length > 0 && (
-          <div>
-            <h3 className="text-lg font-bold mb-2">Entries:</h3>
-            <ul>
-              {entries.map((entry, idx) => (
-                <li key={idx}>{entry.playerName} to {entry.toClub}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </Card>
+
       <PlayerStatsEditor
         allTransfers={allTransfers}
         onSave={(updatedPlayer) => {
@@ -363,6 +312,120 @@ const parseBulkLine = (line: string) => {
           alert('Player stats saved for: ' + updatedPlayer.playerName);
         }}
       />
+      {/* Bulk Paste Section */}
+      <Card className="bg-slate-800/70 border-slate-700 mt-8 p-6">
+        <h2 className="text-xl font-bold text-white mb-4">Bulk Paste Rumours/Transfers</h2>
+        <textarea
+          className="w-full p-2 rounded bg-slate-900 border border-slate-700 text-white mb-4"
+          rows={10}
+          value={bulkText}
+          onChange={e => setBulkText(e.target.value)}
+          placeholder={`Paste your updates here, e.g.\nArsenal\nViktor Gyokeres (Sporting Lisbon) – £63.5m bid in progress\n...`}
+        />
+        <Button
+          className="bg-blue-700 hover:bg-blue-600 mb-4"
+          onClick={() => {
+            // Parse lines
+            const lines = bulkText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+            let currentClub = '';
+            const clubs: string[] = [];
+            const parsed: any[] = [];
+            const debugLines: string[] = [];
+            for (const line of lines) {
+              // If line is a club name (robust: allow 'United', 'Hotspur', etc.)
+              if (/^[A-Za-z .&'\-]+(United|City|Hotspur|Albion|Forest|Villa|Wanderers|Palace|Bournemouth|Brentford|Chelsea|Everton|Fulham|Leeds|Liverpool|Manchester|Newcastle|Nottingham|Sheffield|Southampton|Sunderland|Tottenham|West Ham|Wolves)?$/i.test(line) && line.length < 40) {
+                currentClub = line;
+                clubs.push(currentClub);
+                debugLines.push(`Detected club: ${currentClub}`);
+                continue;
+              }
+              const parsedLine = parseBulkLine(line);
+              if (parsedLine) {
+                // If we have a parsed line, use it regardless of whether we have a currentClub
+                // For complete transfers (like "joined/from" format), we don't need a separate club line
+                const targetClub = parsedLine.toClub || currentClub;
+                if (targetClub) {
+                  parsed.push({
+                    ...parsedLine,
+                    toClub: targetClub,
+                    status: parsedLine.status || 'rumored',
+                    date: new Date().toISOString(),
+                    source: 'Manual entry',
+                    id: `manual-${parsedLine.playerName.replace(/[^a-zA-Z0-9]/g,'').toLowerCase().slice(0,18)}-${targetClub.replace(/[^a-zA-Z0-9]/g,'').toLowerCase().slice(0,12)}-${new Date().toISOString().slice(0,10)}`
+                  });
+                  debugLines.push(`Parsed: ${parsedLine.playerName} → ${targetClub} (${parsedLine.fee || 'No fee'})`);
+                } else {
+                  debugLines.push(`Skipped: ${line} (No target club found)`);
+                }
+              } else {
+                debugLines.push(`Skipped: ${line} (Could not parse)`);
+              }
+            }
+            setEntries(parsed);
+            setMessage(null);
+            setDebugInfo(debugLines);
+            if (clubs.length === 0) {
+              setMessage('No clubs detected. Please check your format (club name on its own line).');
+            } else if (parsed.length === 0) {
+              setMessage('No entries parsed. Please check your format.');
+            }
+          }}
+        >Parse & Preview</Button>
+        {debugInfo && debugInfo.length > 0 && (
+          <div className="bg-slate-900 text-xs text-gray-400 p-2 mb-2 rounded max-h-40 overflow-y-auto">
+            <strong>Debug info:</strong>
+            <ul>
+              {debugInfo.map((d, i) => <li key={i}>{d}</li>)}
+            </ul>
+          </div>
+        )}
+        {entries.length > 0 && (
+          <div className="mb-4">
+            <h3 className="text-lg font-bold mb-2 text-white">Preview:</h3>
+            <table className="w-full text-sm text-white mb-2">
+              <thead>
+                <tr>
+                  <th className="border-b border-slate-600 p-2">Player</th>
+                  <th className="border-b border-slate-600 p-2">From</th>
+                  <th className="border-b border-slate-600 p-2">To</th>
+                  <th className="border-b border-slate-600 p-2">Fee/Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entries.map((e, idx) => (
+                  <tr key={idx}>
+                    <td className="border-b border-slate-700 p-2">{e.playerName}</td>
+                    <td className="border-b border-slate-700 p-2">{e.fromClub}</td>
+                    <td className="border-b border-slate-700 p-2">{e.toClub}</td>
+                    <td className="border-b border-slate-700 p-2">{e.fee}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Button
+              className="bg-green-700 hover:bg-green-600"
+              onClick={async () => {
+                // Update rumors file (backend)
+                const res = await fetch('/api/admin/updateRumors', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ newRumors: entries })
+                });
+                if (res.ok) {
+                  setMessage('Rumors updated! Refresh to see changes.');
+                  setEntries([]);
+                  setBulkText('');
+                  // Update global transfer state for override
+                  overrideTransfers(entries);
+                } else {
+                  setMessage('Failed to update rumors.');
+                }
+              }}
+            >Apply</Button>
+            {message && <div className="mt-2 text-green-400">{message}</div>}
+          </div>
+        )}
+      </Card>
     </>
   );
 };

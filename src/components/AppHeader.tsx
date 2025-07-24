@@ -1,54 +1,60 @@
 
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import PasswordModal from './ui/password-modal';
+import React from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 interface AppHeaderProps {
   lastUpdated: Date;
 }
 
 export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
-  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-  const [pendingNav, setPendingNav] = useState(false);
+  const location = useLocation();
 
-  const handleAdminClick = (e: React.MouseEvent) => {
+  const isAdminSection = location.pathname.startsWith('/admin') || location.pathname.startsWith('/cms');
+
+  const handleMainClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    setModalOpen(true);
-  };
-
-  const handleSuccess = () => {
-    setPendingNav(true);
-    navigate('/admin');
+    navigate('/');
   };
 
   return (
     <header className="bg-white/70 backdrop-blur-lg border-b border-gray-200/30 sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-4">
         <div className="flex items-center justify-between">
-          <div className="min-w-0 flex-1">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent truncate drop-shadow-md">
-              Teamtalk-Transfers Page
+          <div className="flex-1 text-center">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent drop-shadow-lg"
+                style={{
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.3), 0px 0px 8px rgba(59,130,246,0.5)',
+                  transform: 'perspective(200px) rotateX(5deg)',
+                  letterSpacing: '1px'
+                }}>
+              Teamtalk-Transfers
             </h1>
-            <p className="text-gray-600 text-xs sm:text-sm drop-shadow-sm">Live Transfer Tracking</p>
           </div>
           <div className="flex items-center gap-4 ml-2">
             <div className="text-right">
               <p className="text-xs sm:text-sm text-gray-500">Last Updated</p>
-              <p className="text-xs font-medium text-gray-700">{lastUpdated.toLocaleTimeString()}</p>
+              <p className="text-xs font-medium text-gray-700">{new Date(lastUpdated).toLocaleTimeString()}</p>
             </div>
-            <button
-              onClick={handleAdminClick}
-              className="inline-block px-4 py-2 rounded bg-blue-700 text-white font-semibold shadow hover:bg-blue-800 transition-colors text-xs sm:text-sm"
-            >
-              Admin
-            </button>
-            <PasswordModal
-              isOpen={modalOpen}
-              onClose={() => setModalOpen(false)}
-              onSuccess={handleSuccess}
-              correctPassword="teamtalk2025"
-            />
+            {isAdminSection ? (
+              <button
+                onClick={handleMainClick}
+                className="inline-block px-4 py-2 rounded bg-blue-700 text-white font-semibold shadow hover:bg-blue-800 transition-colors text-xs sm:text-sm"
+              >
+                Main
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  localStorage.removeItem('parsed_transfers');
+                  window.location.reload();
+                }}
+                className="inline-block px-3 py-2 rounded bg-gray-200 text-gray-700 font-semibold shadow hover:bg-gray-300 transition-colors text-xs sm:text-sm"
+                title="Refresh transfer data"
+              >
+                Refresh
+              </button>
+            )}
           </div>
         </div>
       </div>

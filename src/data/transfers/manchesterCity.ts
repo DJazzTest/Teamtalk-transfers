@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const manchesterCityTransfers: Transfer[] = [
   {
+    id: 'mancity-ait-nouri-2025',
+    playerName: 'Rayan Ait-Nouri',
+    fromClub: 'Wolves',
+    toClub: 'Manchester City',
+    fee: '£36.3m',
+    date: '2025-01-21T15:00:00Z',
+    source: 'mancity.com',
+    status: 'confirmed'
+  },
+  {
     id: 'city-de-bruyne-2025',
     playerName: 'Kevin De Bruyne',
     fromClub: 'Manchester City',

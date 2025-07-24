@@ -170,18 +170,27 @@ export class TransferIntegrationService {
   static getParsedTransfers(): Transfer[] {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
-      const transfers = stored ? JSON.parse(stored) : [];
+      let transfers = stored ? JSON.parse(stored) : [];
+      let newTransfers: Transfer[] = [];
+      try {
+        const raw = localStorage.getItem('new_transfers_to_push');
+        if (raw) newTransfers = JSON.parse(raw);
+      } catch {}
+      if (newTransfers.length) {
+        // Merge and deduplicate
+        transfers = [...transfers, ...newTransfers].filter((t, i, arr) => arr.findIndex(x => x.id === t.id) === i);
+        // Store back and clear the push buffer
+        this.storeParsedTransfers(transfers);
+        localStorage.removeItem('new_transfers_to_push');
+      }
       console.log(`Retrieved ${transfers.length} parsed transfers from storage`);
-      
       // Clean up corrupted player names
       const cleanedTransfers = this.cleanupCorruptedPlayerNames(transfers);
-      
       // Store the cleaned transfers back
       if (cleanedTransfers.length !== transfers.length) {
         console.log(`Cleaned up ${transfers.length - cleanedTransfers.length} corrupted transfers`);
         this.storeParsedTransfers(cleanedTransfers);
       }
-      
       return cleanedTransfers;
     } catch (error) {
       console.error('Error loading parsed transfers:', error);
@@ -200,15 +209,9 @@ export class TransferIntegrationService {
 
   // Updated to only use real transfer data
   static getAllTransfers(): Transfer[] {
-    const parsedTransfers = this.getParsedTransfers();
-    console.log(`Using ${parsedTransfers.length} parsed transfers with ${allClubTransfers.length} real transfers`);
-    
-    // Combine only real transfers with parsed transfers
-    const combined = [...parsedTransfers, ...allClubTransfers];
-    const merged = this.deduplicateTransfers(combined);
-    
-    console.log(`Final transfers: ${merged.length} total`);
-    return merged;
+    // Always return the latest static data from allClubTransfers
+    console.log(`Using ${allClubTransfers.length} real transfers (static data only)`);
+    return allClubTransfers;
   }
 
   static clearParsedTransfers(): void {

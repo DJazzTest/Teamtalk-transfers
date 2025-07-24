@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const nottinghamForestTransfers: Transfer[] = [
   {
+    id: 'forest-sosa-out-2025',
+    playerName: 'Ramon Sosa',
+    fromClub: 'Nottingham Forest',
+    toClub: 'Palmeiras',
+    fee: '£12.5m',
+    date: '2025-07-11T12:00:00Z',
+    source: 'nottinghamforest.co.uk',
+    status: 'confirmed'
+  },
+  {
     id: 'forest-perkins-2025',
     playerName: 'Jack Perkins',
     fromClub: 'Nottingham Forest',
@@ -38,10 +48,11 @@ export const nottinghamForestTransfers: Transfer[] = [
     fromClub: 'Norwich City',
     toClub: 'Nottingham Forest',
     fee: '£8M',
-    date: '2025-01-08T16:00:00Z',
+    date: '2025-01-10T12:00:00Z',
     source: 'nottinghamforest.co.uk',
     status: 'confirmed'
   },
+
   {
     id: 'forest-elanga-out-2025',
     playerName: 'Anthony Elanga',

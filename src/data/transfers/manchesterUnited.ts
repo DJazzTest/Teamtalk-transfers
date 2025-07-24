@@ -3,6 +3,26 @@ import { Transfer } from '@/types/transfer';
 
 export const manchesterUnitedTransfers: Transfer[] = [
   {
+    id: 'manutd-mbeumo-2025-july',
+    playerName: 'Bryan Mbeumo',
+    fromClub: 'Brentford',
+    toClub: 'Manchester United',
+    fee: '£71m',
+    date: '2025-07-21T12:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'manutd-cunha-2025',
+    playerName: 'Matheus Cunha',
+    fromClub: 'Wolves',
+    toClub: 'Manchester United',
+    fee: '£62.5m',
+    date: '2025-01-21T12:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
     id: 'united-rashford-barcelona-2025',
     playerName: 'Marcus Rashford',
     fromClub: 'Manchester United',

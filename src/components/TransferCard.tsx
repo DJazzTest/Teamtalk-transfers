@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { Star } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
-import { getStatusColor, getStatusIcon } from '@/utils/transferUtils';
-import React from 'react';
+import { getStatusColor } from '@/utils/transferUtils.tsx';
 
 interface TransferCardProps {
   transfer: Transfer;
@@ -17,6 +16,20 @@ interface TransferCardProps {
 
 const getPlayerInitials = (playerName: string) => {
   return playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+};
+
+// Return a simple icon for transfer status
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case 'confirmed':
+      return <span title="Confirmed" style={{ color: 'limegreen', fontSize: '1.2em' }}>✔️</span>;
+    case 'rumored':
+      return <span title="Rumored" style={{ color: 'gold', fontSize: '1.2em' }}>💬</span>;
+    case 'rejected':
+      return <span title="Rejected" style={{ color: 'red', fontSize: '1.2em' }}>❌</span>;
+    default:
+      return <span title={status} style={{ color: 'gray', fontSize: '1.2em' }}>•</span>;
+  }
 };
 
 export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact = false }) => {
@@ -61,7 +74,7 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
                 </AvatarFallback>
               </Avatar>
               <div className="flex items-center gap-2 flex-1">
-                {getStatusIcon(transfer.status)}
+                <Badge className={`text-xs`} style={{ background: getStatusColor(transfer.status), color: '#fff' }}>{transfer.status.toUpperCase()}</Badge>
                 <h4 className="font-semibold text-white text-sm">{transfer.playerName}</h4>
               </div>
             </div>
@@ -70,31 +83,7 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
               <div className="flex items-center gap-1 mb-1">
               <span>{transfer.fromClub}</span>
               <span>→</span>
-              <span className="font-semibold text-white flex items-center gap-1">
-                {transfer.toClub}
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={e => {
-                          e.currentTarget.classList.add('scale-110');
-                          setTimeout(() => e.currentTarget.classList.remove('scale-110'), 150);
-                          handleStarClub(transfer.toClub);
-                        }}
-                        className={`ml-1 p-1 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50 transition-transform duration-150 ${isStarred ? 'bg-yellow-400/20' : ''}`}
-                        aria-label={isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
-                      >
-                        <Star className={`w-4 h-4 ${isStarred ? 'fill-yellow-400 text-yellow-400' : 'text-yellow-400'}`} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                      {isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </span>
+              <span className="font-semibold text-white">{transfer.toClub}</span>
             </div>
             </div>
             

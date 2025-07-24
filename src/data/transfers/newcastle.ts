@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const newcastleTransfers: Transfer[] = [
   {
+    id: 'newcastle-elanga-2025',
+    playerName: 'Anthony Elanga',
+    fromClub: 'Nottingham Forest',
+    toClub: 'Newcastle',
+    fee: '£55m',
+    date: '2025-01-21T17:00:00Z',
+    source: 'nufc.co.uk',
+    status: 'confirmed'
+  },
+  {
     id: 'newcastle-botman-interest-2025',
     playerName: 'Sven Botman',
     fromClub: 'AC Milan',

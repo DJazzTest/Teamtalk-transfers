@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { TransferDataProvider, useTransferDataStore } from '@/store/transferDataStore';
 import { TransferCountdown } from '@/components/TransferCountdown';
 import { WalletWarpingDeals } from '@/components/WalletWarpingDeals';
 import { FavouritesView } from '@/components/FavouritesView';
@@ -6,45 +7,99 @@ import { TransferSpendingChart } from '@/components/TransferSpendingChart';
 import { ClubSpendingGraph } from '@/components/ClubSpendingGraph';
 import { HomeRecentRumours } from '@/components/HomeRecentRumours';
 import { HomeRecentConfirmed } from '@/components/HomeRecentConfirmed';
+import { HomeTodaysConfirmed } from '@/components/HomeTodaysConfirmed';
 import { AppHeader } from '@/components/AppHeader';
-import { AdminNavigation } from '@/components/AdminNavigation';
+
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Users } from 'lucide-react';
 import { TeamTransferView } from '@/components/TeamTransferView';
 import { TransferResults } from '@/components/TransferResults';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { useLeagueData } from '@/hooks/useLeagueData';
+import TeamTalkFeed from '@/components/TeamTalkFeed';
+import TeamSpecificTransfers from '@/components/TeamSpecificTransfers';
 
-const Website = () => {
-  const { lastUpdated, refreshCounter } = useRefreshControl();
-  const { leagueTransfers } = useLeagueData();
-  
-  // Set countdown to Monday 1 September 2025 at 19:00 BST (18:00 UTC)
+const WebsiteContent = () => {
+  const { transfers, lastUpdated, refreshAllData } = useTransferDataStore();
+  const { refreshCounter } = useRefreshControl();
+  const [selectedClub, setSelectedClub] = useState<string | null>(null);
   const [countdownTarget] = useState('2025-09-01T18:00:00Z');
+  const [showAllNew, setShowAllNew] = useState(false);
+  // All transfer data is now sourced from useTransferDataStore()
 
-  // Listen for refresh events and update transfers
+  // Favourites state for badge
+  const [starredClubs, setStarredClubs] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return [];
+    const saved = localStorage.getItem('starredClubs');
+    return saved ? JSON.parse(saved) : [];
+  });
+  useEffect(() => {
+    const handler = (event: any) => {
+      if (event.detail) setStarredClubs(event.detail);
+      else {
+        const saved = localStorage.getItem('starredClubs');
+        setStarredClubs(saved ? JSON.parse(saved) : []);
+      }
+    };
+    window.addEventListener('starredClubsUpdate', handler);
+    return () => window.removeEventListener('starredClubsUpdate', handler);
+  }, []);
+
+  // Listen for refresh events and update transfers (including CMS API refresh)
   useEffect(() => {
     const handleRefresh = () => {
       console.log('Refreshing transfers data for Premier League');
-      // The useLeagueData hook will handle the refresh automatically
+      // Trigger data refresh in the transfer store
+      refreshAllData();
+    };
+
+    const handleCmsApiRefresh = (event: any) => {
+      console.log('CMS API refresh triggered, updating main site data');
+      // When CMS refreshes APIs, also refresh main site data
+      refreshAllData();
     };
 
     window.addEventListener('autoRefresh', handleRefresh);
     window.addEventListener('manualRefresh', handleRefresh);
     window.addEventListener('crawlStatusUpdate', handleRefresh);
+    window.addEventListener('globalApiRefresh', handleCmsApiRefresh);
 
     return () => {
       window.removeEventListener('autoRefresh', handleRefresh);
       window.removeEventListener('manualRefresh', handleRefresh);
       window.removeEventListener('crawlStatusUpdate', handleRefresh);
+      window.removeEventListener('globalApiRefresh', handleCmsApiRefresh);
     };
-  }, [refreshCounter]);
+  }, [refreshCounter, refreshAllData]);
 
+  // Handler for club selection
+  const handleSelectClub = (club: string) => setSelectedClub(club);
+  const handleBackToDashboard = () => setSelectedClub(null);
+
+  if (selectedClub) {
+    // Show club card view
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
+
+        <AppHeader lastUpdated={lastUpdated ? new Date(lastUpdated) : new Date()} />
+        <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
+          <button
+            className="mb-4 px-4 py-2 rounded bg-blue-700 text-white font-semibold hover:bg-blue-800 transition"
+            onClick={handleBackToDashboard}
+          >
+            ← Back to Dashboard
+          </button>
+          <TeamTransferView transfers={transfers} selectedTeam={selectedClub} onBack={handleBackToDashboard} />
+        </div>
+      </div>
+    );
+  }
+
+  // Main dashboard
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
-      <AdminNavigation />
-      <AppHeader lastUpdated={lastUpdated} />
+      <AppHeader lastUpdated={lastUpdated ? new Date(lastUpdated) : new Date()} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
         {/* Transfer Window Countdown */}
@@ -57,58 +112,108 @@ const Website = () => {
         {/* Club spending 2025/26 Graph */}
         <div className="mb-8 overflow-x-auto">
           <div className="min-w-[600px]">
-            <ClubSpendingGraph />
+            <ClubSpendingGraph onSelectClub={handleSelectClub} />
           </div>
         </div>
 
-        {/* Recent Rumours & Confirmed Transfers */}
-        <HomeRecentRumours transfers={leagueTransfers} />
-        <HomeRecentConfirmed transfers={leagueTransfers} />
-
-        {/* Teams & Wallet-Warping Deals Tabs */}
-        <Tabs defaultValue="teams" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <TabsTrigger value="teams" className="flex items-center gap-2">
-              <Shield className="w-4 h-4" />
-              Teams
-            </TabsTrigger>
-            <TabsTrigger value="favourites" className="flex items-center gap-2">
-              <span className="relative flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.036 6.29a1 1 0 00.95.69h6.6c.969 0 1.371 1.24.588 1.81l-5.347 3.89a1 1 0 00-.364 1.118l2.036 6.29c.3.921-.755 1.688-1.539 1.118l-5.347-3.89a1 1 0 00-1.176 0l-5.347 3.89c-.784.57-1.838-.197-1.539-1.118l2.036-6.29a1 1 0 00-.364-1.118l-5.347-3.89c-.783-.57-.38-1.81.588-1.81h6.6a1 1 0 00.95-.69l2.036-6.29z" />
-                </svg>
-                {/* Badge for count of favourites */}
-                {typeof window !== 'undefined' && localStorage.getItem('starredClubs') && JSON.parse(localStorage.getItem('starredClubs')).length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-yellow-400 text-xs text-black rounded-full px-1.5 py-0.5 font-bold">
-                    {JSON.parse(localStorage.getItem('starredClubs')).length}
-                  </span>
-                )}
-              </span>
-              My Favourites
-            </TabsTrigger>
-            <TabsTrigger value="wallet" className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-yellow-400" />
-              Top 10 Wallet-Warping Deals
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="teams">
-            <TeamTransferView transfers={leagueTransfers} />
-          </TabsContent>
-
-          <TabsContent value="favourites">
-            <FavouritesView transfers={leagueTransfers} />
-          </TabsContent>
-
-          <TabsContent value="wallet">
-            <div className="mb-8">
-              <WalletWarpingDeals transfers={leagueTransfers} />
+        {/* Team Selector Section */}
+        <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#f8fafc' }}>
+          <div className="p-4">
+            <div className="text-center">
+              <h2 className="text-lg font-bold text-gray-800 mb-2">Select Your Team</h2>
+              <p className="text-sm text-gray-600 mb-4">Choose from the dropdown below to see transfers in, out, and rumors</p>
             </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+        </Card>
+
+        {/* Team-Specific Transfers Display */}
+        <div className="mb-8">
+          <TeamSpecificTransfers showTeamSelector={true} maxItems={8} />
+        </div>
+
+        {/* New Premier League Transfers & Rumours just added! */}
+        <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#fff3cd' }}>
+          <div className="p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+              <h2 className="text-lg font-bold text-orange-800">New Premier League Transfers & Rumours just added!</h2>
+            </div>
+            <div className="flex gap-4 overflow-x-auto pb-2" style={{
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#9CA3AF #E5E7EB'
+            }}>
+              {(() => {
+                const uniqueTransfers = transfers.filter((transfer, index, arr) => {
+                  const key = `${transfer.playerName.toLowerCase()}-${transfer.fromClub.toLowerCase()}-${transfer.toClub.toLowerCase()}`;
+                  return arr.findIndex(t => 
+                    `${t.playerName.toLowerCase()}-${t.fromClub.toLowerCase()}-${t.toClub.toLowerCase()}` === key
+                  ) === index;
+                })
+                // Sort by date (newest first) to show July 2025 transfers at the top
+                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+                const displayTransfers = showAllNew ? uniqueTransfers : uniqueTransfers.slice(0, 5);
+                
+                return (
+                  <>
+                    {displayTransfers.map((transfer) => (
+                      <Card key={transfer.id} className="min-w-[240px] max-w-xs bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200 hover:shadow-md transition-all duration-200 hover:border-orange-300">
+                        <div className="p-3 flex flex-col gap-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                            <span
+                              className="font-semibold text-orange-600 hover:underline cursor-pointer text-base truncate"
+                              onClick={() => handleSelectClub(transfer.toClub)}
+                              title={`View ${transfer.toClub} transfers`}
+                            >
+                              {transfer.playerName}
+                            </span>
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            <span>{transfer.fromClub}</span> → <span className="font-semibold text-gray-800">{transfer.toClub}</span>
+                          </div>
+                          <div className="flex justify-between items-end gap-2">
+                            <span className="text-orange-600 font-bold">{transfer.fee}</span>
+                            <span className="text-xs text-gray-500">{new Date(transfer.date).toLocaleDateString()}</span>
+                          </div>
+                          <span className="text-xs text-gray-400 truncate">{transfer.source}</span>
+                        </div>
+                      </Card>
+                    ))}
+                    {uniqueTransfers.length > 5 && (
+                      <div className="flex items-center">
+                        <Button
+                          onClick={() => setShowAllNew(!showAllNew)}
+                          variant="outline"
+                          size="sm"
+                          className="border-orange-400 text-orange-700 hover:bg-orange-50 ml-2"
+                        >
+                          {showAllNew ? 'Show Less' : `Show More (${uniqueTransfers.length - 5} more)`}
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
+            </div>
+          </div>
+        </Card>
+
+        {/* Confirmed Transfers */}
+        <HomeRecentConfirmed transfers={transfers} onSelectClub={handleSelectClub} />
+
+        {/* Top 10 Wallet-Warping Deals */}
+        <div className="mb-8">
+          <WalletWarpingDeals transfers={transfers} onSelectClub={handleSelectClub} onRefresh={refreshAllData} />
+        </div>
       </div>
     </div>
   );
 };
+
+const Website = () => (
+  <TransferDataProvider>
+    <WebsiteContent />
+  </TransferDataProvider>
+);
 
 export default Website;

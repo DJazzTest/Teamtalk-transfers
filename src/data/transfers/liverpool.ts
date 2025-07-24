@@ -3,6 +3,26 @@ import { Transfer } from '@/types/transfer';
 
 export const liverpoolTransfers: Transfer[] = [
   {
+    id: 'liverpool-wirtz-2025',
+    playerName: 'Florian Wirtz',
+    fromClub: 'Bayer Leverkusen',
+    toClub: 'Liverpool',
+    fee: '£116m',
+    date: '2025-01-21T10:00:00Z',
+    source: 'liverpoolfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'liverpool-kerkez-2025',
+    playerName: 'Milos Kerkez',
+    fromClub: 'Bournemouth',
+    toClub: 'Liverpool',
+    fee: '£40m',
+    date: '2025-01-21T11:00:00Z',
+    source: 'liverpoolfc.com',
+    status: 'confirmed'
+  },
+  {
     id: 'liverpool-diaz-barcelona-2025',
     playerName: 'Luis Díaz',
     fromClub: 'Liverpool',
@@ -99,6 +119,16 @@ export const liverpoolTransfers: Transfer[] = [
     toClub: 'Free Agent',
     fee: 'Released',
     date: '2025-01-10T10:00:00Z',
+    source: 'liverpoolfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'liverpool-ekitike-2025-july',
+    playerName: 'Hugo Ekitike',
+    fromClub: 'Eintracht Frankfurt',
+    toClub: 'Liverpool',
+    fee: '£69m + £9m add-ons',
+    date: '2025-07-24T14:00:00Z',
     source: 'liverpoolfc.com',
     status: 'confirmed'
   },

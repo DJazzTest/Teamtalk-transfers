@@ -9,36 +9,10 @@ import { CrawlErrors } from './CrawlErrors';
 import { Settings } from 'lucide-react';
 
 interface ApiConfigProps {
-  refreshRate: number;
-  setRefreshRate: (rate: number) => void;
-  isAutoRefresh: boolean;
-  setIsAutoRefresh: (enabled: boolean) => void;
-  onManualRefresh: () => void;
-  autoScrapeInterval: number;
-  setAutoScrapeInterval: (interval: number) => void;
-  isAutoScrapeEnabled: boolean;
-  setIsAutoScrapeEnabled: (enabled: boolean) => void;
-  scrapeErrors: string[];
-  lastScrapeTime: Date | null;
-  onManualScrape: () => void;
-  onClearScrapeErrors: () => void;
+  // No props needed unless ApiKeyManager requires them
 }
 
-export const ApiConfig: React.FC<ApiConfigProps> = ({
-  refreshRate,
-  setRefreshRate,
-  isAutoRefresh,
-  setIsAutoRefresh,
-  onManualRefresh,
-  autoScrapeInterval,
-  setAutoScrapeInterval,
-  isAutoScrapeEnabled,
-  setIsAutoScrapeEnabled,
-  scrapeErrors,
-  lastScrapeTime,
-  onManualScrape,
-  onClearScrapeErrors
-}) => {
+export const ApiConfig: React.FC = () => {
   return (
     <div className="space-y-6">
       <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
@@ -52,30 +26,6 @@ export const ApiConfig: React.FC<ApiConfigProps> = ({
           <ApiKeyManager />
         </div>
       </Card>
-
-      {/* Custom API Endpoints Manager */}
-      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 mt-6">
-        <div className="p-6">
-          <h3 className="text-xl font-semibold text-white mb-4">Custom Transfer APIs</h3>
-          <ApiEndpointManager />
-        </div>
-      </Card>
-
-      <RefreshConfig
-        autoScrapeInterval={autoScrapeInterval}
-        setAutoScrapeInterval={setAutoScrapeInterval}
-        isAutoScrapeEnabled={isAutoScrapeEnabled}
-        setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
-        lastScrapeTime={lastScrapeTime}
-        onManualScrape={onManualScrape}
-      />
-
-      {scrapeErrors.length > 0 && (
-        <CrawlErrors
-          scrapeErrors={scrapeErrors}
-          onClearScrapeErrors={onClearScrapeErrors}
-        />
-      )}
     </div>
   );
 };

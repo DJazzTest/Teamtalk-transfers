@@ -3,6 +3,26 @@ import { Transfer } from '@/types/transfer';
 
 export const brentfordTransfers: Transfer[] = [
   {
+    id: 'brentford-henderson-2025',
+    playerName: 'Jordan Henderson',
+    fromClub: 'Ajax',
+    toClub: 'Brentford',
+    fee: 'Free',
+    date: '2025-07-12T12:00:00Z',
+    source: 'brentfordfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'brentford-norgaard-2025',
+    playerName: 'Christian Norgaard',
+    fromClub: 'Brentford',
+    toClub: 'Arsenal',
+    fee: 'Undisclosed',
+    date: '2025-07-20T14:00:00Z',
+    source: 'brentfordfc.com',
+    status: 'confirmed'
+  },
+  {
     id: 'brentford-kayode-2025',
     playerName: 'Michael Kayode',
     fromClub: 'Fiorentina',

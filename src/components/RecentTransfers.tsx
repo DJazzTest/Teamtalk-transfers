@@ -7,6 +7,7 @@ import { MessageCircle, TrendingUp, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferSpendingChart } from './TransferSpendingChart';
 import { RecentConfirmedTransfers } from './RecentConfirmedTransfers';
+import { deduplicateTransfersUI } from '../utils/transferDeduplication';
 
 interface RecentTransfersProps {
   transfers: Transfer[];
@@ -15,10 +16,10 @@ interface RecentTransfersProps {
 export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) => {
   const [showAll, setShowAll] = useState(false);
   
-  // Get all rumored transfers, not just 3
-  const allRumors = transfers
-    .filter(transfer => transfer.status === 'rumored')
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  // Deduplicate and get all rumored transfers, not just 3
+  const allRumors = deduplicateTransfersUI(
+    transfers.filter(transfer => transfer.status === 'rumored')
+  ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const recentRumors = showAll ? allRumors : allRumors.slice(0, 10);
   const shouldScroll = recentRumors.length > 3;

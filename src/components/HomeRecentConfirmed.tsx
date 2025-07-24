@@ -7,12 +7,23 @@ import { Transfer } from '@/types/transfer';
 
 interface HomeRecentConfirmedProps {
   transfers: Transfer[];
+  onSelectClub?: (club: string) => void;
 }
 
-export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transfers }) => {
+export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transfers, onSelectClub }) => {
   const [showAll, setShowAll] = useState(false);
-  const allConfirmed = transfers.filter(t => t.status === 'confirmed').sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const displayConfirmed = showAll ? allConfirmed : allConfirmed.slice(0, 3);
+  
+  // Filter confirmed transfers and remove duplicates
+  const confirmedTransfers = transfers.filter(t => t.status === 'confirmed');
+  const uniqueConfirmed = confirmedTransfers.filter((transfer, index, arr) => {
+    const key = `${transfer.playerName.toLowerCase()}-${transfer.fromClub.toLowerCase()}-${transfer.toClub.toLowerCase()}`;
+    return arr.findIndex(t => 
+      `${t.playerName.toLowerCase()}-${t.fromClub.toLowerCase()}-${t.toClub.toLowerCase()}` === key
+    ) === index;
+  });
+  
+  const allConfirmed = uniqueConfirmed.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const displayConfirmed = showAll ? allConfirmed : allConfirmed.slice(0, 5);
 
   if (allConfirmed.length === 0) return null;
 
@@ -29,7 +40,13 @@ export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transf
             <Card key={transfer.id} className="min-w-[240px] max-w-xs bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-md transition-all duration-200 hover:border-green-300">
               <div className="p-3 flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-gray-800 text-base truncate">{transfer.playerName}</span>
+                  <span
+                    className="font-semibold text-green-700 hover:underline cursor-pointer text-base truncate"
+                    onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
+                    title={`View ${transfer.toClub} transfers`}
+                  >
+                    {transfer.playerName}
+                  </span>
                 </div>
                 <div className="text-xs text-gray-600">
                   <span>{transfer.fromClub}</span> → <span className="font-semibold text-gray-800">{transfer.toClub}</span>
@@ -42,7 +59,7 @@ export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transf
               </div>
             </Card>
           ))}
-          {allConfirmed.length > 3 && (
+          {allConfirmed.length > 5 && (
             <div className="flex items-center">
               <Button
                 onClick={() => setShowAll(!showAll)}
@@ -50,7 +67,7 @@ export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transf
                 size="sm"
                 className="border-green-400 text-green-700 hover:bg-green-50 ml-2"
               >
-                {showAll ? 'Show Less' : `Show More (${allConfirmed.length - 3} more)`}
+                {showAll ? 'Show Less' : `Show More (${allConfirmed.length - 5} more)`}
               </Button>
             </div>
           )}

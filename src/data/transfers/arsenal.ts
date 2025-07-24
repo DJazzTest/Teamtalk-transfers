@@ -3,6 +3,26 @@ import { Transfer } from '@/types/transfer';
 
 export const arsenalTransfers: Transfer[] = [
   {
+    id: 'arsenal-madueke-2025-july',
+    playerName: 'Noni Madueke',
+    fromClub: 'Chelsea',
+    toClub: 'Arsenal',
+    fee: '£48.5m',
+    date: '2025-07-19T13:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-madueke-2025',
+    playerName: 'Noni Madueke',
+    fromClub: 'Chelsea',
+    toClub: 'Arsenal',
+    fee: '£52m',
+    date: '2025-01-21T13:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
     id: 'arsenal-zubimendi-2025',
     playerName: 'Martin Zubimendi',
     fromClub: 'Real Sociedad',
@@ -49,6 +69,16 @@ export const arsenalTransfers: Transfer[] = [
     toClub: 'Celtic',
     fee: 'Free',
     date: '2025-07-06T12:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-norgaard-2025',
+    playerName: 'Christian Norgaard',
+    fromClub: 'Brentford',
+    toClub: 'Arsenal',
+    fee: 'Undisclosed',
+    date: '2025-07-20T14:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },

@@ -146,19 +146,6 @@ export const FavouritesView: React.FC<FavouritesViewProps> = ({ transfers }) => 
 
   return (
     <div className="space-y-6">
-      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-        <div className="p-6">
-          {/* Responsive horizontally scrollable nav bar */}
-          <div className="flex overflow-x-auto no-scrollbar gap-3 items-center mb-4 px-1" style={{ WebkitOverflowScrolling: 'touch' }}>
-            <Star className="flex-shrink-0 w-6 h-6 text-yellow-400 fill-yellow-400" />
-            <h2 className="flex-shrink-0 text-2xl font-bold text-white whitespace-nowrap">My Favourite Clubs</h2>
-            <Badge className="flex-shrink-0 bg-yellow-500/20 text-yellow-400 whitespace-nowrap">
-              {favouriteClubTransfers.length} clubs
-            </Badge>
-          </div>
-        </div>
-      </Card>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {favouriteClubTransfers.map(([club, clubTransferList]) => {
           const confirmedCount = clubTransferList.filter(t => t.status === 'confirmed').length;
@@ -167,7 +154,7 @@ export const FavouritesView: React.FC<FavouritesViewProps> = ({ transfers }) => 
           return (
             <Card 
               key={club} 
-              className="bg-gradient-to-br from-yellow-500/10 to-amber-500/10 border-yellow-400/30 hover:bg-yellow-500/20 transition-all duration-200"
+              className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200"
             >
               <div className="p-4">
                 <div className="flex items-start justify-between mb-3">

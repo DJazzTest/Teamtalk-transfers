@@ -3,6 +3,36 @@ import { Transfer } from '@/types/transfer';
 
 export const evertonTransfers: Transfer[] = [
   {
+    id: 'everton-barry-2025',
+    playerName: 'Thierno Barry',
+    fromClub: 'Villarreal',
+    toClub: 'Everton',
+    fee: '£27m',
+    date: '2025-07-12T12:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-alcaraz-2025',
+    playerName: 'Carlos Alcaraz',
+    fromClub: 'Flamengo',
+    toClub: 'Everton',
+    fee: '£12.6m',
+    date: '2025-07-12T12:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'everton-travers-2025',
+    playerName: 'Mark Travers',
+    fromClub: 'Bournemouth',
+    toClub: 'Everton',
+    fee: '£4m',
+    date: '2025-07-12T12:00:00Z',
+    source: 'evertonfc.com',
+    status: 'confirmed'
+  },
+  {
     id: 'everton-young-2025',
     playerName: 'Ashley Young',
     fromClub: 'Everton',

@@ -3,15 +3,66 @@ import { Transfer } from '@/types/transfer';
 
 export const leedsTransfers: Transfer[] = [
   {
+    id: 'leeds-longstaff-2025',
+    playerName: 'Sean Longstaff',
+    fromClub: 'Newcastle',
+    toClub: 'Leeds United',
+    fee: '£12m',
+    date: '2025-01-21T18:00:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'leeds-nmecha-2025',
+    playerName: 'Lukas Nmecha',
+    fromClub: 'Wolfsburg',
+    toClub: 'Leeds United',
+    fee: '£15m',
+    date: '2025-07-20T14:00:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'leeds-bijol-2025',
+    playerName: 'Jaka Bijol',
+    fromClub: 'Udinese',
+    toClub: 'Leeds United',
+    fee: '£18m',
+    date: '2025-07-18T16:00:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+  {
     id: 'leeds-gudmundsson-2025',
     playerName: 'Gabriel Gudmundsson',
     fromClub: 'Lille',
     toClub: 'Leeds United',
-    fee: '€11.6m',
-    date: '2025-07-06T12:00:00Z',
+    fee: '£10m',
+    date: '2025-07-11T12:00:00Z',
     source: 'leedsunited.com',
     status: 'confirmed'
   },
+  {
+    id: 'leeds-enahoro-marcus-2025',
+    playerName: 'Louis Enahoro-Marcus',
+    fromClub: 'Liverpool',
+    toClub: 'Leeds United',
+    fee: '£8m',
+    date: '2025-07-16T13:00:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'leeds-stach-2025',
+    playerName: 'Anton Stach',
+    fromClub: 'TSG Hoffenheim',
+    toClub: 'Leeds United',
+    fee: '£12m',
+    date: '2025-07-14T15:00:00Z',
+    source: 'leedsunited.com',
+    status: 'confirmed'
+  },
+
   {
     id: 'leeds-bornauw-2025',
     playerName: 'Sebastiaan Bornauw',

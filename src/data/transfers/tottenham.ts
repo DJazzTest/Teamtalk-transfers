@@ -3,6 +3,16 @@ import { Transfer } from '@/types/transfer';
 
 export const tottenhamTransfers: Transfer[] = [
   {
+    id: 'spurs-kudus-2025',
+    playerName: 'Mohammed Kudus',
+    fromClub: 'West Ham',
+    toClub: 'Tottenham',
+    fee: '£55m',
+    date: '2025-01-21T16:00:00Z',
+    source: 'tottenhamhotspur.com',
+    status: 'confirmed'
+  },
+  {
     id: 'tottenham-veliz-2025',
     playerName: 'Alejo Veliz',
     fromClub: 'Tottenham Hotspur',

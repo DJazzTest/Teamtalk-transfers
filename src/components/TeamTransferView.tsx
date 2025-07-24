@@ -3,18 +3,35 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Search, TrendingUp, TrendingDown, MessageCircle, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
+import { Star, Search, TrendingUp, TrendingDown, MessageCircle, Users } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { premierLeagueClubs } from '@/data/mockTransfers';
 import { clubBadgeMap } from './ClubsView';
+import { topSpendingClubs } from '@/data/topSpendingClubs';
+
+// Build a map of club -> spend from the topSpendingClubs data
+const clubSpendMap: Record<string, number> = Object.fromEntries(
+  topSpendingClubs.map(club => [club.club, club.spend])
+);
 
 interface TeamTransferViewProps {
   transfers: Transfer[];
+  selectedTeam?: string | null;
+  onBack?: () => void;
 }
 
-export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers }) => {
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, selectedTeam: externalSelectedTeam, onBack }) => {
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(externalSelectedTeam || null);
+
+  // Sync internal state with external prop if provided
+  useEffect(() => {
+    if (externalSelectedTeam !== undefined) {
+      setSelectedTeam(externalSelectedTeam);
+    }
+  }, [externalSelectedTeam]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredClubs, setFilteredClubs] = useState(premierLeagueClubs);
 
@@ -37,12 +54,46 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers })
       (t.toClub === teamName || t.fromClub === teamName) && t.status === 'rumored'
     );
 
+    // Sort function to order transfers by date (oldest to latest)
+    const sortByDate = (a: Transfer, b: Transfer) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateA - dateB; // Oldest first
+    };
+
     return {
-      transfersIn: transfersIn.filter(t => t.status === 'confirmed'),
-      transfersOut: transfersOut.filter(t => t.status === 'confirmed'),
-      rumors: rumors,
+      transfersIn: transfersIn.filter(t => t.status === 'confirmed').sort(sortByDate),
+      transfersOut: transfersOut.filter(t => t.status === 'confirmed').sort(sortByDate),
+      rumors: rumors.sort(sortByDate),
       totalActivity: transfersIn.length + transfersOut.length
     };
+  };
+
+  // Starred club state (localStorage sync)
+  const [starredClubs, setStarredClubs] = useState<string[]>(() => {
+    const saved = localStorage.getItem('starredClubs');
+    return saved ? JSON.parse(saved) : [];
+  });
+  // Sync with localStorage updates from other tabs/components
+  useEffect(() => {
+    const handler = (event: any) => {
+      if (event.detail) setStarredClubs(event.detail);
+      else {
+        const saved = localStorage.getItem('starredClubs');
+        setStarredClubs(saved ? JSON.parse(saved) : []);
+      }
+    };
+    window.addEventListener('starredClubsUpdate', handler);
+    return () => window.removeEventListener('starredClubsUpdate', handler);
+  }, []);
+  // Star/unstar logic
+  const handleStarClub = (clubName: string) => {
+    const newStarred = starredClubs.includes(clubName)
+      ? starredClubs.filter(c => c !== clubName)
+      : [...starredClubs, clubName];
+    setStarredClubs(newStarred);
+    localStorage.setItem('starredClubs', JSON.stringify(newStarred));
+    window.dispatchEvent(new CustomEvent('starredClubsUpdate', { detail: newStarred }));
   };
 
   if (selectedTeam) {
@@ -55,7 +106,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers })
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <button
-                onClick={() => setSelectedTeam(null)}
+                onClick={onBack ? onBack : () => setSelectedTeam(null)}
                 className="text-blue-400 hover:text-blue-300 transition-colors"
               >
                 ← Back to All Teams
@@ -74,7 +125,33 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers })
                 }}
               />
               {selectedTeam}
+              {/* Star button for club card */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleStarClub(selectedTeam)}
+                      className={`ml-1 p-1 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50 transition-transform duration-150 ${starredClubs.includes(selectedTeam) ? 'bg-yellow-400/20' : ''}`}
+                      aria-label={starredClubs.includes(selectedTeam) ? 'Remove from Favourites' : 'Add to Favourites'}
+                    >
+                      <Star className={`w-5 h-5 ${starredClubs.includes(selectedTeam) ? 'fill-yellow-400 text-yellow-400' : 'text-yellow-400'}`} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    {starredClubs.includes(selectedTeam) ? 'Remove from Favourites' : 'Add to Favourites'}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </h2>
+            {/* Show current spend for this club */}
+            <div className="mt-2 flex items-center gap-2">
+              <span className="text-green-400 font-bold text-lg">
+                £{(clubSpendMap[selectedTeam] || 0).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}
+              </span>
+              <span className="text-gray-400 text-sm">Current Spend</span>
+            </div>
           </div>
         </Card>
 

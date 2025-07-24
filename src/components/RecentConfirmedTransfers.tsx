@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, TrendingUp, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
+import { deduplicateTransfersUI } from '../utils/transferDeduplication';
 
 interface RecentConfirmedTransfersProps {
   transfers: Transfer[];
@@ -12,10 +13,10 @@ interface RecentConfirmedTransfersProps {
 export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> = ({ transfers }) => {
   const [showAll, setShowAll] = useState(false);
   
-  // Get all confirmed transfers, not just 3
-  const allConfirmed = transfers
-    .filter(transfer => transfer.status === 'confirmed')
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  // Deduplicate and get all confirmed transfers
+  const allConfirmed = deduplicateTransfersUI(
+    transfers.filter(transfer => transfer.status === 'confirmed')
+  ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const recentConfirmed = showAll ? allConfirmed : allConfirmed.slice(0, 10);
   const shouldScroll = recentConfirmed.length > 3;

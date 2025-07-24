@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, MessageCircle } from 'lucide-react';
+import { TrendingUp, MessageCircle, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 
 interface HomeRecentRumoursProps {
   transfers: Transfer[];
+  onSelectClub?: (club: string) => void;
+  onRefresh?: () => void;
 }
 
-export const HomeRecentRumours: React.FC<HomeRecentRumoursProps> = ({ transfers }) => {
+export const HomeRecentRumours: React.FC<HomeRecentRumoursProps> = ({ transfers, onSelectClub, onRefresh }) => {
   const [showAll, setShowAll] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const allRumours = transfers.filter(t => t.status === 'rumored').sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const displayRumours = showAll ? allRumours : allRumours.slice(0, 3);
 
@@ -19,10 +22,27 @@ export const HomeRecentRumours: React.FC<HomeRecentRumoursProps> = ({ transfers 
   return (
     <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#eaf3fb' }}>
       <div className="p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <TrendingUp className="w-5 h-5 text-blue-600" />
-          <h2 className="text-lg font-bold text-blue-800">Most Recent Rumours</h2>
-          <Badge className="bg-blue-600 text-white text-xs">RUMOUR</Badge>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-blue-600" />
+            <h2 className="text-lg font-bold text-blue-800">Most Recent Rumours</h2>
+            <Badge className="bg-blue-600 text-white text-xs">RUMOUR</Badge>
+          </div>
+          {onRefresh && (
+            <Button
+              onClick={async () => {
+                setRefreshing(true);
+                await onRefresh();
+                setRefreshing(false);
+              }}
+              variant="ghost"
+              size="sm"
+              disabled={refreshing}
+              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+            >
+              <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            </Button>
+          )}
         </div>
         <div className="flex gap-4 overflow-x-auto pb-2">
           {displayRumours.map((transfer) => (
@@ -30,7 +50,13 @@ export const HomeRecentRumours: React.FC<HomeRecentRumoursProps> = ({ transfers 
               <div className="p-3 flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <MessageCircle className="w-4 h-4 text-blue-500" />
-                  <span className="font-semibold text-gray-800 text-base truncate">{transfer.playerName}</span>
+                  <span
+                    className="font-semibold text-blue-600 hover:underline cursor-pointer text-base truncate"
+                    onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
+                    title={`View ${transfer.toClub} transfers`}
+                  >
+                    {transfer.playerName}
+                  </span>
                 </div>
                 <div className="text-xs text-gray-600">
                   <span>{transfer.fromClub}</span> → <span className="font-semibold text-gray-800">{transfer.toClub}</span>

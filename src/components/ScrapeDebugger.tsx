@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+// ScrapeDebugger.tsx - Deprecated. This component is no longer used.
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,6 +17,8 @@ export const ScrapeDebugger: React.FC = () => {
   const [rawContent, setRawContent] = useState('');
   const [parsedTransfers, setParsedTransfers] = useState<any[]>([]);
   const [debugInfo, setDebugInfo] = useState<any>(null);
+  const [scrapeError, setScrapeError] = useState<string | null>(null);
+  const [scrapeErrorDetails, setScrapeErrorDetails] = useState<any>(null);
   const { toast } = useToast();
 
   const handleTestScrape = async () => {
@@ -33,6 +35,8 @@ export const ScrapeDebugger: React.FC = () => {
     setRawContent('');
     setParsedTransfers([]);
     setDebugInfo(null);
+    setScrapeError(null);
+    setScrapeErrorDetails(null);
 
     try {
       console.log('=== SCRAPE DEBUG STARTED ===');
@@ -41,6 +45,8 @@ export const ScrapeDebugger: React.FC = () => {
       const result = await FirecrawlService.testUrlScraping(testUrl);
       
       if (result.success && result.data) {
+        setScrapeError(null);
+        setScrapeErrorDetails(null);
         const content = result.data.markdown || result.data.content || '';
         setRawContent(content);
         
@@ -69,6 +75,8 @@ export const ScrapeDebugger: React.FC = () => {
           description: `Found ${transfers.length} transfers from ${content.length} characters of content`,
         });
       } else {
+        setScrapeError(result.error || "Failed to scrape URL");
+        setScrapeErrorDetails(result);
         toast({
           title: "Scraping Failed",
           description: result.error || "Failed to scrape URL",
@@ -77,6 +85,8 @@ export const ScrapeDebugger: React.FC = () => {
       }
     } catch (error) {
       console.error('Debug scrape error:', error);
+      setScrapeError(error instanceof Error ? error.message : String(error));
+      setScrapeErrorDetails(error);
       toast({
         title: "Error",
         description: "An error occurred during scraping",
@@ -141,202 +151,188 @@ export const ScrapeDebugger: React.FC = () => {
             </div>
             <h2 className="text-2xl font-bold text-white">Scrape Debugger</h2>
           </div>
-          
-          <div className="space-y-4">
-            <div className="flex gap-4">
-              <Input
-                placeholder="Enter URL to test scraping (e.g., https://www.arsenal.com/news)"
-                value={testUrl}
-                onChange={(e) => setTestUrl(e.target.value)}
-                className="flex-1 bg-slate-700 border-slate-600 text-white"
-              />
-              <Button
-                onClick={handleTestScrape}
-                disabled={isLoading}
-                className="bg-orange-600 hover:bg-orange-700"
-              >
-                <Globe className="w-4 h-4 mr-2" />
-                {isLoading ? 'Testing...' : 'Test Scrape'}
-              </Button>
+          {scrapeError && (
+            <div className="mb-6 bg-red-900/70 border border-red-700 rounded-lg p-4">
+              <div className="text-red-300 font-semibold mb-1">Scrape Error:</div>
+              <div className="text-red-200 mb-2">{scrapeError}</div>
+              {scrapeErrorDetails && (
+                <pre className="bg-red-950/40 text-red-100 text-xs rounded p-2 overflow-x-auto">
+                  {JSON.stringify(scrapeErrorDetails, null, 2)}
+                </pre>
+              )}
             </div>
+          )}
+          <Tabs defaultValue="scrape" className="w-full mt-4">
+            <TabsList className="mb-6">
+              <TabsTrigger value="scrape">Scrape</TabsTrigger>
+              <TabsTrigger value="debug">Debug Info</TabsTrigger>
+              <TabsTrigger value="transfers">Parsed Transfers</TabsTrigger>
+              <TabsTrigger value="content">Raw Content</TabsTrigger>
+              <TabsTrigger value="analysis">Analysis</TabsTrigger>
+            </TabsList>
 
-            {debugInfo && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Card className="bg-slate-700/50 p-3">
-                  <div className="flex items-center gap-2">
-                    {debugInfo.sourceIsTrusted ? (
-                      <CheckCircle className="w-4 h-4 text-green-400" />
-                    ) : (
-                      <AlertCircle className="w-4 h-4 text-red-400" />
-                    )}
-                    <span className="text-sm text-white">
-                      {debugInfo.sourceIsTrusted ? 'Trusted Source' : 'Untrusted Source'}
-                    </span>
-                  </div>
-                </Card>
-                
-                <Card className="bg-slate-700/50 p-3">
-                  <div className="text-white text-sm">
-                    <div className="font-semibold">{debugInfo.contentLength} chars</div>
-                    <div className="text-gray-300">Content Length</div>
-                  </div>
-                </Card>
-                
-                <Card className="bg-slate-700/50 p-3">
-                  <div className="text-white text-sm">
-                    <div className="font-semibold">{debugInfo.transfersFound}</div>
-                    <div className="text-gray-300">Transfers Found</div>
-                  </div>
-                </Card>
-                
-                <Card className="bg-slate-700/50 p-3">
-                  <div className="text-white text-sm">
-                    <div className="font-semibold">{debugInfo.containsTransferKeywords.length}</div>
-                    <div className="text-gray-300">Transfer Keywords</div>
-                  </div>
-                </Card>
+            <TabsContent value="scrape">
+              <div className="space-y-4">
+                <Input
+                  value={testUrl}
+                  onChange={e => setTestUrl(e.target.value)}
+                  placeholder="Enter a club news or transfer article URL..."
+                  className="bg-slate-700 border-slate-600 text-white"
+                  disabled={isLoading}
+                />
+                <Button
+                  onClick={handleTestScrape}
+                  disabled={isLoading}
+                  className="w-full"
+                >
+                  {isLoading ? 'Scraping...' : 'Test Scrape'}
+                </Button>
               </div>
-            )}
-          </div>
-        </div>
-      </Card>
+            </TabsContent>
 
-      {(rawContent || parsedTransfers.length > 0 || debugInfo) && (
-        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-          <div className="p-6">
-            <Tabs defaultValue="debug" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 bg-slate-700">
-                <TabsTrigger value="debug">Debug Info</TabsTrigger>
-                <TabsTrigger value="transfers">Parsed Transfers</TabsTrigger>
-                <TabsTrigger value="content">Raw Content</TabsTrigger>
-                <TabsTrigger value="analysis">Analysis</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="debug" className="space-y-4">
-                {debugInfo && (
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="text-white font-semibold mb-2">Transfer Keywords Found:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {debugInfo.containsTransferKeywords.map((keyword: string, idx: number) => (
-                          <Badge key={idx} variant="secondary" className="bg-green-500/20 text-green-300">
-                            {keyword}
-                          </Badge>
-                        ))}
-                        {debugInfo.containsTransferKeywords.length === 0 && (
-                          <span className="text-red-400">No transfer keywords found</span>
+            <TabsContent value="debug">
+              {debugInfo && (
+                <>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <Card className="bg-slate-700/50 p-3">
+                      <div className="flex items-center gap-2">
+                        {debugInfo.sourceIsTrusted ? (
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                        ) : (
+                          <AlertCircle className="w-4 h-4 text-red-400" />
                         )}
+                        <span className="text-sm text-white">
+                          {debugInfo.sourceIsTrusted ? 'Trusted Source' : 'Untrusted Source'}
+                        </span>
                       </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-white font-semibold mb-2">Club Names Found:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {debugInfo.containsClubNames.map((club: string, idx: number) => (
+                    </Card>
+                    <Card className="bg-slate-700/50 p-3">
+                      <div className="text-white text-sm">
+                        <div className="font-semibold">{debugInfo.contentLength} chars</div>
+                        <div className="text-gray-300">Content Length</div>
+                      </div>
+                    </Card>
+                    <Card className="bg-slate-700/50 p-3">
+                      <div className="text-white text-sm">
+                        <div className="font-semibold">{debugInfo.transfersFound}</div>
+                        <div className="text-gray-300">Transfers Found</div>
+                      </div>
+                    </Card>
+                    <Card className="bg-slate-700/50 p-3">
+                      <div className="text-white text-sm">
+                        <div className="font-semibold">{debugInfo.containsTransferKeywords?.length || 0}</div>
+                        <div className="text-gray-300">Transfer Keywords</div>
+                      </div>
+                    </Card>
+                  </div>
+                  <div className="mb-2">
+                    <h4 className="text-white font-semibold mb-2">Club Names Found:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {debugInfo.containsClubNames?.length > 0 ? (
+                        debugInfo.containsClubNames.map((club: string, idx: number) => (
                           <Badge key={idx} variant="secondary" className="bg-blue-500/20 text-blue-300">
                             {club}
                           </Badge>
-                        ))}
-                        {debugInfo.containsClubNames.length === 0 && (
-                          <span className="text-red-400">No club names found</span>
-                        )}
-                      </div>
+                        ))
+                      ) : (
+                        <span className="text-red-400">No club names found</span>
+                      )}
                     </div>
-                    
-                    <div>
-                      <h4 className="text-white font-semibold mb-2">Player Names Found:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {debugInfo.containsPlayerNames.map((player: string, idx: number) => (
+                  </div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-2">Player Names Found:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {debugInfo.containsPlayerNames?.length > 0 ? (
+                        debugInfo.containsPlayerNames.map((player: string, idx: number) => (
                           <Badge key={idx} variant="secondary" className="bg-purple-500/20 text-purple-300">
                             {player}
                           </Badge>
-                        ))}
-                        {debugInfo.containsPlayerNames.length === 0 && (
-                          <span className="text-red-400">No known player names found</span>
-                        )}
-                      </div>
+                        ))
+                      ) : (
+                        <span className="text-red-400">No known player names found</span>
+                      )}
                     </div>
                   </div>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="transfers">
-                <div className="space-y-3">
-                  {parsedTransfers.length > 0 ? (
-                    parsedTransfers.map((transfer, idx) => (
-                      <Card key={idx} className="bg-slate-700/50 p-4">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="text-white font-semibold">{transfer.playerName}</h4>
-                            <p className="text-gray-300 text-sm">
-                              {transfer.fromClub} → {transfer.toClub}
-                            </p>
-                            <p className="text-gray-400 text-xs">Fee: {transfer.fee}</p>
-                          </div>
-                          <div className="flex flex-col items-end gap-1">
-                            <Badge 
-                              variant={transfer.verificationStatus === 'confirmed' ? 'default' : 'secondary'}
-                              className={transfer.verificationStatus === 'confirmed' ? 'bg-green-500' : 'bg-yellow-500'}
-                            >
-                              {transfer.verificationStatus}
-                            </Badge>
-                            <span className="text-xs text-gray-400">
-                              {Math.round(transfer.confidence * 100)}% confidence
-                            </span>
-                          </div>
+                </>
+              )}
+            </TabsContent>
+
+            <TabsContent value="transfers">
+              <div className="space-y-3">
+                {parsedTransfers.length > 0 ? (
+                  parsedTransfers.map((transfer, idx) => (
+                    <Card key={idx} className="bg-slate-700/50 p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="text-white font-semibold">{transfer.playerName}</h4>
+                          <p className="text-gray-300 text-sm">
+                            {transfer.fromClub} → {transfer.toClub}
+                          </p>
+                          <p className="text-gray-400 text-xs">Fee: {transfer.fee}</p>
                         </div>
-                      </Card>
-                    ))
-                  ) : (
-                    <p className="text-gray-400">No transfers parsed from the content</p>
-                  )}
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="content">
-                <Textarea
-                  value={rawContent}
-                  readOnly
-                  className="min-h-96 bg-slate-700 border-slate-600 text-white text-xs font-mono"
-                  placeholder="Raw scraped content will appear here..."
-                />
-              </TabsContent>
-              
-              <TabsContent value="analysis" className="space-y-4">
-                <div className="text-white">
-                  <h4 className="font-semibold mb-3">Why might transfers not be found?</h4>
-                  <div className="space-y-2 text-sm text-gray-300">
-                    <div className="flex items-start gap-2">
-                      <AlertCircle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <strong>Source not trusted:</strong> Only official club websites and major sports news sites are considered trusted sources
+                        <div className="flex flex-col items-end gap-1">
+                          <Badge 
+                            variant={transfer.verificationStatus === 'confirmed' ? 'default' : 'secondary'}
+                            className={transfer.verificationStatus === 'confirmed' ? 'bg-green-500' : 'bg-yellow-500'}
+                          >
+                            {transfer.verificationStatus}
+                          </Badge>
+                          <span className="text-xs text-gray-400">
+                            {Math.round(transfer.confidence * 100)}% confidence
+                          </span>
+                        </div>
                       </div>
+                    </Card>
+                  ))
+                ) : (
+                  <p className="text-gray-400">No transfers parsed from the content</p>
+                )}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="content">
+              <Textarea
+                value={rawContent}
+                readOnly
+                className="min-h-96 bg-slate-700 border-slate-600 text-white text-xs font-mono"
+                placeholder="Raw scraped content will appear here..."
+              />
+            </TabsContent>
+
+            <TabsContent value="analysis" className="space-y-4">
+              <div className="text-white">
+                <h4 className="font-semibold mb-3">Why might transfers not be found?</h4>
+                <div className="space-y-2 text-sm text-gray-300">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <strong>Source not trusted:</strong> Only official club websites and major sports news sites are considered trusted sources
                     </div>
-                    <div className="flex items-start gap-2">
-                      <AlertCircle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <strong>Missing keywords:</strong> Content must contain confirmation words like "has signed", "officially joins", etc.
-                      </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <strong>Missing keywords:</strong> Content must contain confirmation words like "has signed", "officially joins", etc.
                     </div>
-                    <div className="flex items-start gap-2">
-                      <AlertCircle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <strong>Unknown players:</strong> Only pre-defined known players are easily detected
-                      </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <strong>Unknown players:</strong> Only pre-defined known players are easily detected
                     </div>
-                    <div className="flex items-start gap-2">
-                      <AlertCircle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <strong>Content format:</strong> The parser expects specific sentence structures and may miss table-formatted data
-                      </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <strong>Content format:</strong> The parser expects specific sentence structures and may miss table-formatted data
                     </div>
                   </div>
                 </div>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </Card>
-      )}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </Card>
     </div>
   );
 };

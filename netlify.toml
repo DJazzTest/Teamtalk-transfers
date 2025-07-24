@@ -8,3 +8,9 @@
 
 [functions]
   directory = "netlify/functions"
+
+# SPA routing - redirect all routes to index.html for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
