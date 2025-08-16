@@ -77,7 +77,12 @@ export class ScoreInsideApiService {
     }
   }
 
-  private mapToTransfer(article: ScoreInsideTransferArticle, teamSlug: string): Transfer {
+  private mapToTransfer(article: ScoreInsideTransferArticle, teamSlug: string): Transfer | null {
+    // Skip transfers without proper club information
+    if (!article.team_from || !article.team_from.nm || !article.team || !article.team.nm) {
+      return null;
+    }
+
     // Determine status from category
     let status: 'confirmed' | 'rumored' | 'pending' = 'rumored';
     switch (article.scat.toLowerCase()) {
@@ -103,27 +108,9 @@ export class ScoreInsideApiService {
     // Extract fee from headline if possible
     const fee = this.extractFee(article.article.hdl) || 'Undisclosed';
 
-    // Determine from and to clubs
-    let fromClub = 'Unknown';
-    let toClub = 'Unknown';
-
-    if (article.team_from) {
-      fromClub = article.team_from.nm;
-      toClub = article.team.nm;
-    } else {
-      // Try to determine direction from headline
-      const headline = article.article.hdl.toLowerCase();
-      if (headline.includes('to ') || headline.includes('join')) {
-        fromClub = 'Unknown';
-        toClub = article.team.nm;
-      } else if (headline.includes('from ') || headline.includes('leave')) {
-        fromClub = article.team.nm;
-        toClub = 'Unknown';
-      } else {
-        // Default: assume the team in the API is the target team
-        toClub = article.team.nm;
-      }
-    }
+    // Use proper team information
+    const fromClub = article.team_from.nm;
+    const toClub = article.team.nm;
 
     return {
       id: `scoreinside-${article.aid}`,
@@ -175,7 +162,9 @@ export class ScoreInsideApiService {
     }
 
     const articles = await this.fetchTeamData(config);
-    return articles.map(article => this.mapToTransfer(article, teamSlug));
+    return articles
+      .map(article => this.mapToTransfer(article, teamSlug))
+      .filter((transfer): transfer is Transfer => transfer !== null);
   }
 
   async getAllTeamsTransfers(): Promise<Map<string, Transfer[]>> {

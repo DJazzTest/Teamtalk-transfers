@@ -77,19 +77,45 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
           <div className="bg-blue-100 p-2 rounded-lg">
             <TrendingUp className="w-5 h-5 text-blue-600" />
           </div>
-          <h3 className="text-xl font-bold text-gray-800">Club Spending 2025 Summer Window</h3>
+          <h3 className="text-xl font-bold text-gray-800">Club Spending 2025/26 Summer Window</h3>
         </div>
         
         <div className="h-96">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={clubSpendingData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
+               <XAxis 
                 dataKey="club" 
                 angle={-45} 
                 textAnchor="end" 
                 height={80}
-                tick={{ fontSize: 12 }}
+                tick={(props) => {
+                  const { x, y, payload } = props;
+                  const badgePath = getBadgePath(payload.value);
+                  return (
+                    <g transform={`translate(${x},${y})`}>
+                      {badgePath && (
+                        <image
+                          x={-8}
+                          y={-20}
+                          width={16}
+                          height={16}
+                          href={badgePath}
+                        />
+                      )}
+                      <text
+                        x={0}
+                        y={5}
+                        textAnchor="end"
+                        fontSize="12"
+                        transform="rotate(-45)"
+                        fill="#374151"
+                      >
+                        {payload.value}
+                      </text>
+                    </g>
+                  );
+                }}
                 interval={0}
               />
               <YAxis 
