@@ -14,7 +14,8 @@ const TODAY = '2025-07-17';
 
 export const HomeTodaysConfirmed: React.FC<HomeTodaysConfirmedProps> = ({ transfers, onSelectClub }) => {
   const confirmedToday = transfers.filter(
-    t => t.status === 'confirmed' && t.date && t.date.slice(0, 10) === TODAY
+    t => t.status === 'confirmed' && t.date && t.date.slice(0, 10) === TODAY && 
+    !t.source.toLowerCase().includes('scoreinside')
   ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (

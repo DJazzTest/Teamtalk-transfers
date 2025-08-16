@@ -55,16 +55,16 @@ export const WalletWarpingDeals: React.FC<WalletWarpingDealsProps> = ({ transfer
 
   // Top 10 Most Expensive UK Premier League Transfers season (2025–26) - User provided data
   const top10ExpensiveTransfers = [
-    { playerName: 'Florian Wirtz', fromClub: 'Bayer Leverkusen', toClub: 'Liverpool', fee: '€125m', feeValue: 125 },
-    { playerName: 'Hugo Ekitike', fromClub: 'Eintracht Frankfurt', toClub: 'Liverpool', fee: '€95m', feeValue: 95 },
-    { playerName: 'Bryan Mbeumo', fromClub: 'Brentford', toClub: 'Manchester United', fee: '€75m', feeValue: 75 },
-    { playerName: 'Matheus Cunha', fromClub: 'Wolverhampton Wanderers', toClub: 'Manchester United', fee: '€74.2m', feeValue: 74.2 },
-    { playerName: 'Martin Zubimendi', fromClub: 'Real Sociedad', toClub: 'Arsenal', fee: '€70m', feeValue: 70 },
-    { playerName: 'Jamie Gittens', fromClub: 'Borussia Dortmund', toClub: 'Chelsea', fee: '€64.3m', feeValue: 64.3 },
-    { playerName: 'Mohammed Kudus', fromClub: 'West Ham United', toClub: 'Tottenham Hotspur', fee: '€63.8m', feeValue: 63.8 },
-    { playerName: 'Joao Pedro', fromClub: 'Brighton & Hove Albion', toClub: 'Chelsea', fee: '€63.7m', feeValue: 63.7 },
-    { playerName: 'Anthony Elanga', fromClub: 'Nottingham Forest', toClub: 'Newcastle United', fee: '€61.4m', feeValue: 61.4 },
-    { playerName: 'Noni Madueke', fromClub: 'Chelsea', toClub: 'Arsenal', fee: '€55.4m', feeValue: 55.4 }
+    { playerName: 'Florian Wirtz', fromClub: 'Bayer Leverkusen', toClub: 'Liverpool', fee: '£106m', feeValue: 106 },
+    { playerName: 'Hugo Ekitike', fromClub: 'Eintracht Frankfurt', toClub: 'Liverpool', fee: '£81m', feeValue: 81 },
+    { playerName: 'Bryan Mbeumo', fromClub: 'Brentford', toClub: 'Manchester United', fee: '£64m', feeValue: 64 },
+    { playerName: 'Matheus Cunha', fromClub: 'Wolverhampton Wanderers', toClub: 'Manchester United', fee: '£63m', feeValue: 63 },
+    { playerName: 'Martin Zubimendi', fromClub: 'Real Sociedad', toClub: 'Arsenal', fee: '£59m', feeValue: 59 },
+    { playerName: 'Jamie Gittens', fromClub: 'Borussia Dortmund', toClub: 'Chelsea', fee: '£55m', feeValue: 55 },
+    { playerName: 'Mohammed Kudus', fromClub: 'West Ham United', toClub: 'Tottenham Hotspur', fee: '£54m', feeValue: 54 },
+    { playerName: 'Joao Pedro', fromClub: 'Brighton & Hove Albion', toClub: 'Chelsea', fee: '£54m', feeValue: 54 },
+    { playerName: 'Anthony Elanga', fromClub: 'Nottingham Forest', toClub: 'Newcastle United', fee: '£52m', feeValue: 52 },
+    { playerName: 'Noni Madueke', fromClub: 'Chelsea', toClub: 'Arsenal', fee: '£47m', feeValue: 47 }
   ];
 
   // Create transfer objects with proper structure and deduplication
