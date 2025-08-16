@@ -60,6 +60,10 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
     };
   }).sort((a, b) => b.netSpend - a.netSpend); // Sort by net spend (highest first)
 
+  console.log('ClubSpendingGraph - allPremierLeagueClubs:', allPremierLeagueClubs);
+  console.log('ClubSpendingGraph - chartData:', chartData);
+  console.log('ClubSpendingGraph - chartData length:', chartData.length);
+
   // Get current slice of data
   const currentData = chartData.slice(currentIndex, currentIndex + itemsPerView);
   
