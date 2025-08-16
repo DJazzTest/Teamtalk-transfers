@@ -18,8 +18,8 @@ export const clubEarnings = {
   'Newcastle United': 0,
   'Aston Villa': 0,
   'Everton': 5,
-  'Burnley': 5,
-  'Sunderland': 2
+  'Leeds United': 8,
+  'Manchester United': 15
 };
 
 export const clubSpending = {
@@ -28,17 +28,17 @@ export const clubSpending = {
   'Manchester United': 193.8,
   'Arsenal': 185.3,
   'Manchester City': 146.9,
-  'Sunderland': 130,
   'Brighton & Hove Albion': 133,
-  'Burnley': 123,
   'Tottenham Hotspur': 125,
   'Leeds United': 118,
   'Newcastle United': 60,
+  'Southampton': 45,
   'Nottingham Forest': 42,
   'Bournemouth': 29,
   'Wolverhampton Wanderers': 27,
   'Brentford': 20,
   'West Ham United': 15,
+  'Leicester City': 12,
   'Everton': 10,
   'Aston Villa': 6,
   'Crystal Palace': 5,
@@ -54,8 +54,8 @@ export const getNetSpend = (club: string): number => {
 
 export const allPremierLeagueClubs = [
   'Arsenal', 'Aston Villa', 'Brentford', 'Brighton & Hove Albion', 'Chelsea',
-  'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town', 'Leeds United',
-  'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United',
-  'Newcastle United', 'Nottingham Forest', 'Sheffield United', 'Southampton',
-  'Tottenham Hotspur', 'West Ham United'
+  'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 'Leicester City',
+  'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United',
+  'Nottingham Forest', 'Southampton', 'Tottenham Hotspur', 'West Ham United',
+  'Wolverhampton Wanderers', 'Bournemouth'
 ];
