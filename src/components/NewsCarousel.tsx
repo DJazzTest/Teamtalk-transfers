@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Clock, ExternalLink } from 'lucide-react';
-import { useScoreInsideFeed } from '@/hooks/useScoreInsideFeed';
-import { useTeamTalkFeed } from '@/hooks/useTeamTalkFeed';
-import { TeamTalkArticle } from '@/types/teamtalk';
+import { newsApi } from '@/services/newsApi';
 
 // Premier League clubs filter
 const premierLeagueClubs = [
@@ -34,54 +32,32 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
   const [showAll, setShowAll] = useState(false);
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
-  
-  const { articles: teamTalkArticles, loading: teamTalkLoading } = useTeamTalkFeed();
-  const { allTransfers, loading: scoreInsideLoading } = useScoreInsideFeed();
 
   useEffect(() => {
-    const processNewsData = () => {
-      const processedNews: NewsArticle[] = [];
-
-      // Process TeamTalk articles
-      teamTalkArticles
-        .filter(article => {
-          // Filter for Premier League clubs only
-          const content = `${article.headline} ${article.excerpt}`.toLowerCase();
+    const fetchNews = async () => {
+      setLoading(true);
+      try {
+        const articles = await newsApi.fetchNews();
+        
+        // Filter for Premier League clubs only
+        const filteredArticles = articles.filter(article => {
+          const content = `${article.title} ${article.summary}`.toLowerCase();
           return premierLeagueClubs.some(club => 
             content.includes(club.toLowerCase())
           );
-        })
-        .slice(0, 10) // Limit to prevent too many articles
-        .forEach(article => {
-          processedNews.push({
-            id: `teamtalk-${article.id}`,
-            title: article.headline,
-            summary: article.excerpt,
-            source: 'TeamTalk',
-            time: formatTime(article.pub_date),
-            category: article.category?.[0] || 'Transfer News',
-            image: article.image,
-            url: article.link
-          });
         });
-
-      // Remove duplicates and sort by recency
-      const uniqueNews = processedNews
-        .filter((article, index, self) => 
-          index === self.findIndex(a => 
-            a.title.toLowerCase() === article.title.toLowerCase()
-          )
-        )
-        .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
-
-      setNewsArticles(uniqueNews);
-      setLoading(false);
+        
+        setNewsArticles(filteredArticles);
+      } catch (error) {
+        console.error('Error fetching news:', error);
+        setNewsArticles([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    if (!teamTalkLoading && !scoreInsideLoading) {
-      processNewsData();
-    }
-  }, [teamTalkArticles, allTransfers, teamTalkLoading, scoreInsideLoading]);
+    fetchNews();
+  }, []);
 
   const formatTime = (dateString: string): string => {
     const date = new Date(dateString);
