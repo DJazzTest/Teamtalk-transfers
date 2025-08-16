@@ -1,6 +1,14 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { allPremierLeagueClubs } from '@/data/clubFinancials';
+
+// Premier League clubs list
+const premierLeagueClubs = [
+  'Arsenal', 'Aston Villa', 'Brentford', 'Brighton & Hove Albion', 'Chelsea',
+  'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 'Leicester City',
+  'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United',
+  'Nottingham Forest', 'Southampton', 'Tottenham Hotspur', 'West Ham United',
+  'Wolverhampton Wanderers', 'Bournemouth'
+];
 
 // Club badge mapping
 const getClubBadge = (club: string): string => {
@@ -51,7 +59,7 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({ onSelectTeam }) => {
             scrollbarWidth: 'thin',
             scrollbarColor: '#9CA3AF #E5E7EB'
           }}>
-            {allPremierLeagueClubs.map((club) => (
+            {premierLeagueClubs.map((club) => (
               <Card 
                 key={club}
                 className="min-w-[160px] bg-gradient-to-br from-blue-50 to-white border-blue-200 hover:shadow-md transition-all duration-200 hover:border-blue-300 cursor-pointer"

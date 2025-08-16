@@ -4,7 +4,6 @@ import { TransferCountdown } from '@/components/TransferCountdown';
 import { WalletWarpingDeals } from '@/components/WalletWarpingDeals';
 import { FavouritesView } from '@/components/FavouritesView';
 import { TransferSpendingChart } from '@/components/TransferSpendingChart';
-import { ClubSpendingGraph } from '@/components/ClubSpendingGraph';
 import { HomeRecentRumours } from '@/components/HomeRecentRumours';
 import { HomeRecentConfirmed } from '@/components/HomeRecentConfirmed';
 import { HomeTodaysConfirmed } from '@/components/HomeTodaysConfirmed';
@@ -188,13 +187,6 @@ const WebsiteContent = () => {
         {/* Top 10 Wallet-Warping Deals */}
         <div className="mb-8">
           <WalletWarpingDeals transfers={transfers} onSelectClub={handleSelectClub} onRefresh={refreshAllData} />
-        </div>
-
-        {/* Club spending 2025/26 Graph - moved to below Top 10 Most Expensive */}
-        <div className="mb-8 overflow-x-auto">
-          <div className="min-w-[600px]">
-            <ClubSpendingGraph onSelectClub={handleSelectClub} />
-          </div>
         </div>
       </div>
     </div>
