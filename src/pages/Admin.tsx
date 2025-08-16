@@ -80,17 +80,11 @@ const Admin = () => {
             </div>
           </div>
 
-          {/* Transfer Window Countdown Setting */}
-          <TransferWindowCountdownSetting />
-
           {/* Admin Management Tabs */}
           <Tabs defaultValue="api-management" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 backdrop-blur-md border-slate-700">
+            <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 backdrop-blur-md border-slate-700">
               <TabsTrigger value="api-management" className="flex items-center gap-2">
                 API Management
-              </TabsTrigger>
-              <TabsTrigger value="sources" className="flex items-center gap-2">
-                Sources
               </TabsTrigger>
               <TabsTrigger value="manual-entry" className="flex items-center gap-2">
                 Manual Entry
@@ -99,10 +93,6 @@ const Admin = () => {
 
             <TabsContent value="api-management">
               <ClubApiManager />
-            </TabsContent>
-
-            <TabsContent value="sources">
-              <SourcesTab />
             </TabsContent>
 
             <TabsContent value="manual-entry">

@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTransferDataStore } from '@/store/transferDataStore';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import FileUpload from '@/components/ui/file-upload';
 import PlayerStatsEditor from './PlayerStatsEditor';
 import { Transfer } from '@/types/transfer';
@@ -99,6 +100,32 @@ export const TransferDataAdmin: React.FC = () => {
   const [bulkText, setBulkText] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
+  
+  // Transfer Window Countdown state
+  const [closeTime, setCloseTime] = useState<string>(() => {
+    return localStorage.getItem('transfer_window_close') || '2025-09-01T18:00';
+  });
+  const [timeLeft, setTimeLeft] = useState<any>(null);
+
+  // Update transfer window countdown
+  useEffect(() => {
+    localStorage.setItem('transfer_window_close', closeTime);
+    const interval = setInterval(() => {
+      const now = new Date();
+      const targetDate = new Date(closeTime);
+      const diff = targetDate.getTime() - now.getTime();
+      if (diff <= 0) {
+        setTimeLeft(null);
+      } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / (1000 * 60)) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+        setTimeLeft({ days, hours, mins, secs });
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [closeTime]);
 
   // Helper to check for duplicates in allTransfers and current entries
   const isDuplicate = (playerName: string, toClub: string) => {
@@ -304,6 +331,23 @@ const parseBulkLine = (line: string) => {
 
   return (
     <>
+      {/* Transfer Window Countdown Setting */}
+      <div className="mb-8 p-4 bg-slate-800/60 rounded-lg flex flex-col gap-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <label className="block text-white font-semibold text-lg">Transfer Window Closes:</label>
+          <Input
+            type="datetime-local"
+            value={closeTime}
+            onChange={e => setCloseTime(e.target.value)}
+            className="w-64"
+          />
+        </div>
+        <div className="text-blue-200 text-md font-mono">
+          {timeLeft
+            ? `Countdown: ${timeLeft.days}d ${timeLeft.hours}h ${timeLeft.mins}m ${timeLeft.secs}s`
+            : 'Transfer window is closed.'}
+        </div>
+      </div>
 
       <PlayerStatsEditor
         allTransfers={allTransfers}
@@ -312,15 +356,35 @@ const parseBulkLine = (line: string) => {
           alert('Player stats saved for: ' + updatedPlayer.playerName);
         }}
       />
-      {/* Bulk Paste Section */}
+      {/* Enhanced Bulk Transfer Parser */}
       <Card className="bg-slate-800/70 border-slate-700 mt-8 p-6">
-        <h2 className="text-xl font-bold text-white mb-4">Bulk Paste Rumours/Transfers</h2>
+        <h2 className="text-xl font-bold text-white mb-4">Enhanced Transfer Parser</h2>
+        <p className="text-gray-300 mb-4 text-sm">
+          Paste large amounts of transfer data. Supports multiple formats:
+          <br />• Club header followed by transfers: "Arsenal" then "Player → To Club – £Fee"
+          <br />• Tab-separated: "Player	Transfer In/Out	Club"
+          <br />• Natural language: "Player has officially joined Club from OtherClub for £Fee"
+          <br />• Simple format: "Player to Club £Fee confirmed/rumored"
+        </p>
         <textarea
-          className="w-full p-2 rounded bg-slate-900 border border-slate-700 text-white mb-4"
-          rows={10}
+          className="w-full p-3 rounded bg-slate-900 border border-slate-700 text-white mb-4 font-mono text-sm"
+          rows={12}
           value={bulkText}
           onChange={e => setBulkText(e.target.value)}
-          placeholder={`Paste your updates here, e.g.\nArsenal\nViktor Gyokeres (Sporting Lisbon) – £63.5m bid in progress\n...`}
+          placeholder={`Example formats:
+
+Arsenal
+Jorginho	Released	Flamengo
+Kieran Tierney	Released	Celtic
+Raheem Sterling	End of loan	Chelsea
+
+Or:
+
+Sean Longstaff has officially joined Leeds United from Newcastle in a deal worth around £12 million
+
+Or:
+
+Anthony Elanga – Nottingham Forest → Newcastle United – £55m`}
         />
         <Button
           className="bg-blue-700 hover:bg-blue-600 mb-4"

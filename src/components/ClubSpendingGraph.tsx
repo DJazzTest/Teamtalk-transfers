@@ -90,14 +90,14 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
     
     return (
       <g transform={`translate(${x},${y})`}>
-        {/* Club badge or initials */}
-        <g transform="translate(0, 10)">
+        {/* Club badge or initials - larger and clearer */}
+        <g transform="translate(0, 15)">
           {clubData?.badge ? (
             <image 
-              x={-12} 
+              x={-18} 
               y={0} 
-              width={24} 
-              height={24} 
+              width={36} 
+              height={36} 
               href={clubData.badge}
               onError={(e) => {
                 // Fallback to initials on image error
@@ -106,118 +106,98 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
               }}
             />
           ) : (
-            <circle cx={0} cy={12} r={12} fill="#3B82F6" />
+            <circle cx={0} cy={18} r={18} fill="#3B82F6" />
           )}
           {(!clubData?.badge || clubData.badge === '') && (
             <text 
               x={0} 
-              y={17} 
+              y={24} 
               textAnchor="middle" 
               fill="white" 
-              fontSize="8" 
+              fontSize="12" 
               fontWeight="bold"
             >
               {clubData?.initials}
             </text>
           )}
         </g>
-        {/* Club name */}
+        {/* Club name - aligned at bottom with clear font */}
         <text 
           x={0} 
-          y={45} 
+          y={75} 
           textAnchor="middle" 
-          fill="#E5E7EB" 
-          fontSize="10"
-          transform="rotate(-45)"
+          fill="#1F2937" 
+          fontSize="12"
+          fontWeight="600"
+          className="drop-shadow-sm"
         >
-          {payload.value}
+          {clubData?.fullClub?.split(' ').map((word, i) => (
+            <tspan key={i} x={0} dy={i === 0 ? 0 : 14}>{word}</tspan>
+          ))}
         </text>
       </g>
     );
   };
 
-  // Bar Chart View with spending (red) and earnings (green)
+  // Bar Chart View with spending (red) and earnings (green) - Horizontal Scroll
   const BarChartView = () => {
     return (
       <div className="relative">
-        {/* Navigation buttons */}
-        <div className="absolute top-0 left-0 right-0 z-10 flex justify-between items-center p-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={goLeft}
-            disabled={!canGoLeft}
-            className="bg-white/80 hover:bg-white/90"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </Button>
-          <div className="text-sm text-gray-600 bg-white/80 px-2 py-1 rounded">
-            {currentIndex + 1}-{Math.min(currentIndex + itemsPerView, chartData.length)} of {chartData.length}
+        <div className="h-96 overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-blue-100">
+          <div style={{ width: `${chartData.length * 100}px`, minWidth: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                <XAxis 
+                  dataKey="club" 
+                  tick={<CustomXAxisTick />}
+                  height={120}
+                  interval={0}
+                />
+                <YAxis 
+                  tick={{ fontSize: 12, fill: '#E5E7EB' }}
+                  label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
+                />
+                <Tooltip 
+                  formatter={(value: number, name: string, props: any) => {
+                    const label = name === 'spending' ? 'Spent' : 'Earned';
+                    return [`£${value}M`, label];
+                  }}
+                  labelFormatter={(label: string, payload: any) => 
+                    payload?.[0]?.payload?.fullClub || label
+                  }
+                  contentStyle={{
+                    backgroundColor: 'rgba(47, 81, 122, 0.95)',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    borderRadius: '8px',
+                    color: '#fff'
+                  }}
+                />
+                <Bar 
+                  dataKey="spending" 
+                  name="Spending"
+                  radius={[4, 4, 0, 0]}
+                  onClick={(data) => onSelectClub && onSelectClub(data.fullClub)}
+                  cursor="pointer"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`spending-${index}`} fill="#DC2626" />
+                  ))}
+                </Bar>
+                <Bar 
+                  dataKey="earnings" 
+                  name="Earnings"
+                  radius={[4, 4, 0, 0]}
+                  onClick={(data) => onSelectClub && onSelectClub(data.fullClub)}
+                  cursor="pointer"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`earnings-${index}`} fill="#16A34A" />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={goRight}
-            disabled={!canGoRight}
-            className="bg-white/80 hover:bg-white/90"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-        </div>
-
-        <div className="h-96 pt-12">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={currentData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-              <XAxis 
-                dataKey="club" 
-                tick={<CustomXAxisTick />}
-                height={100}
-                interval={0}
-              />
-              <YAxis 
-                tick={{ fontSize: 12, fill: '#E5E7EB' }}
-                label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
-              />
-              <Tooltip 
-                formatter={(value: number, name: string, props: any) => {
-                  const label = name === 'spending' ? 'Spent' : 'Earned';
-                  return [`£${value}M`, label];
-                }}
-                labelFormatter={(label: string, payload: any) => 
-                  payload?.[0]?.payload?.fullClub || label
-                }
-                contentStyle={{
-                  backgroundColor: 'rgba(47, 81, 122, 0.95)',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  borderRadius: '8px',
-                  color: '#fff'
-                }}
-              />
-              <Bar 
-                dataKey="spending" 
-                name="Spending"
-                radius={[4, 4, 0, 0]}
-                onClick={(data) => onSelectClub && onSelectClub(data.fullClub)}
-                cursor="pointer"
-              >
-                {currentData.map((entry, index) => (
-                  <Cell key={`spending-${index}`} fill="#DC2626" />
-                ))}
-              </Bar>
-              <Bar 
-                dataKey="earnings" 
-                name="Earnings"
-                radius={[4, 4, 0, 0]}
-                onClick={(data) => onSelectClub && onSelectClub(data.fullClub)}
-                cursor="pointer"
-              >
-                {currentData.map((entry, index) => (
-                  <Cell key={`earnings-${index}`} fill="#16A34A" />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
         </div>
       </div>
     );
@@ -267,8 +247,8 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
         </div>
         
         <div className="text-center text-gray-600 text-xs mt-2">
-          <span className="hidden sm:inline">← Use arrow buttons to navigate through clubs →</span>
-          <span className="sm:hidden">← Navigate through clubs →</span>
+          <span className="hidden sm:inline">← Scroll horizontally to view all clubs →</span>
+          <span className="sm:hidden">← Scroll to view all →</span>
         </div>
       </div>
     </Card>
