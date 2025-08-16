@@ -1,215 +1,149 @@
-import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useEffect, useMemo } from 'react';
 import { Transfer } from '@/types/transfer';
 import { allClubTransfers } from '@/data/transfers';
-import { teamTalkApi } from '@/services/teamtalkApi';
-import { scoreInsideApi } from '@/services/scoreinsideApi';
+import { useTeamTalkFeed } from '@/hooks/useTeamTalkFeed';
+import { useScoreInsideFeed } from '@/hooks/useScoreInsideFeed';
+import { deduplicateTransfersUI } from '@/utils/transferDeduplication';
 
 interface TransferDataStore {
-  transfers: Transfer[];
+  // Static data
+  staticTransfers: Transfer[];
+  
+  // API data sources
   teamTalkTransfers: Transfer[];
-  scoreInsideTransfers: Transfer[];
+  scoreInsideAllTransfers: Transfer[];
   teamSpecificTransfers: Map<string, Transfer[]>;
+  
+  // Combined data
   allTransfers: Transfer[];
-  lastUpdated: string;
-  teamTalkLastUpdated: string | null;
-  scoreInsideLastUpdated: string | null;
-  overrideTransfers: (newTransfers: Transfer[]) => void;
+  
+  // Update timestamps
+  lastUpdated: Date | null;
+  teamTalkLastUpdated: Date | null;
+  scoreInsideLastUpdated: Date | null;
+  
+  // Loading states
+  teamTalkLoading: boolean;
+  scoreInsideLoading: boolean;
+  
+  // Error states
+  teamTalkError: string | null;
+  scoreInsideError: string | null;
+  
+  // Methods
   refreshTeamTalkFeed: () => Promise<void>;
   refreshScoreInsideFeed: () => Promise<void>;
   refreshAllData: () => Promise<void>;
   refreshTeamData: (teamSlug: string) => Promise<void>;
   getTeamTransfers: (teamSlug: string) => Transfer[];
-  teamTalkLoading: boolean;
-  teamTalkError: string | null;
-  scoreInsideLoading: boolean;
-  scoreInsideError: string | null;
+  overrideTransfers: (newTransfers: Transfer[]) => void;
 }
 
 const TransferDataContext = createContext<TransferDataStore | undefined>(undefined);
 
 export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [transfers, setTransfers] = useState<Transfer[]>(allClubTransfers);
-  const [teamTalkTransfers, setTeamTalkTransfers] = useState<Transfer[]>([]);
-  const [scoreInsideTransfers, setScoreInsideTransfers] = useState<Transfer[]>([]);
-  const [teamSpecificTransfers, setTeamSpecificTransfers] = useState<Map<string, Transfer[]>>(new Map());
-  const [lastUpdated, setLastUpdated] = useState<string>(new Date().toISOString());
-  const [teamTalkLastUpdated, setTeamTalkLastUpdated] = useState<string | null>(null);
-  const [scoreInsideLastUpdated, setScoreInsideLastUpdated] = useState<string | null>(null);
-  const [teamTalkLoading, setTeamTalkLoading] = useState(false);
-  const [teamTalkError, setTeamTalkError] = useState<string | null>(null);
-  const [scoreInsideLoading, setScoreInsideLoading] = useState(false);
-  const [scoreInsideError, setScoreInsideError] = useState<string | null>(null);
+  const [staticTransfers, setStaticTransfers] = useState<Transfer[]>(allClubTransfers);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(new Date());
 
-  // Merge transfers from all sources, avoiding duplicates
-  const allTransfers = React.useMemo(() => {
-    const merged = [...transfers];
-    const existingKeys = new Set<string>();
+  // Use custom hooks for API data
+  const {
+    transfers: teamTalkTransfers,
+    loading: teamTalkLoading,
+    error: teamTalkError,
+    lastUpdated: teamTalkLastUpdated,
+    refresh: refreshTeamTalkFeed
+  } = useTeamTalkFeed(true);
+
+  const {
+    allTransfers: scoreInsideAllTransfers,
+    teamTransfers: teamSpecificTransfers,
+    loading: scoreInsideLoading,
+    error: scoreInsideError,
+    lastUpdated: scoreInsideLastUpdated,
+    refresh: refreshScoreInsideFeed,
+    getTeamTransfers,
+    refreshTeam: refreshTeamData
+  } = useScoreInsideFeed(true);
+
+  // Combined transfers with deduplication - prioritize API data over static data
+  const allTransfers = useMemo(() => {
+    console.log('Combining transfers from all sources...');
     
-    // Create keys for existing transfers to avoid duplicates
-    transfers.forEach(t => {
-      const key = `${t.playerName.toLowerCase()}-${t.fromClub.toLowerCase()}-${t.toClub.toLowerCase()}`;
-      existingKeys.add(key);
-      existingKeys.add(t.id);
+    // Check data freshness (API data should be less than 1 hour old to be considered fresh)
+    const now = Date.now();
+    const maxAge = 60 * 60 * 1000; // 1 hour
+    
+    const isTeamTalkFresh = teamTalkLastUpdated && (now - teamTalkLastUpdated.getTime()) < maxAge;
+    const isScoreInsideFresh = scoreInsideLastUpdated && (now - scoreInsideLastUpdated.getTime()) < maxAge;
+    
+    console.log('Data freshness check:', { 
+      isTeamTalkFresh, 
+      isScoreInsideFresh,
+      teamTalkAge: teamTalkLastUpdated ? Math.round((now - teamTalkLastUpdated.getTime()) / 1000 / 60) : 'never',
+      scoreInsideAge: scoreInsideLastUpdated ? Math.round((now - scoreInsideLastUpdated.getTime()) / 1000 / 60) : 'never'
     });
     
-    // Add TeamTalk transfers that don't already exist
-    teamTalkTransfers.forEach(ttTransfer => {
-      const key = `${ttTransfer.playerName.toLowerCase()}-${ttTransfer.fromClub.toLowerCase()}-${ttTransfer.toClub.toLowerCase()}`;
-      if (!existingKeys.has(ttTransfer.id) && !existingKeys.has(key)) {
-        merged.push(ttTransfer);
-        existingKeys.add(ttTransfer.id);
-        existingKeys.add(key);
-      }
-    });
+    // If we have fresh API data, use only API data. Otherwise include static data as fallback
+    let combined: Transfer[] = [];
     
-    // Add ScoreInside transfers that don't already exist
-    scoreInsideTransfers.forEach(siTransfer => {
-      const key = `${siTransfer.playerName.toLowerCase()}-${siTransfer.fromClub.toLowerCase()}-${siTransfer.toClub.toLowerCase()}`;
-      if (!existingKeys.has(siTransfer.id) && !existingKeys.has(key)) {
-        merged.push(siTransfer);
-        existingKeys.add(siTransfer.id);
-        existingKeys.add(key);
-      }
-    });
-    
-    // Sort by date (newest first)
-    return merged.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }, [transfers, teamTalkTransfers, scoreInsideTransfers]);
-
-  const overrideTransfers = (newTransfers: Transfer[]) => {
-    setTransfers(newTransfers);
-    setLastUpdated(new Date().toISOString());
-  };
-
-  const refreshTeamTalkFeed = async () => {
-    setTeamTalkLoading(true);
-    setTeamTalkError(null);
-    
-    try {
-      const ttTransfers = await teamTalkApi.getTransfers();
-      setTeamTalkTransfers(ttTransfers);
-      setTeamTalkLastUpdated(new Date().toISOString());
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch TeamTalk data';
-      setTeamTalkError(errorMessage);
-      console.error('TeamTalk feed error:', error);
-    } finally {
-      setTeamTalkLoading(false);
+    if (isTeamTalkFresh || isScoreInsideFresh) {
+      // Use fresh API data only
+      combined = [
+        ...teamTalkTransfers,
+        ...scoreInsideAllTransfers
+      ];
+      console.log('Using fresh API data only:', combined.length, 'transfers');
+    } else {
+      // Include static data as fallback when API data is stale
+      combined = [
+        ...teamTalkTransfers,
+        ...scoreInsideAllTransfers,
+        ...staticTransfers.filter(t => {
+          // Only include recent static transfers (last 30 days) to avoid showing old data
+          const transferDate = new Date(t.date);
+          const thirtyDaysAgo = new Date(now - (30 * 24 * 60 * 60 * 1000));
+          return transferDate > thirtyDaysAgo;
+        })
+      ];
+      console.log('Using API + filtered static data:', combined.length, 'transfers');
     }
-  };
-
-  const refreshScoreInsideFeed = async () => {
-    setScoreInsideLoading(true);
-    setScoreInsideError(null);
     
-    try {
-      const [allTeamsData, flatTransfers] = await Promise.all([
-        scoreInsideApi.getAllTeamsTransfers(),
-        scoreInsideApi.getAllTransfers()
-      ]);
-      
-      setTeamSpecificTransfers(allTeamsData);
-      setScoreInsideTransfers(flatTransfers);
-      setScoreInsideLastUpdated(new Date().toISOString());
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch ScoreInside data';
-      setScoreInsideError(errorMessage);
-      console.error('ScoreInside feed error:', error);
-    } finally {
-      setScoreInsideLoading(false);
-    }
-  };
-
-  const refreshTeamData = async (teamSlug: string) => {
-    try {
-      // Clear cache and fetch fresh data for specific team
-      scoreInsideApi.clearCache(teamSlug);
-      const teamData = await scoreInsideApi.getTeamTransfers(teamSlug);
-      
-      // Update team-specific data
-      setTeamSpecificTransfers(prev => {
-        const updated = new Map(prev);
-        updated.set(teamSlug, teamData);
-        return updated;
-      });
-      
-      // Refresh all ScoreInside transfers
-      const updatedAllTransfers = await scoreInsideApi.getAllTransfers();
-      setScoreInsideTransfers(updatedAllTransfers);
-      
-      setScoreInsideLastUpdated(new Date().toISOString());
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : `Failed to refresh ${teamSlug} data`;
-      setScoreInsideError(errorMessage);
-      console.error(`Team refresh error for ${teamSlug}:`, error);
-    }
-  };
+    return deduplicateTransfersUI(combined);
+  }, [teamTalkTransfers, scoreInsideAllTransfers, staticTransfers, teamTalkLastUpdated, scoreInsideLastUpdated]);
 
   const refreshAllData = async () => {
+    console.log('Refreshing all transfer data sources...');
     await Promise.all([
       refreshTeamTalkFeed(),
       refreshScoreInsideFeed()
     ]);
+    setLastUpdated(new Date());
   };
 
-  const getTeamTransfers = (teamSlug: string): Transfer[] => {
-    // Get transfers from ScoreInside for the specific team
-    const scoreInsideTeamTransfers = teamSpecificTransfers.get(teamSlug) || [];
-    
-    // Also include any transfers from static data that match the team
-    const staticTeamTransfers = transfers.filter(t => 
-      t.fromClub.toLowerCase().includes(teamSlug.replace('-', ' ')) ||
-      t.toClub.toLowerCase().includes(teamSlug.replace('-', ' '))
-    );
-    
-    // Merge and deduplicate
-    const combined = [...scoreInsideTeamTransfers, ...staticTeamTransfers];
-    const uniqueTransfers = combined.filter((transfer, index, arr) => {
-      const key = `${transfer.playerName.toLowerCase()}-${transfer.fromClub.toLowerCase()}-${transfer.toClub.toLowerCase()}`;
-      return arr.findIndex(t => 
-        `${t.playerName.toLowerCase()}-${t.fromClub.toLowerCase()}-${t.toClub.toLowerCase()}` === key
-      ) === index;
-    });
-    
-    return uniqueTransfers.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const overrideTransfers = (newTransfers: Transfer[]) => {
+    setStaticTransfers(newTransfers);
+    setLastUpdated(new Date());
   };
-
-  // Auto-fetch data on mount
-  useEffect(() => {
-    refreshTeamTalkFeed();
-    refreshScoreInsideFeed();
-  }, []);
-
-  // Auto-refresh data at different intervals
-  useEffect(() => {
-    const teamTalkInterval = setInterval(refreshTeamTalkFeed, 10 * 60 * 1000); // 10 minutes
-    const scoreInsideInterval = setInterval(refreshScoreInsideFeed, 15 * 60 * 1000); // 15 minutes
-    
-    return () => {
-      clearInterval(teamTalkInterval);
-      clearInterval(scoreInsideInterval);
-    };
-  }, []);
 
   const store: TransferDataStore = {
-    transfers,
+    staticTransfers,
     teamTalkTransfers,
-    scoreInsideTransfers,
+    scoreInsideAllTransfers,
     teamSpecificTransfers,
     allTransfers,
     lastUpdated,
     teamTalkLastUpdated,
     scoreInsideLastUpdated,
-    overrideTransfers,
+    teamTalkLoading,
+    scoreInsideLoading,
+    teamTalkError,
+    scoreInsideError,
     refreshTeamTalkFeed,
     refreshScoreInsideFeed,
     refreshAllData,
     refreshTeamData,
     getTeamTransfers,
-    teamTalkLoading,
-    teamTalkError,
-    scoreInsideLoading,
-    scoreInsideError
+    overrideTransfers
   };
 
   return (

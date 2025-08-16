@@ -21,7 +21,7 @@ import { TeamCarousel } from '@/components/TeamCarousel';
 import { NewsCarousel } from '@/components/NewsCarousel';
 
 const WebsiteContent = () => {
-  const { transfers, lastUpdated, refreshAllData } = useTransferDataStore();
+  const { allTransfers, lastUpdated, refreshAllData } = useTransferDataStore();
   const { refreshCounter } = useRefreshControl();
   const [selectedClub, setSelectedClub] = useState<string | null>(null);
   const [countdownTarget] = useState('2025-09-01T18:00:00Z');
@@ -82,7 +82,7 @@ const WebsiteContent = () => {
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
 
-        <AppHeader lastUpdated={lastUpdated ? new Date(lastUpdated) : new Date()} />
+        <AppHeader lastUpdated={lastUpdated || new Date()} />
         <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
           <button
             className="mb-4 px-4 py-2 rounded bg-blue-700 text-white font-semibold hover:bg-blue-800 transition"
@@ -90,7 +90,7 @@ const WebsiteContent = () => {
           >
             ← Back to Dashboard
           </button>
-          <TeamTransferView transfers={transfers} selectedTeam={selectedClub} onBack={handleBackToDashboard} />
+          <TeamTransferView transfers={allTransfers} selectedTeam={selectedClub} onBack={handleBackToDashboard} />
         </div>
       </div>
     );
@@ -99,7 +99,7 @@ const WebsiteContent = () => {
   // Main dashboard
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
-      <AppHeader lastUpdated={lastUpdated ? new Date(lastUpdated) : new Date()} />
+      <AppHeader lastUpdated={lastUpdated || new Date()} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
         {/* Transfer Window Countdown */}
@@ -127,7 +127,7 @@ const WebsiteContent = () => {
               scrollbarColor: '#9CA3AF #E5E7EB'
             }}>
               {(() => {
-                const uniqueTransfers = transfers.filter((transfer, index, arr) => {
+                const uniqueTransfers = allTransfers.filter((transfer, index, arr) => {
                   const key = `${transfer.playerName.toLowerCase()}-${transfer.fromClub.toLowerCase()}-${transfer.toClub.toLowerCase()}`;
                   return arr.findIndex(t => 
                     `${t.playerName.toLowerCase()}-${t.fromClub.toLowerCase()}-${t.toClub.toLowerCase()}` === key
@@ -183,11 +183,11 @@ const WebsiteContent = () => {
         </Card>
 
         {/* Confirmed Transfers */}
-        <HomeRecentConfirmed transfers={transfers} onSelectClub={handleSelectClub} />
+        <HomeRecentConfirmed transfers={allTransfers} onSelectClub={handleSelectClub} />
 
         {/* Top 10 Wallet-Warping Deals */}
         <div className="mb-8">
-          <WalletWarpingDeals transfers={transfers} onSelectClub={handleSelectClub} onRefresh={refreshAllData} />
+          <WalletWarpingDeals transfers={allTransfers} onSelectClub={handleSelectClub} onRefresh={refreshAllData} />
         </div>
 
         {/* Club Spending Chart 2025 */}
