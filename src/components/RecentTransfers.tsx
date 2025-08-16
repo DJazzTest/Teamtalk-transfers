@@ -25,9 +25,11 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
   const shouldScroll = recentRumors.length > 3;
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [refreshMessage, setRefreshMessage] = useState<string>('');
 
   const handleRefresh = () => {
     setIsRefreshing(true);
+    setRefreshMessage('Refreshing data...');
     const previousCount = allRumors.length;
     
     window.dispatchEvent(new CustomEvent('manualRefresh'));
@@ -39,9 +41,14 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
         .filter(transfer => transfer.status === 'rumored');
       
       if (currentRumors.length > previousCount) {
-        // Could add toast notification here if needed
-        console.log(`Found ${currentRumors.length - previousCount} new rumours`);
+        const newCount = currentRumors.length - previousCount;
+        setRefreshMessage(`✅ Found ${newCount} new rumours! Data updated.`);
+      } else {
+        setRefreshMessage('✅ Data refreshed - no new rumours found.');
       }
+      
+      // Clear message after 3 seconds
+      setTimeout(() => setRefreshMessage(''), 3000);
     }, 1000);
   };
 
@@ -67,15 +74,22 @@ export const RecentTransfers: React.FC<RecentTransfersProps> = ({ transfers }) =
                   BREAKING
                 </Badge>
               </div>
-              <Button 
-                onClick={handleRefresh}
-                disabled={isRefreshing}
-                variant="outline" 
-                size="sm"
-                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white disabled:opacity-50"
-              >
-                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-              </Button>
+              <div className="flex flex-col items-end gap-1">
+                <Button 
+                  onClick={handleRefresh}
+                  disabled={isRefreshing}
+                  variant="outline" 
+                  size="sm"
+                  className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                </Button>
+                {refreshMessage && (
+                  <div className="text-xs text-green-400 font-medium whitespace-nowrap">
+                    {refreshMessage}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className={`${shouldScroll ? 'max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-blue-100' : ''} space-y-4`}>

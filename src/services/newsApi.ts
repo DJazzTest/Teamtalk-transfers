@@ -142,8 +142,8 @@ export class NewsApiService {
               id: `scoreinside-${item.aid}`,
               title: item.article.hdl,
               summary: `${item.player.nm} - ${item.team.nm}${item.team_from ? ` from ${item.team_from.nm}` : ''}`,
-              source: 'ScoreInside',
-              time: item.article.sdt,
+              source: 'TeamTalk',
+              time: this.formatTime(item.article.sdt),
               category: item.scat,
               image: item.article.image?.impth,
               url: `https://www.teamtalk.com/${item.article.sl}`
@@ -184,7 +184,7 @@ export class NewsApiService {
                 title: item.headline,
                 summary: item.excerpt,
                 source: 'TeamTalk',
-                time: item.pub_date,
+                time: this.formatTime(item.pub_date),
                 category: item.category?.[0] || 'Transfer News',
                 image: item.image,
                 url: item.link

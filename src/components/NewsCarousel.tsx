@@ -126,7 +126,9 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
                   </p>
                   
                   <div className="flex justify-between items-center mt-auto">
-                    <span className="text-xs text-blue-600 font-medium">{article.source}</span>
+                    <span className="text-xs text-blue-600 font-medium">
+                      {article.source === 'ScoreInside' ? 'TeamTalk' : article.source}
+                    </span>
                     <div className="flex items-center gap-2">
                       <div className="flex items-center gap-1 text-xs text-gray-500">
                         <Clock className="w-3 h-3" />
