@@ -109,17 +109,10 @@ const WebsiteContent = () => {
           </div>
         </Card>
 
-        {/* Club spending 2025/26 Graph */}
-        <div className="mb-8 overflow-x-auto">
-          <div className="min-w-[600px]">
-            <ClubSpendingGraph onSelectClub={handleSelectClub} />
-          </div>
-        </div>
-
         {/* Team Selector Section */}
         <TeamCarousel onSelectTeam={handleSelectClub} />
 
-        {/* News Feed */}
+        {/* News Feed - moved to below countdown */}
         <NewsCarousel maxItems={5} />
 
         {/* New Premier League Transfers & Rumours just added! */}
@@ -195,6 +188,13 @@ const WebsiteContent = () => {
         {/* Top 10 Wallet-Warping Deals */}
         <div className="mb-8">
           <WalletWarpingDeals transfers={transfers} onSelectClub={handleSelectClub} onRefresh={refreshAllData} />
+        </div>
+
+        {/* Club spending 2025/26 Graph - moved to below Top 10 Most Expensive */}
+        <div className="mb-8 overflow-x-auto">
+          <div className="min-w-[600px]">
+            <ClubSpendingGraph onSelectClub={handleSelectClub} />
+          </div>
         </div>
       </div>
     </div>

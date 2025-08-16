@@ -94,10 +94,10 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
         <g transform="translate(0, 15)">
           {clubData?.badge ? (
             <image 
-              x={-18} 
+              x={-24} 
               y={0} 
-              width={36} 
-              height={36} 
+              width={48} 
+              height={48} 
               href={clubData.badge}
               onError={(e) => {
                 // Fallback to initials on image error
@@ -106,33 +106,34 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
               }}
             />
           ) : (
-            <circle cx={0} cy={18} r={18} fill="#3B82F6" />
+            <circle cx={0} cy={24} r={24} fill="#3B82F6" />
           )}
           {(!clubData?.badge || clubData.badge === '') && (
             <text 
               x={0} 
-              y={24} 
+              y={30} 
               textAnchor="middle" 
               fill="white" 
-              fontSize="12" 
+              fontSize="14" 
               fontWeight="bold"
             >
               {clubData?.initials}
             </text>
           )}
         </g>
-        {/* Club name - aligned at bottom with clear font */}
+        {/* Club name - aligned at bottom with clear, readable font */}
         <text 
           x={0} 
-          y={75} 
+          y={85} 
           textAnchor="middle" 
           fill="#1F2937" 
-          fontSize="12"
-          fontWeight="600"
-          className="drop-shadow-sm"
+          fontSize="13"
+          fontWeight="700"
+          className="drop-shadow-md"
+          style={{ textShadow: '1px 1px 2px rgba(255,255,255,0.8)' }}
         >
           {clubData?.fullClub?.split(' ').map((word, i) => (
-            <tspan key={i} x={0} dy={i === 0 ? 0 : 14}>{word}</tspan>
+            <tspan key={i} x={0} dy={i === 0 ? 0 : 16}>{word}</tspan>
           ))}
         </text>
       </g>
@@ -144,14 +145,14 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
     return (
       <div className="relative">
         <div className="h-96 overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-blue-100">
-          <div style={{ width: `${chartData.length * 100}px`, minWidth: '100%' }}>
+          <div style={{ width: `${chartData.length * 120}px`, minWidth: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
+              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 120 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                 <XAxis 
                   dataKey="club" 
                   tick={<CustomXAxisTick />}
-                  height={120}
+                  height={140}
                   interval={0}
                 />
                 <YAxis 
@@ -179,6 +180,7 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
                   radius={[4, 4, 0, 0]}
                   onClick={(data) => onSelectClub && onSelectClub(data.fullClub)}
                   cursor="pointer"
+                  maxBarSize={25}
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`spending-${index}`} fill="#DC2626" />
@@ -190,6 +192,7 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
                   radius={[4, 4, 0, 0]}
                   onClick={(data) => onSelectClub && onSelectClub(data.fullClub)}
                   cursor="pointer"
+                  maxBarSize={25}
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`earnings-${index}`} fill="#16A34A" />
