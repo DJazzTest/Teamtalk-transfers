@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
-import { getLaneTitle, getLaneIcon, getStatusColor } from '@/utils/transferUtils.tsx';
+import { getLaneTitle, getLaneIcon, getStatusColor } from '@/utils/statusUtils';
 
 interface LanesViewProps {
   statusTransfers: { [key: string]: Transfer[] };

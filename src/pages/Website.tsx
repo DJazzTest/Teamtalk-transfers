@@ -17,8 +17,8 @@ import { TeamTransferView } from '@/components/TeamTransferView';
 import { TransferResults } from '@/components/TransferResults';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { useLeagueData } from '@/hooks/useLeagueData';
-import TeamTalkFeed from '@/components/TeamTalkFeed';
-import TeamSpecificTransfers from '@/components/TeamSpecificTransfers';
+import { TeamCarousel } from '@/components/TeamCarousel';
+import { NewsCarousel } from '@/components/NewsCarousel';
 
 const WebsiteContent = () => {
   const { transfers, lastUpdated, refreshAllData } = useTransferDataStore();
@@ -117,19 +117,10 @@ const WebsiteContent = () => {
         </div>
 
         {/* Team Selector Section */}
-        <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#f8fafc' }}>
-          <div className="p-4">
-            <div className="text-center">
-              <h2 className="text-lg font-bold text-gray-800 mb-2">Select Your Team</h2>
-              <p className="text-sm text-gray-600 mb-4">Choose from the dropdown below to see transfers in, out, and rumors</p>
-            </div>
-          </div>
-        </Card>
+        <TeamCarousel onSelectTeam={handleSelectClub} />
 
-        {/* Team-Specific Transfers Display */}
-        <div className="mb-8">
-          <TeamSpecificTransfers showTeamSelector={true} maxItems={8} />
-        </div>
+        {/* News Feed */}
+        <NewsCarousel maxItems={5} />
 
         {/* New Premier League Transfers & Rumours just added! */}
         <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#fff3cd' }}>

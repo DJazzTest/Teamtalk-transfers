@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { CheckCircle, Clock, MessageCircle, X, Verified } from 'lucide-react';
-import { Transfer } from '@/types/transfer';
 
 export const getStatusColor = (status: string) => {
   switch (status) {
@@ -41,30 +39,4 @@ export const getLaneIcon = (status: string) => {
     case 'rejected': return <X className="w-5 h-5 text-red-400" />;
     default: return <Clock className="w-5 h-5 text-gray-400" />;
   }
-};
-
-export const groupTransfersByClub = (transfers: Transfer[]) => {
-  const grouped: { [key: string]: Transfer[] } = {};
-  transfers.forEach(transfer => {
-    if (!grouped[transfer.toClub]) {
-      grouped[transfer.toClub] = [];
-    }
-    grouped[transfer.toClub].push(transfer);
-  });
-  return grouped;
-};
-
-export const groupTransfersByStatus = (transfers: Transfer[]) => {
-  const grouped: { [key: string]: Transfer[] } = {
-    confirmed: [],
-    rumored: [],
-    pending: [],
-    rejected: []
-  };
-  
-  transfers.forEach(transfer => {
-    grouped[transfer.status].push(transfer);
-  });
-  
-  return grouped;
 };

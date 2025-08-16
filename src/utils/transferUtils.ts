@@ -18,3 +18,29 @@ export function getLatestTransferDate(transfers: Transfer[]): string | undefined
 export function getTransfersAfterDate(transfers: Transfer[], date: string): Transfer[] {
   return transfers.filter(t => t.date && t.date.slice(0, 10) > date);
 }
+
+export const groupTransfersByClub = (transfers: Transfer[]) => {
+  const grouped: { [key: string]: Transfer[] } = {};
+  transfers.forEach(transfer => {
+    if (!grouped[transfer.toClub]) {
+      grouped[transfer.toClub] = [];
+    }
+    grouped[transfer.toClub].push(transfer);
+  });
+  return grouped;
+};
+
+export const groupTransfersByStatus = (transfers: Transfer[]) => {
+  const grouped: { [key: string]: Transfer[] } = {
+    confirmed: [],
+    rumored: [],
+    pending: [],
+    rejected: []
+  };
+  
+  transfers.forEach(transfer => {
+    grouped[transfer.status].push(transfer);
+  });
+  
+  return grouped;
+};

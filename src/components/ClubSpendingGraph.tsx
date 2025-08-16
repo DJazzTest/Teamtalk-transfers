@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell, LabelList, ReferenceLine } from 'recharts';
-import { BarChart3, Gauge } from 'lucide-react';
-
-import { allClubTransfers } from '@/data/transfers';
+import { BarChart3, TrendingUp, TrendingDown } from 'lucide-react';
+import { clubSpending, clubEarnings, getNetSpend, allPremierLeagueClubs } from '@/data/clubFinancials';
 
 const premierLeagueClubs = [
   'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
@@ -40,37 +39,33 @@ interface ClubSpendingGraphProps {
 }
 
 export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectClub }) => {
-  // Always show analog 3D view
-  // Calculate spending per club (incoming confirmed transfers only)
-  const clubSpending = allClubTransfers
-    .filter(t => t.status === 'confirmed' && premierLeagueClubs.includes(t.toClub))
-    .reduce((acc, t) => {
-      const fee = parseTransferFee(t.fee);
-      if (fee > 0) {
-        acc[t.toClub] = (acc[t.toClub] || 0) + fee;
-      }
-      return acc;
-    }, {} as Record<string, number>);
-
-  // Prepare chart data for all PL clubs (including zero spenders)
-  const chartData = premierLeagueClubs.map((club, i) => {
-    const spending = clubSpending[club] || 0;
+  // Prepare chart data showing spending, earnings, and net spend
+  const chartData = allPremierLeagueClubs.map((club, i) => {
+    const spending = clubSpending[club as keyof typeof clubSpending] || 0;
+    const earnings = clubEarnings[club as keyof typeof clubEarnings] || 0;
+    const netSpend = getNetSpend(club);
+    
     return {
       club: club.length > 15 ? club.substring(0, 15) + '...' : club,
       fullClub: club,
-      spending: Number(spending.toFixed(2)),
+      spending: Number(spending.toFixed(1)),
+      earnings: Number(earnings.toFixed(1)),
+      netSpend: Number(netSpend.toFixed(1)),
       color: pastelColors[i % pastelColors.length],
     };
-  }).sort((a, b) => b.spending - a.spending);
+  }).sort((a, b) => b.netSpend - a.netSpend); // Sort by net spend (highest first)
 
-  // Total spend and confirmed signings
+  // Total spend and earnings
   const totalSpend = chartData.reduce((sum, c) => sum + c.spending, 0);
-  const confirmedSignings = allClubTransfers.filter(t => t.status === 'confirmed' && premierLeagueClubs.includes(t.toClub) && parseTransferFee(t.fee) > 0).length;
+  const totalEarnings = chartData.reduce((sum, c) => sum + c.earnings, 0);
+  const totalNetSpend = totalSpend - totalEarnings;
 
-  // 3D Analog Gauge Component (like Transfer Window Closes timer) - Responsive for mobile
+  // 3D Analog Gauge Component showing spending, earnings, and net spend
   const AnalogGauge = ({ club, maxSpending, index }: { club: any; maxSpending: number; index: number }) => {
-    const percentage = maxSpending > 0 ? (club.spending / maxSpending) * 100 : 0;
-    const angle = (percentage / 100) * 270 - 135; // 270 degree range, starting from -135deg
+    const spendingPercentage = maxSpending > 0 ? (club.spending / maxSpending) * 100 : 0;
+    const earningsPercentage = maxSpending > 0 ? (club.earnings / maxSpending) * 100 : 0;
+    const spendingAngle = (spendingPercentage / 100) * 270 - 135;
+    const earningsAngle = (earningsPercentage / 100) * 270 - 135;
     
     // Create meaningful scale markers based on actual spending values
     const createScaleMarkers = () => {
@@ -91,101 +86,100 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
         className="flex-shrink-0 relative cursor-pointer hover:scale-105 transition-transform duration-300 mx-2 sm:mx-4"
         onClick={() => onSelectClub && onSelectClub(club.fullClub)}
       >
-        {/* 3D Base - Responsive sizing with bolder appearance */}
+        {/* Football Pitch Background */}
         <div 
-          className="w-28 h-28 sm:w-36 sm:h-36 md:w-48 md:h-48 rounded-full shadow-2xl"
+          className="w-28 h-28 sm:w-36 sm:h-36 md:w-48 md:h-48 rounded-lg shadow-2xl"
           style={{
-            background: `linear-gradient(145deg, #e8e8e8, #c0c0c0)`,
+            background: `linear-gradient(145deg, #4CAF50, #45a049)`,
+            backgroundImage: `
+              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
+              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+              radial-gradient(circle at center, rgba(255,255,255,0.2) 20%, transparent 20%)
+            `,
+            backgroundSize: '10px 10px, 10px 10px, 20px 20px',
             transform: 'perspective(150px) rotateX(15deg)',
-            border: '2px solid #a0a0a0',
+            border: '2px solid #2E7D32',
           }}
         />
         
-        {/* Clock Face - Responsive inset with better contrast */}
-        <div 
-          className="absolute inset-1.5 sm:inset-2 md:inset-3 rounded-full border-3 sm:border-4 md:border-5 flex items-center justify-center"
+        {/* Spending Hand - Red */}
+        <div
+          className="absolute w-2 sm:w-2.5 bg-red-500 rounded-full shadow-lg transition-transform duration-1000 ease-in-out"
           style={{
-            background: `radial-gradient(circle, #ffffff, #f0f0f0)`,
-            borderColor: club.color,
-            boxShadow: 'inset 0 3px 12px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.1)',
+            height: '30px',
+            top: '18%',
+            left: '50%',
+            transformOrigin: '50% 100%',
+            transform: `translateX(-50%) translateY(-100%) rotate(${spendingAngle}deg)`,
+            background: `linear-gradient(to top, #dc2626, #ef4444)`,
+            border: '1px solid rgba(0,0,0,0.2)',
+          }}
+        />
+        
+        {/* Earnings Hand - Green */}
+        <div
+          className="absolute w-2 sm:w-2.5 bg-green-500 rounded-full shadow-lg transition-transform duration-1000 ease-in-out"
+          style={{
+            height: '25px',
+            top: '18%',
+            left: '50%',
+            transformOrigin: '50% 100%',
+            transform: `translateX(-50%) translateY(-100%) rotate(${earningsAngle}deg)`,
+            background: `linear-gradient(to top, #16a34a, #22c55e)`,
+            border: '1px solid rgba(0,0,0,0.2)',
+          }}
+        />
+        
+        {/* Center Circle */}
+        <div 
+          className="absolute w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm md:text-lg font-bold shadow-lg border-2 border-white"
+          style={{ 
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            background: `linear-gradient(145deg, ${club.color}, #333333)`,
+            color: '#ffffff',
+            textShadow: '0 1px 3px rgba(0,0,0,0.5)'
           }}
         >
-          {/* Spending scale markers with labels - responsive positioning */}
-          {scaleMarkers.map((marker, i) => {
-            const markerAngle = (marker.value / maxSpending) * 270 - 135;
-            const isValidAngle = !isNaN(markerAngle) && isFinite(markerAngle);
-            if (!isValidAngle) return null;
-            
-            return (
-              <div key={i}>
-                {/* Marker line - responsive sizing with better visibility */}
-                <div
-                  className="absolute w-1 sm:w-1.5 h-3 sm:h-4 md:h-6 bg-gray-800"
-                  style={{
-                    top: '4px',
-                    left: '50%',
-                    transformOrigin: '50% 48px',
-                    transform: `translateX(-50%) rotate(${markerAngle}deg)`,
-                    boxShadow: '0 1px 2px rgba(0,0,0,0.3)',
-                  }}
-                />
-                {/* Marker label - responsive text and positioning with better contrast */}
-                <div
-                  className="absolute text-xs sm:text-sm font-bold text-gray-900 bg-white/95 px-1 py-0.5 rounded shadow-sm border border-gray-200"
-                  style={{
-                    top: '8px',
-                    left: '50%',
-                    transformOrigin: '50% 42px',
-                    transform: `translateX(-50%) rotate(${markerAngle}deg) translateY(42px) rotate(${-markerAngle}deg)`,
-                  }}
-                >
-                  {marker.label}
-                </div>
-              </div>
-            );
-          })}
-          
-          {/* Spending Hand - responsive sizing with better visibility */}
-          <div
-            className="absolute w-2 sm:w-2.5 bg-red-500 rounded-full shadow-lg transition-transform duration-1000 ease-in-out"
-            style={{
-              height: '35px',
-              top: '50%',
-              left: '50%',
-              transformOrigin: '50% 100%',
-              transform: `translateX(-50%) translateY(-100%) rotate(${angle}deg)`,
-              background: `linear-gradient(to top, ${club.color}, #dc2626)`,
-              border: '1px solid rgba(0,0,0,0.2)',
-            }}
-          />
-          
-          {/* £ Symbol in Center - responsive sizing with better contrast */}
-          <div 
-            className="absolute w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm sm:text-lg md:text-2xl font-bold shadow-lg border-2 border-white"
-            style={{ 
-              background: `linear-gradient(145deg, ${club.color}, #333333)`,
-              color: '#ffffff',
-              textShadow: '0 1px 3px rgba(0,0,0,0.5)'
-            }}
-          >
-            £
-          </div>
+          £
         </div>
         
-        {/* Digital display - responsive sizing with better visibility */}
+        {/* Digital displays */}
         <div 
-          className="absolute -bottom-6 sm:-bottom-8 md:-bottom-12 left-1/2 transform -translate-x-1/2 px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg text-xs sm:text-sm md:text-lg font-bold text-white shadow-lg border border-white/20"
+          className="absolute -bottom-6 sm:-bottom-8 md:-bottom-12 left-1/2 transform -translate-x-1/2 px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg text-xs sm:text-sm md:text-base font-bold text-white shadow-lg border border-white/20"
           style={{ 
-            backgroundColor: club.color,
+            backgroundColor: '#dc2626',
             boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
           }}
         >
-          £{club.spending}M
+          Spent: £{club.spending}M
         </div>
         
-        {/* Club Label - responsive and more visible with better spacing */}
         <div 
-          className="absolute -bottom-12 sm:-bottom-16 md:-bottom-24 left-1/2 transform -translate-x-1/2 text-center w-28 sm:w-36 md:w-48"
+          className="absolute -bottom-12 sm:-bottom-16 md:-bottom-24 left-1/2 transform -translate-x-1/2 px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg text-xs sm:text-sm md:text-base font-bold text-white shadow-lg border border-white/20"
+          style={{ 
+            backgroundColor: '#16a34a',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+          }}
+        >
+          Earned: £{club.earnings}M
+        </div>
+        
+        {/* Net Spend */}
+        <div 
+          className="absolute -bottom-18 sm:-bottom-24 md:-bottom-36 left-1/2 transform -translate-x-1/2 px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg text-xs sm:text-sm md:text-base font-bold text-white shadow-lg border border-white/20"
+          style={{ 
+            backgroundColor: club.netSpend >= 0 ? '#dc2626' : '#16a34a',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+          }}
+        >
+          Net: {club.netSpend >= 0 ? '+' : ''}£{club.netSpend}M
+        </div>
+        
+        {/* Club Label */}
+        <div 
+          className="absolute -bottom-24 sm:-bottom-32 md:-bottom-48 left-1/2 transform -translate-x-1/2 text-center w-28 sm:w-36 md:w-48"
         >
           <div 
             className="text-xs sm:text-sm md:text-lg font-bold hover:underline leading-tight px-1 py-0.5 rounded bg-white/90 shadow-sm border border-gray-200"
@@ -196,7 +190,9 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
           >
             {club.fullClub}
           </div>
-          <div className="text-xs sm:text-sm text-gray-700 mt-1 bg-white/80 rounded px-1 py-0.5 shadow-sm">#{index + 1} • £{club.spending}M</div>
+          <div className="text-xs sm:text-sm text-gray-700 mt-1 bg-white/80 rounded px-1 py-0.5 shadow-sm">
+            #{index + 1} • Net: £{club.netSpend}M
+          </div>
         </div>
       </div>
     );
@@ -214,7 +210,7 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
           <div className="overflow-x-auto pb-6 sm:pb-8 md:pb-12 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
             <div 
               className="flex gap-4 sm:gap-6 md:gap-8 min-w-max px-3 sm:px-4 md:px-6" 
-              style={{ paddingBottom: '60px' }}
+              style={{ paddingBottom: '120px' }}
             >
               {allClubs.map((club, index) => (
                 <AnalogGauge 
@@ -238,9 +234,10 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
             <span className="hidden sm:inline">← Scroll horizontally to view all clubs →</span>
             <span className="sm:hidden">← Swipe to view all clubs →</span>
           </p>
+          <p className="text-xs text-gray-600 mt-1">
+            Red Hand: Spending • Green Hand: Earnings • Net Spend shown below
+          </p>
         </div>
-        
-        {/* No revert button needed - always show analog */}
       </div>
     );
   };
@@ -249,14 +246,28 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
     <Card className="border-gray-200/50 shadow-lg mb-6" style={{ backgroundColor: '#d0e0f7' }}>
       <div className="p-3 sm:p-6">
         <div className="flex items-center justify-center mb-4">
-          <h3 className="text-xl font-bold text-blue-700">Club spending 2025/26</h3>
+          <h3 className="text-xl font-bold text-blue-700">Club Spending vs Earnings 2025/26</h3>
         </div>
         
         {/* Always show analog 3D view */}
         <AnalogView />
-        <div className="mt-4 text-center">
-          <span className="text-base font-semibold text-green-800">
-            Total spending: £1.311 billion &nbsp;|&nbsp; Confirmed signings: 66 players
+        <div className="mt-4 text-center space-y-1">
+          <div className="flex items-center justify-center gap-6">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-red-500" />
+              <span className="text-sm font-semibold text-red-700">
+                Total spending: £{totalSpend.toFixed(1)}B
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <TrendingDown className="w-4 h-4 text-green-500" />
+              <span className="text-sm font-semibold text-green-700">
+                Total earnings: £{totalEarnings.toFixed(1)}B
+              </span>
+            </div>
+          </div>
+          <span className="text-base font-semibold text-blue-800">
+            Net spend: £{totalNetSpend.toFixed(1)}B
           </span>
         </div>
       </div>

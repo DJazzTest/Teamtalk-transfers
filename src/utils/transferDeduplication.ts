@@ -1,5 +1,5 @@
 // Deduplicate transfers by player name, toClub, and status (case-insensitive), keeping the most recent by date
-import { Transfer } from '../types/Transfer';
+import { Transfer } from '@/types/transfer';
 
 export function deduplicateTransfersUI(transfers: Transfer[]): Transfer[] {
   const seen = new Map<string, Transfer>();

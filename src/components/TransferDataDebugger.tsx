@@ -1,8 +1,14 @@
 // TransferDataDebugger.tsx - Deprecated. This component is no longer used.
+import React, { useState, useEffect } from 'react';
 import { Transfer } from '@/types/transfer';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
 import { FirecrawlService } from '@/utils/FirecrawlService';
 import { useToast } from '@/hooks/use-toast';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Database, Search, Globe, RefreshCw, AlertCircle } from 'lucide-react';
 
 interface TransferDataDebuggerProps {
   transfers: Transfer[];

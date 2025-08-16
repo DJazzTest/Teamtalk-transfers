@@ -77,24 +77,8 @@ const Index = () => {
 
         {/* Main Content Tabs */}
         <MainTabs
-          refreshRate={refreshRate}
-          setRefreshRate={setRefreshRate}
-          isAutoRefresh={isAutoRefresh}
-          setIsAutoRefresh={setIsAutoRefresh}
-          onManualRefresh={handleManualRefresh}
-          lastUpdated={lastUpdated}
-          countdownTarget={countdownTarget}
-          setCountdownTarget={setCountdownTarget}
           transfers={allTransfers}
-          // Auto-scraping props
-          autoScrapeInterval={autoScrapeInterval}
-          setAutoScrapeInterval={setAutoScrapeInterval}
-          isAutoScrapeEnabled={isAutoScrapeEnabled}
-          setIsAutoScrapeEnabled={setIsAutoScrapeEnabled}
-          scrapeErrors={scrapeErrors}
-          lastScrapeTime={lastScrapeTime}
-          onManualScrape={handleManualScrape}
-          onClearScrapeErrors={clearScrapeErrors}
+          lastUpdated={lastUpdated}
         />
       </div>
     </div>

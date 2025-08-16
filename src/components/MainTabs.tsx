@@ -14,25 +14,11 @@ import { HomeTodaysConfirmed } from './HomeTodaysConfirmed';
 interface MainTabsProps {
   transfers: Transfer[];
   lastUpdated: Date;
-  refreshRate: number;
-  setRefreshRate: (rate: number) => void;
-  isAutoRefresh: boolean;
-  setIsAutoRefresh: (enabled: boolean) => void;
-  onManualRefresh: () => void;
-  countdownTarget: string;
-  setCountdownTarget: (target: string) => void;
 }
 
 export const MainTabs: React.FC<MainTabsProps> = ({ 
   transfers, 
-  lastUpdated,
-  refreshRate,
-  setRefreshRate,
-  isAutoRefresh,
-  setIsAutoRefresh,
-  onManualRefresh,
-  countdownTarget,
-  setCountdownTarget
+  lastUpdated
 }) => {
   return (
     <Tabs defaultValue="sources" className="w-full">
@@ -102,15 +88,7 @@ export const MainTabs: React.FC<MainTabsProps> = ({
 
       <TabsContent value="api">
         <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-400 scrollbar-track-cyan-100">
-          <ApiConfig 
-            refreshRate={refreshRate}
-            setRefreshRate={setRefreshRate}
-            isAutoRefresh={isAutoRefresh}
-            setIsAutoRefresh={setIsAutoRefresh}
-            onManualRefresh={onManualRefresh}
-            countdownTarget={countdownTarget}
-            setCountdownTarget={setCountdownTarget}
-          />
+          <ApiConfig />
         </div>
       </TabsContent>
     </Tabs>

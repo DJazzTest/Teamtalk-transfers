@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { Star } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
-import { getStatusColor } from '@/utils/transferUtils.tsx';
+import { getStatusColor } from '@/utils/statusUtils';
 
 interface TransferCardProps {
   transfer: Transfer;
