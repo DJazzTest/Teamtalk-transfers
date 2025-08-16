@@ -71,89 +71,60 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
   };
 
   return (
-    <Card className="border-gray-200/50 shadow-lg mb-6" style={{ backgroundColor: '#2F517A' }}>
-      <div className="p-3 sm:p-6">
+    <Card className="border-gray-200/50 shadow-lg mb-6">
+      <div className="p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="bg-green-100 p-2 rounded-lg">
-            <TrendingUp className="w-5 h-5 text-green-600" />
+          <div className="bg-blue-100 p-2 rounded-lg">
+            <TrendingUp className="w-5 h-5 text-blue-600" />
           </div>
-          <h3 className="text-xl font-bold text-green-400">Club Spending 2025/26 Summer Window</h3>
+          <h3 className="text-xl font-bold text-gray-800">Club Spending 2025 Summer Window</h3>
         </div>
         
-        <div className="overflow-x-auto">
-          <div className="min-w-[800px] h-96">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={clubSpendingData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                <XAxis 
-                  dataKey="club" 
-                  angle={0} 
-                  textAnchor="middle" 
-                  height={80}
-                  tick={{ fontSize: 11, fill: '#22C55E' }}
-                  interval={0}
-                />
-                <YAxis 
-                  tick={{ fontSize: 12, fill: '#E5E7EB' }}
-                  label={{ value: 'Spending (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
-                />
-                <Tooltip 
-                  formatter={(value: number, name: string, props: any) => [
-                    `£${value}M`, 
-                    props.payload.fullClub
-                  ]}
-                  labelFormatter={(label: string, payload: any) => 
-                    payload?.[0]?.payload?.fullClub || label
-                  }
-                  contentStyle={{
-                    backgroundColor: 'rgba(47, 81, 122, 0.95)',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    borderRadius: '8px',
-                    color: '#fff'
-                  }}
-                />
-                <Bar 
-                  dataKey="spending" 
-                  radius={[4, 4, 0, 0]}
-                  onClick={handleBarClick}
-                  style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
-                  fill="#22C55E"
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-        
-        {/* Club badges row */}
-        <div className="overflow-x-auto mt-2">
-          <div className="min-w-[800px] flex justify-between items-center px-[50px]">
-            {clubSpendingData.map((club, index) => (
-              <div key={index} className="flex flex-col items-center" style={{ width: `${100/clubSpendingData.length}%` }}>
-                {getBadgePath(club.club) && (
-                  <img 
-                    src={getBadgePath(club.club)} 
-                    alt={`${club.club} badge`}
-                    className="w-6 h-6 object-contain"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
+        <div className="h-96">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={clubSpendingData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis 
+                dataKey="club" 
+                angle={-45} 
+                textAnchor="end" 
+                height={80}
+                tick={{ fontSize: 12 }}
+                interval={0}
+              />
+              <YAxis 
+                tick={{ fontSize: 12 }}
+                label={{ value: 'Spending (£M)', angle: -90, position: 'insideLeft' }}
+              />
+              <Tooltip 
+                formatter={(value: number, name: string, props: any) => [
+                  `£${value}M`, 
+                  props.payload.fullClub
+                ]}
+                labelFormatter={(label: string, payload: any) => 
+                  payload?.[0]?.payload?.fullClub || label
+                }
+              />
+              <Bar 
+                dataKey="spending" 
+                radius={[4, 4, 0, 0]}
+                onClick={handleBarClick}
+                style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
+              >
+                {clubSpendingData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={getBarColor(entry.spending)} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
         
         <div className="mt-4 text-center">
-          <p className="text-sm text-green-300">
+          <p className="text-sm text-gray-600">
             Total summer window spending: £{totalSpending.toFixed(1)}M across all clubs
           </p>
-          <p className="text-xs text-green-400 mt-1">
+          <p className="text-xs text-gray-500 mt-1">
             Estimated total income from player sales: ~£1.3 billion
-          </p>
-          <p className="text-xs text-green-500 mt-1">
-            ← Scroll horizontally to view all clubs →
           </p>
         </div>
       </div>

@@ -84,6 +84,8 @@ export class ScoreInsideApiService {
       case 'top source':
       case 'confirmed':
       case 'official':
+      case 'done deal':
+      case 'done deals':
         status = 'confirmed';
         break;
       case 'rumours':
@@ -93,6 +95,7 @@ export class ScoreInsideApiService {
         break;
       case 'interest confirmed':
       case 'linked':
+      case 'heavily linked':
         status = 'pending';
         break;
     }

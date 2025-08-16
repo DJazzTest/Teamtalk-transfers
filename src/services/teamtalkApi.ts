@@ -46,10 +46,13 @@ export class TeamTalkApiService {
 
     try {
       const response = await fetch(TEAMTALK_API_URL, {
+        method: 'GET',
         headers: {
           'Accept': 'application/json',
-          'User-Agent': 'TransferCentre/1.0'
-        }
+          'User-Agent': 'TransferCentre/1.0',
+          'Cache-Control': 'no-cache'
+        },
+        mode: 'cors'
       });
 
       if (!response.ok) {
@@ -67,6 +70,13 @@ export class TeamTalkApiService {
       return data;
     } catch (error) {
       console.error('Error fetching TeamTalk feed:', error);
+      
+      // Return cached data if available to avoid total failure
+      if (this.cache.data) {
+        console.warn('Returning cached TeamTalk data due to fetch error');
+        return this.cache.data;
+      }
+      
       throw error;
     }
   }
