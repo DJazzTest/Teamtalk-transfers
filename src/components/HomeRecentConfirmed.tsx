@@ -13,8 +13,8 @@ interface HomeRecentConfirmedProps {
 export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transfers, onSelectClub }) => {
   const [showAll, setShowAll] = useState(false);
   
-  // Filter confirmed transfers and remove duplicates, exclude ScoreInside
-  const confirmedTransfers = transfers.filter(t => t.status === 'confirmed' && !t.source.toLowerCase().includes('scoreinside'));
+  // Filter confirmed transfers and remove duplicates
+  const confirmedTransfers = transfers.filter(t => t.status === 'confirmed');
   const uniqueConfirmed = confirmedTransfers.filter((transfer, index, arr) => {
     const key = `${transfer.playerName.toLowerCase()}-${transfer.fromClub.toLowerCase()}-${transfer.toClub.toLowerCase()}`;
     return arr.findIndex(t => 

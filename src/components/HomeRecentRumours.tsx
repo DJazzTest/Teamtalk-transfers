@@ -14,7 +14,7 @@ interface HomeRecentRumoursProps {
 export const HomeRecentRumours: React.FC<HomeRecentRumoursProps> = ({ transfers, onSelectClub, onRefresh }) => {
   const [showAll, setShowAll] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const allRumours = transfers.filter(t => t.status === 'rumored' && !t.source.toLowerCase().includes('scoreinside')).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const allRumours = transfers.filter(t => t.status === 'rumored').sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const displayRumours = showAll ? allRumours : allRumours.slice(0, 3);
 
   if (allRumours.length === 0) return null;

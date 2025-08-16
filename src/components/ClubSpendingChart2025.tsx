@@ -21,13 +21,13 @@ const clubSpendingData = [
   { club: 'Nottm Forest', spending: 30, fullClub: 'Nottingham Forest' },
   { club: 'Man City', spending: 28, fullClub: 'Manchester City' },
   { club: 'Arsenal', spending: 6.7, fullClub: 'Arsenal' },
-  { club: 'Crystal Palace', spending: 2, fullClub: 'Crystal Palace' },
-  { club: 'Fulham', spending: 1, fullClub: 'Fulham' },
-  { club: 'Newcastle', spending: 0, fullClub: 'Newcastle United' },
-  { club: 'Aston Villa', spending: 0, fullClub: 'Aston Villa' },
   { club: 'Everton', spending: 3, fullClub: 'Everton' },
   { club: 'Burnley', spending: 5, fullClub: 'Burnley' },
-  { club: 'Sunderland', spending: 2, fullClub: 'Sunderland' }
+  { club: 'Crystal Palace', spending: 2, fullClub: 'Crystal Palace' },
+  { club: 'Sunderland', spending: 2, fullClub: 'Sunderland' },
+  { club: 'Fulham', spending: 1, fullClub: 'Fulham' },
+  { club: 'Newcastle', spending: 0, fullClub: 'Newcastle United' },
+  { club: 'Aston Villa', spending: 0, fullClub: 'Aston Villa' }
 ];
 
 const getBarColor = (spending: number): string => {
@@ -55,10 +55,13 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
       'Wolves': '/badges/wolverhamptonwanderers.png',
       'Brentford': '/badges/brentford.png',
       'West Ham': '/badges/westhamunited.png',
+      'Southampton': '/badges/southampton.png',
+      'Leicester': '/badges/leicestercity.png',
       'Tottenham': '/badges/tottenhamhotspur.png',
       'Bournemouth': '/badges/bournemouth.png',
       'Nottm Forest': '/badges/nottinghamforest.png',
       'Man City': '/badges/manchestercity.png',
+      'Arsenal': '/badges/arsenal.png',
       'Crystal Palace': '/badges/crystalpalace.png',
       'Fulham': '/badges/fulham.png',
       'Newcastle': '/badges/newcastleunited.png',
@@ -84,11 +87,11 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={clubSpendingData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
               <CartesianGrid strokeDasharray="3 3" />
-               <XAxis 
+              <XAxis 
                 dataKey="club" 
                 angle={-45} 
                 textAnchor="end" 
-                height={80}
+                height={100}
                 tick={(props) => {
                   const { x, y, payload } = props;
                   const badgePath = getBadgePath(payload.value);
@@ -97,7 +100,7 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
                       {badgePath && (
                         <image
                           x={-8}
-                          y={-20}
+                          y={-25}
                           width={16}
                           height={16}
                           href={badgePath}
@@ -105,7 +108,7 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
                       )}
                       <text
                         x={0}
-                        y={5}
+                        y={0}
                         textAnchor="end"
                         fontSize="12"
                         transform="rotate(-45)"

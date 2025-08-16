@@ -78,8 +78,8 @@ export class ScoreInsideApiService {
   }
 
   private mapToTransfer(article: ScoreInsideTransferArticle, teamSlug: string): Transfer | null {
-    // Skip transfers without proper club information
-    if (!article.team_from || !article.team_from.nm || !article.team || !article.team.nm) {
+    // Skip transfers without basic player information
+    if (!article.player?.nm) {
       return null;
     }
 
@@ -108,9 +108,25 @@ export class ScoreInsideApiService {
     // Extract fee from headline if possible
     const fee = this.extractFee(article.article.hdl) || 'Undisclosed';
 
-    // Use proper team information
-    const fromClub = article.team_from.nm;
-    const toClub = article.team.nm;
+    // Determine from and to clubs - be more flexible
+    let fromClub = 'Unknown';
+    let toClub = 'Unknown';
+
+    if (article.team_from?.nm && article.team?.nm) {
+      fromClub = article.team_from.nm;
+      toClub = article.team.nm;
+    } else if (article.team?.nm) {
+      // If we only have one team, try to determine direction from headline
+      const headline = article.article.hdl.toLowerCase();
+      if (headline.includes('signs') || headline.includes('joins') || headline.includes('completes move to')) {
+        toClub = article.team.nm;
+      } else if (headline.includes('leaves') || headline.includes('departs')) {
+        fromClub = article.team.nm;
+      } else {
+        // Default: assume the team in the API is the target team
+        toClub = article.team.nm;
+      }
+    }
 
     return {
       id: `scoreinside-${article.aid}`,
