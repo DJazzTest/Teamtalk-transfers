@@ -56,7 +56,23 @@ export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ tr
       return acc;
     }, {} as Record<string, number>);
 
-  // Create chart data for ALL Premier League clubs (including £0 spenders)
+  // Update spending calculation to use real transfer data and fix £0 issue
+  const calculateCurrentSpend = (transfers: Transfer[]): number => {
+    return transfers
+      .filter(transfer => 
+        transfer.status === 'confirmed' && 
+        premierLeagueClubs.includes(transfer.toClub) &&
+        transfer.fee && transfer.fee !== 'Free Transfer' && transfer.fee !== 'Undisclosed'
+      )
+      .reduce((total, transfer) => {
+        const fee = parseTransferFee(transfer.fee);
+        return total + fee;
+      }, 0);
+  };
+
+  const totalCurrentSpend = calculateCurrentSpend(transfers);
+
+  // Create chart data for ALL Premier League clubs
   const chartData = premierLeagueClubs.map(club => {
     const spending = clubSpending[club] || 0;
     return {
@@ -121,7 +137,7 @@ export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ tr
         
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-300">
-            Total spending: £{chartData.reduce((sum, club) => sum + club.spending, 0).toFixed(1)}M
+            Current window spend: £{totalCurrentSpend.toFixed(1)}M from confirmed transfers
           </p>
         </div>
       </div>

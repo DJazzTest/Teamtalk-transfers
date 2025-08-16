@@ -125,15 +125,6 @@ export const AnalogCountdown: React.FC<AnalogCountdownProps> = ({ targetDate, on
       <div className="text-center" style={{ backgroundColor: '#2F517A', borderRadius: '0.5rem', padding: '1rem sm:2rem' }}>
         <div className="flex items-center justify-center gap-4 mb-4">
           <h2 className="text-lg sm:text-2xl font-bold text-blue-400">Transfer Window Closes</h2>
-          <Button
-            onClick={onRevert}
-            variant="outline"
-            size="sm"
-            className="text-blue-400 border-blue-400 hover:bg-blue-400 hover:text-white"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Revert to Digital
-          </Button>
         </div>
         
         {isExpired ? (
