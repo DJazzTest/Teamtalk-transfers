@@ -91,13 +91,13 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
     return (
       <g transform={`translate(${x},${y})`}>
         {/* Club badge or initials - larger and clearer */}
-        <g transform="translate(0, 15)">
+        <g transform="translate(0, 10)">
           {clubData?.badge ? (
             <image 
-              x={-24} 
+              x={-28} 
               y={0} 
-              width={48} 
-              height={48} 
+              width={56} 
+              height={56} 
               href={clubData.badge}
               onError={(e) => {
                 // Fallback to initials on image error
@@ -106,58 +106,68 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
               }}
             />
           ) : (
-            <circle cx={0} cy={24} r={24} fill="#3B82F6" />
+            <circle cx={0} cy={28} r={28} fill="#3B82F6" />
           )}
           {(!clubData?.badge || clubData.badge === '') && (
             <text 
               x={0} 
-              y={30} 
+              y={35} 
               textAnchor="middle" 
               fill="white" 
-              fontSize="14" 
+              fontSize="16" 
               fontWeight="bold"
             >
               {clubData?.initials}
             </text>
           )}
         </g>
-        {/* Club name - aligned at bottom with clear, readable font */}
+        {/* Club name - horizontal, green text, clear and readable */}
         <text 
           x={0} 
           y={85} 
           textAnchor="middle" 
-          fill="#1F2937" 
-          fontSize="13"
-          fontWeight="700"
-          className="drop-shadow-md"
-          style={{ textShadow: '1px 1px 2px rgba(255,255,255,0.8)' }}
+          fill="#16A34A" 
+          fontSize="14"
+          fontWeight="800"
+          className="drop-shadow-lg"
+          style={{ textShadow: '2px 2px 4px rgba(255,255,255,0.9)' }}
         >
-          {clubData?.fullClub?.split(' ').map((word, i) => (
-            <tspan key={i} x={0} dy={i === 0 ? 0 : 16}>{word}</tspan>
-          ))}
+          {clubData?.fullClub}
         </text>
       </g>
     );
   };
 
-  // Bar Chart View with spending (red) and earnings (green) - Horizontal Scroll
+  // Bar Chart View with spending (red) and earnings (green) - Mobile Friendly Horizontal Scroll
   const BarChartView = () => {
     return (
       <div className="relative">
-        <div className="h-96 overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-blue-100">
-          <div style={{ width: `${chartData.length * 120}px`, minWidth: '100%' }}>
+        {/* Scroll indicator */}
+        <div className="text-center mb-2">
+          <div className="inline-flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full">
+            <span className="text-green-700 font-semibold text-sm">
+              📊 Scroll horizontally to view all clubs
+            </span>
+          </div>
+        </div>
+        
+        <div className="h-96 overflow-x-auto overflow-y-hidden" style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#16A34A #E5E7EB'
+        }}>
+          <div style={{ width: `${chartData.length * 140}px`, minWidth: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 120 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 110 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.15)" />
                 <XAxis 
                   dataKey="club" 
                   tick={<CustomXAxisTick />}
-                  height={140}
+                  height={120}
                   interval={0}
                 />
                 <YAxis 
-                  tick={{ fontSize: 12, fill: '#E5E7EB' }}
-                  label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
+                  tick={{ fontSize: 12, fill: '#374151', fontWeight: '600' }}
+                  label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#374151', fontWeight: '600' } }}
                 />
                 <Tooltip 
                   formatter={(value: number, name: string, props: any) => {
@@ -168,19 +178,21 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
                     payload?.[0]?.payload?.fullClub || label
                   }
                   contentStyle={{
-                    backgroundColor: 'rgba(47, 81, 122, 0.95)',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    borderRadius: '8px',
-                    color: '#fff'
+                    backgroundColor: 'rgba(22, 163, 74, 0.95)',
+                    border: '2px solid rgba(255,255,255,0.3)',
+                    borderRadius: '12px',
+                    color: '#fff',
+                    fontWeight: '600',
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
                   }}
                 />
                 <Bar 
                   dataKey="spending" 
                   name="Spending"
-                  radius={[4, 4, 0, 0]}
+                  radius={[6, 6, 0, 0]}
                   onClick={(data) => onSelectClub && onSelectClub(data.fullClub)}
                   cursor="pointer"
-                  maxBarSize={25}
+                  maxBarSize={30}
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`spending-${index}`} fill="#DC2626" />
@@ -189,10 +201,10 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
                 <Bar 
                   dataKey="earnings" 
                   name="Earnings"
-                  radius={[4, 4, 0, 0]}
+                  radius={[6, 6, 0, 0]}
                   onClick={(data) => onSelectClub && onSelectClub(data.fullClub)}
                   cursor="pointer"
-                  maxBarSize={25}
+                  maxBarSize={30}
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`earnings-${index}`} fill="#16A34A" />
@@ -201,6 +213,12 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
               </BarChart>
             </ResponsiveContainer>
           </div>
+        </div>
+        
+        {/* Mobile scroll hint */}
+        <div className="text-center text-gray-600 text-xs mt-2">
+          <span className="hidden sm:inline">💡 Click on bars to view club details</span>
+          <span className="sm:hidden">💡 Tap bars for club details • Swipe to scroll</span>
         </div>
       </div>
     );

@@ -15,11 +15,16 @@ const getClubBadge = (club: string): string => {
     'Crystal Palace': '/badges/crystalpalace.png',
     'Everton': '/badges/everton.png',
     'Fulham': '/badges/fulham.png',
+    'Ipswich Town': '', // No badge available - will use initials
+    'Leeds United': '', // No badge available - will use initials
+    'Leicester City': '', // No badge available - will use initials
     'Liverpool': '/badges/liverpool.png',
     'Manchester City': '/badges/manchestercity.png',
     'Manchester United': '/badges/manchesterunited.png',
     'Newcastle United': '/badges/newcastleunited.png',
     'Nottingham Forest': '/badges/nottinghamforest.png',
+    'Sheffield United': '', // No badge available - will use initials
+    'Southampton': '', // No badge available - will use initials
     'Sunderland': '/badges/sunderland.png',
     'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
     'West Ham United': '/badges/westhamunited.png',
