@@ -106,14 +106,14 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
               }}
             />
           ) : (
-            <circle cx={0} cy={28} r={28} fill="#3B82F6" />
+            <circle cx={0} cy={28} r={28} fill="hsl(var(--primary))" />
           )}
           {(!clubData?.badge || clubData.badge === '') && (
             <text 
               x={0} 
               y={35} 
               textAnchor="middle" 
-              fill="white" 
+              fill="hsl(var(--primary-foreground))" 
               fontSize="16" 
               fontWeight="bold"
             >
@@ -126,11 +126,11 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
           x={0} 
           y={85} 
           textAnchor="middle" 
-          fill="#16A34A" 
+          fill="hsl(var(--success))" 
           fontSize="14"
           fontWeight="800"
           className="drop-shadow-lg"
-          style={{ textShadow: '2px 2px 4px rgba(255,255,255,0.9)' }}
+          style={{ textShadow: '2px 2px 4px hsl(var(--background) / 0.9)' }}
         >
           {clubData?.fullClub}
         </text>
@@ -144,21 +144,19 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
       <div className="relative">
         {/* Scroll indicator */}
         <div className="text-center mb-2">
-          <div className="inline-flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full">
-            <span className="text-green-700 font-semibold text-sm">
+          <div className="inline-flex items-center gap-2 bg-success/10 px-4 py-2 rounded-full">
+            <span className="text-success font-semibold text-sm">
               📊 Scroll horizontally to view all clubs
             </span>
           </div>
         </div>
         
-        <div className="h-96 overflow-x-auto overflow-y-hidden" style={{
-          scrollbarWidth: 'thin',
-          scrollbarColor: '#16A34A #E5E7EB'
-        }}>
+        <div className="h-96 overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-success scrollbar-track-muted"
+        >
           <div style={{ width: `${chartData.length * 140}px`, minWidth: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 110 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.15)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis 
                   dataKey="club" 
                   tick={<CustomXAxisTick />}
@@ -166,8 +164,8 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
                   interval={0}
                 />
                 <YAxis 
-                  tick={{ fontSize: 12, fill: '#374151', fontWeight: '600' }}
-                  label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#374151', fontWeight: '600' } }}
+                  tick={{ fontSize: 12, fill: 'hsl(var(--foreground))', fontWeight: '600' }}
+                  label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: 'hsl(var(--foreground))', fontWeight: '600' } }}
                 />
                 <Tooltip 
                   formatter={(value: number, name: string, props: any) => {
@@ -178,12 +176,12 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
                     payload?.[0]?.payload?.fullClub || label
                   }
                   contentStyle={{
-                    backgroundColor: 'rgba(22, 163, 74, 0.95)',
-                    border: '2px solid rgba(255,255,255,0.3)',
+                    backgroundColor: 'hsl(var(--success) / 0.95)',
+                    border: '2px solid hsl(var(--border))',
                     borderRadius: '12px',
-                    color: '#fff',
+                    color: 'hsl(var(--success-foreground))',
                     fontWeight: '600',
-                    boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+                    boxShadow: '0 10px 25px hsl(var(--foreground) / 0.2)'
                   }}
                 />
                 <Bar 
@@ -195,7 +193,7 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
                   maxBarSize={30}
                 >
                   {chartData.map((entry, index) => (
-                    <Cell key={`spending-${index}`} fill="#DC2626" />
+                    <Cell key={`spending-${index}`} fill="hsl(var(--destructive))" />
                   ))}
                 </Bar>
                 <Bar 
@@ -207,7 +205,7 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
                   maxBarSize={30}
                 >
                   {chartData.map((entry, index) => (
-                    <Cell key={`earnings-${index}`} fill="#16A34A" />
+                    <Cell key={`earnings-${index}`} fill="hsl(var(--success))" />
                   ))}
                 </Bar>
               </BarChart>
@@ -216,7 +214,7 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
         </div>
         
         {/* Mobile scroll hint */}
-        <div className="text-center text-gray-600 text-xs mt-2">
+        <div className="text-center text-muted-foreground text-xs mt-2">
           <span className="hidden sm:inline">💡 Click on bars to view club details</span>
           <span className="sm:hidden">💡 Tap bars for club details • Swipe to scroll</span>
         </div>
@@ -225,15 +223,15 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
   };
 
   return (
-    <Card className="border-gray-200/50 shadow-lg mb-6 relative overflow-hidden" style={{ backgroundColor: '#d0e0f7' }}>
+    <Card className="bg-card border-border shadow-lg mb-6 relative overflow-hidden">
       {/* Football pitch background */}
       <div 
         className="absolute inset-0 opacity-10"
         style={{
           backgroundImage: `
-            radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
-            linear-gradient(90deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 25%, rgba(34, 197, 94, 0.05) 75%, rgba(34, 197, 94, 0.1) 100%),
-            linear-gradient(0deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 25%, rgba(34, 197, 94, 0.05) 75%, rgba(34, 197, 94, 0.1) 100%)
+            radial-gradient(circle at 50% 50%, hsl(var(--success) / 0.3) 0%, transparent 50%),
+            linear-gradient(90deg, hsl(var(--success) / 0.1) 0%, hsl(var(--success) / 0.05) 25%, hsl(var(--success) / 0.05) 75%, hsl(var(--success) / 0.1) 100%),
+            linear-gradient(0deg, hsl(var(--success) / 0.1) 0%, hsl(var(--success) / 0.05) 25%, hsl(var(--success) / 0.05) 75%, hsl(var(--success) / 0.1) 100%)
           `,
           backgroundSize: '100% 100%, 100% 100%, 100% 100%'
         }}
@@ -241,7 +239,7 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
       
       <div className="relative p-3 sm:p-6">
         <div className="flex items-center justify-center mb-4">
-          <h3 className="text-xl font-bold text-blue-700">Club Spending vs Earnings 2025/26</h3>
+          <h3 className="text-xl font-bold text-primary">Club Spending vs Earnings 2025/26</h3>
         </div>
         
         {/* Show bar chart view */}
@@ -250,24 +248,24 @@ export const ClubSpendingGraph: React.FC<ClubSpendingGraphProps> = ({ onSelectCl
         <div className="mt-4 text-center space-y-1">
           <div className="flex items-center justify-center gap-6">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-red-500" />
-              <span className="text-sm font-semibold text-red-700">
+              <TrendingUp className="w-4 h-4 text-destructive" />
+              <span className="text-sm font-semibold text-destructive">
                 Total spending: £{totalSpend.toFixed(1)}B
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <TrendingDown className="w-4 h-4 text-green-500" />
-              <span className="text-sm font-semibold text-green-700">
+              <TrendingDown className="w-4 h-4 text-success" />
+              <span className="text-sm font-semibold text-success">
                 Total earnings: £{totalEarnings.toFixed(1)}B
               </span>
             </div>
           </div>
-          <span className="text-base font-semibold text-blue-800">
+          <span className="text-base font-semibold text-primary">
             Net spend: £{totalNetSpend.toFixed(1)}B
           </span>
         </div>
         
-        <div className="text-center text-gray-600 text-xs mt-2">
+        <div className="text-center text-muted-foreground text-xs mt-2">
           <span className="hidden sm:inline">← Scroll horizontally to view all clubs →</span>
           <span className="sm:hidden">← Scroll to view all →</span>
         </div>
