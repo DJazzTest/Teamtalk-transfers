@@ -14,7 +14,7 @@ export const clubBadgeMap: Record<string, string> = {
   'Crystal Palace': '/badges/crystalpalace.png',
   'Everton': '/badges/everton.png',
   'Fulham': '/badges/fulham.png',
-  'Leeds United': '/badges/leeds-correct.png',
+  'Leeds United': '/badges/leeds-authentic.png',
   'Liverpool': '/badges/liverpool.png',
   'Manchester City': '/badges/manchestercity.png',
   'Manchester United': '/badges/manchesterunited.png',

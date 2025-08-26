@@ -24,7 +24,7 @@ const getClubBadge = (club: string): string => {
     'Crystal Palace': '/badges/crystalpalace.png',
     'Everton': '/badges/everton.png',
     'Fulham': '/badges/fulham.png',
-    'Leeds United': '/badges/leeds-correct.png', // Proper Leeds badge
+    'Leeds United': '/badges/leeds-authentic.png', // Authentic Leeds badge
     'Liverpool': '/badges/liverpool.png',
     'Manchester City': '/badges/manchestercity.png',
     'Manchester United': '/badges/manchesterunited.png',
