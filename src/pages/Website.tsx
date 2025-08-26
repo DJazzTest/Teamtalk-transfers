@@ -84,15 +84,6 @@ const WebsiteContent = () => {
 
         <AppHeader lastUpdated={lastUpdated || new Date()} />
         <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleBackToDashboard}
-            className="mb-4 text-gray-300 hover:text-white border-gray-600 hover:border-gray-500"
-          >
-            <Home className="w-4 h-4 mr-2" />
-            Home
-          </Button>
           <TeamTransferView transfers={allTransfers} selectedTeam={selectedClub} onBack={handleBackToDashboard} />
         </div>
       </div>
@@ -119,11 +110,11 @@ const WebsiteContent = () => {
         <NewsCarousel maxItems={5} />
 
         {/* New Premier League Transfers & Rumours just added! */}
-        <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#fff3cd' }}>
+        <Card className="mb-6 border-blue-200/50 shadow-lg" style={{ backgroundColor: '#e3f2fd' }}>
           <div className="p-4">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-              <h2 className="text-lg font-bold text-orange-800">New Premier League Transfers & Rumours just added!</h2>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <h2 className="text-lg font-bold text-blue-800">New Premier League Transfers & Rumours just added!</h2>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2" style={{
               scrollbarWidth: 'thin',
@@ -143,24 +134,41 @@ const WebsiteContent = () => {
                 return (
                   <>
                     {displayTransfers.map((transfer) => (
-                      <Card key={transfer.id} className="min-w-[240px] max-w-xs bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200 hover:shadow-md transition-all duration-200 hover:border-orange-300">
+                      <Card key={transfer.id} className="min-w-[240px] max-w-xs bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 hover:shadow-md transition-all duration-200 hover:border-blue-300">
                         <div className="p-3 flex flex-col gap-2">
                           <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
                             <span
-                              className="font-semibold text-orange-600 hover:underline cursor-pointer text-base truncate"
+                              className="font-semibold text-blue-600 hover:underline cursor-pointer text-base truncate"
                               onClick={() => handleSelectClub(transfer.toClub)}
                               title={`View ${transfer.toClub} transfers`}
                             >
                               {transfer.playerName}
                             </span>
                           </div>
-                          <div className="text-xs text-gray-600">
-                            <span>{transfer.fromClub}</span> → <span className="font-semibold text-gray-800">{transfer.toClub}</span>
+                          <div className="text-xs text-blue-600 flex items-center gap-1">
+                            <img
+                              src={`/badges/${transfer.fromClub.toLowerCase().replace(/[^a-z]/g, '')}.png`}
+                              alt={`${transfer.fromClub} badge`}
+                              className="w-4 h-4 rounded-full shadow bg-white object-contain border border-gray-200"
+                              onError={e => {
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
+                            <span>{transfer.fromClub}</span> → 
+                            <img
+                              src={`/badges/${transfer.toClub.toLowerCase().replace(/[^a-z]/g, '')}.png`}
+                              alt={`${transfer.toClub} badge`}
+                              className="w-4 h-4 rounded-full shadow bg-white object-contain border border-gray-200"
+                              onError={e => {
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
+                            <span className="font-semibold text-blue-800">{transfer.toClub}</span>
                           </div>
                           <div className="flex justify-between items-end gap-2">
-                            <span className="text-orange-600 font-bold">{transfer.fee}</span>
-                            <span className="text-xs text-gray-500">{new Date(transfer.date).toLocaleDateString()}</span>
+                            <span className="text-blue-600 font-bold">{transfer.fee}</span>
+                            <span className="text-xs text-blue-500">{new Date(transfer.date).toLocaleDateString()}</span>
                           </div>
                           <span className="text-xs text-gray-400 truncate">{transfer.source}</span>
                         </div>
@@ -172,7 +180,7 @@ const WebsiteContent = () => {
                           onClick={() => setShowAllNew(!showAllNew)}
                           variant="outline"
                           size="sm"
-                          className="border-orange-400 text-orange-700 hover:bg-orange-50 ml-2"
+                          className="border-blue-400 text-blue-700 hover:bg-blue-50 ml-2"
                         >
                           {showAllNew ? 'Show Less' : `Show More (${uniqueTransfers.length - 5} more)`}
                         </Button>
