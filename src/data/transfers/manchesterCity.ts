@@ -8,7 +8,7 @@ export const manchesterCityTransfers: Transfer[] = [
     playerName: 'Rayan Ait-Nouri',
     fromClub: 'Wolves',
     toClub: 'Manchester City',
-    fee: '£36.3m',
+    fee: '£36.3m (£31m + £5.3m add-ons)',
     date: '2025-01-21T15:00:00Z',
     source: 'mancity.com',
     status: 'confirmed'

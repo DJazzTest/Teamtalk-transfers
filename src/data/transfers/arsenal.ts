@@ -38,7 +38,7 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Noni Madueke',
     fromClub: 'Chelsea',
     toClub: 'Arsenal',
-    fee: '£52m',
+    fee: '£52m (£48.5m + £3.5m add-ons)',
     date: '2025-01-21T13:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'

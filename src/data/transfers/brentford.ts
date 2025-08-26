@@ -7,7 +7,7 @@ export const brentfordTransfers: Transfer[] = [
     playerName: 'Jordan Henderson',
     fromClub: 'Ajax',
     toClub: 'Brentford',
-    fee: 'Free',
+    fee: 'Free Transfer',
     date: '2025-07-12T12:00:00Z',
     source: 'brentfordfc.com',
     status: 'confirmed'
@@ -17,7 +17,7 @@ export const brentfordTransfers: Transfer[] = [
     playerName: 'Christian Norgaard',
     fromClub: 'Brentford',
     toClub: 'Arsenal',
-    fee: 'Undisclosed',
+    fee: '£15m (£10m + £5m add-ons)',
     date: '2025-07-20T14:00:00Z',
     source: 'brentfordfc.com',
     status: 'confirmed'
@@ -27,7 +27,7 @@ export const brentfordTransfers: Transfer[] = [
     playerName: 'Michael Kayode',
     fromClub: 'Fiorentina',
     toClub: 'Brentford',
-    fee: 'Undisclosed',
+    fee: '£14.5m',
     date: '2025-01-15T14:30:00Z',
     source: 'brentfordfc.com',
     status: 'confirmed'
@@ -37,7 +37,7 @@ export const brentfordTransfers: Transfer[] = [
     playerName: 'Romelle Donovan',
     fromClub: 'Birmingham City',
     toClub: 'Brentford',
-    fee: 'Undisclosed',
+    fee: '£3m',
     date: '2025-01-14T10:00:00Z',
     source: 'brentfordfc.com',
     status: 'confirmed'
