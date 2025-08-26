@@ -98,7 +98,7 @@ export const latestRumors: Transfer[] = [
     playerName: 'Hugo Ekitike',
     fromClub: 'Frankfurt',
     toClub: 'Newcastle',
-    fee: 'Interest reported',
+    fee: '£70m+ potential deal',
     date: '2025-08-21T20:30:00Z',
     source: 'Newcastle and Liverpool circling',
     status: 'rumored'
@@ -108,7 +108,7 @@ export const latestRumors: Transfer[] = [
     playerName: 'Hugo Ekitike',
     fromClub: 'Frankfurt',
     toClub: 'Liverpool',
-    fee: 'Interest reported',
+    fee: '£70m+ potential deal',
     date: '2025-08-21T20:30:00Z',
     source: 'Newcastle and Liverpool circling',
     status: 'rumored'
