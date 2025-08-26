@@ -187,7 +187,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 }}
               />
               {selectedTeam}
-              {/* Star button for club card */}
+              {/* Club badge button for favoriting */}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -195,10 +195,17 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       variant="ghost"
                       size="icon"
                       onClick={() => handleStarClub(selectedTeam)}
-                      className={`ml-1 p-1 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50 transition-transform duration-150 ${starredClubs.includes(selectedTeam) ? 'bg-yellow-400/20' : ''}`}
+                      className={`ml-1 p-1 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50 transition-transform duration-150 ${starredClubs.includes(selectedTeam) ? 'bg-yellow-400/20 border-yellow-400' : ''}`}
                       aria-label={starredClubs.includes(selectedTeam) ? 'Remove from Favourites' : 'Add to Favourites'}
                     >
-                      <Star className={`w-5 h-5 ${starredClubs.includes(selectedTeam) ? 'fill-yellow-400 text-yellow-400' : 'text-yellow-400'}`} />
+                      <img
+                        src={`/badges/${clubBadgeMap[selectedTeam!] || selectedTeam?.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                        alt={`${selectedTeam} badge`}
+                        className={`w-6 h-6 rounded-full object-contain ${starredClubs.includes(selectedTeam) ? 'ring-2 ring-yellow-400' : ''}`}
+                        onError={e => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side="bottom">
