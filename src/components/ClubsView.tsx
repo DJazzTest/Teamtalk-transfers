@@ -34,7 +34,6 @@ import { TransferCard } from './TransferCard';
 import { TeamTransferStats } from './TeamTransferStats';
 import { useToast } from '@/hooks/use-toast';
 import { groupTransfersByNormalizedClub } from '@/utils/clubNormalizer';
-import { TransferDebugger } from './TransferDebugger';
 
 interface ClubsViewProps {
   clubTransfers: { [key: string]: Transfer[] };
@@ -98,9 +97,7 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
     const categorizedTransfers = categorizeTransfers(clubTransferList, selectedClub);
     
     return (
-      <>
-        <TransferDebugger allTransfers={allTransfers} clubName={selectedClub} />
-        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6 border-b border-slate-600 pb-4">
             <div className="flex items-center gap-3">
@@ -195,12 +192,10 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               <div>
                 <h4 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  Recent Signings ({categorizedTransfers.confirmedIn.filter(t => t.status === 'confirmed').length})
+                  Recent Signings ({categorizedTransfers.confirmedIn.length})
                 </h4>
                 <div className="space-y-3">
-                  {categorizedTransfers.confirmedIn
-                    .filter(transfer => transfer.status === 'confirmed')
-                    .map((transfer) => (
+                  {categorizedTransfers.confirmedIn.map((transfer) => (
                     <div key={transfer.id} className="bg-green-900/20 rounded-lg p-4 border border-green-700/50 hover:bg-green-900/30 transition-all duration-200">
                       <TransferCard transfer={transfer} />
                     </div>
@@ -214,12 +209,10 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               <div>
                 <h4 className="text-lg font-semibold text-red-400 mb-3 flex items-center gap-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  Recent Departures ({categorizedTransfers.confirmedOut.filter(t => t.status === 'confirmed').length})
+                  Recent Departures ({categorizedTransfers.confirmedOut.length})
                 </h4>
                 <div className="space-y-3">
-                  {categorizedTransfers.confirmedOut
-                    .filter(transfer => transfer.status === 'confirmed')
-                    .map((transfer) => (
+                  {categorizedTransfers.confirmedOut.map((transfer) => (
                     <div key={transfer.id} className="bg-red-900/20 rounded-lg p-4 border border-red-700/50 hover:bg-red-900/30 transition-all duration-200">
                       <TransferCard transfer={transfer} />
                     </div>
@@ -239,7 +232,6 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
           </div>
         </div>
         </Card>
-      </>
     );
   }
 

@@ -66,44 +66,29 @@ export interface CategorizedTransfers {
 
 /**
  * Categorizes transfers for a specific club into confirmed in/out and rumors
- * FIXED: Ensures rumored players ONLY appear in rumors, confirmed players ONLY in confirmed sections
+ * FINAL FIX: Absolute separation - rumored = rumors ONLY, confirmed = confirmed sections ONLY
  */
 export function categorizeTransfers(transfers: Transfer[], clubName: string): CategorizedTransfers {
   const confirmedIn: Transfer[] = [];
   const confirmedOut: Transfer[] = [];
   const rumors: Transfer[] = [];
   
-  // Track players to prevent duplicates
-  const processedPlayers = new Set<string>();
-
-  // STEP 1: First pass - collect ALL rumored transfers
+  // Process each transfer exactly once based on status
   for (const transfer of transfers) {
+    // RULE 1: If status is 'rumored', it goes to rumors regardless of anything else
     if (transfer.status === 'rumored') {
-      const playerKey = normalizePlayerName(transfer.playerName);
-      if (!processedPlayers.has(playerKey)) {
-        rumors.push(transfer);
-        processedPlayers.add(playerKey);
-      }
+      rumors.push(transfer);
+      continue;
     }
-  }
-
-  // STEP 2: Second pass - collect ONLY confirmed transfers for players not already in rumors
-  for (const transfer of transfers) {
+    
+    // RULE 2: If status is 'confirmed', it goes to appropriate confirmed section
     if (transfer.status === 'confirmed') {
-      const playerKey = normalizePlayerName(transfer.playerName);
-      
-      // Skip if this player is already in rumors
-      if (processedPlayers.has(playerKey)) {
-        continue;
-      }
-      
-      // Add to appropriate confirmed section
       if (isClubMatch(transfer.toClub, clubName)) {
+        // Player joining this club (transfer IN)
         confirmedIn.push(transfer);
-        processedPlayers.add(playerKey);
       } else if (isClubMatch(transfer.fromClub, clubName)) {
+        // Player leaving this club (transfer OUT)
         confirmedOut.push(transfer);
-        processedPlayers.add(playerKey);
       }
     }
   }
