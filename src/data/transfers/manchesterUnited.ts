@@ -2,16 +2,7 @@
 import { Transfer } from '@/types/transfer';
 
 export const manchesterUnitedTransfers: Transfer[] = [
-  {
-    id: 'manutd-mbeumo-2025-july',
-    playerName: 'Bryan Mbeumo',
-    fromClub: 'Brentford',
-    toClub: 'Manchester United',
-    fee: '£71m',
-    date: '2025-07-21T12:00:00Z',
-    source: 'manutd.com',
-    status: 'confirmed'
-  },
+  // TRANSFERS IN
   {
     id: 'manutd-cunha-2025',
     playerName: 'Matheus Cunha',
@@ -23,55 +14,37 @@ export const manchesterUnitedTransfers: Transfer[] = [
     status: 'confirmed'
   },
   {
-    id: 'united-rashford-barcelona-2025',
-    playerName: 'Marcus Rashford',
-    fromClub: 'Manchester United',
-    toClub: 'Barcelona',
-    fee: '€40M loan-to-buy',
-    date: '2025-01-19T10:00:00Z',
-    source: 'sport.es',
-    status: 'rumored'
-  },
-  {
-    id: 'united-branthwaite-2026',
-    playerName: 'Jarrad Branthwaite',
-    fromClub: 'Everton',
+    id: 'manutd-leon-2025',
+    playerName: 'Diego Leon',
+    fromClub: 'Cerro Porteno',
     toClub: 'Manchester United',
-    fee: 'Talks for 2026',
-    date: '2025-01-19T09:30:00Z',
-    source: 'skysports.com',
-    status: 'rumored'
+    fee: '£4m',
+    date: '2025-01-18T14:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
   },
   {
-    id: 'united-mbeumo-2025',
+    id: 'manutd-mbeumo-2025',
     playerName: 'Bryan Mbeumo',
     fromClub: 'Brentford',
     toClub: 'Manchester United',
-    fee: 'Bid submitted, medical pending',
-    date: '2025-01-18T14:30:00Z',
-    source: 'manutd.com',
-    status: 'rumored'
-  },
-  {
-    id: 'united-elanga-2025',
-    playerName: 'Anthony Elanga',
-    fromClub: 'Manchester United',
-    toClub: 'Free Agent',
-    fee: 'Released',
-    date: '2025-01-16T10:00:00Z',
+    fee: '£71m',
+    date: '2025-01-15T12:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'
   },
   {
-    id: 'united-williams-2025',
-    playerName: 'Brandon Williams',
-    fromClub: 'Manchester United',
-    toClub: 'Free Agent',
-    fee: 'Released',
-    date: '2025-01-16T10:00:00Z',
+    id: 'manutd-sesko-2025',
+    playerName: 'Benjamin Sesko',
+    fromClub: 'RB Leipzig',
+    toClub: 'Manchester United',
+    fee: '£65m',
+    date: '2025-01-12T16:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'
   },
+
+  // RELEASES
   {
     id: 'united-eriksen-2025',
     playerName: 'Christian Eriksen',
@@ -86,7 +59,7 @@ export const manchesterUnitedTransfers: Transfer[] = [
     id: 'united-evans-2025',
     playerName: 'Jonny Evans',
     fromClub: 'Manchester United',
-    toClub: 'Free Agent',
+    toClub: 'Retired',
     fee: 'Released',
     date: '2025-01-15T10:00:00Z',
     source: 'manutd.com',
@@ -102,44 +75,96 @@ export const manchesterUnitedTransfers: Transfer[] = [
     source: 'manutd.com',
     status: 'confirmed'
   },
+
+  // LOANS OUT
   {
-    id: 'united-cunha-2025',
-    playerName: 'Matheus Cunha',
-    fromClub: 'Wolves',
-    toClub: 'Manchester United',
-    fee: '£60M',
-    date: '2025-01-12T15:30:00Z',
+    id: 'united-rashford-2025',
+    playerName: 'Marcus Rashford',
+    fromClub: 'Manchester United',
+    toClub: 'Barcelona',
+    fee: 'Loan Out',
+    date: '2025-01-14T16:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'
   },
   {
-    id: 'manutd-rashford-barcelona-rumor',
-    playerName: 'Marcus Rashford',
+    id: 'united-aljofree-2025',
+    playerName: 'Sonny Aljofree',
     fromClub: 'Manchester United',
-    toClub: 'Barcelona',
-    fee: 'Late-window loan',
-    status: 'rumored' as const,
-    date: '2025-01-08',
-    source: 'Transfer Rumors'
+    toClub: 'Notts County',
+    fee: 'Loan Out',
+    date: '2025-01-13T15:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
   },
   {
-    id: 'manutd-watkins-in-rumor',
-    playerName: 'Ollie Watkins',
-    fromClub: 'Aston Villa',
-    toClub: 'Manchester United',
-    fee: 'Amorim target',
-    status: 'rumored' as const,
-    date: '2025-01-08',
-    source: 'Transfer Rumors'
+    id: 'united-gore-2025',
+    playerName: 'Dan Gore',
+    fromClub: 'Manchester United',
+    toClub: 'Rotherham',
+    fee: 'Loan Out',
+    date: '2025-01-12T14:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
   },
   {
-    id: 'manutd-sancho-juventus-rumor',
-    playerName: 'Jadon Sancho',
+    id: 'united-hugill-2025',
+    playerName: 'Joe Hugill',
     fromClub: 'Manchester United',
-    toClub: 'Juventus',
-    fee: 'Salary negotiations ongoing',
-    status: 'rumored' as const,
-    date: '2025-01-08',
-    source: 'Transfer Rumors'
+    toClub: 'Barnet',
+    fee: 'Loan Out',
+    date: '2025-01-11T16:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'united-harrison-2025',
+    playerName: 'Elyh Harrison',
+    fromClub: 'Manchester United',
+    toClub: 'Shrewsbury Town',
+    fee: 'Loan Out',
+    date: '2025-01-10T15:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'united-vitek-2025',
+    playerName: 'Radek Vitek',
+    fromClub: 'Manchester United',
+    toClub: 'Bristol City',
+    fee: 'Loan Out',
+    date: '2025-01-09T14:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'united-wheatley-2025',
+    playerName: 'Ethan Wheatley',
+    fromClub: 'Manchester United',
+    toClub: 'Northampton Town',
+    fee: 'Loan Out',
+    date: '2025-01-08T16:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'united-moorhouse-2025',
+    playerName: 'Jack Moorhouse',
+    fromClub: 'Manchester United',
+    toClub: 'Leyton Orient',
+    fee: 'Loan Out',
+    date: '2025-01-07T15:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'united-collyer-2025',
+    playerName: 'Toby Collyer',
+    fromClub: 'Manchester United',
+    toClub: 'West Bromwich Albion',
+    fee: 'Loan Out',
+    date: '2025-01-06T17:00:00Z',
+    source: 'manutd.com',
+    status: 'confirmed'
   }
 ];

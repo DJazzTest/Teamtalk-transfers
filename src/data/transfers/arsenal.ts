@@ -2,23 +2,14 @@
 import { Transfer } from '@/types/transfer';
 
 export const arsenalTransfers: Transfer[] = [
+  // TRANSFERS IN
   {
-    id: 'arsenal-madueke-2025-july',
-    playerName: 'Noni Madueke',
+    id: 'arsenal-kepa-2025',
+    playerName: 'Kepa Arrizabalaga',
     fromClub: 'Chelsea',
     toClub: 'Arsenal',
-    fee: '£48.5m',
-    date: '2025-07-19T13:00:00Z',
-    source: 'arsenal.com',
-    status: 'confirmed'
-  },
-  {
-    id: 'arsenal-madueke-2025',
-    playerName: 'Noni Madueke',
-    fromClub: 'Chelsea',
-    toClub: 'Arsenal',
-    fee: '£52m',
-    date: '2025-01-21T13:00:00Z',
+    fee: '£5m',
+    date: '2025-07-04T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -33,32 +24,84 @@ export const arsenalTransfers: Transfer[] = [
     status: 'confirmed'
   },
   {
-    id: 'arsenal-kepa-2025',
-    playerName: 'Kepa Arrizabalaga',
-    fromClub: 'Chelsea',
+    id: 'arsenal-norgaard-2025',
+    playerName: 'Christian Norgaard',
+    fromClub: 'Brentford',
     toClub: 'Arsenal',
-    fee: '£5m',
-    date: '2025-07-04T12:00:00Z',
+    fee: '£25m',
+    date: '2025-07-20T14:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
   {
-    id: 'arsenal-partey-2025',
-    playerName: 'Thomas Partey',
+    id: 'arsenal-madueke-2025',
+    playerName: 'Noni Madueke',
+    fromClub: 'Chelsea',
+    toClub: 'Arsenal',
+    fee: '£52m',
+    date: '2025-01-21T13:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-mosquera-2025',
+    playerName: 'Cristhian Mosquera',
+    fromClub: 'Valencia',
+    toClub: 'Arsenal',
+    fee: '£35m',
+    date: '2025-01-15T14:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-gyokeres-2025',
+    playerName: 'Viktor Gyokeres',
+    fromClub: 'Sporting',
+    toClub: 'Arsenal',
+    fee: '£65m',
+    date: '2025-01-12T16:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-eze-2025',
+    playerName: 'Eberechi Eze',
+    fromClub: 'Crystal Palace',
+    toClub: 'Arsenal',
+    fee: '£60m',
+    date: '2025-01-10T15:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+
+  // RELEASES AND DEPARTURES
+  {
+    id: 'arsenal-jorginho-2025',
+    playerName: 'Jorginho',
     fromClub: 'Arsenal',
-    toClub: 'Released',
+    toClub: 'Flamengo',
     fee: 'Released',
     date: '2025-07-06T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
   {
-    id: 'arsenal-jorginho-2025',
-    playerName: 'Jorginho',
+    id: 'arsenal-butler-oyedeji-2025',
+    playerName: 'Nathan Butler-Oyedeji',
     fromClub: 'Arsenal',
-    toClub: 'Flamengo',
-    fee: 'Free',
-    date: '2025-07-06T12:00:00Z',
+    toClub: 'Lausanne',
+    fee: 'Released',
+    date: '2025-01-02T12:00:00Z',
+    source: 'arsenal.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-quesada-thorn-2025',
+    playerName: 'Elian Quesada-Thorn',
+    fromClub: 'Arsenal',
+    toClub: 'Alajuelense',
+    fee: 'Released',
+    date: '2025-01-02T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -67,18 +110,8 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Kieran Tierney',
     fromClub: 'Arsenal',
     toClub: 'Celtic',
-    fee: 'Free',
+    fee: 'Released',
     date: '2025-07-06T12:00:00Z',
-    source: 'arsenal.com',
-    status: 'confirmed'
-  },
-  {
-    id: 'arsenal-norgaard-2025',
-    playerName: 'Christian Norgaard',
-    fromClub: 'Brentford',
-    toClub: 'Arsenal',
-    fee: 'Undisclosed',
-    date: '2025-07-20T14:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
@@ -123,73 +156,25 @@ export const arsenalTransfers: Transfer[] = [
     status: 'confirmed'
   },
   {
-    id: 'arsenal-butler-oyedeji-2025',
-    playerName: 'Nathan Butler-Oyedeji',
+    id: 'arsenal-tomiyasu-2025',
+    playerName: 'Takehiro Tomiyasu',
     fromClub: 'Arsenal',
     toClub: 'Free Agent',
     fee: 'Released',
-    date: '2025-01-02T12:00:00Z',
+    date: '2025-01-05T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },
+
+  // LOANS OUT
   {
-    id: 'arsenal-quesada-thorn-2025',
-    playerName: 'Elian Quesada-Thorn',
+    id: 'arsenal-hein-2025',
+    playerName: 'Karl Hein',
     fromClub: 'Arsenal',
-    toClub: 'Free Agent',
-    fee: 'Released',
-    date: '2025-01-02T12:00:00Z',
+    toClub: 'Werder Bremen',
+    fee: 'Loan Out',
+    date: '2025-01-03T14:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
-  },
-  {
-    id: 'arsenal-sesko-in-rumor',
-    playerName: 'Benjamin Šeško',
-    fromClub: 'RB Leipzig',
-    toClub: 'Arsenal',
-    fee: 'May pivot to Gyökeres',
-    status: 'rumored' as const,
-    date: '2025-01-08',
-    source: 'Transfer Rumors'
-  },
-  {
-    id: 'arsenal-rodrygo-in-rumor',
-    playerName: 'Rodrygo',
-    fromClub: 'Real Madrid',
-    toClub: 'Arsenal',
-    fee: 'Dream target - dependent on Martinelli sale',
-    status: 'rumored' as const,
-    date: '2025-01-08',
-    source: 'Transfer Rumors'
-  },
-  {
-    id: 'arsenal-eze-in-rumor',
-    playerName: 'Eberechi Eze',
-    fromClub: 'Crystal Palace',
-    toClub: 'Arsenal',
-    fee: 'Release clause required',
-    status: 'rumored' as const,
-    date: '2025-01-08',
-    source: 'Transfer Rumors'
-  },
-  {
-    id: 'arsenal-madueke-in-rumor',
-    playerName: 'Noni Madueke',
-    fromClub: 'Chelsea',
-    toClub: 'Arsenal',
-    fee: '',
-    status: 'rumored' as const,
-    date: '2025-07-11',
-    source: 'Transfer Rumors'
-  },
-  {
-    id: 'arsenal-gyokeres-in-rumor',
-    playerName: 'Viktor Gyokeres',
-    fromClub: 'Sporting',
-    toClub: 'Arsenal',
-    fee: '',
-    status: 'rumored' as const,
-    date: '2025-07-11',
-    source: 'Transfer Rumors'
   }
 ];
