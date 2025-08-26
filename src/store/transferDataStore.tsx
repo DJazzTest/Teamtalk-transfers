@@ -146,20 +146,12 @@ export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ childr
     };
   }, [isPollingEnabled, pollingInterval, performPolling]);
 
-  // Combine static transfers with API data
+  // Use static transfers with real values
   const allTransfers = useMemo(() => {
     const staticTransfers = TransferIntegrationService.getAllTransfers();
-    const combined = [
-      ...staticTransfers,
-      ...teamTalkTransfers,
-      ...scoreInsideAllTransfers
-    ];
-    
-    // Deduplicate the combined data
-    const deduplicated = deduplicateTransfersUI(combined);
-    console.log(`✅ Combined data: ${staticTransfers.length} static + ${teamTalkTransfers.length} TeamTalk + ${scoreInsideAllTransfers.length} ScoreInside = ${deduplicated.length} final transfers`);
-    return deduplicated;
-  }, [teamTalkTransfers, scoreInsideAllTransfers]);
+    console.log('✅ Using static data with real transfer fees');
+    return staticTransfers;
+  }, []);
 
   const refreshAllData = async () => {
     console.log('Refreshing all API data sources...');

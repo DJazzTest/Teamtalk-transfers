@@ -7,11 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { Star, ArrowRight } from 'lucide-react';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { Transfer } from '@/types/transfer';
-import { categorizeAllClubTransfers, getTransferCounts } from '@/utils/transferCategorizer';
 import { useToast } from '@/hooks/use-toast';
 
 interface TeamTransferStatsProps {
-  allTransfers?: Transfer[];  // Changed to use allTransfers instead of clubTransfers
+  clubTransfers: { [key: string]: Transfer[] };
   starredClubs: string[];
   onStarClub: (clubName: string) => void;
   onViewClubTransfers: (clubName: string) => void;
@@ -19,24 +18,14 @@ interface TeamTransferStatsProps {
   clubBadgeMap: Record<string, string>;
 }
 
-export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({ 
-  allTransfers = [],
-  starredClubs, 
-  onStarClub, 
-  onViewClubTransfers, 
+export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
+  clubTransfers,
+  starredClubs,
+  onStarClub,
+  onViewClubTransfers,
   myClub,
-  clubBadgeMap 
+  clubBadgeMap
 }) => {
-  const clubNames = [
-    'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
-    'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham',
-    'Leeds United', 'Liverpool', 'Manchester City', 'Manchester United',
-    'Newcastle United', 'Nottingham Forest', 'Sunderland', 'Tottenham Hotspur',
-    'West Ham United', 'Wolverhampton Wanderers'
-  ];
-
-  // Categorize all transfers by club
-  const categorizedByClub = categorizeAllClubTransfers(allTransfers, clubNames);
   const { toast } = useToast();
 
   const handleStarClick = (clubName: string) => {
@@ -53,7 +42,7 @@ export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {Object.entries(categorizedByClub)
+      {Object.entries(clubTransfers)
         .sort(([a], [b]) => {
           // Sort my club first, then starred clubs, then alphabetically
           if (a === myClub) return -1;
@@ -62,8 +51,9 @@ export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
           if (starredClubs.includes(b) && !starredClubs.includes(a)) return 1;
           return a.localeCompare(b);
         })
-        .map(([club, categorized]) => {
-          const counts = getTransferCounts(categorized);
+        .map(([club, transfers]) => {
+          const confirmedCount = transfers.filter(t => t.status === 'confirmed').length;
+          const rumoredCount = transfers.filter(t => t.status === 'rumored').length;
           const isMyClub = club === myClub;
           const isStarred = starredClubs.includes(club);
 
@@ -83,7 +73,7 @@ export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
                   <div className="flex-1">
                     <h3 className={`font-bold text-lg flex items-center gap-2 ${isMyClub ? 'text-blue-300' : 'text-white'}`}>
                       <img
-                        src={clubBadgeMap[club] || `/badges/${club.toLowerCase().replace(/[^a-z]/g, '')}.png`}
+                        src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '')}.png`}
                         alt={`${club} badge`}
                         className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
                         onError={e => {
@@ -126,27 +116,21 @@ export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
 
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-sm">
-                    <span className="text-green-300">Confirmed In:</span>
+                    <span className="text-gray-300">Confirmed:</span>
                     <Badge className="bg-green-500/20 text-green-400">
-                      {counts.confirmedIn}
+                      {confirmedCount}
                     </Badge>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-red-300">Confirmed Out:</span>
-                    <Badge className="bg-red-500/20 text-red-400">
-                      {counts.confirmedOut}
-                    </Badge>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-yellow-300">Rumors:</span>
+                    <span className="text-gray-300">Rumored:</span>
                     <Badge className="bg-yellow-500/20 text-yellow-400">
-                      {counts.rumors}
+                      {rumoredCount}
                     </Badge>
                   </div>
                   <div className="flex justify-between text-sm font-semibold border-t border-slate-600 pt-2">
                     <span className="text-white">Total:</span>
                     <Badge className="bg-blue-500/20 text-blue-400">
-                      {counts.total}
+                      {transfers.length}
                     </Badge>
                   </div>
                 </div>

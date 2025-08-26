@@ -162,7 +162,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 }}
                 className="text-gray-300 hover:text-white border-gray-600 hover:border-gray-500"
               >
-                ← Home Page
+                ← Back to Teams
               </Button>
             </div>
           </div>

@@ -84,6 +84,12 @@ const WebsiteContent = () => {
 
         <AppHeader lastUpdated={lastUpdated || new Date()} />
         <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
+          <button
+            className="mb-4 px-4 py-2 rounded bg-blue-700 text-white font-semibold hover:bg-blue-800 transition"
+            onClick={handleBackToDashboard}
+          >
+            ← Back to Dashboard
+          </button>
           <TeamTransferView transfers={allTransfers} selectedTeam={selectedClub} onBack={handleBackToDashboard} />
         </div>
       </div>

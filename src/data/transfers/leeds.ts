@@ -1,9 +1,7 @@
 
 import { Transfer } from '@/types/transfer';
-import { deduplicateClubTransfers } from '@/utils/transferDeduplication';
 
-// Remove duplicates and keep the best version of each player
-const rawTransfers: Transfer[] = [
+export const leedsTransfers: Transfer[] = [
   {
     id: 'leeds-longstaff-2025',
     playerName: 'Sean Longstaff',
@@ -136,6 +134,3 @@ const rawTransfers: Transfer[] = [
     status: 'confirmed'
   }
 ];
-
-// Export deduplicated transfers - keeps confirmed over rumored, most recent entries
-export const leedsTransfers: Transfer[] = deduplicateClubTransfers(rawTransfers);
