@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { TrendingUp, TrendingDown, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface ClubSpendingChart2025Props {
   onSelectClub?: (club: string) => void;
@@ -60,21 +59,18 @@ const getClubBadge = (club: string): string => {
 };
 
 export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ onSelectClub }) => {
-  const [showAll, setShowAll] = useState(false);
-  
   // Calculate net spend and sort by total spending
   const chartData = clubFinancialData
     .map(club => ({
       ...club,
       netSpend: club.spending - club.earnings,
+      clubShort: club.club.length > 12 ? club.club.substring(0, 12) + '...' : club.club
     }))
     .sort((a, b) => b.spending - a.spending);
 
-  const displayData = showAll ? chartData : chartData.slice(0, 8);
-
-  const handleClubClick = (club: string) => {
+  const handleBarClick = (data: any) => {
     if (onSelectClub) {
-      onSelectClub(club);
+      onSelectClub(data.club);
     }
   };
 
@@ -94,81 +90,91 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
           </div>
         </div>
         
-        {/* Scrollable club cards */}
-        <div className="flex gap-4 overflow-x-auto pb-4 mb-4" style={{
+        {/* Scrollable chart container */}
+        <div className="overflow-x-auto pb-4" style={{
           scrollbarWidth: 'thin',
           scrollbarColor: '#9CA3AF #E5E7EB'
         }}>
-          {displayData.map((club) => (
-            <Card 
-              key={club.club} 
-              className="min-w-[160px] max-w-[160px] bg-slate-800/50 backdrop-blur-md border-slate-700 hover:border-blue-400/50 transition-all duration-200 cursor-pointer"
-              onClick={() => handleClubClick(club.club)}
-            >
-              <div className="p-4 flex flex-col items-center gap-3">
+          <div className="min-w-[1200px] h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                <XAxis 
+                  dataKey="clubShort" 
+                  tick={false}
+                  axisLine={false}
+                />
+                <YAxis 
+                  tick={{ fontSize: 12, fill: '#E5E7EB' }}
+                  label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
+                />
+                <Tooltip 
+                  formatter={(value: number, name: string) => {
+                    const label = name === 'spending' ? 'Spent' : name === 'earnings' ? 'Earned' : 'Net Spend';
+                    return [`£${value.toFixed(1)}M`, label];
+                  }}
+                  labelFormatter={(label: string) => label}
+                  contentStyle={{
+                    backgroundColor: 'rgba(47, 81, 122, 0.95)',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    borderRadius: '8px',
+                    color: '#fff'
+                  }}
+                />
+                <Bar 
+                  dataKey="spending" 
+                  name="spending" 
+                  fill="#DC2626" 
+                  radius={[2, 2, 0, 0]} 
+                  onClick={handleBarClick}
+                  style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
+                />
+                <Bar 
+                  dataKey="earnings" 
+                  name="earnings" 
+                  fill="#10B981" 
+                  radius={[2, 2, 0, 0]} 
+                  onClick={handleBarClick}
+                  style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          
+          {/* Custom club info below chart - also scrollable */}
+          <div className="min-w-[1200px] flex gap-4 mt-4 px-4">
+            {chartData.map((club, index) => (
+              <div key={club.club} className="text-center flex-shrink-0 w-14">
+                {/* Earnings - Green */}
+                <div className="text-xs font-semibold text-green-400 mb-1">
+                  £{club.earnings.toFixed(1)}M
+                </div>
+                {/* Spending - Red */}
+                <div className="text-xs font-semibold text-red-400 mb-2">
+                  £{club.spending.toFixed(1)}M
+                </div>
+                {/* Club Name - Horizontal */}
+                <div className="text-xs font-medium text-white mb-2 leading-tight">
+                  {club.club}
+                </div>
                 {/* Club Badge */}
                 <div className="flex justify-center">
                   <img
                     src={getClubBadge(club.club)}
                     alt={`${club.club} badge`}
-                    className="w-12 h-12 rounded-full shadow-lg bg-white object-contain border-2 border-gray-200"
+                    className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none';
                     }}
                   />
                 </div>
-                
-                {/* Club Name */}
-                <div className="text-sm font-bold text-white text-center leading-tight">
-                  {club.club}
-                </div>
-                
-                {/* Earnings - Green */}
-                <div className="text-center">
-                  <div className="text-xs text-green-400 font-medium">Earned</div>
-                  <div className="text-sm font-bold text-green-400">
-                    £{club.earnings.toFixed(1)}M
-                  </div>
-                </div>
-                
-                {/* Spending - Red */}
-                <div className="text-center">
-                  <div className="text-xs text-red-400 font-medium">Spent</div>
-                  <div className="text-sm font-bold text-red-400">
-                    £{club.spending.toFixed(1)}M
-                  </div>
-                </div>
-                
-                {/* Net Spend */}
-                <div className="text-center border-t border-slate-600 pt-2 w-full">
-                  <div className="text-xs text-blue-400 font-medium">Net</div>
-                  <div className={`text-sm font-bold ${
-                    club.netSpend > 0 ? 'text-red-400' : 'text-green-400'
-                  }`}>
-                    {club.netSpend > 0 ? '+' : ''}£{club.netSpend.toFixed(1)}M
-                  </div>
-                </div>
               </div>
-            </Card>
-          ))}
-          
-          {/* Show More Button */}
-          {chartData.length > 8 && (
-            <div className="flex items-center min-w-[120px]">
-              <Button
-                onClick={() => setShowAll(!showAll)}
-                variant="outline"
-                size="sm"
-                className="border-blue-400/50 text-blue-400 hover:bg-blue-500/20 hover:border-blue-300"
-              >
-                {showAll ? 'Show Less' : `Show More (${chartData.length - 8})`}
-              </Button>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
         
         {/* Summary Statistics */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           <div className="bg-red-500/20 p-3 rounded-lg">
             <div className="flex items-center justify-center gap-2 mb-1">
               <TrendingUp className="w-4 h-4 text-red-400" />
