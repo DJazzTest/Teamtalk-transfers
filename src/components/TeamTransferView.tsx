@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
-import { Star, Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock } from 'lucide-react';
+import { Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { premierLeagueClubs } from '@/data/mockTransfers';
@@ -37,7 +37,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
       setNewsLoading(true);
       try {
         // Use ScoreInside API to fetch transfer articles and news
-        const response = await fetch('https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=1&per_page=20&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBczeY8Ku923Q2MXcUog5gTDAZQ', {
+        const response = await fetch('https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=1&per_page=50&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBrzeY8Ku923Q2MXcUog5gTDAZQ', {
           headers: {
             'accept': 'application/json',
             'user-agent': 'TransferCentre/1.0'
@@ -51,17 +51,28 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
         const data = await response.json();
         
         if (data.status === 200 && data.result?.transfer_articles?.data) {
-          // Filter articles for the selected team
+          // Enhanced filtering for club-specific articles
+          const selectedTeamLower = selectedTeam.toLowerCase();
+          const clubKeywords = [
+            selectedTeam,
+            selectedTeam.toLowerCase(),
+            selectedTeam.replace(' United', '').replace(' City', '').replace(' Hotspur', '').replace(' FC', ''),
+            selectedTeamLower.replace(' united', '').replace(' city', '').replace(' hotspur', '').replace(' fc', '')
+          ];
+
           const clubArticles = data.result.transfer_articles.data
             .filter((item: any) => {
               const teamName = item.team?.nm;
               const headline = item.article?.hdl?.toLowerCase() || '';
-              const selectedTeamLower = selectedTeam.toLowerCase();
               
-              // Match by team name or if team mentioned in headline
-              return teamName === selectedTeam || 
-                     headline.includes(selectedTeamLower) ||
-                     headline.includes(selectedTeam.replace(' United', '').replace(' City', '').replace(' Hotspur', ''))
+              // Direct team match
+              if (teamName === selectedTeam) return true;
+              
+              // Check if any club keyword is mentioned in headline
+              return clubKeywords.some(keyword => 
+                headline.includes(keyword.toLowerCase()) ||
+                headline.includes(keyword)
+              );
             })
             .map((item: any) => ({
               id: item.aid,
@@ -80,6 +91,37 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
               new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
             );
 
+          // If we have fewer than 3 articles, add some general Premier League articles
+          if (clubArticles.length < 3) {
+            const generalArticles = data.result.transfer_articles.data
+              .filter((item: any) => {
+                // Don't add articles we already have
+                return !clubArticles.some((existing: any) => existing.id === item.aid) &&
+                       // Include Premier League related articles
+                       (item.article?.hdl?.toLowerCase().includes('premier league') ||
+                        item.article?.hdl?.toLowerCase().includes('pl ') ||
+                        premierLeagueClubs.some(club => 
+                          item.article?.hdl?.toLowerCase().includes(club.toLowerCase())
+                        ))
+              })
+              .slice(0, 5 - clubArticles.length)
+              .map((item: any) => ({
+                id: item.aid,
+                title: item.article.hdl,
+                description: `${item.scat} - Player: ${item.player?.nm || 'Unknown'}`,
+                url: `https://www.teamtalk.com/transfer-news/${item.article.sl}`,
+                publishedAt: item.article.sdt,
+                source: 'ScoreInside',
+                category: item.scat,
+                player: item.player?.nm,
+                team: item.team?.nm,
+                image: item.article.image?.impth || item.article.image?.scim,
+                imageTitle: item.article.image?.ttl
+              }));
+
+            clubArticles.push(...generalArticles);
+          }
+
           setClubNews(clubArticles.slice(0, 10));
         } else {
           setClubNews([]);
@@ -94,6 +136,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
 
     fetchClubNews();
   }, [selectedTeam]);
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredClubs, setFilteredClubs] = useState(premierLeagueClubs);
 
@@ -131,33 +174,6 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
     };
   };
 
-  // Starred club state (localStorage sync)
-  const [starredClubs, setStarredClubs] = useState<string[]>(() => {
-    const saved = localStorage.getItem('starredClubs');
-    return saved ? JSON.parse(saved) : [];
-  });
-  // Sync with localStorage updates from other tabs/components
-  useEffect(() => {
-    const handler = (event: any) => {
-      if (event.detail) setStarredClubs(event.detail);
-      else {
-        const saved = localStorage.getItem('starredClubs');
-        setStarredClubs(saved ? JSON.parse(saved) : []);
-      }
-    };
-    window.addEventListener('starredClubsUpdate', handler);
-    return () => window.removeEventListener('starredClubsUpdate', handler);
-  }, []);
-  // Star/unstar logic
-  const handleStarClub = (clubName: string) => {
-    const newStarred = starredClubs.includes(clubName)
-      ? starredClubs.filter(c => c !== clubName)
-      : [...starredClubs, clubName];
-    setStarredClubs(newStarred);
-    localStorage.setItem('starredClubs', JSON.stringify(newStarred));
-    window.dispatchEvent(new CustomEvent('starredClubsUpdate', { detail: newStarred }));
-  };
-
   if (selectedTeam) {
     const stats = getTeamStats(selectedTeam);
     
@@ -187,32 +203,6 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 }}
               />
               {selectedTeam}
-              {/* Club badge button for favoriting */}
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleStarClub(selectedTeam)}
-                      className={`ml-1 p-1 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50 transition-transform duration-150 ${starredClubs.includes(selectedTeam) ? 'bg-yellow-400/20 border-yellow-400' : ''}`}
-                      aria-label={starredClubs.includes(selectedTeam) ? 'Remove from Favourites' : 'Add to Favourites'}
-                    >
-                      <img
-                        src={`/badges/${clubBadgeMap[selectedTeam!] || selectedTeam?.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
-                        alt={`${selectedTeam} badge`}
-                        className={`w-6 h-6 rounded-full object-contain ${starredClubs.includes(selectedTeam) ? 'ring-2 ring-yellow-400' : ''}`}
-                        onError={e => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">
-                    {starredClubs.includes(selectedTeam) ? 'Remove from Favourites' : 'Add to Favourites'}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
             </h2>
             {/* Show current spend for this club */}
             <div className="mt-2 flex items-center gap-2">
