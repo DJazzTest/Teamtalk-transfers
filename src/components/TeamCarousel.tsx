@@ -3,11 +3,11 @@ import { Card } from '@/components/ui/card';
 
 // Premier League clubs list
 const premierLeagueClubs = [
-  'Arsenal', 'Aston Villa', 'Brentford', 'Brighton & Hove Albion', 'Chelsea',
-  'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 'Leicester City',
-  'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United',
-  'Nottingham Forest', 'Southampton', 'Tottenham Hotspur', 'West Ham United',
-  'Wolverhampton Wanderers', 'Bournemouth'
+  'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
+  'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town',
+  'Leicester City', 'Leeds United', 'Liverpool', 'Manchester City', 'Manchester United',
+  'Newcastle United', 'Nottingham Forest', 'Sheffield United', 'Tottenham Hotspur',
+  'West Ham United'
 ];
 
 // Club badge mapping - centralized system using REAL official badges
@@ -28,14 +28,12 @@ const getClubBadge = (club: string): string => {
     'Manchester United': '/badges/manchesterunited-real.png', // Real Man United badge
     'Newcastle United': '/badges/newcastle-real.png', // Real Newcastle badge
     'Nottingham Forest': '/badges/nottinghamforest-real.png', // Real Nottingham Forest badge
-    'Southampton': '/badges/southampton-real.png', // Real Southampton badge
     'Tottenham Hotspur': '/badges/tottenham-real.png', // Real Spurs badge
     'West Ham United': '/badges/westham-real.png', // Real West Ham badge
-    'Wolverhampton Wanderers': '/badges/wolves-real.png', // Real Wolves badge
     // Teams without real badges will use initials fallback
-    'Burnley': '',
+    'Ipswich Town': '',
     'Leicester City': '',
-    'Sunderland': ''
+    'Sheffield United': ''
   };
   return badgeMap[club] || '';
 };

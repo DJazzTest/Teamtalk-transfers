@@ -11,14 +11,13 @@ export const useLeagueData = () => {
     return allTransfers;
   }, [allTransfers]);
 
-  const leagueClubs = useMemo(() => {
+const leagueClubs = useMemo(() => {
     return [
-      'Arsenal', 'Aston Villa', 'Brentford', 'Brighton & Hove Albion', 'Chelsea',
-      'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town', 'Leeds United',
-      'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United',
-      'Newcastle United', 'Nottingham Forest', 'Sheffield United', 'Southampton',
-      'Tottenham Hotspur', 'West Ham United', 'Wolverhampton Wanderers',
-      'Bournemouth', 'Burnley', 'Sunderland'
+      'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
+      'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town',
+      'Leicester City', 'Leeds United', 'Liverpool', 'Manchester City', 'Manchester United',
+      'Newcastle United', 'Nottingham Forest', 'Sheffield United', 'Tottenham Hotspur',
+      'West Ham United'
     ];
   }, []);
 

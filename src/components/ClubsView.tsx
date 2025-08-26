@@ -19,14 +19,12 @@ export const clubBadgeMap: Record<string, string> = {
   'Manchester United': '/badges/manchesterunited-real.png', // Real Man United badge
   'Newcastle United': '/badges/newcastle-real.png', // Real Newcastle badge
   'Nottingham Forest': '/badges/nottinghamforest-real.png', // Real Nottingham Forest badge
-  'Southampton': '/badges/southampton-real.png', // Real Southampton badge
   'Tottenham Hotspur': '/badges/tottenham-real.png', // Real Spurs badge
   'West Ham United': '/badges/westham-real.png', // Real West Ham badge
-  'Wolverhampton Wanderers': '/badges/wolves-real.png', // Real Wolves badge
   // Teams without real badges will use fallback
-  'Burnley': '',
+  'Ipswich Town': '',
   'Leicester City': '',
-  'Sunderland': '',
+  'Sheffield United': '',
 };
 
 import { Button } from '@/components/ui/button';
