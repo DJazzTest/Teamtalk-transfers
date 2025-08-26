@@ -1,104 +1,106 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Transfer } from '@/types/transfer';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, TrendingDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface TransferSpendingChartProps {
   transfers: Transfer[];
 }
 
-const parseTransferFee = (fee: string): number => {
-  if (!fee || fee === 'Free Transfer' || fee === 'Released' || fee === 'Loan' || fee === 'End of loan') {
-    return 0;
-  }
-  
-  // Extract numbers from fee string (e.g., "£12M" -> 12)
-  const match = fee.match(/[£€$]?(\d+(?:\.\d+)?)[MmKk]?/);
-  if (!match) return 0;
-  
-  const number = parseFloat(match[1]);
-  if (fee.toLowerCase().includes('m')) {
-    return number; // Already in millions
-  } else if (fee.toLowerCase().includes('k')) {
-    return number / 1000; // Convert thousands to millions
-  }
-  return number; // Assume millions if no unit
-};
-
-const getBarColor = (spending: number): string => {
-  if (spending >= 51) return '#DC2626'; // Fiery red (£51m+)
-  if (spending >= 16) return '#F87171'; // Coral pink (£16-£50m)
-  return '#9CA3AF'; // Light gray (£0-£15m)
-};
+// Official 2025/26 Summer Window Data
+const clubFinancialData = [
+  { club: 'Arsenal', spending: 263.0, earnings: 9.0 },
+  { club: 'Manchester United', spending: 210.5, earnings: 0.0 },
+  { club: 'Liverpool', spending: 317.0, earnings: 207.0 },
+  { club: 'Chelsea', spending: 236.1, earnings: 207.8 },
+  { club: 'Manchester City', spending: 147.5, earnings: 81.2 },
+  { club: 'Nottingham Forest', spending: 147.7, earnings: 105.4 },
+  { club: 'Sunderland', spending: 147.9, earnings: 37.0 },
+  { club: 'Newcastle United', spending: 128.6, earnings: 32.0 },
+  { club: 'Tottenham Hotspur', spending: 122.5, earnings: 36.5 },
+  { club: 'Bournemouth', spending: 121.0, earnings: 191.3 },
+  { club: 'Leeds United', spending: 90.1, earnings: 5.2 },
+  { club: 'Burnley', spending: 87.4, earnings: 29.6 },
+  { club: 'Brentford', spending: 84.5, earnings: 88.4 },
+  { club: 'Everton', spending: 80.0, earnings: 6.0 },
+  { club: 'Wolverhampton Wanderers', spending: 77.8, earnings: 97.0 },
+  { club: 'West Ham United', spending: 72.8, earnings: 54.5 },
+  { club: 'Brighton & Hove Albion', spending: 67.75, earnings: 110.0 },
+  { club: 'Aston Villa', spending: 34.5, earnings: 42.5 },
+  { club: 'Crystal Palace', spending: 3.0, earnings: 68.5 },
+  { club: 'Fulham', spending: 0.43, earnings: 0.0 }
+];
 
 export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ transfers }) => {
-  // Premier League clubs only
-  const premierLeagueClubs = [
-    'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
-    'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham',
-    'Leeds United', 'Liverpool', 'Manchester City', 'Manchester United',
-    'Newcastle United', 'Nottingham Forest', 'Sunderland', 'Tottenham Hotspur',
-    'West Ham United', 'Wolverhampton Wanderers'
-  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const itemsPerPage = 6;
+  
+  // Calculate net spend and sort by total spending
+  const chartData = clubFinancialData
+    .map(club => ({
+      ...club,
+      netSpend: club.spending - club.earnings,
+      clubShort: club.club.length > 12 ? club.club.substring(0, 12) + '...' : club.club
+    }))
+    .sort((a, b) => b.spending - a.spending);
 
-  // Calculate spending per Premier League club (only incoming transfers)
-  const clubSpending = transfers
-    .filter(transfer => 
-      transfer.status === 'confirmed' && 
-      premierLeagueClubs.includes(transfer.toClub)
-    )
-    .reduce((acc, transfer) => {
-      const fee = parseTransferFee(transfer.fee);
-      if (fee > 0) {
-        acc[transfer.toClub] = (acc[transfer.toClub] || 0) + fee;
-      }
-      return acc;
-    }, {} as Record<string, number>);
+  const totalPages = Math.ceil(chartData.length / itemsPerPage);
+  const currentData = chartData.slice(currentIndex * itemsPerPage, (currentIndex + 1) * itemsPerPage);
 
-  // Update spending calculation to use real transfer data and fix £0 issue
-  const calculateCurrentSpend = (transfers: Transfer[]): number => {
-    return transfers
-      .filter(transfer => 
-        transfer.status === 'confirmed' && 
-        premierLeagueClubs.includes(transfer.toClub) &&
-        transfer.fee && transfer.fee !== 'Free Transfer' && transfer.fee !== 'Undisclosed'
-      )
-      .reduce((total, transfer) => {
-        const fee = parseTransferFee(transfer.fee);
-        return total + fee;
-      }, 0);
+  const nextPage = () => {
+    setCurrentIndex((prev) => (prev + 1) % totalPages);
   };
 
-  const totalCurrentSpend = calculateCurrentSpend(transfers);
+  const prevPage = () => {
+    setCurrentIndex((prev) => (prev - 1 + totalPages) % totalPages);
+  };
 
-  // Create chart data for ALL Premier League clubs
-  const chartData = premierLeagueClubs.map(club => {
-    const spending = clubSpending[club] || 0;
-    return {
-      club: club.length > 15 ? club.substring(0, 15) + '...' : club,
-      fullClub: club,
-      spending: Number(spending.toFixed(1)),
-      color: getBarColor(spending)
-    };
-  }).sort((a, b) => b.spending - a.spending); // Sort by spending (highest first)
+  const totalSpending = chartData.reduce((sum, club) => sum + club.spending, 0);
+  const totalEarnings = chartData.reduce((sum, club) => sum + club.earnings, 0);
+  const totalNetSpend = totalSpending - totalEarnings;
 
   return (
     <Card className="border-gray-200/50 shadow-lg mb-6" style={{ backgroundColor: '#2F517A' }}>
       <div className="p-3 sm:p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-blue-100 p-2 rounded-lg">
-            <TrendingUp className="w-5 h-5 text-blue-600" />
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="bg-blue-100 p-2 rounded-lg">
+              <TrendingUp className="w-5 h-5 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-blue-400">Club Spending 2025/26 Summer Window</h3>
+              <p className="text-sm text-gray-300">Page {currentIndex + 1} of {totalPages}</p>
+            </div>
           </div>
-          <h3 className="text-xl font-bold text-blue-400">Transfer Spending 2025</h3>
+          
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={prevPage}
+              className="text-white hover:bg-blue-500/20"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={nextPage}
+              className="text-white hover:bg-blue-500/20"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
         
         <div className="h-96">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+            <BarChart data={currentData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
               <XAxis 
-                dataKey="club" 
+                dataKey="clubShort" 
                 angle={-45} 
                 textAnchor="end" 
                 height={80}
@@ -106,16 +108,14 @@ export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ tr
               />
               <YAxis 
                 tick={{ fontSize: 12, fill: '#E5E7EB' }}
-                label={{ value: 'Spending (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
+                label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
               />
               <Tooltip 
-                formatter={(value: number, name: string, props: any) => [
-                  `£${value}M`, 
-                  props.payload.fullClub
-                ]}
-                labelFormatter={(label: string, payload: any) => 
-                  payload?.[0]?.payload?.fullClub || label
-                }
+                formatter={(value: number, name: string) => {
+                  const label = name === 'spending' ? 'Spent' : name === 'earnings' ? 'Earned' : 'Net Spend';
+                  return [`£${value.toFixed(1)}M`, label];
+                }}
+                labelFormatter={(label: string) => label}
                 contentStyle={{
                   backgroundColor: 'rgba(47, 81, 122, 0.95)',
                   border: '1px solid rgba(255,255,255,0.2)',
@@ -123,22 +123,36 @@ export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ tr
                   color: '#fff'
                 }}
               />
-              <Bar 
-                dataKey="spending" 
-                radius={[4, 4, 0, 0]}
-              >
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Bar>
+              <Bar dataKey="spending" name="spending" fill="#DC2626" radius={[2, 2, 0, 0]} />
+              <Bar dataKey="earnings" name="earnings" fill="#10B981" radius={[2, 2, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
         
-        <div className="mt-4 text-center">
-          <p className="text-sm text-gray-300">
-            Current window spend: £{totalCurrentSpend.toFixed(1)}M from confirmed transfers
-          </p>
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div className="bg-red-500/20 p-3 rounded-lg">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <TrendingUp className="w-4 h-4 text-red-400" />
+              <span className="text-sm font-medium text-red-400">Total Spent</span>
+            </div>
+            <p className="text-lg font-bold text-white">£{totalSpending.toFixed(1)}M</p>
+          </div>
+          
+          <div className="bg-green-500/20 p-3 rounded-lg">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <TrendingDown className="w-4 h-4 text-green-400" />
+              <span className="text-sm font-medium text-green-400">Total Earned</span>
+            </div>
+            <p className="text-lg font-bold text-white">£{totalEarnings.toFixed(1)}M</p>
+          </div>
+          
+          <div className="bg-blue-500/20 p-3 rounded-lg">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <TrendingUp className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-medium text-blue-400">Net Spend</span>
+            </div>
+            <p className="text-lg font-bold text-white">£{totalNetSpend.toFixed(1)}M</p>
+          </div>
         </div>
       </div>
     </Card>
