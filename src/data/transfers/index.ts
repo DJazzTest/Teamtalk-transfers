@@ -6,6 +6,7 @@ import { bournemouthTransfers } from './bournemouth';
 import { brentfordTransfers } from './brentford';
 import { brightonTransfers } from './brighton';
 import { leedsTransfers } from './leeds';
+import { burnleyTransfers } from './burnley';
 import { latestRumors } from './rumors';
 import { chelseaTransfers } from './chelsea';
 import { crystalPalaceTransfers } from './crystalPalace';
@@ -21,8 +22,10 @@ import { tottenhamTransfers } from './tottenham';
 import { westHamTransfers } from './westHam';
 import { wolvesTransfers } from './wolves';
 
-// Additional club transfers
-const burnleyTransfers: Transfer[] = [
+import { deduplicateClubTransfers } from '@/utils/transferDeduplication';
+
+// Additional club transfers (legacy - will be moved to dedicated files)
+const legacyBurnleyTransfers: Transfer[] = [
   {
     id: 'burnley-humphreys-2025',
     playerName: 'Bashir Humphreys',
@@ -115,14 +118,15 @@ const burnleyTransfers: Transfer[] = [
   }
 ];
 
-// Combine all transfers - ONLY REAL TRANSFERS
-export const allClubTransfers: Transfer[] = [
+// Combine all transfers with deduplication - ONLY REAL TRANSFERS
+const combinedTransfers: Transfer[] = [
   ...latestRumors,
   ...arsenalTransfers,
   ...astonVillaTransfers,
   ...bournemouthTransfers,
   ...brentfordTransfers,
   ...brightonTransfers,
+  ...burnleyTransfers,  // Use proper Burnley file
   ...chelseaTransfers,
   ...crystalPalaceTransfers,
   ...evertonTransfers,
@@ -136,6 +140,8 @@ export const allClubTransfers: Transfer[] = [
   ...sunderlandTransfers,
   ...tottenhamTransfers,
   ...westHamTransfers,
-  ...wolvesTransfers,
-  ...burnleyTransfers
+  ...wolvesTransfers
 ];
+
+// Apply final deduplication across all clubs
+export const allClubTransfers: Transfer[] = deduplicateClubTransfers(combinedTransfers);

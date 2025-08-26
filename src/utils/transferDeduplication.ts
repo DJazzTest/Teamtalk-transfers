@@ -119,33 +119,42 @@ export function deduplicateTransfersUI(transfers: Transfer[]): Transfer[] {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
-// Utility function to clear duplicates from a specific array
-export function clearDuplicateNames(transfers: Transfer[]): Transfer[] {
-  const seen = new Map<string, Transfer>();
+// Enhanced deduplication specifically for individual club transfer data
+export function deduplicateClubTransfers(transfers: Transfer[]): Transfer[] {
+  const playerMap = new Map<string, Transfer>();
 
   for (const transfer of transfers) {
-    const normalizedPlayer = normalizePlayerName(transfer.playerName);
-    const normalizedToClub = normalizeClub(transfer.toClub);
-    const normalizedFromClub = normalizeClub(transfer.fromClub);
-    
-    const key = `${normalizedPlayer}-${normalizedFromClub}-${normalizedToClub}`;
-    const existing = seen.get(key);
+    const playerKey = normalizePlayerName(transfer.playerName);
+    const existing = playerMap.get(playerKey);
 
     if (!existing) {
-      seen.set(key, transfer);
+      playerMap.set(playerKey, transfer);
     } else {
-      // Keep the one with more recent date or better source
+      // Determine which transfer to keep based on priority rules
       const transferDate = new Date(transfer.date);
       const existingDate = new Date(existing.date);
       
-      if (transferDate > existingDate || 
-          (transferDate.getTime() === existingDate.getTime() && 
-           transfer.status === 'confirmed' && existing.status !== 'confirmed')) {
-        seen.set(key, transfer);
+      const shouldReplace = 
+        // Confirmed transfers beat rumors
+        (transfer.status === 'confirmed' && existing.status === 'rumored') ||
+        // If both same status, prefer more recent
+        (transfer.status === existing.status && transferDate > existingDate) ||
+        // If same date, prefer confirmed
+        (transferDate.getTime() === existingDate.getTime() && 
+         transfer.status === 'confirmed' && existing.status !== 'confirmed');
+
+      if (shouldReplace) {
+        playerMap.set(playerKey, transfer);
       }
     }
   }
 
-  return Array.from(seen.values())
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return Array.from(playerMap.values())
+    .sort((a, b) => {
+      // Sort by status (confirmed first) then by date (newest first)
+      if (a.status !== b.status) {
+        return a.status === 'confirmed' ? -1 : 1;
+      }
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
 }
