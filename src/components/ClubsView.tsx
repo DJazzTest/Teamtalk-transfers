@@ -175,7 +175,7 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               <div>
                 <h4 className="text-lg font-semibold text-yellow-400 mb-3 flex items-center gap-2">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                  Rumours ({categorizedTransfers.rumors.length})
+                  Transfer Rumours ({categorizedTransfers.rumors.length})
                 </h4>
                 <div className="space-y-3">
                   {categorizedTransfers.rumors.map((transfer) => (
@@ -192,10 +192,12 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               <div>
                 <h4 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  Transferred In ({categorizedTransfers.confirmedIn.length})
+                  Recent Signings ({categorizedTransfers.confirmedIn.filter(t => t.status === 'confirmed').length})
                 </h4>
                 <div className="space-y-3">
-                  {categorizedTransfers.confirmedIn.map((transfer) => (
+                  {categorizedTransfers.confirmedIn
+                    .filter(transfer => transfer.status === 'confirmed')
+                    .map((transfer) => (
                     <div key={transfer.id} className="bg-green-900/20 rounded-lg p-4 border border-green-700/50 hover:bg-green-900/30 transition-all duration-200">
                       <TransferCard transfer={transfer} />
                     </div>
@@ -209,10 +211,12 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               <div>
                 <h4 className="text-lg font-semibold text-red-400 mb-3 flex items-center gap-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  Transferred Out ({categorizedTransfers.confirmedOut.length})
+                  Recent Departures ({categorizedTransfers.confirmedOut.filter(t => t.status === 'confirmed').length})
                 </h4>
                 <div className="space-y-3">
-                  {categorizedTransfers.confirmedOut.map((transfer) => (
+                  {categorizedTransfers.confirmedOut
+                    .filter(transfer => transfer.status === 'confirmed')
+                    .map((transfer) => (
                     <div key={transfer.id} className="bg-red-900/20 rounded-lg p-4 border border-red-700/50 hover:bg-red-900/30 transition-all duration-200">
                       <TransferCard transfer={transfer} />
                     </div>
