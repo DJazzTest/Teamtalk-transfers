@@ -1,9 +1,8 @@
 
-import React, { createContext, useContext, ReactNode, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Transfer } from '@/types/transfer';
 import { useTeamTalkFeed } from '@/hooks/useTeamTalkFeed';
 import { useScoreInsideFeed } from '@/hooks/useScoreInsideFeed';
-import { useTransferPolling } from '@/hooks/useTransferPolling';
 import { deduplicateTransfersUI } from '@/utils/transferDeduplication';
 
 interface TransferDataStore {
@@ -66,16 +65,85 @@ export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ childr
     refreshTeam: refreshTeamData
   } = useScoreInsideFeed(true);
 
-  // Enhanced polling service for real-time updates
-  const {
-    manualRefresh: manualPollingRefresh,
-    isEnabled: isPollingEnabled,
-    intervalMinutes: pollingInterval
-  } = useTransferPolling({
-    enabled: true,
-    intervalMinutes: 5, // Poll every 5 minutes
-    showNotifications: true
-  });
+  // Polling state - moved directly into the provider
+  const [isPollingEnabled] = useState(true);
+  const [pollingInterval] = useState(5);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Direct polling implementation (no context dependency)
+  const performPolling = useCallback(async (): Promise<void> => {
+    if (!isPollingEnabled) return;
+
+    console.log(`🔄 Polling for transfer updates... (${new Date().toLocaleTimeString()})`);
+    
+    try {
+      const FCM_TOKEN = "ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBczeY8Ku923Q2MXcUog5gTDAZQ";
+      
+      // Fetch transfers and news in parallel
+      const [transfersResponse, newsResponse] = await Promise.all([
+        fetch(`https://liveapi.scoreinside.com/api/user/favourite/team-top-transfers?fcm_token=${FCM_TOKEN}`, {
+          headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'TransferCentre/1.0'
+          }
+        }),
+        fetch(`https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=1&per_page=10&fcm_token=${FCM_TOKEN}`, {
+          headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'TransferCentre/1.0'
+          }
+        })
+      ]);
+
+      if (transfersResponse.ok) {
+        const transfersData = await transfersResponse.json();
+        console.log(`✅ Fetched ${transfersData.result?.top_transfers?.length || 0} top transfers`);
+      }
+
+      if (newsResponse.ok) {
+        const newsData = await newsResponse.json();
+        console.log(`📰 Fetched ${newsData.result?.transfer_articles?.data?.length || 0} news articles`);
+      }
+
+      // Refresh the main data stores
+      await Promise.all([
+        refreshTeamTalkFeed(),
+        refreshScoreInsideFeed()
+      ]);
+      
+      console.log('✅ Polling completed successfully');
+    } catch (error) {
+      console.error('❌ Polling failed:', error);
+    }
+  }, [isPollingEnabled, refreshTeamTalkFeed, refreshScoreInsideFeed]);
+
+  // Set up polling interval
+  useEffect(() => {
+    if (!isPollingEnabled) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
+
+    // Initial poll
+    performPolling();
+
+    // Set up interval
+    intervalRef.current = setInterval(() => {
+      performPolling();
+    }, pollingInterval * 60 * 1000);
+
+    console.log(`🕐 Transfer polling started - checking every ${pollingInterval} minute(s)`);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [isPollingEnabled, pollingInterval, performPolling]);
 
   // Combined transfers with deduplication - API data only
   const allTransfers = useMemo(() => {
@@ -104,6 +172,11 @@ export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ childr
     ]);
     setLastUpdated(new Date());
   };
+
+  // Manual polling refresh function
+  const manualPollingRefresh = useCallback(async () => {
+    await performPolling();
+  }, [performPolling]);
 
   const store: TransferDataStore = {
     teamTalkTransfers,
