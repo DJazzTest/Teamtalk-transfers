@@ -49,14 +49,20 @@ export class TeamTalkApiService {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
-          'User-Agent': 'TransferCentre/1.0',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
           'Cache-Control': 'no-cache'
         },
         mode: 'cors'
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        console.warn(`TeamTalk API returned ${response.status}: ${response.statusText}`);
+        // Return cached data if API fails but we have cache
+        if (this.cache.data) {
+          console.log('Using cached TeamTalk data due to API failure');
+          return this.cache.data;
+        }
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data: TeamTalkFeedResponse = await response.json();
@@ -67,17 +73,24 @@ export class TeamTalkApiService {
         timestamp: now
       };
 
+      console.log('✅ TeamTalk API fetch successful:', data?.items?.length || 0, 'articles');
       return data;
+      
     } catch (error) {
       console.error('Error fetching TeamTalk feed:', error);
       
-      // Return cached data if available to avoid total failure
+      // Return cached data if available, otherwise return empty structure
       if (this.cache.data) {
-        console.warn('Returning cached TeamTalk data due to fetch error');
+        console.log('Using cached TeamTalk data due to fetch error');
         return this.cache.data;
       }
       
-      throw error;
+      // Return empty response structure to prevent crashes
+      return {
+        status: 500,
+        message: 'Failed to fetch TeamTalk data',
+        items: []
+      };
     }
   }
 
@@ -94,19 +107,19 @@ export class TeamTalkApiService {
 
     // Check categories for transfer-related content
     const transferCategories = ['Transfer News', 'Transfers', 'Rumours'];
-    if (article.category.some(cat => transferCategories.includes(cat))) {
+    if (article.category && article.category.some(cat => transferCategories.includes(cat))) {
       return true;
     }
 
     // Check headline and excerpt for transfer keywords
-    const textToCheck = `${article.headline} ${article.excerpt}`.toLowerCase();
+    const textToCheck = `${article.headline || ''} ${article.excerpt || ''}`.toLowerCase();
     return TRANSFER_KEYWORDS.some(keyword => textToCheck.includes(keyword));
   }
 
   parseTransferInfo(article: TeamTalkArticle): ParsedTransferInfo | null {
-    const headline = article.headline.toLowerCase();
-    const excerpt = article.excerpt.toLowerCase();
-    const description = article.description.toLowerCase();
+    const headline = (article.headline || '').toLowerCase();
+    const excerpt = (article.excerpt || '').toLowerCase();
+    const description = (article.description || '').toLowerCase();
     
     // Get player name from transfer_players if available
     let playerName = '';
@@ -114,7 +127,7 @@ export class TeamTalkApiService {
       playerName = article.transfer_players[0].name;
     } else {
       // Try to extract player name from headline
-      const nameMatch = article.headline.match(/^([A-Z][a-z]+ [A-Z][a-z]+)/);
+      const nameMatch = article.headline?.match(/^([A-Z][a-z]+ [A-Z][a-z]+)/);
       if (nameMatch) {
         playerName = nameMatch[1];
       }
@@ -237,32 +250,54 @@ export class TeamTalkApiService {
   }
 
   async getTransferArticles(): Promise<TeamTalkArticle[]> {
-    const feed = await this.fetchFeed();
-    return feed.items.filter(article => this.isTransferRelated(article));
+    try {
+      const feed = await this.fetchFeed();
+      if (!feed?.items || feed.items.length === 0) {
+        console.log('No TeamTalk articles available');
+        return [];
+      }
+      
+      const transferArticles = feed.items.filter(article => this.isTransferRelated(article));
+      console.log(`Filtered ${transferArticles.length} transfer-related articles from ${feed.items.length} total`);
+      return transferArticles;
+    } catch (error) {
+      console.error('Error getting transfer articles:', error);
+      return []; // Return empty array instead of throwing
+    }
   }
 
   async getTransfers(): Promise<Transfer[]> {
-    const articles = await this.getTransferArticles();
-    const transfers: Transfer[] = [];
-
-    for (const article of articles) {
-      const transferInfo = this.parseTransferInfo(article);
-      if (transferInfo && transferInfo.confidence > 0.6) {
-        const transfer: Transfer = {
-          id: `teamtalk-${article.id}`,
-          playerName: transferInfo.playerName,
-          fromClub: transferInfo.fromClub || 'Unknown',
-          toClub: transferInfo.toClub || 'Unknown',
-          fee: transferInfo.fee || 'Undisclosed',
-          date: article.pub_date,
-          source: 'TeamTalk',
-          status: transferInfo.status
-        };
-        transfers.push(transfer);
+    try {
+      const articles = await this.getTransferArticles();
+      if (articles.length === 0) {
+        return [];
       }
+      
+      const transfers: Transfer[] = [];
+      
+      for (const article of articles) {
+        const parsed = this.parseTransferInfo(article);
+        if (parsed && parsed.confidence > 0.6) {
+          const transfer: Transfer = {
+            id: `teamtalk-${article.id}`,
+            playerName: parsed.playerName,
+            fromClub: parsed.fromClub || 'Unknown',
+            toClub: parsed.toClub || 'Unknown', 
+            fee: parsed.fee || 'Undisclosed',
+            status: parsed.status,
+            date: article.pub_date || new Date().toISOString(),
+            source: 'TeamTalk'
+          };
+          transfers.push(transfer);
+        }
+      }
+      
+      console.log(`Generated ${transfers.length} transfers from TeamTalk with confidence > 0.6`);
+      return transfers;
+    } catch (error) {
+      console.error('Error getting transfers from TeamTalk:', error);
+      return []; // Return empty array instead of throwing
     }
-
-    return transfers;
   }
 }
 

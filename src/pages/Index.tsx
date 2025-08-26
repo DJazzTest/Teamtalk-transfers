@@ -32,17 +32,47 @@ const Index = () => {
 
   // Set countdown to Monday 1 September 2025 at 19:00 BST (18:00 UTC)
   const [countdownTarget, setCountdownTarget] = useState('2025-09-01T18:00:00Z');
-  const [allTransfers, setAllTransfers] = useState<Transfer[]>(() => {
-    // Initialize with only real transfers
-    return TransferIntegrationService.getAllTransfers();
-  });
+  const [allTransfers, setAllTransfers] = useState<Transfer[]>([]);
+  
+  // Initialize transfers on mount
+  useEffect(() => {
+    const initializeTransfers = async () => {
+      try {
+        // Use the new live data service for fresh transfer data
+        const { liveDataService } = await import('@/services/liveDataService');
+        const liveTransfers = await liveDataService.getAllTransfers();
+        
+        console.log('✅ Initialized with live transfer data:', liveTransfers.length, 'transfers');
+        setAllTransfers(liveTransfers);
+      } catch (error) {
+        console.error('❌ Error initializing transfers:', error);
+        // Fallback to static data if live data fails
+        const staticTransfers = TransferIntegrationService.getAllTransfers();
+        setAllTransfers(staticTransfers);
+      }
+    };
+    
+    initializeTransfers();
+  }, []);
 
   // Listen for refresh events and update transfers
   useEffect(() => {
-    const handleRefresh = () => {
-      console.log('Refreshing all transfers data...');
-      const realTransfers = TransferIntegrationService.getAllTransfers();
-      setAllTransfers(realTransfers);
+    const handleRefresh = async () => {
+      console.log('🔄 Manual refresh triggered');
+      try {
+        // Force refresh from live data service
+        const { liveDataService } = await import('@/services/liveDataService');
+        liveDataService.clearCache(); // Clear cache for fresh data
+        const freshTransfers = await liveDataService.getAllTransfers(true);
+        
+        console.log('✅ Manual refresh completed:', freshTransfers.length, 'transfers');
+        setAllTransfers(freshTransfers);
+      } catch (error) {
+        console.error('❌ Error during manual refresh:', error);
+        // Fallback to static data on error
+        const staticTransfers = TransferIntegrationService.getAllTransfers();
+        setAllTransfers(staticTransfers);
+      }
     };
 
     // Listen for both auto and manual refresh events

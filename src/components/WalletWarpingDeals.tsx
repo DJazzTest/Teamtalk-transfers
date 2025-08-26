@@ -53,18 +53,18 @@ export const WalletWarpingDeals: React.FC<WalletWarpingDealsProps> = ({ transfer
     }
   }, [transfers]);
 
-  // Top 10 Most Expensive UK Premier League Transfers season (2025–26) - User provided data
+  // Top 10 Most Expensive UK Premier League Transfers season (2025–26) - Updated with latest data
   const top10ExpensiveTransfers = [
     { playerName: 'Florian Wirtz', fromClub: 'Bayer Leverkusen', toClub: 'Liverpool', fee: '£106m', feeValue: 106 },
-    { playerName: 'Hugo Ekitike', fromClub: 'Eintracht Frankfurt', toClub: 'Liverpool', fee: '£81m', feeValue: 81 },
-    { playerName: 'Bryan Mbeumo', fromClub: 'Brentford', toClub: 'Manchester United', fee: '£64m', feeValue: 64 },
+    { playerName: 'Hugo Ekitike', fromClub: 'Eintracht Frankfurt', toClub: 'Liverpool', fee: '£88m', feeValue: 88 },
+    { playerName: 'Bryan Mbeumo', fromClub: 'Brentford', toClub: 'Manchester United', fee: '£74m', feeValue: 74 },
     { playerName: 'Matheus Cunha', fromClub: 'Wolverhampton Wanderers', toClub: 'Manchester United', fee: '£63m', feeValue: 63 },
+    { playerName: 'Eberechi Eze', fromClub: 'Crystal Palace', toClub: 'Arsenal', fee: '£60m', feeValue: 60 },
     { playerName: 'Martin Zubimendi', fromClub: 'Real Sociedad', toClub: 'Arsenal', fee: '£59m', feeValue: 59 },
+    { playerName: 'Viktor Gyökeres', fromClub: 'Sporting CP', toClub: 'Arsenal', fee: '£57.5m', feeValue: 57.5 },
     { playerName: 'Jamie Gittens', fromClub: 'Borussia Dortmund', toClub: 'Chelsea', fee: '£55m', feeValue: 55 },
     { playerName: 'Mohammed Kudus', fromClub: 'West Ham United', toClub: 'Tottenham Hotspur', fee: '£54m', feeValue: 54 },
-    { playerName: 'Joao Pedro', fromClub: 'Brighton & Hove Albion', toClub: 'Chelsea', fee: '£54m', feeValue: 54 },
-    { playerName: 'Anthony Elanga', fromClub: 'Nottingham Forest', toClub: 'Newcastle United', fee: '£52m', feeValue: 52 },
-    { playerName: 'Noni Madueke', fromClub: 'Chelsea', toClub: 'Arsenal', fee: '£47m', feeValue: 47 }
+    { playerName: 'Joao Pedro', fromClub: 'Brighton & Hove Albion', toClub: 'Chelsea', fee: '£54m', feeValue: 54 }
   ];
 
   // Create transfer objects with proper structure and deduplication
@@ -83,7 +83,7 @@ export const WalletWarpingDeals: React.FC<WalletWarpingDealsProps> = ({ transfer
       fee: transfer.fee,
       feeValue: transfer.feeValue,
       status: 'confirmed',
-      date: matchingTransfer?.date || '2025-01-15', // Default date for current season
+      date: matchingTransfer?.date || '2025-08-26', // Updated to current date for current season
       source: matchingTransfer?.source || 'Official Transfer',
       ...matchingTransfer // Merge any additional data if found
     };
