@@ -11,9 +11,7 @@ import { TransferCard } from './TransferCard';
 import { premierLeagueClubs } from '@/data/mockTransfers';
 import { clubBadgeMap } from './ClubsView';
 import { topSpendingClubs } from '@/data/topSpendingClubs';
-import { newsApi } from '@/services/newsApi';
-import { teamTalkApi } from '@/services/teamtalkApi';
-import { TeamTalkArticle } from '@/types/teamtalk';
+import { scoreInsideApi } from '@/services/scoreinsideApi';
 
 // Build a map of club -> spend from the topSpendingClubs data
 const clubSpendMap: Record<string, number> = Object.fromEntries(
@@ -38,45 +36,52 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
       
       setNewsLoading(true);
       try {
-        // Fetch both regular news and TeamTalk articles
-        const [newsArticles, teamTalkArticles] = await Promise.all([
-          newsApi.fetchNews(),
-          teamTalkApi.getTransferArticles()
-        ]);
+        // Use ScoreInside API to fetch transfer articles and news
+        const response = await fetch('https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=1&per_page=20&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBczeY8Ku923Q2MXcUog5gTDAZQ', {
+          headers: {
+            'accept': 'application/json',
+            'user-agent': 'TransferCentre/1.0'
+          }
+        });
 
-        // Filter for the selected club
-        const clubRelatedNews = [
-          ...newsArticles.filter(article => 
-            article.title.toLowerCase().includes(selectedTeam.toLowerCase()) ||
-            article.summary.toLowerCase().includes(selectedTeam.toLowerCase())
-          ).map(article => ({ 
-            ...article, 
-            description: article.summary,
-            publishedAt: article.time,
-            source: 'News', 
-            type: 'news' 
-          })),
-          ...teamTalkArticles.filter(article => 
-            article.headline.toLowerCase().includes(selectedTeam.toLowerCase()) ||
-            article.excerpt.toLowerCase().includes(selectedTeam.toLowerCase()) ||
-            article.description.toLowerCase().includes(selectedTeam.toLowerCase())
-          ).map(article => ({ 
-            ...article, 
-            title: article.headline,
-            description: article.excerpt,
-            url: `https://www.teamtalk.com/${article.slug}`,
-            publishedAt: article.pub_date,
-            source: 'TeamTalk',
-            type: 'teamtalk'
-          }))
-        ];
+        if (!response.ok) {
+          throw new Error('Failed to fetch news');
+        }
 
-        // Sort by date
-        clubRelatedNews.sort((a, b) => 
-          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-        );
+        const data = await response.json();
+        
+        if (data.status === 200 && data.result?.transfer_articles?.data) {
+          // Filter articles for the selected team
+          const clubArticles = data.result.transfer_articles.data
+            .filter((item: any) => {
+              const teamName = item.team?.nm;
+              const headline = item.article?.hdl?.toLowerCase() || '';
+              const selectedTeamLower = selectedTeam.toLowerCase();
+              
+              // Match by team name or if team mentioned in headline
+              return teamName === selectedTeam || 
+                     headline.includes(selectedTeamLower) ||
+                     headline.includes(selectedTeam.replace(' United', '').replace(' City', '').replace(' Hotspur', ''))
+            })
+            .map((item: any) => ({
+              id: item.aid,
+              title: item.article.hdl,
+              description: `${item.scat} - Player: ${item.player?.nm || 'Unknown'}`,
+              url: `https://www.teamtalk.com/transfer-news/${item.article.sl}`,
+              publishedAt: item.article.sdt,
+              source: 'ScoreInside',
+              category: item.scat,
+              player: item.player?.nm,
+              team: item.team?.nm
+            }))
+            .sort((a: any, b: any) => 
+              new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+            );
 
-        setClubNews(clubRelatedNews.slice(0, 10)); // Limit to 10 articles
+          setClubNews(clubArticles.slice(0, 10));
+        } else {
+          setClubNews([]);
+        }
       } catch (error) {
         console.error('Error fetching club news:', error);
         setClubNews([]);
@@ -334,15 +339,26 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                     <div key={`${article.source}-${index}`} className="bg-slate-700/50 rounded-lg p-4 hover:bg-slate-700/70 transition-all duration-200">
                       <div className="flex items-start gap-3">
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Badge className={article.source === 'TeamTalk' ? 'bg-blue-500' : 'bg-purple-500'}>
-                              {article.source}
-                            </Badge>
-                            <div className="flex items-center gap-1 text-gray-400 text-xs">
-                              <Clock className="w-3 h-3" />
-                              {new Date(article.publishedAt).toLocaleDateString()}
-                            </div>
-                          </div>
+                           <div className="flex items-center gap-2 mb-2">
+                             <Badge className={
+                               article.category === 'Top Source' ? 'bg-green-500' :
+                               article.category === 'Heavily Linked' ? 'bg-orange-500' :
+                               article.category === 'Rumours' ? 'bg-blue-500' :
+                               article.category === 'Done Deal' ? 'bg-purple-500' :
+                               'bg-gray-500'
+                             }>
+                               {article.category || article.source}
+                             </Badge>
+                             {article.player && (
+                               <Badge variant="outline" className="text-gray-400 border-gray-600">
+                                 {article.player}
+                               </Badge>
+                             )}
+                             <div className="flex items-center gap-1 text-gray-400 text-xs">
+                               <Clock className="w-3 h-3" />
+                               {new Date(article.publishedAt).toLocaleDateString()}
+                             </div>
+                           </div>
                           <h4 className="text-white font-semibold text-sm leading-tight mb-2">
                             {article.title}
                           </h4>
