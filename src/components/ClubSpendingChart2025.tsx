@@ -95,8 +95,8 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
           scrollbarWidth: 'thin',
           scrollbarColor: '#9CA3AF #E5E7EB'
         }}>
-          <div className="min-w-[1200px] h-64">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="min-w-[1800px] h-64">
+            <ResponsiveContainer width="100%" height="100%" minWidth={1800}>
               <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                 <XAxis 
@@ -142,7 +142,7 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
           </div>
           
           {/* Custom club info below chart - also scrollable */}
-          <div className="min-w-[1200px] flex gap-12 mt-4 px-4 justify-start items-end">
+          <div className="min-w-[1800px] flex gap-12 mt-4 px-4 justify-start items-end">
             {chartData.map((club, index) => (
               <div 
                 key={club.club} 

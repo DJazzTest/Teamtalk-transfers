@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +10,7 @@ import { TransferCard } from './TransferCard';
 import { premierLeagueClubs } from '@/data/mockTransfers';
 import { clubBadgeMap } from './ClubsView';
 import { topSpendingClubs } from '@/data/topSpendingClubs';
-import { scoreInsideApi } from '@/services/scoreinsideApi';
+import { newsApi } from '@/services/newsApi';
 
 // Build a map of club -> spend from the topSpendingClubs data
 const clubSpendMap: Record<string, number> = Object.fromEntries(
@@ -29,94 +28,71 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
   const [clubNews, setClubNews] = useState<any[]>([]);
   const [newsLoading, setNewsLoading] = useState(false);
 
-  // Fetch news when team is selected
+  // Fetch news when team is selected using the working newsApi
   useEffect(() => {
     const fetchClubNews = async () => {
       if (!selectedTeam) return;
       
       setNewsLoading(true);
       try {
-        // Use ScoreInside API to fetch transfer articles and news
-        const response = await fetch('https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=1&per_page=50&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBrzeY8Ku923Q2MXcUog5gTDAZQ', {
-          headers: {
-            'accept': 'application/json',
-            'user-agent': 'TransferCentre/1.0'
-          }
+        // Use the working newsApi that combines multiple sources
+        const allArticles = await newsApi.fetchNews();
+        
+        // Enhanced filtering for club-specific articles
+        const selectedTeamLower = selectedTeam.toLowerCase();
+        const clubKeywords = [
+          selectedTeam,
+          selectedTeamLower,
+          selectedTeam.replace(' United', '').replace(' City', '').replace(' Hotspur', '').replace(' FC', ''),
+          selectedTeamLower.replace(' united', '').replace(' city', '').replace(' hotspur', '').replace(' fc', '')
+        ];
+
+        // Filter articles related to the selected club
+        const clubArticles = allArticles.filter(article => {
+          const content = `${article.title} ${article.summary}`.toLowerCase();
+          return clubKeywords.some(keyword => 
+            content.includes(keyword.toLowerCase())
+          );
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch news');
+        // Convert to the format expected by the UI
+        const formattedArticles = clubArticles.slice(0, 10).map(article => ({
+          id: article.id,
+          title: article.title,
+          description: article.summary,
+          url: article.url || '#',
+          publishedAt: new Date().toISOString(), // Use current time as fallback
+          source: article.source,
+          category: article.category,
+          player: null,
+          team: selectedTeam,
+          image: article.image,
+          imageTitle: article.title
+        }));
+
+        // If we have fewer than 5 club-specific articles, add some general transfer news
+        if (formattedArticles.length < 5) {
+          const generalArticles = allArticles
+            .filter(article => !clubArticles.some(existing => existing.id === article.id))
+            .slice(0, 8 - formattedArticles.length)
+            .map(article => ({
+              id: article.id,
+              title: article.title,
+              description: article.summary,
+              url: article.url || '#',
+              publishedAt: new Date().toISOString(),
+              source: article.source,
+              category: article.category,
+              player: null,
+              team: null,
+              image: article.image,
+              imageTitle: article.title
+            }));
+
+          formattedArticles.push(...generalArticles);
         }
 
-        const data = await response.json();
-        
-        if (data.status === 200 && data.result?.transfer_articles?.data) {
-          // Enhanced filtering for club-specific articles
-          const selectedTeamLower = selectedTeam.toLowerCase();
-          const clubKeywords = [
-            selectedTeam,
-            selectedTeamLower,
-            selectedTeam.replace(' United', '').replace(' City', '').replace(' Hotspur', '').replace(' FC', ''),
-            selectedTeamLower.replace(' united', '').replace(' city', '').replace(' hotspur', '').replace(' fc', '')
-          ];
-
-          const clubArticles = data.result.transfer_articles.data
-            .filter((item: any) => {
-              const teamName = item.team?.nm;
-              const headline = item.article?.hdl?.toLowerCase() || '';
-              
-              // Direct team match
-              if (teamName === selectedTeam) return true;
-              
-              // Check if any club keyword is mentioned in headline
-              return clubKeywords.some(keyword => 
-                headline.includes(keyword.toLowerCase())
-              );
-            })
-            .map((item: any) => ({
-              id: item.aid,
-              title: item.article.hdl,
-              description: `${item.scat} - Player: ${item.player?.nm || 'Unknown'}`,
-              url: `https://www.teamtalk.com/transfer-news/${item.article.sl}`,
-              publishedAt: item.article.sdt,
-              source: 'ScoreInside',
-              category: item.scat,
-              player: item.player?.nm,
-              team: item.team?.nm,
-              image: item.article.image?.impth || item.article.image?.scim,
-              imageTitle: item.article.image?.ttl
-            }))
-            .sort((a: any, b: any) => 
-              new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-            );
-
-          // Always show at least some articles - if no specific club articles, show general Premier League news
-          let finalArticles = clubArticles;
-          if (finalArticles.length < 5) {
-            const generalArticles = data.result.transfer_articles.data
-              .filter((item: any) => !clubArticles.some((existing: any) => existing.id === item.aid))
-              .slice(0, 8 - finalArticles.length)
-              .map((item: any) => ({
-                id: item.aid,
-                title: item.article.hdl,
-                description: `${item.scat} - Player: ${item.player?.nm || 'Unknown'}`,
-                url: `https://www.teamtalk.com/transfer-news/${item.article.sl}`,
-                publishedAt: item.article.sdt,
-                source: 'ScoreInside',
-                category: item.scat,
-                player: item.player?.nm,
-                team: item.team?.nm,
-                image: item.article.image?.impth || item.article.image?.scim,
-                imageTitle: item.article.image?.ttl
-              }));
-
-            finalArticles = [...finalArticles, ...generalArticles];
-          }
-
-          setClubNews(finalArticles.slice(0, 10));
-        } else {
-          setClubNews([]);
-        }
+        setClubNews(formattedArticles);
       } catch (error) {
         console.error('Error fetching club news:', error);
         setClubNews([]);
@@ -127,66 +103,74 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
 
     fetchClubNews();
   }, [selectedTeam]);
-  
+
+  // Handle team selection changes
+  useEffect(() => {
+    if (externalSelectedTeam !== selectedTeam) {
+      setSelectedTeam(externalSelectedTeam || null);
+    }
+  }, [externalSelectedTeam]);
+
+  // Filter logic for team selection page
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredClubs, setFilteredClubs] = useState(premierLeagueClubs);
 
   useEffect(() => {
-    if (searchTerm) {
-      setFilteredClubs(
-        premierLeagueClubs.filter(club =>
-          club.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    } else {
-      setFilteredClubs(premierLeagueClubs);
-    }
+    const filtered = premierLeagueClubs.filter(club =>
+      club.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredClubs(filtered);
   }, [searchTerm]);
 
   const getTeamStats = (teamName: string) => {
-    const transfersIn = transfers.filter(t => t.toClub === teamName);
-    const transfersOut = transfers.filter(t => t.fromClub === teamName);
-    const rumors = transfers.filter(t => 
-      (t.toClub === teamName || t.fromClub === teamName) && t.status === 'rumored'
+    const teamTransfers = transfers.filter(
+      transfer => transfer.fromClub === teamName || transfer.toClub === teamName
     );
 
-    // Sort function to order transfers by date (oldest to latest)
-    const sortByDate = (a: Transfer, b: Transfer) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-      return dateA - dateB; // Oldest first
-    };
+    const transfersIn = teamTransfers.filter(t => t.toClub === teamName).sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+    
+    const transfersOut = teamTransfers.filter(t => t.fromClub === teamName).sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
 
-    return {
-      transfersIn: transfersIn.filter(t => t.status === 'confirmed').sort(sortByDate),
-      transfersOut: transfersOut.filter(t => t.status === 'confirmed').sort(sortByDate),
-      rumors: rumors.sort(sortByDate),
-      totalActivity: transfersIn.length + transfersOut.length
-    };
+    const rumors = teamTransfers.filter(t => 
+      t.status === 'rumored' && (t.fromClub === teamName || t.toClub === teamName)
+    ).sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+
+    return { transfersIn, transfersOut, rumors, totalActivity: teamTransfers.length };
   };
 
   if (selectedTeam) {
-    const stats = getTeamStats(selectedTeam);
-    
+    const { transfersIn, transfersOut, rumors } = getTeamStats(selectedTeam);
+
     return (
       <div className="space-y-6">
-        {/* Back Button and Team Header */}
+        {/* Team Header */}
         <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <button
-                onClick={onBack ? onBack : () => setSelectedTeam(null)}
-                className="text-blue-400 hover:text-blue-300 transition-colors"
+          <div className="p-6 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => {
+                  setSelectedTeam(null);
+                  onBack?.();
+                }}
+                className="text-gray-300 hover:text-white border-gray-600 hover:border-gray-500"
               >
-                ← Back to All Teams
-              </button>
-              <Badge className="bg-blue-500 text-white">
-                {stats.totalActivity} Total Activities
-              </Badge>
+                ← Back to Teams
+              </Button>
             </div>
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          </div>
+          
+          <div className="px-6 pb-6">
+            <h2 className="text-2xl font-bold text-white flex items-center gap-3 mb-2">
               <img
-                src={`/badges/${clubBadgeMap[selectedTeam!] || selectedTeam?.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                src={`/badges/${clubBadgeMap[selectedTeam] || selectedTeam.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
                 alt={`${selectedTeam} badge`}
                 className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
                 onError={e => {
@@ -205,17 +189,17 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
           </div>
         </Card>
 
-        {/* Club News Index Carousel */}
+        {/* Latest Transfer News */}
         <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
           <div className="p-6">
             <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
               <ExternalLink className="w-5 h-5 text-purple-400" />
-              Club News Index ({clubNews.length})
+              Latest Transfer News ({clubNews.length})
             </h3>
             {newsLoading ? (
               <div className="text-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400 mx-auto"></div>
-                <p className="text-gray-400 mt-2">Loading club news...</p>
+                <p className="text-gray-400 mt-2">Loading latest news...</p>
               </div>
             ) : clubNews.length === 0 ? (
               <p className="text-gray-400 text-center py-8">No recent news found for {selectedTeam}</p>
@@ -255,11 +239,6 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                             }>
                               {article.category || article.source}
                             </Badge>
-                            {article.player && (
-                              <Badge variant="outline" className="text-gray-400 border-gray-600 text-xs">
-                                {article.player}
-                              </Badge>
-                            )}
                           </div>
                           
                           <h4 className="text-white font-semibold text-sm leading-tight mb-2 line-clamp-3">
@@ -269,16 +248,18 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                           <div className="flex items-center justify-between mt-auto">
                             <div className="flex items-center gap-1 text-gray-400 text-xs">
                               <Clock className="w-3 h-3" />
-                              {new Date(article.publishedAt).toLocaleDateString()}
+                              {article.source}
                             </div>
-                            <a
-                              href={article.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 text-xs font-medium transition-colors"
-                            >
-                              Read <ExternalLink className="w-3 h-3" />
-                            </a>
+                            {article.url && article.url !== '#' && (
+                              <a 
+                                href={article.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-purple-400 hover:text-purple-300 transition-colors"
+                              >
+                                <ExternalLink className="w-4 h-4" />
+                              </a>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -290,182 +271,179 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
           </div>
         </Card>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <div className="p-4 flex items-center gap-3">
-              <div className="bg-green-500/20 p-2 rounded-lg">
+        {/* Transfer Summary Cards */}
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <Card className="bg-green-900/20 border-green-700/50 backdrop-blur-md">
+            <div className="p-4">
+              <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className="w-5 h-5 text-green-400" />
+                <h3 className="text-lg font-semibold text-green-400">Transfers In</h3>
               </div>
-              <div>
-                <p className="text-white font-semibold">{stats.transfersIn.length}</p>
-                <p className="text-gray-300 text-sm">Transfers In</p>
-              </div>
-            </div>
-          </Card>
-          
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <div className="p-4 flex items-center gap-3">
-              <div className="bg-red-500/20 p-2 rounded-lg">
-                <TrendingDown className="w-5 h-5 text-red-400" />
-              </div>
-              <div>
-                <p className="text-white font-semibold">{stats.transfersOut.length}</p>
-                <p className="text-gray-300 text-sm">Transfers Out</p>
-              </div>
+              <p className="text-2xl font-bold text-white">{transfersIn.length}</p>
+              <p className="text-green-300 text-sm">New signings</p>
             </div>
           </Card>
 
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <div className="p-4 flex items-center gap-3">
-              <div className="bg-blue-500/20 p-2 rounded-lg">
+          <Card className="bg-red-900/20 border-red-700/50 backdrop-blur-md">
+            <div className="p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingDown className="w-5 h-5 text-red-400" />
+                <h3 className="text-lg font-semibold text-red-400">Transfers Out</h3>
+              </div>
+              <p className="text-2xl font-bold text-white">{transfersOut.length}</p>
+              <p className="text-red-300 text-sm">Departures</p>
+            </div>
+          </Card>
+
+          <Card className="bg-blue-900/20 border-blue-700/50 backdrop-blur-md">
+            <div className="p-4">
+              <div className="flex items-center gap-2 mb-2">
                 <MessageCircle className="w-5 h-5 text-blue-400" />
+                <h3 className="text-lg font-semibold text-blue-400">Rumours</h3>
               </div>
-              <div>
-                <p className="text-white font-semibold">{stats.rumors.length}</p>
-                <p className="text-gray-300 text-sm">Rumors & Gossip</p>
-              </div>
+              <p className="text-2xl font-bold text-white">{rumors.length}</p>
+              <p className="text-blue-300 text-sm">Potential moves</p>
             </div>
           </Card>
         </div>
 
-        {/* Transfer Categories */}
-        <div className="space-y-6">
-          {/* Transfers In */}
+        {/* Transfers In */}
+        {transfersIn.length > 0 && (
           <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
             <div className="p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-green-400" />
-                Transfers In ({stats.transfersIn.length})
+                Recent Signings ({transfersIn.length})
               </h3>
-              {stats.transfersIn.length === 0 ? (
-                <p className="text-gray-400 text-center py-8">No confirmed transfers in</p>
-              ) : (
-                <div className="space-y-3">
-                  {stats.transfersIn.map((transfer) => (
-                    <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4">
-                      <TransferCard transfer={transfer} />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="space-y-3">
+                {transfersIn.map((transfer) => (
+                  <TransferCard key={transfer.id} transfer={transfer} />
+                ))}
+              </div>
             </div>
           </Card>
+        )}
 
-          {/* Transfers Out */}
+        {/* Transfers Out */}
+        {transfersOut.length > 0 && (
           <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
             <div className="p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <TrendingDown className="w-5 h-5 text-red-400" />
-                Transfers Out ({stats.transfersOut.length})
+                Recent Departures ({transfersOut.length})
               </h3>
-              {stats.transfersOut.length === 0 ? (
-                <p className="text-gray-400 text-center py-8">No confirmed transfers out</p>
-              ) : (
-                <div className="space-y-3">
-                  {stats.transfersOut.map((transfer) => (
-                    <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4">
-                      <TransferCard transfer={transfer} />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="space-y-3">
+                {transfersOut.map((transfer) => (
+                  <TransferCard key={transfer.id} transfer={transfer} />
+                ))}
+              </div>
             </div>
           </Card>
+        )}
 
-          {/* Rumors & Gossip */}
+        {/* Rumours */}
+        {rumors.length > 0 && (
           <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
             <div className="p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <MessageCircle className="w-5 h-5 text-blue-400" />
-                Rumors & Gossip ({stats.rumors.length})
+                Transfer Rumours ({rumors.length})
               </h3>
-              {stats.rumors.length === 0 ? (
-                <p className="text-gray-400 text-center py-8">No transfer rumors found</p>
-              ) : (
-                <div className="space-y-3">
-                  {stats.rumors.map((transfer) => (
-                    <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4">
-                      <TransferCard transfer={transfer} />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="space-y-3">
+                {rumors.map((transfer) => (
+                  <TransferCard key={transfer.id} transfer={transfer} />
+                ))}
+              </div>
             </div>
           </Card>
-        </div>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Search and Header */}
-      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-        <div className="p-6">
-          <div className="flex items-center gap-4 mb-4">
-            <Users className="w-6 h-6 text-blue-400" />
-            <h2 className="text-2xl font-bold text-white">Select a Team</h2>
+    <TooltipProvider>
+      <div className="space-y-6">
+        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <div className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Users className="w-6 h-6 text-purple-400" />
+              <h2 className="text-2xl font-bold text-white">Select a Team</h2>
+            </div>
+            
+            <div className="relative mb-6">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                placeholder="Search teams..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9 bg-slate-700/50 border-slate-600 text-white placeholder-gray-400"
+              />
+            </div>
           </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input
-              placeholder="Search teams..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-slate-700 border-slate-600 text-white placeholder:text-gray-400"
-            />
-          </div>
-        </div>
-      </Card>
+        </Card>
 
-      {/* Team Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredClubs.map((club) => {
-          const stats = getTeamStats(club);
-          return (
-            <Card
-              key={club}
-              className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 cursor-pointer transition-all duration-200"
-              onClick={() => setSelectedTeam(club)}
-            >
-              <div className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                  <img
-                    src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
-                    alt={`${club} badge`}
-                    className="w-6 h-6 rounded-full shadow bg-white object-contain border border-gray-200"
-                    onError={e => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                  />
-                  {club}
-                </h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-300">Transfers In:</span>
-                    <span className="text-green-400 font-medium">{stats.transfersIn.length}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredClubs.map((club) => {
+            const stats = getTeamStats(club);
+            
+            return (
+              <Card
+                key={club}
+                className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200 cursor-pointer group"
+                onClick={() => setSelectedTeam(club)}
+              >
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <img
+                      src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                      alt={`${club} badge`}
+                      className="w-6 h-6 rounded-full shadow bg-white object-contain border border-gray-200"
+                      onError={e => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                    <h3 className="font-semibold text-white group-hover:text-purple-300 transition-colors">
+                      {club}
+                    </h3>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-300">Transfers Out:</span>
-                    <span className="text-red-400 font-medium">{stats.transfersOut.length}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-300">Rumors:</span>
-                    <span className="text-blue-400 font-medium">{stats.rumors.length}</span>
-                  </div>
-                  <div className="border-t border-slate-600 pt-2 mt-2">
-                    <div className="flex justify-between text-sm font-semibold">
-                      <span className="text-white">Total Activity:</span>
-                      <span className="text-blue-400">{stats.totalActivity}</span>
+                  
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-green-400 flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3" />
+                        In: {stats.transfersIn.length}
+                      </span>
+                      <span className="text-red-400 flex items-center gap-1">
+                        <TrendingDown className="w-3 h-3" />
+                        Out: {stats.transfersOut.length}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-blue-400 flex items-center gap-1">
+                        <MessageCircle className="w-3 h-3" />
+                        Rumours: {stats.rumors.length}
+                      </span>
+                      <span className="text-gray-400 text-xs">
+                        Total: {stats.totalActivity}
+                      </span>
+                    </div>
+
+                    {/* Show current spend for this club */}
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-600">
+                      <span className="text-gray-400 text-xs">Current Spend:</span>
+                      <span className="text-green-400 font-semibold text-xs">
+                        £{(clubSpendMap[club] || 0).toLocaleString()}
+                      </span>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-          );
-        })}
+              </Card>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 };
