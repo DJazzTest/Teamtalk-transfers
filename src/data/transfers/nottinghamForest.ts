@@ -68,7 +68,7 @@ export const nottinghamForestTransfers: Transfer[] = [
     playerName: 'Morgan Gibbs-White',
     fromClub: 'Nottingham Forest',
     toClub: 'Tottenham',
-    fee: '',
+    fee: '£30m',
     status: 'rumored' as const,
     date: '2025-07-11',
     source: 'Transfer Rumors'
@@ -78,7 +78,7 @@ export const nottinghamForestTransfers: Transfer[] = [
     playerName: 'Johan Bakayoko',
     fromClub: 'PSV',
     toClub: 'Nottingham Forest',
-    fee: '',
+    fee: '£18m',
     status: 'rumored' as const,
     date: '2025-07-11',
     source: 'Transfer Rumors'

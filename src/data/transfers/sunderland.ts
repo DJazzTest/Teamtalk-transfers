@@ -87,7 +87,7 @@ export const sunderlandTransfers: Transfer[] = [
     playerName: 'Charlie Cresswell',
     fromClub: 'Toulouse',
     toClub: 'Sunderland',
-    fee: '',
+    fee: '£3.5m',
     date: '2025-07-11',
     source: 'safc.com',
     status: 'confirmed'

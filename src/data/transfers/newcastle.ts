@@ -67,7 +67,7 @@ export const newcastleTransfers: Transfer[] = [
     playerName: 'James Trafford',
     fromClub: 'Burnley',
     toClub: 'Newcastle United',
-    fee: '',
+    fee: '£20m',
     status: 'rumored' as const,
     date: '2025-07-11',
     source: 'Transfer Rumors'

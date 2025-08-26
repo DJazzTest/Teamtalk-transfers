@@ -137,7 +137,7 @@ export const tottenhamTransfers: Transfer[] = [
     playerName: 'Morgan Gibbs-White',
     fromClub: 'Nottingham Forest',
     toClub: 'Tottenham',
-    fee: '',
+    fee: '£30m',
     status: 'rumored' as const,
     date: '2025-07-11',
     source: 'Transfer Rumors'
