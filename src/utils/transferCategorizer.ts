@@ -82,7 +82,7 @@ export function categorizeTransfers(transfers: Transfer[], clubName: string): Ca
     if (a.status === 'confirmed' && b.status === 'rumored') return -1;
     if (a.status === 'rumored' && b.status === 'confirmed') return 1;
     
-    // If same status, sort by date (newest first)
+    // If same status, sort by date (newest first)  
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
@@ -98,22 +98,17 @@ export function categorizeTransfers(transfers: Transfer[], clubName: string): Ca
     // Mark player as processed
     processedPlayers.add(playerKey);
 
-    // Check if it's a rumor based on status or keywords
-    const isRumor = transfer.status === 'rumored' || 
-                    containsRumorKeywords(transfer) ||
-                    transfer.fee.toLowerCase().includes('interest') ||
-                    transfer.fee.toLowerCase().includes('reported');
-
-    if (isRumor) {
+    // FIXED: Use status field only for categorization
+    if (transfer.status === 'rumored') {
+      // All rumored transfers go to rumors section
       rumors.push(transfer);
-      continue;
-    }
-
-    // For confirmed transfers, categorize by direction
-    if (transfer.status === 'confirmed') {
+    } else if (transfer.status === 'confirmed') {
+      // Confirmed transfers: check direction using fromClub → toClub
       if (isClubMatch(transfer.toClub, clubName)) {
+        // Player joining this club (transfer IN)
         confirmedIn.push(transfer);
       } else if (isClubMatch(transfer.fromClub, clubName)) {
+        // Player leaving this club (transfer OUT)
         confirmedOut.push(transfer);
       }
     }
