@@ -80,7 +80,7 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Jorginho',
     fromClub: 'Arsenal',
     toClub: 'Flamengo',
-    fee: 'Released',
+    fee: 'Free Transfer (mutual agreement)',
     date: '2025-07-06T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
@@ -90,7 +90,7 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Nathan Butler-Oyedeji',
     fromClub: 'Arsenal',
     toClub: 'Lausanne',
-    fee: 'Released',
+    fee: 'Free Transfer (£300k FIFA compensation)',
     date: '2025-01-02T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
@@ -110,7 +110,7 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Kieran Tierney',
     fromClub: 'Arsenal',
     toClub: 'Celtic',
-    fee: 'Released',
+    fee: 'Free Transfer (contract expired)',
     date: '2025-07-06T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
@@ -140,7 +140,7 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Nuno Tavares',
     fromClub: 'Arsenal',
     toClub: 'Lazio',
-    fee: '£6.5m',
+    fee: '£6.5m (rising to £7.5m)',
     date: '2025-07-05T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
@@ -150,7 +150,7 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Marquinhos',
     fromClub: 'Arsenal',
     toClub: 'Cruzeiro',
-    fee: '£2.5m',
+    fee: '£2.5m+ (with sell-on clause)',
     date: '2025-07-05T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'

@@ -110,7 +110,7 @@ export const liverpoolTransfers: Transfer[] = [
     playerName: 'Caoimhin Kelleher',
     fromClub: 'Liverpool',
     toClub: 'Brentford',
-    fee: '£18M',
+    fee: '£18M (£12.5M + £5.5M add-ons)',
     date: '2025-01-17T16:30:00Z',
     source: 'liverpoolfc.com',
     status: 'confirmed'
@@ -192,7 +192,7 @@ export const liverpoolTransfers: Transfer[] = [
     playerName: 'Dominic Corness',
     fromClub: 'Liverpool',
     toClub: 'The New Saints',
-    fee: 'Released',
+    fee: 'Free Transfer (contract expired)',
     date: '2025-01-10T10:00:00Z',
     source: 'liverpoolfc.com',
     status: 'confirmed'
@@ -202,7 +202,7 @@ export const liverpoolTransfers: Transfer[] = [
     playerName: 'Jakub Ojrzynski',
     fromClub: 'Liverpool',
     toClub: 'Orebro',
-    fee: 'Released',
+    fee: 'Free Transfer (contract expired)',
     date: '2025-01-10T10:00:00Z',
     source: 'liverpoolfc.com',
     status: 'confirmed'
@@ -224,7 +224,7 @@ export const liverpoolTransfers: Transfer[] = [
     playerName: 'Harvey Davies',
     fromClub: 'Liverpool',
     toClub: 'Crawley',
-    fee: 'Loan Out',
+    fee: 'Season-long loan',
     date: '2025-01-05T13:15:00Z',
     source: 'liverpoolfc.com',
     status: 'confirmed'
@@ -234,7 +234,7 @@ export const liverpoolTransfers: Transfer[] = [
     playerName: 'Owen Beck',
     fromClub: 'Liverpool',
     toClub: 'Derby',
-    fee: 'Loan Out',
+    fee: 'Season-long loan',
     date: '2025-01-03T15:00:00Z',
     source: 'liverpoolfc.com',
     status: 'confirmed'

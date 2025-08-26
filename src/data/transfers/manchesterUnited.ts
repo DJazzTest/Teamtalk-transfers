@@ -18,7 +18,7 @@ export const manchesterUnitedTransfers: Transfer[] = [
     playerName: 'Diego Leon',
     fromClub: 'Cerro Porteno',
     toClub: 'Manchester United',
-    fee: '£4m',
+    fee: '£7m',
     date: '2025-01-18T14:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'
@@ -38,7 +38,7 @@ export const manchesterUnitedTransfers: Transfer[] = [
     playerName: 'Benjamin Sesko',
     fromClub: 'RB Leipzig',
     toClub: 'Manchester United',
-    fee: '£65m',
+    fee: '£74m (£65m + £8.9m add-ons)',
     date: '2025-01-12T16:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'
@@ -50,7 +50,7 @@ export const manchesterUnitedTransfers: Transfer[] = [
     playerName: 'Christian Eriksen',
     fromClub: 'Manchester United',
     toClub: 'Free Agent',
-    fee: 'Released',
+    fee: 'Free Transfer (contract expired)',
     date: '2025-01-15T10:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'
@@ -59,8 +59,8 @@ export const manchesterUnitedTransfers: Transfer[] = [
     id: 'united-evans-2025',
     playerName: 'Jonny Evans',
     fromClub: 'Manchester United',
-    toClub: 'Retired',
-    fee: 'Released',
+    toClub: 'Retired (coaching role)',
+    fee: 'Free Transfer (retired)',
     date: '2025-01-15T10:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'
@@ -70,7 +70,7 @@ export const manchesterUnitedTransfers: Transfer[] = [
     playerName: 'Victor Lindelof',
     fromClub: 'Manchester United',
     toClub: 'Free Agent',
-    fee: 'Released',
+    fee: 'Free Transfer (contract expired)',
     date: '2025-01-15T10:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'
