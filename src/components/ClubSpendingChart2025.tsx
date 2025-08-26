@@ -163,7 +163,7 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
                 </div>
                 {/* Current Spend */}
                 <div className="text-xs font-medium text-gray-300 mb-2">
-                  Current Spend £0
+                  Current Spend £{club.spending.toFixed(1)}M
                 </div>
                 {/* Club Badge */}
                 <div className="flex justify-center">
