@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
+import { categorizeTransfers, getClubTransfers, CategorizedTransfers } from '@/utils/transferCategorizer';
 
 // Maps club names to badge filenames - REAL official badges only
 export const clubBadgeMap: Record<string, string> = {
@@ -90,14 +91,15 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
     setSelectedClub(null);
   };
 
-  // If a specific club is selected, show detailed transfers
-  if (selectedClub && normalizedClubTransfers[selectedClub]) {
-    const clubTransferList = normalizedClubTransfers[selectedClub];
+  // If a specific club is selected, show categorized transfers
+  if (selectedClub && allTransfers) {
+    const clubTransferList = getClubTransfers(allTransfers, selectedClub);
+    const categorizedTransfers = categorizeTransfers(clubTransferList, selectedClub);
     
     return (
       <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
         <div className="p-6">
-          <div className="flex items-center justify-between mb-4 border-b border-slate-600 pb-2">
+          <div className="flex items-center justify-between mb-6 border-b border-slate-600 pb-4">
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
@@ -109,14 +111,14 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               </Button>
               <h3 className="text-xl font-bold text-white flex items-center gap-2">
                 <img
-                  src={`/badges/${selectedClub?.toLowerCase().replace(/[^a-z]/g, '')}.png`}
+                  src={clubBadgeMap[selectedClub] || `/badges/${selectedClub?.toLowerCase().replace(/[^a-z]/g, '')}.png`}
                   alt={`${selectedClub} badge`}
                   className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
                   onError={e => {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
                 />
-                {selectedClub} ({clubTransferList.length} transfers)
+                {selectedClub}
               </h3>
             </div>
             <Button
@@ -130,12 +132,90 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               />
             </Button>
           </div>
-          <div className="space-y-3">
-            {clubTransferList.map((transfer) => (
-              <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4 hover:bg-slate-700/70 transition-all duration-200">
-                <TransferCard transfer={transfer} />
+
+          {/* Transfer Statistics */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <Card className="bg-green-900/30 border-green-700">
+              <div className="p-4 text-center">
+                <div className="text-2xl font-bold text-green-400">{categorizedTransfers.confirmedIn.length}</div>
+                <div className="text-sm text-green-300">Confirmed In</div>
               </div>
-            ))}
+            </Card>
+            <Card className="bg-red-900/30 border-red-700">
+              <div className="p-4 text-center">
+                <div className="text-2xl font-bold text-red-400">{categorizedTransfers.confirmedOut.length}</div>
+                <div className="text-sm text-red-300">Confirmed Out</div>
+              </div>
+            </Card>
+            <Card className="bg-yellow-900/30 border-yellow-700">
+              <div className="p-4 text-center">
+                <div className="text-2xl font-bold text-yellow-400">{categorizedTransfers.rumors.length}</div>
+                <div className="text-sm text-yellow-300">Rumors</div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Categorized Transfer Sections */}
+          <div className="space-y-6">
+            {/* Confirmed In */}
+            {categorizedTransfers.confirmedIn.length > 0 && (
+              <div>
+                <h4 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  Confirmed In ({categorizedTransfers.confirmedIn.length})
+                </h4>
+                <div className="space-y-3">
+                  {categorizedTransfers.confirmedIn.map((transfer) => (
+                    <div key={transfer.id} className="bg-green-900/20 rounded-lg p-4 border border-green-700/50 hover:bg-green-900/30 transition-all duration-200">
+                      <TransferCard transfer={transfer} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Confirmed Out */}
+            {categorizedTransfers.confirmedOut.length > 0 && (
+              <div>
+                <h4 className="text-lg font-semibold text-red-400 mb-3 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                  Confirmed Out ({categorizedTransfers.confirmedOut.length})
+                </h4>
+                <div className="space-y-3">
+                  {categorizedTransfers.confirmedOut.map((transfer) => (
+                    <div key={transfer.id} className="bg-red-900/20 rounded-lg p-4 border border-red-700/50 hover:bg-red-900/30 transition-all duration-200">
+                      <TransferCard transfer={transfer} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Rumors */}
+            {categorizedTransfers.rumors.length > 0 && (
+              <div>
+                <h4 className="text-lg font-semibold text-yellow-400 mb-3 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                  Rumors & Speculation ({categorizedTransfers.rumors.length})
+                </h4>
+                <div className="space-y-3">
+                  {categorizedTransfers.rumors.map((transfer) => (
+                    <div key={transfer.id} className="bg-yellow-900/20 rounded-lg p-4 border border-yellow-700/50 hover:bg-yellow-900/30 transition-all duration-200">
+                      <TransferCard transfer={transfer} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* No transfers found */}
+            {categorizedTransfers.confirmedIn.length === 0 && 
+             categorizedTransfers.confirmedOut.length === 0 && 
+             categorizedTransfers.rumors.length === 0 && (
+              <div className="text-center py-8 text-gray-400">
+                <p>No transfers found for {selectedClub}</p>
+              </div>
+            )}
           </div>
         </div>
       </Card>
@@ -145,7 +225,7 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
   // Show team overview with stats
   return (
     <TeamTransferStats
-      clubTransfers={normalizedClubTransfers}
+      allTransfers={allTransfers}
       starredClubs={starredClubs}
       onStarClub={handleStarClub}
       onViewClubTransfers={handleViewClubTransfers}
