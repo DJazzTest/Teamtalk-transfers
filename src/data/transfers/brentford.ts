@@ -13,11 +13,21 @@ export const brentfordTransfers: Transfer[] = [
     status: 'confirmed'
   },
   {
+    id: 'brentford-mbeumo-2025',
+    playerName: 'Bryan Mbeumo',
+    fromClub: 'Brentford',
+    toClub: 'Manchester United',
+    fee: '£71m',
+    date: '2025-07-15T14:00:00Z',
+    source: 'brentfordfc.com',
+    status: 'confirmed'
+  },
+  {
     id: 'brentford-norgaard-2025',
     playerName: 'Christian Norgaard',
     fromClub: 'Brentford',
     toClub: 'Arsenal',
-    fee: '£15m (£10m + £5m add-ons)',
+    fee: '£15m',
     date: '2025-07-20T14:00:00Z',
     source: 'brentfordfc.com',
     status: 'confirmed'
@@ -27,8 +37,18 @@ export const brentfordTransfers: Transfer[] = [
     playerName: 'Michael Kayode',
     fromClub: 'Fiorentina',
     toClub: 'Brentford',
-    fee: '£14.5m',
+    fee: '£14m',
     date: '2025-01-15T14:30:00Z',
+    source: 'brentfordfc.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'brentford-milambo-2025',
+    playerName: 'Antoni Milambo',
+    fromClub: 'Feyenoord',
+    toClub: 'Brentford',
+    fee: '£18.8m',
+    date: '2025-07-18T14:00:00Z',
     source: 'brentfordfc.com',
     status: 'confirmed'
   },

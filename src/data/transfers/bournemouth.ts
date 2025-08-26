@@ -18,7 +18,7 @@ export const bournemouthTransfers: Transfer[] = [
     playerName: 'Adrien Truffert',
     fromClub: 'Rennes',
     toClub: 'Bournemouth',
-    fee: '£10M',
+    fee: '£14.4m',
     date: '2025-01-08T13:20:00Z',
     source: 'afcb.co.uk',
     status: 'confirmed'
@@ -28,7 +28,7 @@ export const bournemouthTransfers: Transfer[] = [
     playerName: 'Djordje Petrovic',
     fromClub: 'Chelsea',
     toClub: 'Bournemouth',
-    fee: '£12M',
+    fee: '£25m',
     date: '2025-01-07T15:00:00Z',
     source: 'afcb.co.uk',
     status: 'confirmed'
@@ -70,7 +70,7 @@ export const bournemouthTransfers: Transfer[] = [
     playerName: 'Dean Huijsen',
     fromClub: 'Bournemouth',
     toClub: 'Real Madrid',
-    fee: '£18M',
+    fee: '£50m',
     date: '2025-01-13T10:30:00Z',
     source: 'afcb.co.uk',
     status: 'confirmed'
@@ -80,7 +80,7 @@ export const bournemouthTransfers: Transfer[] = [
     playerName: 'Jaidon Anthony',
     fromClub: 'Bournemouth',
     toClub: 'Burnley',
-    fee: '£6M',
+    fee: '£8m',
     date: '2025-01-12T15:45:00Z',
     source: 'afcb.co.uk',
     status: 'confirmed'
@@ -110,7 +110,7 @@ export const bournemouthTransfers: Transfer[] = [
     playerName: 'Mark Travers',
     fromClub: 'Bournemouth',
     toClub: 'Everton',
-    fee: '£6M',
+    fee: '£4m',
     date: '2025-01-09T15:00:00Z',
     source: 'afcb.co.uk',
     status: 'confirmed'
@@ -130,7 +130,7 @@ export const bournemouthTransfers: Transfer[] = [
     playerName: 'Illia Zabarnyi',
     fromClub: 'Bournemouth',
     toClub: 'Paris Saint-Germain',
-    fee: '£45M',
+    fee: '£54.5m',
     date: '2025-01-07T17:00:00Z',
     source: 'afcb.co.uk',
     status: 'confirmed'

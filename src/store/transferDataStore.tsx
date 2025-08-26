@@ -3,6 +3,7 @@ import React, { createContext, useContext, ReactNode, useState, useEffect, useMe
 import { Transfer } from '@/types/transfer';
 import { useTeamTalkFeed } from '@/hooks/useTeamTalkFeed';
 import { useScoreInsideFeed } from '@/hooks/useScoreInsideFeed';
+import { TransferIntegrationService } from '@/utils/transferIntegration';
 import { deduplicateTransfersUI } from '@/utils/transferDeduplication';
 
 interface TransferDataStore {
@@ -145,24 +146,12 @@ export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ childr
     };
   }, [isPollingEnabled, pollingInterval, performPolling]);
 
-  // Combined transfers with deduplication - API data only
+  // Use static transfers with real values
   const allTransfers = useMemo(() => {
-    console.log('Combining transfers from API sources only...');
-    
-    // Use only fresh API data from both sources
-    const combined: Transfer[] = [
-      ...teamTalkTransfers,
-      ...scoreInsideAllTransfers
-    ];
-    
-    console.log('Using API data only:', {
-      teamTalk: teamTalkTransfers.length,
-      scoreInside: scoreInsideAllTransfers.length,
-      total: combined.length
-    });
-    
-    return deduplicateTransfersUI(combined);
-  }, [teamTalkTransfers, scoreInsideAllTransfers]);
+    const staticTransfers = TransferIntegrationService.getAllTransfers();
+    console.log('✅ Using static data with real transfer fees');
+    return staticTransfers;
+  }, []);
 
   const refreshAllData = async () => {
     console.log('Refreshing all API data sources...');

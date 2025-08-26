@@ -33,11 +33,6 @@ const getStatusIcon = (status: string) => {
 };
 
 export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact = false }) => {
-  // Debug logging
-  React.useEffect(() => {
-    console.log('Transfer fee debug:', { playerName: transfer.playerName, fee: transfer.fee, source: transfer.source });
-  }, [transfer]);
-
   // Starred club state (localStorage sync)
   const [starredClubs, setStarredClubs] = React.useState<string[]>(() => {
     const saved = localStorage.getItem('starredClubs');
