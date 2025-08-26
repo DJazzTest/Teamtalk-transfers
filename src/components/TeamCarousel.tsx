@@ -10,30 +10,30 @@ const premierLeagueClubs = [
   'Wolverhampton Wanderers', 'Bournemouth'
 ];
 
-// Club badge mapping - centralized system
+// Club badge mapping - centralized system using REAL official badges
 const getClubBadge = (club: string): string => {
-  // Simple fallback - if badge doesn't exist, return empty string for initials fallback
   const badgeMap: Record<string, string> = {
-    'Arsenal': '/badges/arsenal.png',
-    'Aston Villa': '/badges/astonvilla.png',
-    'Bournemouth': '/badges/bournemouth.png',
-    'Brentford': '/badges/brentford.png',
-    'Brighton & Hove Albion': '/badges/brightonhovealbion.png',
-    'Burnley': '/badges/burnley.png',
-    'Chelsea': '/badges/chelsea.png',
-    'Crystal Palace': '/badges/crystalpalace.png',
-    'Everton': '/badges/everton.png',
-    'Fulham': '/badges/fulham.png',
-    'Leeds United': '/badges/leeds-authentic.png', // Authentic Leeds badge
-    'Liverpool': '/badges/liverpool.png',
-    'Manchester City': '/badges/manchestercity.png',
-    'Manchester United': '/badges/manchesterunited.png',
-    'Newcastle United': '/badges/newcastleunited.png',
-    'Nottingham Forest': '/badges/nottinghamforest.png',
-    'Sunderland': '/badges/sunderland.png',
-    'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
-    'West Ham United': '/badges/westhamunited.png',
-    'Wolverhampton Wanderers': '/badges/wolverhamptonwanderers.png'
+    'Arsenal': '/badges/arsenal-real.png', // Real Arsenal badge
+    'Bournemouth': '/badges/bournemouth-real.png', // Real Bournemouth badge
+    'Chelsea': '/badges/chelsea-real.png', // Real Chelsea badge
+    'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png', // Real Leeds badge provided by user
+    'Liverpool': '/badges/liverpool-real.png', // Real Liverpool badge
+    'Manchester City': '/badges/manchestercity-real.png', // Real Man City badge
+    'Manchester United': '/badges/manchesterunited-real.png', // Real Man United badge
+    'Newcastle United': '/badges/newcastle-real.png', // Real Newcastle badge
+    'Tottenham Hotspur': '/badges/tottenham-real.png', // Real Spurs badge
+    // Other teams will use initials fallback until we get their real badges
+    'Aston Villa': '',
+    'Brentford': '',
+    'Brighton & Hove Albion': '',
+    'Burnley': '',
+    'Crystal Palace': '',
+    'Everton': '',
+    'Fulham': '',
+    'Nottingham Forest': '',
+    'Sunderland': '',
+    'West Ham United': '',
+    'Wolverhampton Wanderers': ''
   };
   return badgeMap[club] || '';
 };

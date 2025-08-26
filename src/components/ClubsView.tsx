@@ -2,28 +2,29 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 
-// Maps club names to badge filenames for special cases
+// Maps club names to badge filenames - REAL official badges only
 export const clubBadgeMap: Record<string, string> = {
-  'Arsenal': '/badges/arsenal.png',
-  'Aston Villa': '/badges/astonvilla.png',
-  'Bournemouth': '/badges/bournemouth.png',
-  'Brentford': '/badges/brentford.png',
-  'Brighton & Hove Albion': '/badges/brightonhovealbion.png',
-  'Burnley': '/badges/burnley.png',
-  'Chelsea': '/badges/chelsea.png',
-  'Crystal Palace': '/badges/crystalpalace.png',
-  'Everton': '/badges/everton.png',
-  'Fulham': '/badges/fulham.png',
-  'Leeds United': '/badges/leeds-authentic.png',
-  'Liverpool': '/badges/liverpool.png',
-  'Manchester City': '/badges/manchestercity.png',
-  'Manchester United': '/badges/manchesterunited.png',
-  'Newcastle United': '/badges/newcastleunited.png',
-  'Nottingham Forest': '/badges/nottinghamforest.png',
-  'Sunderland': '/badges/sunderland.png',
-  'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
-  'West Ham United': '/badges/westhamunited.png',
-  'Wolverhampton Wanderers': '/badges/wolverhamptonwanderers.png',
+  'Arsenal': '/badges/arsenal-real.png', // Real Arsenal badge
+  'Bournemouth': '/badges/bournemouth-real.png', // Real Bournemouth badge
+  'Chelsea': '/badges/chelsea-real.png', // Real Chelsea badge
+  'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png', // Real Leeds badge from user
+  'Liverpool': '/badges/liverpool-real.png', // Real Liverpool badge  
+  'Manchester City': '/badges/manchestercity-real.png', // Real Man City badge
+  'Manchester United': '/badges/manchesterunited-real.png', // Real Man United badge
+  // Others will use fallback until we get real badges
+  'Aston Villa': '',
+  'Brentford': '',
+  'Brighton & Hove Albion': '',
+  'Burnley': '',
+  'Crystal Palace': '',
+  'Everton': '',
+  'Fulham': '',
+  'Newcastle United': '',
+  'Nottingham Forest': '',
+  'Sunderland': '',
+  'Tottenham Hotspur': '',
+  'West Ham United': '',
+  'Wolverhampton Wanderers': '',
 };
 
 import { Button } from '@/components/ui/button';
