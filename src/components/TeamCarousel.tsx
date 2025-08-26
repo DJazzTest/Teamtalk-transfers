@@ -10,8 +10,9 @@ const premierLeagueClubs = [
   'Wolverhampton Wanderers', 'Bournemouth'
 ];
 
-// Club badge mapping
+// Club badge mapping - centralized system
 const getClubBadge = (club: string): string => {
+  // Simple fallback - if badge doesn't exist, return empty string for initials fallback
   const badgeMap: Record<string, string> = {
     'Arsenal': '/badges/arsenal.png',
     'Aston Villa': '/badges/astonvilla.png',
@@ -23,16 +24,12 @@ const getClubBadge = (club: string): string => {
     'Crystal Palace': '/badges/crystalpalace.png',
     'Everton': '/badges/everton.png',
     'Fulham': '/badges/fulham.png',
-    'Ipswich Town': '', // No badge available - will use initials
-    'Leeds United': '/badges/leedsunited.png',
-    'Leicester City': '', // No badge available - will use initials
+    'Leeds United': '/badges/leeds-correct.png', // Proper Leeds badge
     'Liverpool': '/badges/liverpool.png',
     'Manchester City': '/badges/manchestercity.png',
     'Manchester United': '/badges/manchesterunited.png',
     'Newcastle United': '/badges/newcastleunited.png',
     'Nottingham Forest': '/badges/nottinghamforest.png',
-    'Sheffield United': '', // No badge available - will use initials
-    'Southampton': '', // No badge available - will use initials
     'Sunderland': '/badges/sunderland.png',
     'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
     'West Ham United': '/badges/westhamunited.png',

@@ -66,11 +66,17 @@ export const FavouritesView: React.FC<FavouritesViewProps> = ({ transfers }) => 
                 </Button>
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <img
-                    src={`/badges/${clubBadgeMap[selectedClub!] || selectedClub?.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                    src={clubBadgeMap[selectedClub!] || ''}
                     alt={`${selectedClub} badge`}
                     className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
-                    onError={e => {
-                      (e.target as HTMLImageElement).style.display = 'none';
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.parentElement!.innerHTML = `
+                        <div class="w-7 h-7 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-lg mr-1">
+                          ${selectedClub!.split(' ').map((w: string) => w[0]).join('').substring(0, 2)}
+                        </div>
+                      `;
                     }}
                   />
                   {selectedClub}
@@ -160,11 +166,17 @@ export const FavouritesView: React.FC<FavouritesViewProps> = ({ transfers }) => 
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <img
-                      src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                      src={clubBadgeMap[club] || ''}
                       alt={`${club} badge`}
                       className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
-                      onError={e => {
-                        (e.target as HTMLImageElement).style.display = 'none';
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.parentElement!.innerHTML = `
+                          <div class="w-7 h-7 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-lg mr-1">
+                            ${club.split(' ').map((w: string) => w[0]).join('').substring(0, 2)}
+                          </div>
+                        `;
                       }}
                     />
                     <h3 className="font-bold text-lg text-yellow-300">{club}</h3>
