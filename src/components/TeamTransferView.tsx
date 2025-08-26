@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Star, Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
@@ -217,6 +218,95 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
           </div>
         </Card>
 
+        {/* Club News Index Carousel */}
+        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <div className="p-6">
+            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <ExternalLink className="w-5 h-5 text-purple-400" />
+              Club News Index ({clubNews.length})
+            </h3>
+            {newsLoading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400 mx-auto"></div>
+                <p className="text-gray-400 mt-2">Loading club news...</p>
+              </div>
+            ) : clubNews.length === 0 ? (
+              <p className="text-gray-400 text-center py-8">No recent news found for {selectedTeam}</p>
+            ) : (
+              <Carousel className="w-full" opts={{ align: "start" }}>
+                <CarouselContent className="-ml-2 md:-ml-4">
+                  {clubNews.map((article, index) => (
+                    <CarouselItem key={`${article.source}-${index}`} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+                      <Card className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full">
+                        <div className="flex flex-col h-full">
+                          {/* Thumbnail Image */}
+                          <div className="w-full h-32 flex-shrink-0">
+                            {article.image ? (
+                              <img
+                                src={article.image}
+                                alt={article.imageTitle || article.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-slate-600/50 flex items-center justify-center">
+                                <ExternalLink className="w-6 h-6 text-gray-400" />
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="flex-1 p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Badge className={
+                                article.category === 'Top Source' ? 'bg-green-500 text-white' :
+                                article.category === 'Heavily Linked' ? 'bg-orange-500 text-white' :
+                                article.category === 'Rumours' ? 'bg-blue-500 text-white' :
+                                article.category === 'Done Deal' ? 'bg-purple-500 text-white' :
+                                'bg-gray-500 text-white'
+                              }>
+                                {article.category || article.source}
+                              </Badge>
+                              {article.player && (
+                                <Badge variant="outline" className="text-gray-400 border-gray-600 text-xs">
+                                  {article.player}
+                                </Badge>
+                              )}
+                            </div>
+                            
+                            <h4 className="text-white font-semibold text-sm leading-tight mb-2 line-clamp-3">
+                              {article.title}
+                            </h4>
+                            
+                            <div className="flex items-center justify-between mt-auto">
+                              <div className="flex items-center gap-1 text-gray-400 text-xs">
+                                <Clock className="w-3 h-3" />
+                                {new Date(article.publishedAt).toLocaleDateString()}
+                              </div>
+                              <a
+                                href={article.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 text-xs font-medium transition-colors"
+                              >
+                                Read <ExternalLink className="w-3 h-3" />
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            )}
+          </div>
+        </Card>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
@@ -315,89 +405,6 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                     <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4">
                       <TransferCard transfer={transfer} />
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </Card>
-
-          {/* Club News Index */}
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <ExternalLink className="w-5 h-5 text-purple-400" />
-                Club News Index ({clubNews.length})
-              </h3>
-              {newsLoading ? (
-                <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400 mx-auto"></div>
-                  <p className="text-gray-400 mt-2">Loading club news...</p>
-                </div>
-              ) : clubNews.length === 0 ? (
-                <p className="text-gray-400 text-center py-8">No recent news found for {selectedTeam}</p>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {clubNews.map((article, index) => (
-                    <Card key={`${article.source}-${index}`} className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden">
-                      <div className="flex">
-                        {/* Thumbnail Image */}
-                        <div className="w-24 h-24 flex-shrink-0">
-                          {article.image ? (
-                            <img
-                              src={article.image}
-                              alt={article.imageTitle || article.title}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
-                              }}
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-slate-600/50 flex items-center justify-center">
-                              <ExternalLink className="w-6 h-6 text-gray-400" />
-                            </div>
-                          )}
-                        </div>
-                        
-                        {/* Content */}
-                        <div className="flex-1 p-4">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Badge className={
-                              article.category === 'Top Source' ? 'bg-green-500 text-white' :
-                              article.category === 'Heavily Linked' ? 'bg-orange-500 text-white' :
-                              article.category === 'Rumours' ? 'bg-blue-500 text-white' :
-                              article.category === 'Done Deal' ? 'bg-purple-500 text-white' :
-                              'bg-gray-500 text-white'
-                            }>
-                              {article.category || article.source}
-                            </Badge>
-                            {article.player && (
-                              <Badge variant="outline" className="text-gray-400 border-gray-600 text-xs">
-                                {article.player}
-                              </Badge>
-                            )}
-                          </div>
-                          
-                          <h4 className="text-white font-semibold text-sm leading-tight mb-2 line-clamp-2">
-                            {article.title}
-                          </h4>
-                          
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-1 text-gray-400 text-xs">
-                              <Clock className="w-3 h-3" />
-                              {new Date(article.publishedAt).toLocaleDateString()}
-                            </div>
-                            <a
-                              href={article.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 text-xs font-medium transition-colors"
-                            >
-                              Read <ExternalLink className="w-3 h-3" />
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </Card>
                   ))}
                 </div>
               )}
