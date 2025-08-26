@@ -10,6 +10,7 @@ import TransferDataAdmin from '@/components/TransferDataAdmin';
 import { SourcesTab } from '@/components/SourcesTab';
 import { TransferWindowCountdownSetting } from '@/components/TransferWindowCountdownSetting';
 import ClubApiManager from '@/components/ClubApiManager';
+import { TransferValueUpdater } from '@/components/TransferValueUpdater';
 import { TransferDataProvider } from '@/store/transferDataStore';
 
 
@@ -82,12 +83,15 @@ const Admin = () => {
 
           {/* Admin Management Tabs */}
           <Tabs defaultValue="api-management" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 backdrop-blur-md border-slate-700">
+            <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 backdrop-blur-md border-slate-700">
               <TabsTrigger value="api-management" className="flex items-center gap-2">
                 API Management
               </TabsTrigger>
               <TabsTrigger value="manual-entry" className="flex items-center gap-2">
                 Manual Entry
+              </TabsTrigger>
+              <TabsTrigger value="value-updater" className="flex items-center gap-2">
+                AI Value Updater
               </TabsTrigger>
             </TabsList>
 
@@ -97,6 +101,10 @@ const Admin = () => {
 
             <TabsContent value="manual-entry">
               <TransferDataAdmin />
+            </TabsContent>
+
+            <TabsContent value="value-updater">
+              <TransferValueUpdater />
             </TabsContent>
           </Tabs>
 
