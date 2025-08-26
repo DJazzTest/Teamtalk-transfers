@@ -29,7 +29,7 @@ export const arsenalTransfers: Transfer[] = [
     fromClub: 'Brentford',
     toClub: 'Arsenal',
     fee: '£15m (£10m + £5m add-ons)',
-    date: '2025-07-20T14:00:00Z',
+    date: '2025-08-20T14:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
   },

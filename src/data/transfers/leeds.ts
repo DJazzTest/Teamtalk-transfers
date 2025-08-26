@@ -18,7 +18,7 @@ export const leedsTransfers: Transfer[] = [
     fromClub: 'Wolfsburg',
     toClub: 'Leeds United',
     fee: '£15m',
-    date: '2025-07-20T14:00:00Z',
+    date: '2025-08-20T14:00:00Z',
     source: 'leedsunited.com',
     status: 'confirmed'
   },
@@ -28,7 +28,7 @@ export const leedsTransfers: Transfer[] = [
     fromClub: 'Udinese',
     toClub: 'Leeds United',
     fee: '£18m',
-    date: '2025-07-18T16:00:00Z',
+    date: '2025-08-18T16:00:00Z',
     source: 'leedsunited.com',
     status: 'confirmed'
   },

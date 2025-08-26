@@ -69,7 +69,7 @@ export const liverpoolTransfers: Transfer[] = [
     fromClub: 'Eintracht Frankfurt',
     toClub: 'Liverpool',
     fee: '£69m + £9m add-ons',
-    date: '2025-07-24T14:00:00Z',
+    date: '2025-08-24T14:00:00Z',
     source: 'liverpoolfc.com',
     status: 'confirmed'
   },
