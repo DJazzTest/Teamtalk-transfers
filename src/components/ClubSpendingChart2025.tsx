@@ -158,8 +158,12 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
                   £{club.spending.toFixed(1)}M
                 </div>
                 {/* Club Name - Horizontal */}
-                <div className="text-xs font-medium text-white mb-2 leading-tight">
+                <div className="text-xs font-medium text-white mb-1 leading-tight">
                   {club.displayName}
+                </div>
+                {/* Current Spend */}
+                <div className="text-xs font-medium text-gray-300 mb-2">
+                  Current Spend £0
                 </div>
                 {/* Club Badge */}
                 <div className="flex justify-center">
