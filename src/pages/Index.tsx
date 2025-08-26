@@ -4,6 +4,7 @@ import { TransferCountdown } from '@/components/TransferCountdown';
 import { RecentTransfers } from '@/components/RecentTransfers';
 import { AppHeader } from '@/components/AppHeader';
 import { MainTabs } from '@/components/MainTabs';
+import { PollingStatusIndicator } from '@/components/PollingStatusIndicator';
 import { Card } from '@/components/ui/card';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { Transfer } from '@/types/transfer';
@@ -63,6 +64,11 @@ const Index = () => {
       <AppHeader lastUpdated={lastUpdated} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
+        {/* Polling Status Indicator - Shows real-time update status */}
+        <div className="mb-4">
+          <PollingStatusIndicator />
+        </div>
+
         {/* Recent Transfers Highlight - Now using only real transfer data */}
         <div className="mb-4 sm:mb-8">
           <RecentTransfers transfers={allTransfers} />

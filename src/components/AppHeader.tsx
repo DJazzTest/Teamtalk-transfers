@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { PollingStatusIndicator } from './PollingStatusIndicator';
 
 interface AppHeaderProps {
   lastUpdated: Date;
@@ -32,10 +33,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
             </h1>
           </div>
           <div className="flex items-center gap-4 ml-2">
-            <div className="text-right">
-              <p className="text-xs sm:text-sm text-gray-500">Last Updated</p>
-              <p className="text-xs font-medium text-gray-700">{new Date(lastUpdated).toLocaleTimeString()}</p>
-            </div>
+            <PollingStatusIndicator compact={true} />
             {isAdminSection ? (
               <button
                 onClick={handleMainClick}

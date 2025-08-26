@@ -3,6 +3,7 @@ import React, { createContext, useContext, ReactNode, useState, useEffect, useMe
 import { Transfer } from '@/types/transfer';
 import { useTeamTalkFeed } from '@/hooks/useTeamTalkFeed';
 import { useScoreInsideFeed } from '@/hooks/useScoreInsideFeed';
+import { useTransferPolling } from '@/hooks/useTransferPolling';
 import { deduplicateTransfersUI } from '@/utils/transferDeduplication';
 
 interface TransferDataStore {
@@ -27,12 +28,17 @@ interface TransferDataStore {
   teamTalkError: string | null;
   scoreInsideError: string | null;
   
+  // Polling status
+  isPollingEnabled: boolean;
+  pollingInterval: number;
+  
   // Methods
   refreshTeamTalkFeed: () => Promise<void>;
   refreshScoreInsideFeed: () => Promise<void>;
   refreshAllData: () => Promise<void>;
   refreshTeamData: (teamSlug: string) => Promise<void>;
   getTeamTransfers: (teamSlug: string) => Transfer[];
+  manualPollingRefresh: () => Promise<void>;
 }
 
 const TransferDataContext = createContext<TransferDataStore | undefined>(undefined);
@@ -59,6 +65,17 @@ export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ childr
     getTeamTransfers,
     refreshTeam: refreshTeamData
   } = useScoreInsideFeed(true);
+
+  // Enhanced polling service for real-time updates
+  const {
+    manualRefresh: manualPollingRefresh,
+    isEnabled: isPollingEnabled,
+    intervalMinutes: pollingInterval
+  } = useTransferPolling({
+    enabled: true,
+    intervalMinutes: 5, // Poll every 5 minutes
+    showNotifications: true
+  });
 
   // Combined transfers with deduplication - API data only
   const allTransfers = useMemo(() => {
@@ -100,11 +117,14 @@ export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ childr
     scoreInsideLoading,
     teamTalkError,
     scoreInsideError,
+    isPollingEnabled,
+    pollingInterval,
     refreshTeamTalkFeed,
     refreshScoreInsideFeed,
     refreshAllData,
     refreshTeamData,
-    getTeamTransfers
+    getTeamTransfers,
+    manualPollingRefresh
   };
 
   return (
