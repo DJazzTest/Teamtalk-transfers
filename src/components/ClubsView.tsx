@@ -9,21 +9,21 @@ export const clubBadgeMap: Record<string, string> = {
   'Bournemouth': '/badges/bournemouth-real.png',
   'Brentford': '/badges/brentford.png',
   'Brighton & Hove Albion': '/badges/brightonhovealbion.png',
+  'Burnley': '/badges/burnley.png',
   'Chelsea': '/badges/chelsea-real.png',
   'Crystal Palace': '/badges/crystalpalace.png',
   'Everton': '/badges/everton.png',
   'Fulham': '/badges/fulham.png',
-  'Ipswich Town': '/badges/ipswich-real.png',
-  'Leicester City': '/badges/leicester-real.png',
   'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png',
   'Liverpool': '/badges/liverpool-real.png',
   'Manchester City': '/badges/manchestercity-real.png',
   'Manchester United': '/badges/manchesterunited-real.png',
   'Newcastle United': '/badges/newcastleunited.png',
   'Nottingham Forest': '/badges/nottinghamforest.png',
-  'Sheffield United': '/badges/sheffield-real.png',
+  'Sunderland': '/badges/sunderland.png',
   'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
-  'West Ham United': '/badges/westhamunited.png'
+  'West Ham United': '/badges/westhamunited.png',
+  'Wolverhampton Wanderers': '/badges/wolverhamptonwanderers.png'
 };
 
 import { Button } from '@/components/ui/button';
