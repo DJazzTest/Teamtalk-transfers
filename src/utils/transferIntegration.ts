@@ -211,6 +211,7 @@ export class TransferIntegrationService {
   static getAllTransfers(): Transfer[] {
     // Always return the latest static data from allClubTransfers
     console.log(`Using ${allClubTransfers.length} real transfers (static data only)`);
+    console.log('Sample transfer fees:', allClubTransfers.slice(0, 5).map(t => ({ name: t.playerName, fee: t.fee, club: t.toClub })));
     return allClubTransfers;
   }
 
