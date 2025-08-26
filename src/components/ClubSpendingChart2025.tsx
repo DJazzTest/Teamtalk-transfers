@@ -9,26 +9,26 @@ interface ClubSpendingChart2025Props {
 
 // Official 2025/26 Summer Window Data
 const clubFinancialData = [
-  { club: 'Arsenal', spending: 263.0, earnings: 9.0 },
-  { club: 'Manchester United', spending: 210.5, earnings: 0.0 },
-  { club: 'Liverpool', spending: 317.0, earnings: 207.0 },
-  { club: 'Chelsea', spending: 236.1, earnings: 207.8 },
-  { club: 'Manchester City', spending: 147.5, earnings: 81.2 },
-  { club: 'Nottingham Forest', spending: 147.7, earnings: 105.4 },
-  { club: 'Sunderland', spending: 147.9, earnings: 37.0 },
-  { club: 'Newcastle United', spending: 128.6, earnings: 32.0 },
-  { club: 'Tottenham Hotspur', spending: 122.5, earnings: 36.5 },
-  { club: 'Bournemouth', spending: 121.0, earnings: 191.3 },
-  { club: 'Leeds United', spending: 90.1, earnings: 5.2 },
-  { club: 'Burnley', spending: 87.4, earnings: 29.6 },
-  { club: 'Brentford', spending: 84.5, earnings: 88.4 },
-  { club: 'Everton', spending: 80.0, earnings: 6.0 },
-  { club: 'Wolverhampton Wanderers', spending: 77.8, earnings: 97.0 },
-  { club: 'West Ham United', spending: 72.8, earnings: 54.5 },
-  { club: 'Brighton & Hove Albion', spending: 67.75, earnings: 110.0 },
-  { club: 'Aston Villa', spending: 34.5, earnings: 42.5 },
-  { club: 'Crystal Palace', spending: 3.0, earnings: 68.5 },
-  { club: 'Fulham', spending: 0.43, earnings: 0.0 }
+  { club: 'Arsenal', spending: 263.0, earnings: 9.0, displayName: 'Arsenal' },
+  { club: 'Manchester United', spending: 210.5, earnings: 0.0, displayName: 'Man U' },
+  { club: 'Liverpool', spending: 317.0, earnings: 207.0, displayName: 'Liverpool' },
+  { club: 'Chelsea', spending: 236.1, earnings: 207.8, displayName: 'Chelsea' },
+  { club: 'Manchester City', spending: 147.5, earnings: 81.2, displayName: 'Man City' },
+  { club: 'Nottingham Forest', spending: 147.7, earnings: 105.4, displayName: 'Notts Forest' },
+  { club: 'Sunderland', spending: 147.9, earnings: 37.0, displayName: 'Sunderland' },
+  { club: 'Newcastle United', spending: 128.6, earnings: 32.0, displayName: 'Newcastle' },
+  { club: 'Tottenham Hotspur', spending: 122.5, earnings: 36.5, displayName: 'Tottenham' },
+  { club: 'Bournemouth', spending: 121.0, earnings: 191.3, displayName: 'Bournemouth' },
+  { club: 'Leeds United', spending: 90.1, earnings: 5.2, displayName: 'Leeds' },
+  { club: 'Burnley', spending: 87.4, earnings: 29.6, displayName: 'Burnley' },
+  { club: 'Brentford', spending: 84.5, earnings: 88.4, displayName: 'Brentford' },
+  { club: 'Everton', spending: 80.0, earnings: 6.0, displayName: 'Everton' },
+  { club: 'Wolverhampton Wanderers', spending: 77.8, earnings: 97.0, displayName: 'Wolves' },
+  { club: 'West Ham United', spending: 72.8, earnings: 54.5, displayName: 'West Ham' },
+  { club: 'Brighton & Hove Albion', spending: 67.75, earnings: 110.0, displayName: 'Brighton' },
+  { club: 'Aston Villa', spending: 34.5, earnings: 42.5, displayName: 'Aston Villa' },
+  { club: 'Crystal Palace', spending: 3.0, earnings: 68.5, displayName: 'Crystal Palace' },
+  { club: 'Fulham', spending: 0.43, earnings: 0.0, displayName: 'Fulham' }
 ];
 
 // Club badge mapping
@@ -155,7 +155,7 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
                 </div>
                 {/* Club Name - Horizontal */}
                 <div className="text-xs font-medium text-white mb-2 leading-tight">
-                  {club.club}
+                  {club.displayName}
                 </div>
                 {/* Club Badge */}
                 <div className="flex justify-center">
