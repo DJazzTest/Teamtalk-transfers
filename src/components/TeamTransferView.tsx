@@ -72,7 +72,9 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
               source: 'ScoreInside',
               category: item.scat,
               player: item.player?.nm,
-              team: item.team?.nm
+              team: item.team?.nm,
+              image: item.article.image?.impth || item.article.image?.scim,
+              imageTitle: item.article.image?.ttl
             }))
             .sort((a: any, b: any) => 
               new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
@@ -334,48 +336,68 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
               ) : clubNews.length === 0 ? (
                 <p className="text-gray-400 text-center py-8">No recent news found for {selectedTeam}</p>
               ) : (
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {clubNews.map((article, index) => (
-                    <div key={`${article.source}-${index}`} className="bg-slate-700/50 rounded-lg p-4 hover:bg-slate-700/70 transition-all duration-200">
-                      <div className="flex items-start gap-3">
-                        <div className="flex-1">
-                           <div className="flex items-center gap-2 mb-2">
-                             <Badge className={
-                               article.category === 'Top Source' ? 'bg-green-500' :
-                               article.category === 'Heavily Linked' ? 'bg-orange-500' :
-                               article.category === 'Rumours' ? 'bg-blue-500' :
-                               article.category === 'Done Deal' ? 'bg-purple-500' :
-                               'bg-gray-500'
-                             }>
-                               {article.category || article.source}
-                             </Badge>
-                             {article.player && (
-                               <Badge variant="outline" className="text-gray-400 border-gray-600">
-                                 {article.player}
-                               </Badge>
-                             )}
-                             <div className="flex items-center gap-1 text-gray-400 text-xs">
-                               <Clock className="w-3 h-3" />
-                               {new Date(article.publishedAt).toLocaleDateString()}
-                             </div>
-                           </div>
-                          <h4 className="text-white font-semibold text-sm leading-tight mb-2">
+                    <Card key={`${article.source}-${index}`} className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden">
+                      <div className="flex">
+                        {/* Thumbnail Image */}
+                        <div className="w-24 h-24 flex-shrink-0">
+                          {article.image ? (
+                            <img
+                              src={article.image}
+                              alt={article.imageTitle || article.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-slate-600/50 flex items-center justify-center">
+                              <ExternalLink className="w-6 h-6 text-gray-400" />
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="flex-1 p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge className={
+                              article.category === 'Top Source' ? 'bg-green-500 text-white' :
+                              article.category === 'Heavily Linked' ? 'bg-orange-500 text-white' :
+                              article.category === 'Rumours' ? 'bg-blue-500 text-white' :
+                              article.category === 'Done Deal' ? 'bg-purple-500 text-white' :
+                              'bg-gray-500 text-white'
+                            }>
+                              {article.category || article.source}
+                            </Badge>
+                            {article.player && (
+                              <Badge variant="outline" className="text-gray-400 border-gray-600 text-xs">
+                                {article.player}
+                              </Badge>
+                            )}
+                          </div>
+                          
+                          <h4 className="text-white font-semibold text-sm leading-tight mb-2 line-clamp-2">
                             {article.title}
                           </h4>
-                          <p className="text-gray-300 text-xs leading-relaxed mb-3 line-clamp-2">
-                            {article.description}
-                          </p>
-                          <a
-                            href={article.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 text-xs font-medium transition-colors"
-                          >
-                            Read More <ExternalLink className="w-3 h-3" />
-                          </a>
+                          
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1 text-gray-400 text-xs">
+                              <Clock className="w-3 h-3" />
+                              {new Date(article.publishedAt).toLocaleDateString()}
+                            </div>
+                            <a
+                              href={article.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 text-xs font-medium transition-colors"
+                            >
+                              Read <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Card>
                   ))}
                 </div>
               )}
