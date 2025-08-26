@@ -77,46 +77,62 @@ function isDuplicateTransfer(transfer1: Transfer, transfer2: Transfer): boolean 
 }
 
 export function deduplicateTransfersUI(transfers: Transfer[]): Transfer[] {
+  console.log('🔄 STRICT deduplication starting...');
+  console.log(`Input: ${transfers.length} transfers`);
+  
   // Filter for Premier League clubs only
   const plTransfers = transfers.filter(transfer => 
     isPremierLeagueClub(transfer.toClub) || isPremierLeagueClub(transfer.fromClub)
   );
 
-  const deduplicatedTransfers: Transfer[] = [];
+  // Create unique key for player + destination
+  const createKey = (transfer: Transfer) => {
+    const player = normalizePlayerName(transfer.playerName);
+    const to = normalizeClub(transfer.toClub);
+    return `${player}→${to}`;
+  };
+
+  const transferMap = new Map<string, Transfer>();
   
-  for (const transfer of plTransfers) {
-    // Check if this transfer is a duplicate of any already processed
-    const isDuplicate = deduplicatedTransfers.some(existing => 
-      isDuplicateTransfer(transfer, existing)
-    );
+  // Sort by priority: confirmed status first, then by date (newest first)
+  const sortedTransfers = plTransfers.sort((a, b) => {
+    // Status priority: confirmed beats everything
+    if (a.status === 'confirmed' && b.status !== 'confirmed') return -1;
+    if (a.status !== 'confirmed' && b.status === 'confirmed') return 1;
     
-    if (!isDuplicate) {
-      deduplicatedTransfers.push(transfer);
+    // If same status, prefer newer date
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
+  for (const transfer of sortedTransfers) {
+    const key = createKey(transfer);
+    const existing = transferMap.get(key);
+    
+    if (!existing) {
+      // First time seeing this player+destination
+      transferMap.set(key, transfer);
+      console.log(`✅ ADDED: ${transfer.playerName} (${transfer.status})`);
     } else {
-      // Find the existing duplicate and keep the better one
-      const duplicateIndex = deduplicatedTransfers.findIndex(existing => 
-        isDuplicateTransfer(transfer, existing)
-      );
-      
-      if (duplicateIndex !== -1) {
-        const existing = deduplicatedTransfers[duplicateIndex];
-        const transferDate = new Date(transfer.date);
-        const existingDate = new Date(existing.date);
-        
-        // Keep the more recent one, or prefer confirmed over rumored
-        if (transferDate > existingDate || 
-            (transferDate.getTime() === existingDate.getTime() && 
-             transfer.status === 'confirmed' && existing.status !== 'confirmed') ||
-            (transferDate.getTime() === existingDate.getTime() && 
-             transfer.source === 'ScoreInside' && existing.source !== 'ScoreInside')) {
-          deduplicatedTransfers[duplicateIndex] = transfer;
-        }
+      // We have this player+destination already
+      if (transfer.status === 'confirmed' && existing.status === 'rumored') {
+        // Upgrade from rumored to confirmed
+        transferMap.set(key, transfer);
+        console.log(`🔄 UPGRADED: ${transfer.playerName} from rumored to confirmed`);
+      } else if (transfer.status === existing.status && new Date(transfer.date) > new Date(existing.date)) {
+        // Same status but newer date
+        transferMap.set(key, transfer);
+        console.log(`📅 UPDATED: ${transfer.playerName} with newer date`);
+      } else {
+        // Keep existing
+        console.log(`❌ SKIPPED: ${transfer.playerName} (${transfer.status}) - keeping existing ${existing.status}`);
       }
     }
   }
 
-  return deduplicatedTransfers
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const result = Array.from(transferMap.values());
+  console.log(`✅ STRICT deduplication complete: ${transfers.length} → ${result.length} transfers`);
+  
+  return result.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 // Enhanced deduplication specifically for individual club transfer data

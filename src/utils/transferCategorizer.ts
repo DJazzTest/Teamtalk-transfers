@@ -80,7 +80,7 @@ export function categorizeTransfers(transfers: Transfer[], clubName: string): Ca
 
   // Sort transfers by priority: confirmed status first, then by date (newest first)
   const sortedTransfers = transfers.sort((a, b) => {
-    // Confirmed transfers have higher priority than rumors
+    // STRICT: confirmed status ALWAYS beats rumored
     if (a.status === 'confirmed' && b.status === 'rumored') return -1;
     if (a.status === 'rumored' && b.status === 'confirmed') return 1;
     
@@ -102,7 +102,7 @@ export function categorizeTransfers(transfers: Transfer[], clubName: string): Ca
     // Mark player as processed
     processedPlayers.add(playerKey);
 
-    // STRICT: If status is 'rumored', it ONLY goes to rumors section
+    // ABSOLUTE RULE: rumored = rumors section ONLY
     if (transfer.status === 'rumored') {
       console.log(`📰 Adding ${transfer.playerName} to RUMORS (status: ${transfer.status})`);
       rumors.push(transfer);
