@@ -73,10 +73,15 @@ export function categorizeTransfers(transfers: Transfer[], clubName: string): Ca
   const confirmedOut: Transfer[] = [];
   const rumors: Transfer[] = [];
   
+  console.log(`🔍 CATEGORIZING ${clubName} - Processing ${transfers.length} transfers`);
+  
   // Process each transfer exactly once based on status
   for (const transfer of transfers) {
+    console.log(`Player: ${transfer.playerName}, Status: "${transfer.status}", From: ${transfer.fromClub}, To: ${transfer.toClub}`);
+    
     // RULE 1: If status is 'rumored', it goes to rumors regardless of anything else
     if (transfer.status === 'rumored') {
+      console.log(`➡️ RUMOR: ${transfer.playerName} added to rumors`);
       rumors.push(transfer);
       continue;
     }
@@ -85,11 +90,15 @@ export function categorizeTransfers(transfers: Transfer[], clubName: string): Ca
     if (transfer.status === 'confirmed') {
       if (isClubMatch(transfer.toClub, clubName)) {
         // Player joining this club (transfer IN)
+        console.log(`✅ CONFIRMED IN: ${transfer.playerName} joining ${clubName}`);
         confirmedIn.push(transfer);
       } else if (isClubMatch(transfer.fromClub, clubName)) {
         // Player leaving this club (transfer OUT)
+        console.log(`❌ CONFIRMED OUT: ${transfer.playerName} leaving ${clubName}`);
         confirmedOut.push(transfer);
       }
+    } else {
+      console.log(`⚠️ UNKNOWN STATUS: ${transfer.playerName} has status "${transfer.status}"`);
     }
   }
 

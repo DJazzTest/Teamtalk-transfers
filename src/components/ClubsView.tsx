@@ -94,7 +94,20 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
   // If a specific club is selected, show categorized transfers
   if (selectedClub && allTransfers) {
     const clubTransferList = getClubTransfers(allTransfers, selectedClub);
+    console.log(`🎯 ${selectedClub} - Raw club transfers:`, clubTransferList.map(t => ({
+      name: t.playerName,
+      status: t.status,
+      from: t.fromClub,
+      to: t.toClub
+    })));
+    
     const categorizedTransfers = categorizeTransfers(clubTransferList, selectedClub);
+    
+    console.log(`📊 ${selectedClub} - Categorized results:`, {
+      rumors: categorizedTransfers.rumors.map(t => t.playerName),
+      confirmedIn: categorizedTransfers.confirmedIn.map(t => t.playerName),
+      confirmedOut: categorizedTransfers.confirmedOut.map(t => t.playerName)
+    });
     
     return (
       <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
