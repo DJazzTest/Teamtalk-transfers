@@ -5,26 +5,28 @@ import { Card } from '@/components/ui/card';
 // Maps club names to badge filenames - REAL official badges only
 export const clubBadgeMap: Record<string, string> = {
   'Arsenal': '/badges/arsenal-real.png', // Real Arsenal badge
+  'Aston Villa': '/badges/astonvilla-real.png', // Real Aston Villa badge
   'Bournemouth': '/badges/bournemouth-real.png', // Real Bournemouth badge
+  'Brentford': '/badges/brentford-real.png', // Real Brentford badge
+  'Brighton & Hove Albion': '/badges/brighton-real.png', // Real Brighton badge
   'Chelsea': '/badges/chelsea-real.png', // Real Chelsea badge
+  'Crystal Palace': '/badges/crystalpalace-real.png', // Real Crystal Palace badge
+  'Everton': '/badges/everton-real.png', // Real Everton badge
+  'Fulham': '/badges/fulham-real.png', // Real Fulham badge
   'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png', // Real Leeds badge from user
   'Liverpool': '/badges/liverpool-real.png', // Real Liverpool badge  
   'Manchester City': '/badges/manchestercity-real.png', // Real Man City badge
   'Manchester United': '/badges/manchesterunited-real.png', // Real Man United badge
-  // Others will use fallback until we get real badges
-  'Aston Villa': '',
-  'Brentford': '',
-  'Brighton & Hove Albion': '',
+  'Newcastle United': '/badges/newcastle-real.png', // Real Newcastle badge
+  'Nottingham Forest': '/badges/nottinghamforest-real.png', // Real Nottingham Forest badge
+  'Southampton': '/badges/southampton-real.png', // Real Southampton badge
+  'Tottenham Hotspur': '/badges/tottenham-real.png', // Real Spurs badge
+  'West Ham United': '/badges/westham-real.png', // Real West Ham badge
+  'Wolverhampton Wanderers': '/badges/wolves-real.png', // Real Wolves badge
+  // Teams without real badges will use fallback
   'Burnley': '',
-  'Crystal Palace': '',
-  'Everton': '',
-  'Fulham': '',
-  'Newcastle United': '',
-  'Nottingham Forest': '',
+  'Leicester City': '',
   'Sunderland': '',
-  'Tottenham Hotspur': '',
-  'West Ham United': '',
-  'Wolverhampton Wanderers': '',
 };
 
 import { Button } from '@/components/ui/button';
