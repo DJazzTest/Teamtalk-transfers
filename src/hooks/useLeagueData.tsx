@@ -1,18 +1,15 @@
 
 import { useMemo } from 'react';
-import { Transfer } from '@/types/transfer';
-import { allClubTransfers } from '@/data/transfers';
-import { TransferIntegrationService } from '@/utils/transferIntegration';
-import { deduplicateTransfersUI } from '@/utils/transferDeduplication';
+import { useTransferDataStore } from '@/store/transferDataStore';
 
 export const useLeagueData = () => {
+  const { allTransfers } = useTransferDataStore();
+
   const leagueTransfers = useMemo(() => {
-    const parsedTransfers = TransferIntegrationService.getParsedTransfers();
-    const allTransfers = [...parsedTransfers, ...allClubTransfers];
-    
-    // Apply deduplication to remove duplicates and filter for Premier League only
-    return deduplicateTransfersUI(allTransfers);
-  }, []);
+    // Return only API data, already filtered and deduplicated by the store
+    console.log('Using API-only transfer data:', allTransfers.length, 'transfers');
+    return allTransfers;
+  }, [allTransfers]);
 
   const leagueClubs = useMemo(() => {
     return [
@@ -20,7 +17,8 @@ export const useLeagueData = () => {
       'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town', 'Leeds United',
       'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United',
       'Newcastle United', 'Nottingham Forest', 'Sheffield United', 'Southampton',
-      'Tottenham Hotspur', 'West Ham United'
+      'Tottenham Hotspur', 'West Ham United', 'Wolverhampton Wanderers',
+      'Bournemouth', 'Burnley', 'Sunderland'
     ];
   }, []);
 
