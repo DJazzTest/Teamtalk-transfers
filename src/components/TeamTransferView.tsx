@@ -127,11 +127,15 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
       transfer => transfer.fromClub === teamName || transfer.toClub === teamName
     );
 
-    const transfersIn = teamTransfers.filter(t => t.toClub === teamName).sort((a, b) => 
+    const transfersIn = teamTransfers.filter(t => 
+      t.toClub === teamName && t.status !== 'rumored'
+    ).sort((a, b) => 
       new Date(b.date).getTime() - new Date(a.date).getTime()
     );
     
-    const transfersOut = teamTransfers.filter(t => t.fromClub === teamName).sort((a, b) => 
+    const transfersOut = teamTransfers.filter(t => 
+      t.fromClub === teamName && t.status !== 'rumored'
+    ).sort((a, b) => 
       new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
