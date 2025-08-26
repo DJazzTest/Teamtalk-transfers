@@ -71,7 +71,7 @@ export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
               <div className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className={`font-bold text-lg flex items-center gap-2 ${isMyClub ? 'text-blue-300' : 'text-white'}`}>
+                    <h3 className={`font-bold text-lg flex items-center gap-2 ${isMyClub ? 'text-blue-300' : 'text-blue-300'}`}>
                       <img
                         src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '')}.png`}
                         alt={`${club} badge`}
@@ -114,35 +114,35 @@ export const TeamTransferStats: React.FC<TeamTransferStatsProps> = ({
                   </TooltipProvider>
                 </div>
 
-                <div className="space-y-2 mb-4">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-300">Confirmed:</span>
-                    <Badge className="bg-green-500/20 text-green-400">
-                      {confirmedCount}
-                    </Badge>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-blue-300">Confirmed:</span>
+                      <Badge className="bg-green-500/20 text-green-400">
+                        {confirmedCount}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-blue-300">Rumored:</span>
+                      <Badge className="bg-yellow-500/20 text-yellow-400">
+                        {rumoredCount}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between text-sm font-semibold border-t border-slate-600 pt-2">
+                      <span className="text-blue-300">Total:</span>
+                      <Badge className="bg-blue-500/20 text-blue-400">
+                        {transfers.length}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-300">Rumored:</span>
-                    <Badge className="bg-yellow-500/20 text-yellow-400">
-                      {rumoredCount}
-                    </Badge>
-                  </div>
-                  <div className="flex justify-between text-sm font-semibold border-t border-slate-600 pt-2">
-                    <span className="text-white">Total:</span>
-                    <Badge className="bg-blue-500/20 text-blue-400">
-                      {transfers.length}
-                    </Badge>
-                  </div>
-                </div>
 
-                <Button
-                  onClick={() => handleViewTransfers(club)}
-                  className="w-full bg-slate-700 hover:bg-slate-600 text-white border border-slate-600"
-                  size="sm"
-                >
-                  View Transfers
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+                  <Button
+                    onClick={() => handleViewTransfers(club)}
+                    className="w-full bg-slate-700 hover:bg-slate-600 text-blue-300 border border-slate-600"
+                    size="sm"
+                  >
+                    View Transfers
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
               </div>
             </Card>
           );
