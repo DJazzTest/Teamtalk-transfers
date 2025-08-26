@@ -13,15 +13,15 @@ export const clubBadgeMap: Record<string, string> = {
   'Crystal Palace': '/badges/crystalpalace.png',
   'Everton': '/badges/everton.png',
   'Fulham': '/badges/fulham.png',
-  'Ipswich Town': '', // No badge available
-  'Leicester City': '', // No badge available
+  'Ipswich Town': '', // Will show IT initials
+  'Leicester City': '', // Will show LC initials
   'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png',
   'Liverpool': '/badges/liverpool-real.png',
   'Manchester City': '/badges/manchestercity-real.png',
   'Manchester United': '/badges/manchesterunited-real.png',
   'Newcastle United': '/badges/newcastleunited.png',
   'Nottingham Forest': '/badges/nottinghamforest.png',
-  'Sheffield United': '', // No badge available
+  'Sheffield United': '', // Will show SU initials
   'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
   'West Ham United': '/badges/westhamunited.png'
 };
