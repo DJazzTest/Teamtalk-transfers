@@ -55,7 +55,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
           const selectedTeamLower = selectedTeam.toLowerCase();
           const clubKeywords = [
             selectedTeam,
-            selectedTeam.toLowerCase(),
+            selectedTeamLower,
             selectedTeam.replace(' United', '').replace(' City', '').replace(' Hotspur', '').replace(' FC', ''),
             selectedTeamLower.replace(' united', '').replace(' city', '').replace(' hotspur', '').replace(' fc', '')
           ];
@@ -70,8 +70,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
               
               // Check if any club keyword is mentioned in headline
               return clubKeywords.some(keyword => 
-                headline.includes(keyword.toLowerCase()) ||
-                headline.includes(keyword)
+                headline.includes(keyword.toLowerCase())
               );
             })
             .map((item: any) => ({
@@ -91,20 +90,12 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
               new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
             );
 
-          // If we have fewer than 3 articles, add some general Premier League articles
-          if (clubArticles.length < 3) {
+          // Always show at least some articles - if no specific club articles, show general Premier League news
+          let finalArticles = clubArticles;
+          if (finalArticles.length < 5) {
             const generalArticles = data.result.transfer_articles.data
-              .filter((item: any) => {
-                // Don't add articles we already have
-                return !clubArticles.some((existing: any) => existing.id === item.aid) &&
-                       // Include Premier League related articles
-                       (item.article?.hdl?.toLowerCase().includes('premier league') ||
-                        item.article?.hdl?.toLowerCase().includes('pl ') ||
-                        premierLeagueClubs.some(club => 
-                          item.article?.hdl?.toLowerCase().includes(club.toLowerCase())
-                        ))
-              })
-              .slice(0, 5 - clubArticles.length)
+              .filter((item: any) => !clubArticles.some((existing: any) => existing.id === item.aid))
+              .slice(0, 8 - finalArticles.length)
               .map((item: any) => ({
                 id: item.aid,
                 title: item.article.hdl,
@@ -119,10 +110,10 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 imageTitle: item.article.image?.ttl
               }));
 
-            clubArticles.push(...generalArticles);
+            finalArticles = [...finalArticles, ...generalArticles];
           }
 
-          setClubNews(clubArticles.slice(0, 10));
+          setClubNews(finalArticles.slice(0, 10));
         } else {
           setClubNews([]);
         }
@@ -443,7 +434,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   <img
                     src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
                     alt={`${club} badge`}
-                    className="w-7 h-7 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
+                    className="w-6 h-6 rounded-full shadow bg-white object-contain border border-gray-200"
                     onError={e => {
                       (e.target as HTMLImageElement).style.display = 'none';
                     }}
