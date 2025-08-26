@@ -92,7 +92,6 @@ const defaultTransfer = {
 };
 
 export const TransferDataAdmin: React.FC = () => {
-  const { overrideTransfers } = useTransferDataStore();
   const [transfer, setTransfer] = useState<any>({ ...defaultTransfer });
   const [club, setClub] = useState('Arsenal');
   const [copied, setCopied] = useState(false);
@@ -479,8 +478,6 @@ Anthony Elanga – Nottingham Forest → Newcastle United – £55m`}
                   setMessage('Rumors updated! Refresh to see changes.');
                   setEntries([]);
                   setBulkText('');
-                  // Update global transfer state for override
-                  overrideTransfers(entries);
                 } else {
                   setMessage('Failed to update rumors.');
                 }
