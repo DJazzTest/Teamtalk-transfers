@@ -5,12 +5,15 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
-import { Star, Search, TrendingUp, TrendingDown, MessageCircle, Users } from 'lucide-react';
+import { Star, Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { premierLeagueClubs } from '@/data/mockTransfers';
 import { clubBadgeMap } from './ClubsView';
 import { topSpendingClubs } from '@/data/topSpendingClubs';
+import { newsApi } from '@/services/newsApi';
+import { teamTalkApi } from '@/services/teamtalkApi';
+import { TeamTalkArticle } from '@/types/teamtalk';
 
 // Build a map of club -> spend from the topSpendingClubs data
 const clubSpendMap: Record<string, number> = Object.fromEntries(
@@ -25,13 +28,65 @@ interface TeamTransferViewProps {
 
 export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, selectedTeam: externalSelectedTeam, onBack }) => {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(externalSelectedTeam || null);
+  const [clubNews, setClubNews] = useState<any[]>([]);
+  const [newsLoading, setNewsLoading] = useState(false);
 
-  // Sync internal state with external prop if provided
+  // Fetch news when team is selected
   useEffect(() => {
-    if (externalSelectedTeam !== undefined) {
-      setSelectedTeam(externalSelectedTeam);
-    }
-  }, [externalSelectedTeam]);
+    const fetchClubNews = async () => {
+      if (!selectedTeam) return;
+      
+      setNewsLoading(true);
+      try {
+        // Fetch both regular news and TeamTalk articles
+        const [newsArticles, teamTalkArticles] = await Promise.all([
+          newsApi.fetchNews(),
+          teamTalkApi.getTransferArticles()
+        ]);
+
+        // Filter for the selected club
+        const clubRelatedNews = [
+          ...newsArticles.filter(article => 
+            article.title.toLowerCase().includes(selectedTeam.toLowerCase()) ||
+            article.summary.toLowerCase().includes(selectedTeam.toLowerCase())
+          ).map(article => ({ 
+            ...article, 
+            description: article.summary,
+            publishedAt: article.time,
+            source: 'News', 
+            type: 'news' 
+          })),
+          ...teamTalkArticles.filter(article => 
+            article.headline.toLowerCase().includes(selectedTeam.toLowerCase()) ||
+            article.excerpt.toLowerCase().includes(selectedTeam.toLowerCase()) ||
+            article.description.toLowerCase().includes(selectedTeam.toLowerCase())
+          ).map(article => ({ 
+            ...article, 
+            title: article.headline,
+            description: article.excerpt,
+            url: `https://www.teamtalk.com/${article.slug}`,
+            publishedAt: article.pub_date,
+            source: 'TeamTalk',
+            type: 'teamtalk'
+          }))
+        ];
+
+        // Sort by date
+        clubRelatedNews.sort((a, b) => 
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+        );
+
+        setClubNews(clubRelatedNews.slice(0, 10)); // Limit to 10 articles
+      } catch (error) {
+        console.error('Error fetching club news:', error);
+        setClubNews([]);
+      } finally {
+        setNewsLoading(false);
+      }
+    };
+
+    fetchClubNews();
+  }, [selectedTeam]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredClubs, setFilteredClubs] = useState(premierLeagueClubs);
 
@@ -252,6 +307,58 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   {stats.rumors.map((transfer) => (
                     <div key={transfer.id} className="bg-slate-700/50 rounded-lg p-4">
                       <TransferCard transfer={transfer} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Club News Index */}
+          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <ExternalLink className="w-5 h-5 text-purple-400" />
+                Club News Index ({clubNews.length})
+              </h3>
+              {newsLoading ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400 mx-auto"></div>
+                  <p className="text-gray-400 mt-2">Loading club news...</p>
+                </div>
+              ) : clubNews.length === 0 ? (
+                <p className="text-gray-400 text-center py-8">No recent news found for {selectedTeam}</p>
+              ) : (
+                <div className="space-y-4">
+                  {clubNews.map((article, index) => (
+                    <div key={`${article.source}-${index}`} className="bg-slate-700/50 rounded-lg p-4 hover:bg-slate-700/70 transition-all duration-200">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge className={article.source === 'TeamTalk' ? 'bg-blue-500' : 'bg-purple-500'}>
+                              {article.source}
+                            </Badge>
+                            <div className="flex items-center gap-1 text-gray-400 text-xs">
+                              <Clock className="w-3 h-3" />
+                              {new Date(article.publishedAt).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <h4 className="text-white font-semibold text-sm leading-tight mb-2">
+                            {article.title}
+                          </h4>
+                          <p className="text-gray-300 text-xs leading-relaxed mb-3 line-clamp-2">
+                            {article.description}
+                          </p>
+                          <a
+                            href={article.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 text-xs font-medium transition-colors"
+                          >
+                            Read More <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>

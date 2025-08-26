@@ -142,9 +142,9 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
           </div>
           
           {/* Custom club info below chart - also scrollable */}
-          <div className="min-w-[1200px] flex gap-4 mt-4 px-4">
+          <div className="min-w-[1200px] flex gap-12 mt-4 px-4 justify-start items-end">
             {chartData.map((club, index) => (
-              <div key={club.club} className="text-center flex-shrink-0 w-14">
+              <div key={club.club} className="text-center flex-shrink-0 w-16 flex flex-col items-center">
                 {/* Earnings - Green */}
                 <div className="text-xs font-semibold text-green-400 mb-1">
                   £{club.earnings.toFixed(1)}M
