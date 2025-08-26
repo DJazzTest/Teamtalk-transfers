@@ -104,7 +104,7 @@ export const leedsTransfers: Transfer[] = [
     status: 'confirmed'
   },
   {
-    id: 'leeds-nmecha-2025',
+    id: 'leeds-nmecha-jan-2025',
     playerName: 'Lukas Nmecha',
     fromClub: 'VfL Wolfsburg',
     toClub: 'Leeds United',
@@ -124,7 +124,7 @@ export const leedsTransfers: Transfer[] = [
     status: 'confirmed'
   },
   {
-    id: 'leeds-bijol-2025',
+    id: 'leeds-bijol-jan-2025',
     playerName: 'Jaka Bijol',
     fromClub: 'Udinese',
     toClub: 'Leeds United',
