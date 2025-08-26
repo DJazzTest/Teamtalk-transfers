@@ -38,7 +38,7 @@ export const liverpoolTransfers: Transfer[] = [
     playerName: 'Florian Wirtz',
     fromClub: 'Bayer Leverkusen',
     toClub: 'Liverpool',
-    fee: '£116m',
+    fee: '£116m (£100m + £16m add-ons)',
     date: '2025-01-21T10:00:00Z',
     source: 'liverpoolfc.com',
     status: 'confirmed'

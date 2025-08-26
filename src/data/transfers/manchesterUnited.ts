@@ -28,7 +28,7 @@ export const manchesterUnitedTransfers: Transfer[] = [
     playerName: 'Bryan Mbeumo',
     fromClub: 'Brentford',
     toClub: 'Manchester United',
-    fee: '£71m',
+    fee: '£71m (£65m + £6m add-ons)',
     date: '2025-01-15T12:00:00Z',
     source: 'manutd.com',
     status: 'confirmed'

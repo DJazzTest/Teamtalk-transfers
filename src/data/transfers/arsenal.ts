@@ -18,7 +18,7 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Martin Zubimendi',
     fromClub: 'Real Sociedad',
     toClub: 'Arsenal',
-    fee: '£56m',
+    fee: '£60m',
     date: '2025-07-06T12:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
@@ -28,7 +28,7 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Christian Norgaard',
     fromClub: 'Brentford',
     toClub: 'Arsenal',
-    fee: '£25m',
+    fee: '£15m (£10m + £5m add-ons)',
     date: '2025-07-20T14:00:00Z',
     source: 'arsenal.com',
     status: 'confirmed'
