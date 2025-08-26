@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
-import { Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock } from 'lucide-react';
+import { Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock, Home } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { premierLeagueClubs } from '@/data/mockTransfers';
@@ -162,7 +162,8 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 }}
                 className="text-gray-300 hover:text-white border-gray-600 hover:border-gray-500"
               >
-                ← Back to Teams
+                <Home className="w-4 h-4 mr-2" />
+                Home
               </Button>
             </div>
           </div>

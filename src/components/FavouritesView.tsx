@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Star, Heart, TrendingUp, TrendingDown } from 'lucide-react';
+import { Star, Heart, TrendingUp, TrendingDown, Home } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { clubBadgeMap } from './ClubsView';
@@ -62,7 +62,8 @@ export const FavouritesView: React.FC<FavouritesViewProps> = ({ transfers }) => 
                   onClick={() => setSelectedClub(null)}
                   className="text-gray-400 hover:text-white"
                 >
-                  ← Back to Favourites
+                  <Home className="w-4 h-4 mr-2" />
+                  Home
                 </Button>
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <img

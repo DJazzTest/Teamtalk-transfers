@@ -12,7 +12,7 @@ import { AppHeader } from '@/components/AppHeader';
 
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users } from 'lucide-react';
+import { Users, Home } from 'lucide-react';
 import { TeamTransferView } from '@/components/TeamTransferView';
 import { TransferResults } from '@/components/TransferResults';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
@@ -84,12 +84,15 @@ const WebsiteContent = () => {
 
         <AppHeader lastUpdated={lastUpdated || new Date()} />
         <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
-          <button
-            className="mb-4 px-4 py-2 rounded bg-blue-700 text-white font-semibold hover:bg-blue-800 transition"
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleBackToDashboard}
+            className="mb-4 text-gray-300 hover:text-white border-gray-600 hover:border-gray-500"
           >
-            ← Back to Dashboard
-          </button>
+            <Home className="w-4 h-4 mr-2" />
+            Home
+          </Button>
           <TeamTransferView transfers={allTransfers} selectedTeam={selectedClub} onBack={handleBackToDashboard} />
         </div>
       </div>
