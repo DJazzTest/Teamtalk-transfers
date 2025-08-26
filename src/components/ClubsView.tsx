@@ -135,22 +135,22 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
 
           {/* Transfer Statistics */}
           <div className="grid grid-cols-3 gap-4 mb-6">
+            <Card className="bg-yellow-900/30 border-yellow-700">
+              <div className="p-4 text-center">
+                <div className="text-2xl font-bold text-yellow-400">{categorizedTransfers.rumors.length}</div>
+                <div className="text-sm text-yellow-300">Rumours</div>
+              </div>
+            </Card>
             <Card className="bg-green-900/30 border-green-700">
               <div className="p-4 text-center">
                 <div className="text-2xl font-bold text-green-400">{categorizedTransfers.confirmedIn.length}</div>
-                <div className="text-sm text-green-300">Confirmed In</div>
+                <div className="text-sm text-green-300">Transfers In</div>
               </div>
             </Card>
             <Card className="bg-red-900/30 border-red-700">
               <div className="p-4 text-center">
                 <div className="text-2xl font-bold text-red-400">{categorizedTransfers.confirmedOut.length}</div>
-                <div className="text-sm text-red-300">Confirmed Out</div>
-              </div>
-            </Card>
-            <Card className="bg-yellow-900/30 border-yellow-700">
-              <div className="p-4 text-center">
-                <div className="text-2xl font-bold text-yellow-400">{categorizedTransfers.rumors.length}</div>
-                <div className="text-sm text-yellow-300">Rumors</div>
+                <div className="text-sm text-red-300">Transfers Out</div>
               </div>
             </Card>
           </div>
@@ -168,14 +168,31 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
             </div>
           )}
 
-          {/* Categorized Transfer Sections */}
+          {/* Categorized Transfer Sections - NEW ORDER: Rumors, Transferred In, Transferred Out */}
           <div className="space-y-6">
-            {/* Confirmed In */}
+            {/* Rumors First */}
+            {categorizedTransfers.rumors.length > 0 && (
+              <div>
+                <h4 className="text-lg font-semibold text-yellow-400 mb-3 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                  Rumours ({categorizedTransfers.rumors.length})
+                </h4>
+                <div className="space-y-3">
+                  {categorizedTransfers.rumors.map((transfer) => (
+                    <div key={transfer.id} className="bg-yellow-900/20 rounded-lg p-4 border border-yellow-700/50 hover:bg-yellow-900/30 transition-all duration-200">
+                      <TransferCard transfer={transfer} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Transferred In */}
             {categorizedTransfers.confirmedIn.length > 0 && (
               <div>
                 <h4 className="text-lg font-semibold text-green-400 mb-3 flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  Confirmed In ({categorizedTransfers.confirmedIn.length})
+                  Transferred In ({categorizedTransfers.confirmedIn.length})
                 </h4>
                 <div className="space-y-3">
                   {categorizedTransfers.confirmedIn.map((transfer) => (
@@ -187,33 +204,16 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               </div>
             )}
 
-            {/* Confirmed Out */}
+            {/* Transferred Out */}
             {categorizedTransfers.confirmedOut.length > 0 && (
               <div>
                 <h4 className="text-lg font-semibold text-red-400 mb-3 flex items-center gap-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  Confirmed Out ({categorizedTransfers.confirmedOut.length})
+                  Transferred Out ({categorizedTransfers.confirmedOut.length})
                 </h4>
                 <div className="space-y-3">
                   {categorizedTransfers.confirmedOut.map((transfer) => (
                     <div key={transfer.id} className="bg-red-900/20 rounded-lg p-4 border border-red-700/50 hover:bg-red-900/30 transition-all duration-200">
-                      <TransferCard transfer={transfer} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Rumors */}
-            {categorizedTransfers.rumors.length > 0 && (
-              <div>
-                <h4 className="text-lg font-semibold text-yellow-400 mb-3 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                  Rumors & Speculation ({categorizedTransfers.rumors.length})
-                </h4>
-                <div className="space-y-3">
-                  {categorizedTransfers.rumors.map((transfer) => (
-                    <div key={transfer.id} className="bg-yellow-900/20 rounded-lg p-4 border border-yellow-700/50 hover:bg-yellow-900/30 transition-all duration-200">
                       <TransferCard transfer={transfer} />
                     </div>
                   ))}

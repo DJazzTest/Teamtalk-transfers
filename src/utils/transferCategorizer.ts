@@ -98,12 +98,11 @@ export function categorizeTransfers(transfers: Transfer[], clubName: string): Ca
     // Mark player as processed
     processedPlayers.add(playerKey);
 
-    // FIXED: Use status field only for categorization
+    // STRICT: If status is 'rumored', it ONLY goes to rumors section
     if (transfer.status === 'rumored') {
-      // All rumored transfers go to rumors section
       rumors.push(transfer);
     } else if (transfer.status === 'confirmed') {
-      // Confirmed transfers: check direction using fromClub → toClub
+      // Only confirmed transfers can be in confirmed sections
       if (isClubMatch(transfer.toClub, clubName)) {
         // Player joining this club (transfer IN)
         confirmedIn.push(transfer);

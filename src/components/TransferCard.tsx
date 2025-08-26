@@ -128,31 +128,7 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
               <div className="flex items-center gap-2 text-sm text-gray-300">
                 <span>{transfer.fromClub}</span>
                 <span>→</span>
-                <span className="font-semibold text-white flex items-center gap-1">
-                  {transfer.toClub}
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={e => {
-                            e.currentTarget.classList.add('scale-110');
-                            setTimeout(() => e.currentTarget.classList.remove('scale-110'), 150);
-                            handleStarClub(transfer.toClub);
-                          }}
-                          className={`ml-1 p-1 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50 transition-transform duration-150 ${isStarred ? 'bg-yellow-400/20' : ''}`}
-                          aria-label={isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
-                        >
-                          <Star className={`w-4 h-4 ${isStarred ? 'fill-yellow-400 text-yellow-400' : 'text-yellow-400'}`} />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom">
-                        {isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </span>
+                <span className="font-semibold text-white">{transfer.toClub}</span>
               </div>
               {transfer.rejectionReason && (
                 <div className="mt-2 bg-red-500/10 border border-red-500/20 rounded p-2">
