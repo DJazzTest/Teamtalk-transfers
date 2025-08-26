@@ -160,7 +160,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   setSelectedTeam(null);
                   onBack?.();
                 }}
-                className="text-gray-300 hover:text-white border-gray-600 hover:border-gray-500"
+                className="text-blue-300 hover:text-blue-200 border-gray-600 hover:border-gray-500"
               >
                 <Home className="w-4 h-4 mr-2" />
                 Home
@@ -170,15 +170,15 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
           
           <div className="px-6 pb-6">
             <h2 className="text-2xl font-bold text-white flex items-center gap-3 mb-2">
+              {selectedTeam}
               <img
-                src={`/badges/${clubBadgeMap[selectedTeam] || selectedTeam.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
+                src={clubBadgeMap[selectedTeam] || `/badges/${selectedTeam.toLowerCase().replace(/[^a-z]/g, '')}.png`}
                 alt={`${selectedTeam} badge`}
-                className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200 mr-1"
+                className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200"
                 onError={e => {
                   (e.target as HTMLImageElement).style.display = 'none';
                 }}
               />
-              {selectedTeam}
             </h2>
             {/* Show current spend for this club */}
             <div className="mt-2 flex items-center gap-2">
