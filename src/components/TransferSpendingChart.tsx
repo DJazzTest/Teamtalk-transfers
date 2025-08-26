@@ -33,6 +33,33 @@ const clubFinancialData = [
   { club: 'Fulham', spending: 0.43, earnings: 0.0 }
 ];
 
+// Club badge mapping
+const getClubBadge = (club: string): string => {
+  const badgeMap: Record<string, string> = {
+    'Arsenal': '/badges/arsenal-real.png',
+    'Aston Villa': '/badges/astonvilla.png',
+    'Bournemouth': '/badges/bournemouth-real.png',
+    'Brentford': '/badges/brentford.png',
+    'Brighton & Hove Albion': '/badges/brightonhovealbion.png',
+    'Burnley': '/badges/burnley.png', 
+    'Chelsea': '/badges/chelsea-real.png',
+    'Crystal Palace': '/badges/crystalpalace.png',
+    'Everton': '/badges/everton.png',
+    'Fulham': '/badges/fulham.png',
+    'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png',
+    'Liverpool': '/badges/liverpool-real.png',
+    'Manchester City': '/badges/manchestercity-real.png',
+    'Manchester United': '/badges/manchesterunited-real.png',
+    'Newcastle United': '/badges/newcastleunited.png',
+    'Nottingham Forest': '/badges/nottinghamforest.png',
+    'Sunderland': '/badges/sunderland.png',
+    'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
+    'West Ham United': '/badges/westhamunited.png',
+    'Wolverhampton Wanderers': '/badges/wolverhamptonwanderers.png'
+  };
+  return badgeMap[club] || '';
+};
+
 export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ transfers }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const itemsPerPage = 6;
@@ -95,16 +122,14 @@ export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ tr
           </div>
         </div>
         
-        <div className="h-96">
+        <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={currentData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+            <BarChart data={currentData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
               <XAxis 
                 dataKey="clubShort" 
-                angle={-45} 
-                textAnchor="end" 
-                height={80}
-                tick={{ fontSize: 12, fill: '#E5E7EB' }}
+                tick={false}
+                axisLine={false}
               />
               <YAxis 
                 tick={{ fontSize: 12, fill: '#E5E7EB' }}
@@ -127,6 +152,37 @@ export const TransferSpendingChart: React.FC<TransferSpendingChartProps> = ({ tr
               <Bar dataKey="earnings" name="earnings" fill="#10B981" radius={[2, 2, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
+        </div>
+        
+        {/* Custom club info below chart */}
+        <div className="grid grid-cols-6 gap-4 mt-4 px-4">
+          {currentData.map((club, index) => (
+            <div key={club.club} className="text-center">
+              {/* Earnings - Green */}
+              <div className="text-xs font-semibold text-green-400 mb-1">
+                £{club.earnings.toFixed(1)}M
+              </div>
+              {/* Spending - Red */}
+              <div className="text-xs font-semibold text-red-400 mb-2">
+                £{club.spending.toFixed(1)}M
+              </div>
+              {/* Club Name - Horizontal */}
+              <div className="text-xs font-medium text-white mb-2 leading-tight">
+                {club.club}
+              </div>
+              {/* Club Badge */}
+              <div className="flex justify-center">
+                <img
+                  src={getClubBadge(club.club)}
+                  alt={`${club.club} badge`}
+                  className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
         
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
