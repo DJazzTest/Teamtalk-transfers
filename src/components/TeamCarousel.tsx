@@ -13,27 +13,26 @@ const premierLeagueClubs = [
 // Club badge mapping - centralized system using REAL official badges
 const getClubBadge = (club: string): string => {
   const badgeMap: Record<string, string> = {
-    'Arsenal': '/badges/arsenal-real.png', // Real Arsenal badge
-    'Aston Villa': '/badges/astonvilla-real.png', // Real Aston Villa badge
-    'Bournemouth': '/badges/bournemouth-real.png', // Real Bournemouth badge
-    'Brentford': '/badges/brentford-real.png', // Real Brentford badge
-    'Brighton & Hove Albion': '/badges/brighton-real.png', // Real Brighton badge
-    'Chelsea': '/badges/chelsea-real.png', // Real Chelsea badge
-    'Crystal Palace': '/badges/crystalpalace-real.png', // Real Crystal Palace badge
-    'Everton': '/badges/everton-real.png', // Real Everton badge
-    'Fulham': '/badges/fulham-real.png', // Real Fulham badge
-    'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png', // Real Leeds badge provided by user
-    'Liverpool': '/badges/liverpool-real.png', // Real Liverpool badge
-    'Manchester City': '/badges/manchestercity-real.png', // Real Man City badge
-    'Manchester United': '/badges/manchesterunited-real.png', // Real Man United badge
-    'Newcastle United': '/badges/newcastle-real.png', // Real Newcastle badge
-    'Nottingham Forest': '/badges/nottinghamforest-real.png', // Real Nottingham Forest badge
-    'Tottenham Hotspur': '/badges/tottenham-real.png', // Real Spurs badge
-    'West Ham United': '/badges/westham-real.png', // Real West Ham badge
-    // Teams without real badges will use initials fallback
-    'Ipswich Town': '',
-    'Leicester City': '',
-    'Sheffield United': ''
+    'Arsenal': '/badges/arsenal-real.png',
+    'Aston Villa': '/badges/astonvilla.png',
+    'Bournemouth': '/badges/bournemouth-real.png',
+    'Brentford': '/badges/brentford.png',
+    'Brighton & Hove Albion': '/badges/brightonhovealbion.png',
+    'Chelsea': '/badges/chelsea-real.png',
+    'Crystal Palace': '/badges/crystalpalace.png',
+    'Everton': '/badges/everton.png',
+    'Fulham': '/badges/fulham.png',
+    'Ipswich Town': '', // No badge available
+    'Leicester City': '', // No badge available
+    'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png',
+    'Liverpool': '/badges/liverpool-real.png',
+    'Manchester City': '/badges/manchestercity-real.png',
+    'Manchester United': '/badges/manchesterunited-real.png',
+    'Newcastle United': '/badges/newcastleunited.png',
+    'Nottingham Forest': '/badges/nottinghamforest.png',
+    'Sheffield United': '', // No badge available
+    'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
+    'West Ham United': '/badges/westhamunited.png'
   };
   return badgeMap[club] || '';
 };
