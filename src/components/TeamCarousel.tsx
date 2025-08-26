@@ -24,7 +24,7 @@ const getClubBadge = (club: string): string => {
     'Everton': '/badges/everton.png',
     'Fulham': '/badges/fulham.png',
     'Ipswich Town': '', // No badge available - will use initials
-    'Leeds United': '', // No badge available - will use initials
+    'Leeds United': '/badges/leedsunited.png',
     'Leicester City': '', // No badge available - will use initials
     'Liverpool': '/badges/liverpool.png',
     'Manchester City': '/badges/manchestercity.png',

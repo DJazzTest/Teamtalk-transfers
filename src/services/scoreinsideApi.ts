@@ -29,7 +29,53 @@ export class ScoreInsideApiService {
     }
 
     try {
-      // Try transfers endpoint first
+      // Try the manual transfer data first
+      const { transferDataParser } = await import('@/services/transferDataParser');
+      const manualTransfers = transferDataParser.getTeamTransfers(config.name);
+      
+      if (manualTransfers.length > 0) {
+        // Convert manual transfers to ScoreInside format for consistency
+        const mockArticles: ScoreInsideTransferArticle[] = manualTransfers.map((transfer, index) => ({
+          aid: index + 1000,
+          pid: index + 2000,
+          ttfr: null,
+          ttto: 1205, // Generic team ID
+          scat: transfer.status === 'confirmed' ? 'Done Deal' : 'Rumours',
+          article: {
+            id: index + 3000,
+            imid: index + 4000,
+            hdl: `${transfer.playerName} ${transfer.fee !== 'Undisclosed' ? transfer.fee : ''} transfer`,
+            sl: `${transfer.playerName.toLowerCase().replace(/\s+/g, '-')}-transfer`,
+            sdt: transfer.date
+          },
+          team: {
+            id: 1205,
+            nm: transfer.toClub,
+            sl: transfer.toClub.toLowerCase().replace(/\s+/g, '-')
+          },
+          team_from: transfer.fromClub ? {
+            id: 1206,
+            nm: transfer.fromClub,
+            sl: transfer.fromClub.toLowerCase().replace(/\s+/g, '-')
+          } : null,
+          player: {
+            id: index + 5000,
+            nm: transfer.playerName,
+            sl: transfer.playerName.toLowerCase().replace(/\s+/g, '-'),
+            sn: transfer.playerName.split(' ').map(n => n[0]).join('')
+          }
+        }));
+        
+        // Update cache
+        this.cache.set(cacheKey, {
+          data: mockArticles,
+          timestamp: now
+        });
+
+        return mockArticles;
+      }
+
+      // Fallback to original API call if no manual data
       let response = await fetch(config.transfersUrl, {
         headers: {
           'Accept': 'application/json',
