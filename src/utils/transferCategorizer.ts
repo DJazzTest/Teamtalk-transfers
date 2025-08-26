@@ -66,48 +66,44 @@ export interface CategorizedTransfers {
 
 /**
  * Categorizes transfers for a specific club into confirmed in/out and rumors
- * ENHANCED: Ensures each player appears in only ONE category (no duplicates)
+ * FIXED: Ensures rumored players ONLY appear in rumors, confirmed players ONLY in confirmed sections
  */
 export function categorizeTransfers(transfers: Transfer[], clubName: string): CategorizedTransfers {
   const confirmedIn: Transfer[] = [];
   const confirmedOut: Transfer[] = [];
   const rumors: Transfer[] = [];
   
-  // Track players we've already categorized to avoid duplicates
+  // Track players to prevent duplicates
   const processedPlayers = new Set<string>();
 
-  // Sort transfers by priority: confirmed status first, then by date (newest first)
-  const sortedTransfers = transfers.sort((a, b) => {
-    // STRICT: confirmed status ALWAYS beats rumored
-    if (a.status === 'confirmed' && b.status === 'rumored') return -1;
-    if (a.status === 'rumored' && b.status === 'confirmed') return 1;
-    
-    // If same status, sort by date (newest first)  
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
-
-  for (const transfer of sortedTransfers) {
-    const playerKey = normalizePlayerName(transfer.playerName);
-    
-    // Skip if we've already processed this player
-    if (processedPlayers.has(playerKey)) {
-      continue;
-    }
-    
-    // Mark player as processed
-    processedPlayers.add(playerKey);
-
-    // ABSOLUTE RULE: rumored = rumors section ONLY
+  // STEP 1: First pass - collect ALL rumored transfers
+  for (const transfer of transfers) {
     if (transfer.status === 'rumored') {
-      rumors.push(transfer);
-    } else if (transfer.status === 'confirmed') {
-      // Only confirmed transfers can be in confirmed sections
+      const playerKey = normalizePlayerName(transfer.playerName);
+      if (!processedPlayers.has(playerKey)) {
+        rumors.push(transfer);
+        processedPlayers.add(playerKey);
+      }
+    }
+  }
+
+  // STEP 2: Second pass - collect ONLY confirmed transfers for players not already in rumors
+  for (const transfer of transfers) {
+    if (transfer.status === 'confirmed') {
+      const playerKey = normalizePlayerName(transfer.playerName);
+      
+      // Skip if this player is already in rumors
+      if (processedPlayers.has(playerKey)) {
+        continue;
+      }
+      
+      // Add to appropriate confirmed section
       if (isClubMatch(transfer.toClub, clubName)) {
-        // Player joining this club (transfer IN)
         confirmedIn.push(transfer);
+        processedPlayers.add(playerKey);
       } else if (isClubMatch(transfer.fromClub, clubName)) {
-        // Player leaving this club (transfer OUT)
         confirmedOut.push(transfer);
+        processedPlayers.add(playerKey);
       }
     }
   }
