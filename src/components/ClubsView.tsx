@@ -28,7 +28,7 @@ export const clubBadgeMap: Record<string, string> = {
 };
 
 import { Button } from '@/components/ui/button';
-import { Star, ArrowLeft } from 'lucide-react';
+import { Star, ArrowLeft, Info } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { TeamTransferStats } from './TeamTransferStats';
@@ -154,6 +154,19 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
               </div>
             </Card>
           </div>
+
+          {/* Show deduplication info if duplicates were removed */}
+          {clubTransferList.length !== (categorizedTransfers.confirmedIn.length + categorizedTransfers.confirmedOut.length + categorizedTransfers.rumors.length) && (
+            <div className="mb-4 p-3 bg-blue-900/20 border border-blue-700/50 rounded-lg">
+              <div className="flex items-center gap-2 text-sm text-blue-300">
+                <Info className="h-4 w-4" />
+                <span>
+                  Removed {clubTransferList.length - (categorizedTransfers.confirmedIn.length + categorizedTransfers.confirmedOut.length + categorizedTransfers.rumors.length)} duplicate player{clubTransferList.length - (categorizedTransfers.confirmedIn.length + categorizedTransfers.confirmedOut.length + categorizedTransfers.rumors.length) > 1 ? 's' : ''} 
+                  ({clubTransferList.length} → {categorizedTransfers.confirmedIn.length + categorizedTransfers.confirmedOut.length + categorizedTransfers.rumors.length} unique transfers)
+                </span>
+              </div>
+            </div>
+          )}
 
           {/* Categorized Transfer Sections */}
           <div className="space-y-6">

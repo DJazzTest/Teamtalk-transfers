@@ -19,6 +19,15 @@ function containsRumorKeywords(transfer: Transfer): boolean {
   return RUMOR_KEYWORDS.some(keyword => textToCheck.includes(keyword.toLowerCase()));
 }
 
+// Normalize player names for better duplicate detection
+function normalizePlayerName(playerName: string): string {
+  return playerName.toLowerCase()
+    .replace(/\s+/g, ' ')
+    .replace(/['']/g, '')
+    .replace(/[.-]/g, '')
+    .trim();
+}
+
 // Normalize club names for comparison
 function normalizeClubName(clubName: string): string {
   return clubName.toLowerCase()
@@ -57,14 +66,39 @@ export interface CategorizedTransfers {
 
 /**
  * Categorizes transfers for a specific club into confirmed in/out and rumors
+ * ENHANCED: Ensures each player appears in only ONE category (no duplicates)
  */
 export function categorizeTransfers(transfers: Transfer[], clubName: string): CategorizedTransfers {
   const confirmedIn: Transfer[] = [];
   const confirmedOut: Transfer[] = [];
   const rumors: Transfer[] = [];
+  
+  // Track players we've already categorized to avoid duplicates
+  const processedPlayers = new Set<string>();
 
-  for (const transfer of transfers) {
-    // First check if it's a rumor based on status or keywords
+  // Sort transfers by priority: confirmed status first, then by date (newest first)
+  const sortedTransfers = transfers.sort((a, b) => {
+    // Confirmed transfers have higher priority than rumors
+    if (a.status === 'confirmed' && b.status === 'rumored') return -1;
+    if (a.status === 'rumored' && b.status === 'confirmed') return 1;
+    
+    // If same status, sort by date (newest first)
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
+  for (const transfer of sortedTransfers) {
+    const playerKey = normalizePlayerName(transfer.playerName);
+    
+    // Skip if we've already processed this player
+    if (processedPlayers.has(playerKey)) {
+      console.log(`Skipping duplicate player: ${transfer.playerName} (already processed)`);
+      continue;
+    }
+    
+    // Mark player as processed
+    processedPlayers.add(playerKey);
+
+    // Check if it's a rumor based on status or keywords
     const isRumor = transfer.status === 'rumored' || 
                     containsRumorKeywords(transfer) ||
                     transfer.fee.toLowerCase().includes('interest') ||
@@ -89,11 +123,21 @@ export function categorizeTransfers(transfers: Transfer[], clubName: string): Ca
   const sortByDate = (a: Transfer, b: Transfer) => 
     new Date(b.date).getTime() - new Date(a.date).getTime();
 
-  return {
+  const result = {
     confirmedIn: confirmedIn.sort(sortByDate),
     confirmedOut: confirmedOut.sort(sortByDate),
     rumors: rumors.sort(sortByDate)
   };
+  
+  console.log(`${clubName} categorization:`, {
+    confirmedIn: result.confirmedIn.length,
+    confirmedOut: result.confirmedOut.length, 
+    rumors: result.rumors.length,
+    total: transfers.length,
+    duplicatesRemoved: transfers.length - (result.confirmedIn.length + result.confirmedOut.length + result.rumors.length)
+  });
+
+  return result;
 }
 
 /**
