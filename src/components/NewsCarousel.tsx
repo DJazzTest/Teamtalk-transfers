@@ -37,6 +37,8 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
     const fetchNews = async () => {
       setLoading(true);
       try {
+        // Clear cache to ensure fresh data
+        newsApi.clearCache();
         const articles = await newsApi.fetchNews();
         
         // Filter for Premier League clubs only
@@ -57,6 +59,13 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
     };
 
     fetchNews();
+    
+    // Auto refresh every 2 minutes to get latest news
+    const interval = setInterval(() => {
+      fetchNews();
+    }, 2 * 60 * 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const formatTime = (dateString: string): string => {

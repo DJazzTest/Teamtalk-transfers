@@ -78,7 +78,7 @@ export class NewsApiService {
     data: [],
     timestamp: 0
   };
-  private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  private readonly CACHE_DURATION = 2 * 60 * 1000; // 2 minutes for fresher news
 
   static getInstance(): NewsApiService {
     if (!NewsApiService.instance) {
@@ -124,7 +124,7 @@ export class NewsApiService {
   private async fetchScoreInsideNews(articles: NewsArticle[]): Promise<void> {
     try {
       const response = await fetch(
-        'https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=1&per_page=10&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBczeY8Ku923Q2MXcUog5gTDAZQ',
+        'https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=1&per_page=25&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBczeY8Ku923Q2MXcUog5gTDAZQ',
         {
           headers: {
             'Accept': 'application/json',
@@ -178,7 +178,7 @@ export class NewsApiService {
               const content = `${item.headline} ${item.excerpt}`.toLowerCase();
               return transferKeywords.some(keyword => content.includes(keyword));
             })
-            .slice(0, 15) // Limit articles
+            .slice(0, 25) // Increase articles limit
             .forEach(item => {
               articles.push({
                 id: `teamtalk-${item.id}`,
