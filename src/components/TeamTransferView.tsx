@@ -7,6 +7,7 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/comp
 import { Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock, Home } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
+import { SquadWageCarousel } from './SquadWageCarousel';
 import { premierLeagueClubs } from '@/data/mockTransfers';
 import { clubBadgeMap } from './ClubsView';
 import { topSpendingClubs } from '@/data/topSpendingClubs';
@@ -193,6 +194,9 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
             </div>
           </div>
         </Card>
+
+        {/* Squad Wage Carousel */}
+        <SquadWageCarousel club={selectedTeam} />
 
         {/* Latest Transfer News */}
         <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
