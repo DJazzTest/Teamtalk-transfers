@@ -146,8 +146,8 @@ export class NewsApiService {
               time: this.formatTime(item.article.sdt),
               category: item.scat,
               image: item.article.image?.impth,
-              // Construct proper TeamTalk URL using the slug
-              url: `https://www.teamtalk.com/${item.article.sl}/`
+              // Create a search URL for TeamTalk to find the article
+              url: `https://www.teamtalk.com/search?q=${encodeURIComponent(item.article.hdl.substring(0, 50))}`
             });
           });
         }
