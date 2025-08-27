@@ -98,23 +98,20 @@ export class NewsApiService {
     try {
       const articles: NewsArticle[] = [];
 
-      // Fetch from ScoreInside API
+      // Fetch from ScoreInside API (multiple pages for latest news)
       await this.fetchScoreInsideNews(articles);
 
-      // Fetch from TeamTalk API
-      await this.fetchTeamTalkNews(articles);
-
-      // Remove duplicates and sort by recency
-      const uniqueArticles = this.removeDuplicates(articles)
+      // Sort by recency (newest first)
+      const sortedArticles = articles
         .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
       // Update cache
       this.cache = {
-        data: uniqueArticles,
+        data: sortedArticles,
         timestamp: now
       };
 
-      return uniqueArticles;
+      return sortedArticles;
     } catch (error) {
       console.error('Error fetching news:', error);
       return this.cache.data; // Return cached data on error
@@ -123,33 +120,41 @@ export class NewsApiService {
 
   private async fetchScoreInsideNews(articles: NewsArticle[]): Promise<void> {
     try {
-      const response = await fetch(
-        'https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=1&per_page=25&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBczeY8Ku923Q2MXcUog5gTDAZQ',
-        {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'TransferCentre/1.0'
+      // Fetch multiple pages to get latest articles
+      const pages = [1, 2, 3];
+      const fetchPromises = pages.map(page => 
+        fetch(
+          `https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=${page}&per_page=15&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBczeY8Ku923Q2MXcUog5gTDAZQ`,
+          {
+            headers: {
+              'Accept': 'application/json',
+              'User-Agent': 'TransferCentre/1.0'
+            }
           }
-        }
+        )
       );
 
-      if (response.ok) {
-        const data: ScoreInsideNewsResponse = await response.json();
-        
-        if (data.result?.transfer_articles?.data) {
-          data.result.transfer_articles.data.forEach(item => {
-            articles.push({
-              id: `scoreinside-${item.aid}`,
-              title: item.article.hdl,
-              summary: `${item.player.nm} - ${item.team.nm}${item.team_from ? ` from ${item.team_from.nm}` : ''}`,
-              source: 'TeamTalk',
-              time: this.formatTime(item.article.sdt),
-              category: item.scat,
-              image: item.article.image?.impth,
-              // Correct TeamTalk URL format: /news/{slug}
-              url: `https://www.teamtalk.com/news/${item.article.sl}`
+      const responses = await Promise.all(fetchPromises);
+      
+      for (const response of responses) {
+        if (response.ok) {
+          const data: ScoreInsideNewsResponse = await response.json();
+          
+          if (data.result?.transfer_articles?.data) {
+            data.result.transfer_articles.data.forEach(item => {
+              articles.push({
+                id: `scoreinside-${item.aid}`,
+                title: item.article.hdl,
+                summary: `${item.player.nm} - ${item.team.nm}${item.team_from ? ` from ${item.team_from.nm}` : ''}`,
+                source: 'TeamTalk',
+                time: this.formatTime(item.article.sdt),
+                category: item.scat,
+                image: item.article.image?.impth,
+                // Correct TeamTalk URL format: /news/{slug}
+                url: `https://www.teamtalk.com/news/${item.article.sl}`
+              });
             });
-          });
+          }
         }
       }
     } catch (error) {
@@ -157,71 +162,17 @@ export class NewsApiService {
     }
   }
 
-  private async fetchTeamTalkNews(articles: NewsArticle[]): Promise<void> {
-    try {
-      const response = await fetch('https://www.teamtalk.com/mobile-app-feed', {
-        headers: {
-          'Accept': 'application/json',
-          'User-Agent': 'TransferCentre/1.0'
-        }
-      });
-
-      if (response.ok) {
-        const data: TeamTalkFeedResponse = await response.json();
-        
-        if (data.items) {
-          // Filter for transfer-related content
-          const transferKeywords = ['transfer', 'signing', 'deal', 'move', 'rumour', 'linked'];
-          
-          data.items
-            .filter(item => {
-              const content = `${item.headline} ${item.excerpt}`.toLowerCase();
-              return transferKeywords.some(keyword => content.includes(keyword));
-            })
-            .slice(0, 25) // Increase articles limit
-            .forEach(item => {
-              articles.push({
-                id: `teamtalk-${item.id}`,
-                title: item.headline,
-                summary: item.excerpt,
-                source: 'TeamTalk',
-                time: this.formatTime(item.pub_date),
-                category: item.category?.[0] || 'Transfer News',
-                image: item.image,
-                url: item.link
-              });
-            });
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching TeamTalk news:', error);
-    }
-  }
-
-  private removeDuplicates(articles: NewsArticle[]): NewsArticle[] {
-    const seen = new Set<string>();
-    const unique: NewsArticle[] = [];
-
-    for (const article of articles) {
-      // Create a key based on title similarity
-      const key = article.title.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 50);
-      
-      if (!seen.has(key)) {
-        seen.add(key);
-        unique.push(article);
-      }
-    }
-
-    return unique;
-  }
-
   private formatTime(dateString: string): string {
     const date = new Date(dateString);
     const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     
-    if (diffInHours < 1) return 'Just now';
+    if (diffInMinutes < 1) return 'Just now';
+    if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
+    
+    const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) return `${diffInHours} hours ago`;
+    
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays === 1) return '1 day ago';
     return `${diffInDays} days ago`;
