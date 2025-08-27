@@ -138,6 +138,7 @@ export class NewsApiService {
         
         if (data.result?.transfer_articles?.data) {
           data.result.transfer_articles.data.forEach(item => {
+            // Don't include URL for ScoreInside articles as they don't map correctly to TeamTalk URLs
             articles.push({
               id: `scoreinside-${item.aid}`,
               title: item.article.hdl,
@@ -146,7 +147,8 @@ export class NewsApiService {
               time: this.formatTime(item.article.sdt),
               category: item.scat,
               image: item.article.image?.impth,
-              url: `https://www.teamtalk.com/${item.article.sl}`
+              // Remove URL to prevent 404s - these are internal ScoreInside article IDs
+              url: undefined
             });
           });
         }

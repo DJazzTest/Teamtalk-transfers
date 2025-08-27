@@ -94,7 +94,7 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
             {displayNews.map((article) => (
               <Card 
                 key={article.id}
-                className="min-w-[280px] max-w-sm bg-gradient-to-br from-blue-50 to-white border-blue-200 hover:shadow-md transition-all duration-200 hover:border-blue-300 cursor-pointer"
+                className={`min-w-[280px] max-w-sm bg-gradient-to-br from-blue-50 to-white border-blue-200 hover:shadow-md transition-all duration-200 hover:border-blue-300 ${article.url ? 'cursor-pointer' : 'cursor-default'}`}
                 onClick={() => article.url && window.open(article.url, '_blank')}
               >
                 <div className="p-4 flex flex-col gap-3">
@@ -134,8 +134,10 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
                         <Clock className="w-3 h-3" />
                         {article.time}
                       </div>
-                      {article.url && (
-                        <ExternalLink className="w-3 h-3 text-gray-400" />
+                      {article.url ? (
+                        <ExternalLink className="w-3 h-3 text-blue-400" />
+                      ) : (
+                        <span className="text-xs text-gray-400">Article preview</span>
                       )}
                     </div>
                   </div>
