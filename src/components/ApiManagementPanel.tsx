@@ -77,24 +77,56 @@ export const ApiManagementPanel: React.FC = () => {
     const startTime = Date.now();
     
     try {
-      const response = await fetch(api.url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'User-Agent': 'TransferCentre/1.0'
-        }
-      });
+      // Try different approaches for different API types
+      let response: Response;
+      
+      if (api.url.includes('teamtalk.com')) {
+        // TeamTalk feed might need different headers or no-cors mode
+        response = await fetch(api.url, {
+          method: 'GET',
+          mode: 'no-cors',
+          headers: {
+            'Accept': '*/*',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+          }
+        });
+      } else {
+        // Other APIs with standard approach
+        response = await fetch(api.url, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'User-Agent': 'TransferCentre/1.0'
+          }
+        });
+      }
       
       const responseTime = Date.now() - startTime;
       
-      if (response.ok) {
-        return {
-          ...api,
-          status: 'online',
-          lastChecked: new Date(),
-          responseTime,
-          error: undefined
-        };
+      // For no-cors requests, we can't read the status, so assume success if no error thrown
+      if (api.url.includes('teamtalk.com') || response.ok) {
+        // Try to read response text to verify it's actually working
+        try {
+          const text = await response.text();
+          const isValidResponse = text && text.length > 0;
+          
+          return {
+            ...api,
+            status: isValidResponse ? 'online' : 'offline',
+            lastChecked: new Date(),
+            responseTime,
+            error: isValidResponse ? undefined : 'Empty response received'
+          };
+        } catch (readError) {
+          // For CORS-restricted APIs, we can't read the response but no error means it's reachable
+          return {
+            ...api,
+            status: 'online',
+            lastChecked: new Date(),
+            responseTime,
+            error: undefined
+          };
+        }
       } else {
         return {
           ...api,
@@ -104,11 +136,21 @@ export const ApiManagementPanel: React.FC = () => {
         };
       }
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      
+      // Provide more specific error messages
+      let detailedError = errorMessage;
+      if (errorMessage.includes('CORS')) {
+        detailedError = 'CORS policy blocks this request. API may still be working but inaccessible from browser.';
+      } else if (errorMessage.includes('Failed to fetch')) {
+        detailedError = 'Network error or API is down. Check URL and network connectivity.';
+      }
+      
       return {
         ...api,
         status: 'offline',
         lastChecked: new Date(),
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: detailedError
       };
     }
   };
