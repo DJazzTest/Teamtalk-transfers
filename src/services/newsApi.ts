@@ -217,7 +217,7 @@ export class NewsApiService {
                 source: 'TeamTalk',
                 time: this.formatTime(item.article.sdt),
                 category: item.scat,
-                image: item.article.image?.impth,
+                image: item.article.image?.impth ? `https://liveapi.scoreinside.com${item.article.image.impth}` : undefined,
                 // Correct TeamTalk URL format: /news/{slug}
                 url: `https://www.teamtalk.com/news/${item.article.sl}`
               });
