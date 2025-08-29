@@ -45,7 +45,6 @@ const DEFAULT_APIS: ApiEndpoint[] = [
 const STORAGE_KEY = 'api_endpoints';
 
 export const ApiManagementPanel: React.FC = () => {
-  console.log("ApiManagementPanel component rendering");
   const [apis, setApis] = useState<ApiEndpoint[]>(DEFAULT_APIS);
   const [editingApi, setEditingApi] = useState<ApiEndpoint | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);

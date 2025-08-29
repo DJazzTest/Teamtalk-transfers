@@ -21,7 +21,6 @@ import { TeamCarousel } from '@/components/TeamCarousel';
 import { NewsCarousel } from '@/components/NewsCarousel';
 
 const WebsiteContent = () => {
-  console.log("WebsiteContent component rendering");
   const { allTransfers, lastUpdated, refreshAllData } = useTransferDataStore();
   const { refreshCounter } = useRefreshControl();
   const [selectedClub, setSelectedClub] = useState<string | null>(null);
