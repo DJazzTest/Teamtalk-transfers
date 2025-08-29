@@ -101,8 +101,9 @@ export class NewsApiService {
       // Try fetching from ScoreInside API first
       await this.fetchScoreInsideNews(articles);
 
-      // If no articles from API, use mock data
+      // Only use mock data if absolutely no articles from any source
       if (articles.length === 0) {
+        console.warn('All news APIs failed, using fallback data');
         articles.push(...this.getMockNews());
       }
 
@@ -134,8 +135,7 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer News',
-        image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=300&fit=crop&crop=center',
-        url: 'https://www.teamtalk.com'
+        url: 'https://www.teamtalk.com/transfer-centre'
       },
       {
         id: 'mock-2', 
@@ -144,8 +144,7 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 4 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer Rumours',
-        image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=300&fit=crop&crop=center',
-        url: 'https://www.teamtalk.com'
+        url: 'https://www.teamtalk.com/transfer-centre'
       },
       {
         id: 'mock-3',
@@ -154,8 +153,7 @@ export class NewsApiService {
         source: 'TeamTalk', 
         time: this.formatTime(new Date(now.getTime() - 6 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer News',
-        image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400&h=300&fit=crop&crop=center',
-        url: 'https://www.teamtalk.com'
+        url: 'https://www.teamtalk.com/transfer-centre'
       },
       {
         id: 'mock-4',
@@ -164,8 +162,7 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 8 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer Rumours',
-        image: 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=400&h=300&fit=crop&crop=center',
-        url: 'https://www.teamtalk.com'
+        url: 'https://www.teamtalk.com/transfer-centre'
       },
       {
         id: 'mock-5',
@@ -174,8 +171,7 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 10 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer News',
-        image: 'https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?w=400&h=300&fit=crop&crop=center',
-        url: 'https://www.teamtalk.com'
+        url: 'https://www.teamtalk.com/transfer-centre'
       },
       {
         id: 'mock-6',
@@ -184,8 +180,7 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 12 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer Rumours',
-        image: 'https://images.unsplash.com/photo-1552318965-6e6be7eb3f36?w=400&h=300&fit=crop&crop=center',
-        url: 'https://www.teamtalk.com'
+        url: 'https://www.teamtalk.com/transfer-centre'
       }
     ];
     
