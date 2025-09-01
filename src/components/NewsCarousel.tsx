@@ -101,6 +101,13 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
             <span className="ml-2 text-blue-700">Loading latest news...</span>
           </div>
+        ) : newsArticles.length === 0 ? (
+          <div className="flex items-center justify-center p-8">
+            <div className="text-center">
+              <p className="text-blue-700 font-medium mb-2">No news articles available</p>
+              <p className="text-blue-600 text-sm">The news API is currently unavailable. Please try again later.</p>
+            </div>
+          </div>
         ) : (
           <div className="flex gap-4 overflow-x-auto pb-2" style={{
             scrollbarWidth: 'thin',

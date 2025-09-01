@@ -108,10 +108,10 @@ export class NewsApiService {
         this.cache.lastSuccessfulFetch = now;
       }
 
-      // Only use mock data if absolutely no articles from any source
+      // Don't use misleading mock data - show real status instead
       if (articles.length === 0) {
-        console.warn('All news APIs failed, using fallback data');
-        articles.push(...this.getMockNews());
+        console.warn('All news APIs failed - no articles available');
+        // Return empty array instead of fake data
       }
 
       // Sort by recency (newest first)
@@ -128,8 +128,8 @@ export class NewsApiService {
       return sortedArticles;
     } catch (error) {
       console.error('Error fetching news:', error);
-      // Return cached data if available, otherwise mock data
-      return this.cache.data.length > 0 ? this.cache.data : this.getMockNews();
+      // Return cached data if available, otherwise empty array
+      return this.cache.data.length > 0 ? this.cache.data : [];
     }
   }
 
@@ -223,11 +223,11 @@ export class NewsApiService {
   private async tryNewApiEndpoint(articles: NewsArticle[]): Promise<void> {
     try {
       const response = await fetch(
-        'https://liveapi.scoreinside.com/api/user/favourite/teams/transfer-news?per_page=20&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBczeY8Ku923Q2MXcUog5gTDAZQ',
+        'https://liveapi.scoreinside.com/api/user/favourite/teams/transfer-news?per_page=20',
         {
           headers: {
             'Accept': 'application/json',
-            'User-Agent': 'TransferCentre/1.0'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
           }
         }
       );
@@ -268,11 +268,11 @@ export class NewsApiService {
       const pages = [1, 2];
       const fetchPromises = pages.map(page => 
         fetch(
-          `https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=${page}&per_page=15&fcm_token=ftDpqcK1kEhKnCaKaNwRoJ:APA91bE19THSCAH7gP9HDem38JSdtO6BRHCRY3u-P9vOZ7XvJy_z-Y9zkCwluk2xizPW8iACUDLdRbuB-PYqLUZ40aBnUBczeY8Ku923Q2MXcUog5gTDAZQ`,
+          `https://liveapi.scoreinside.com/api/user/favourite/teams/news?page=${page}&per_page=15`,
           {
             headers: {
               'Accept': 'application/json',
-              'User-Agent': 'TransferCentre/1.0'
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             }
           }
         )
@@ -317,7 +317,7 @@ export class NewsApiService {
       const response = await fetch('https://www.teamtalk.com/mobile-app-feed', {
         headers: {
           'Accept': 'application/json',
-          'User-Agent': 'TransferCentre/1.0'
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
       });
 
