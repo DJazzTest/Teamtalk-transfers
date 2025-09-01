@@ -68,8 +68,25 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
     return () => clearInterval(interval);
   }, [refreshKey]);
 
-  const handleRefresh = () => {
-    setRefreshKey(prev => prev + 1);
+  const handleRefresh = async () => {
+    setLoading(true);
+    try {
+      const articles = await newsApi.fetchNews(true); // Force refresh
+      
+      // Filter for Premier League clubs only
+      const filteredArticles = articles.filter(article => {
+        const content = `${article.title} ${article.summary}`.toLowerCase();
+        return premierLeagueClubs.some(club => 
+          content.includes(club.toLowerCase())
+        );
+      });
+      
+      setNewsArticles(filteredArticles);
+    } catch (error) {
+      console.error('Error refreshing news:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const formatTime = (dateString: string): string => {
