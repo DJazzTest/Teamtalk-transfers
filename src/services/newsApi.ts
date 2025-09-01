@@ -74,11 +74,13 @@ interface TeamTalkFeedResponse {
 
 export class NewsApiService {
   private static instance: NewsApiService;
-  private cache: { data: NewsArticle[]; timestamp: number } = {
+  private cache: { data: NewsArticle[]; timestamp: number; lastSuccessfulFetch: number } = {
     data: [],
-    timestamp: 0
+    timestamp: 0,
+    lastSuccessfulFetch: 0
   };
-  private readonly CACHE_DURATION = 1 * 60 * 1000; // 1 minute for more frequent updates
+  private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  private readonly STALE_THRESHOLD = 6 * 60 * 60 * 1000; // 6 hours
 
   static getInstance(): NewsApiService {
     if (!NewsApiService.instance) {
@@ -87,11 +89,11 @@ export class NewsApiService {
     return NewsApiService.instance;
   }
 
-  async fetchNews(): Promise<NewsArticle[]> {
+  async fetchNews(forceRefresh = false): Promise<NewsArticle[]> {
     const now = Date.now();
     
-    // Return cached data if still valid
-    if (this.cache.data.length > 0 && (now - this.cache.timestamp) < this.CACHE_DURATION) {
+    // Return cached data if still valid and not forced refresh
+    if (!forceRefresh && this.cache.data.length > 0 && (now - this.cache.timestamp) < this.CACHE_DURATION) {
       return this.cache.data;
     }
 
@@ -100,6 +102,11 @@ export class NewsApiService {
 
       // Try fetching from ScoreInside API first
       await this.fetchScoreInsideNews(articles);
+
+      // If we got real articles, update last successful fetch time
+      if (articles.length > 0) {
+        this.cache.lastSuccessfulFetch = now;
+      }
 
       // Only use mock data if absolutely no articles from any source
       if (articles.length === 0) {
@@ -114,14 +121,15 @@ export class NewsApiService {
       // Update cache
       this.cache = {
         data: sortedArticles,
-        timestamp: now
+        timestamp: now,
+        lastSuccessfulFetch: articles.length > 0 ? now : this.cache.lastSuccessfulFetch
       };
 
       return sortedArticles;
     } catch (error) {
       console.error('Error fetching news:', error);
-      // Return mock data if API fails
-      return this.getMockNews();
+      // Return cached data if available, otherwise mock data
+      return this.cache.data.length > 0 ? this.cache.data : this.getMockNews();
     }
   }
 
@@ -135,7 +143,8 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer News',
-        url: 'https://www.teamtalk.com/transfer-centre'
+        url: 'https://www.teamtalk.com/transfer-centre',
+        image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=300&fit=crop&crop=center'
       },
       {
         id: 'mock-2', 
@@ -144,7 +153,8 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 4 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer Rumours',
-        url: 'https://www.teamtalk.com/transfer-centre'
+        url: 'https://www.teamtalk.com/transfer-centre',
+        image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=300&fit=crop&crop=center'
       },
       {
         id: 'mock-3',
@@ -153,7 +163,8 @@ export class NewsApiService {
         source: 'TeamTalk', 
         time: this.formatTime(new Date(now.getTime() - 6 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer News',
-        url: 'https://www.teamtalk.com/transfer-centre'
+        url: 'https://www.teamtalk.com/transfer-centre',
+        image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400&h=300&fit=crop&crop=center'
       },
       {
         id: 'mock-4',
@@ -162,7 +173,8 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 8 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer Rumours',
-        url: 'https://www.teamtalk.com/transfer-centre'
+        url: 'https://www.teamtalk.com/transfer-centre',
+        image: 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=400&h=300&fit=crop&crop=center'
       },
       {
         id: 'mock-5',
@@ -171,7 +183,8 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 10 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer News',
-        url: 'https://www.teamtalk.com/transfer-centre'
+        url: 'https://www.teamtalk.com/transfer-centre',
+        image: 'https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?w=400&h=300&fit=crop&crop=center'
       },
       {
         id: 'mock-6',
@@ -180,7 +193,8 @@ export class NewsApiService {
         source: 'TeamTalk',
         time: this.formatTime(new Date(now.getTime() - 12 * 60 * 60 * 1000).toISOString()),
         category: 'Transfer Rumours',
-        url: 'https://www.teamtalk.com/transfer-centre'
+        url: 'https://www.teamtalk.com/transfer-centre',
+        image: 'https://images.unsplash.com/photo-1552318965-6e6be7eb3f36?w=400&h=300&fit=crop&crop=center'
       }
     ];
     
@@ -355,8 +369,17 @@ export class NewsApiService {
     return `${diffInDays} days ago`;
   }
 
+  isDataStale(): boolean {
+    const now = Date.now();
+    return (now - this.cache.lastSuccessfulFetch) > this.STALE_THRESHOLD;
+  }
+
+  getLastSuccessfulFetch(): Date | null {
+    return this.cache.lastSuccessfulFetch > 0 ? new Date(this.cache.lastSuccessfulFetch) : null;
+  }
+
   clearCache(): void {
-    this.cache = { data: [], timestamp: 0 };
+    this.cache = { data: [], timestamp: 0, lastSuccessfulFetch: 0 };
   }
 }
 

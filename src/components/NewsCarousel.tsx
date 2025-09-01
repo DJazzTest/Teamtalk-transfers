@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Clock, ExternalLink } from 'lucide-react';
 import { newsApi } from '@/services/newsApi';
+import { StaleDataNotification } from './StaleDataNotification';
 
 // Premier League clubs filter
 const premierLeagueClubs = [
@@ -32,14 +33,13 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
   const [showAll, setShowAll] = useState(false);
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchNews = async (forceRefresh = false) => {
       setLoading(true);
       try {
-        // Clear cache to ensure fresh data
-        newsApi.clearCache();
-        const articles = await newsApi.fetchNews();
+        const articles = await newsApi.fetchNews(forceRefresh);
         
         // Filter for Premier League clubs only
         const filteredArticles = articles.filter(article => {
@@ -60,13 +60,17 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
 
     fetchNews();
     
-    // Auto refresh every 2 minutes to get latest news
+    // Auto refresh every 5 minutes to get latest news
     const interval = setInterval(() => {
       fetchNews();
-    }, 2 * 60 * 1000);
+    }, 5 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [refreshKey]);
+
+  const handleRefresh = () => {
+    setRefreshKey(prev => prev + 1);
+  };
 
   const formatTime = (dateString: string): string => {
     const date = new Date(dateString);
@@ -83,8 +87,10 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
   const displayNews = showAll ? newsArticles : newsArticles.slice(0, maxItems);
 
   return (
-    <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#e6f3ff' }}>
-      <div className="p-4">
+    <>
+      <StaleDataNotification onRefresh={handleRefresh} />
+      <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#e6f3ff' }}>
+        <div className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
           <h2 className="text-lg font-bold text-blue-800">Latest Transfer News</h2>
@@ -173,5 +179,6 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
         </div>
       </div>
     </Card>
+    </>
   );
 };
