@@ -1,7 +1,27 @@
 import { TeamTalkFeedResponse, TeamTalkArticle, ParsedTransferInfo } from '@/types/teamtalk';
 import { Transfer } from '@/types/transfer';
 
-const TEAMTALK_API_URL = 'https://www.teamtalk.com/mobile-app-feed';
+const TEAMTALK_API_BASE_URL = 'https://www.teamtalk.com/mobile-app-feed';
+
+function getTeamTalkFeedUrl(): string {
+  try {
+    // Force proxy in non-production bundles using Vite's flag
+    if (!(import.meta as any).env?.PROD) {
+      return `https://cors.isomorphic-git.org/${TEAMTALK_API_BASE_URL}`;
+    }
+    if (typeof window !== 'undefined') {
+      const host = window.location.hostname || '';
+      const isProd = /teamtalk\.com$/.test(host) || /netlify\.app$/.test(host);
+      if (!isProd) {
+        // Use a permissive CORS passthrough for non-production hosts (localhost, LAN IPs, etc.)
+        return `https://cors.isomorphic-git.org/${TEAMTALK_API_BASE_URL}`;
+      }
+    }
+  } catch {
+    // noop – likely running in a non-browser context
+  }
+  return TEAMTALK_API_BASE_URL;
+}
 
 // Keywords to filter for transfer-related content
 const TRANSFER_KEYWORDS = [
@@ -27,7 +47,7 @@ export class TeamTalkApiService {
     data: null,
     timestamp: 0
   };
-  private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  private readonly CACHE_DURATION = 0; // Always fetch fresh for now to prevent staleness
 
   static getInstance(): TeamTalkApiService {
     if (!TeamTalkApiService.instance) {
@@ -40,20 +60,26 @@ export class TeamTalkApiService {
     const now = Date.now();
     
     // Return cached data if still valid
-    if (this.cache.data && (now - this.cache.timestamp) < this.CACHE_DURATION) {
+    if (this.cache.data && this.CACHE_DURATION > 0 && (now - this.cache.timestamp) < this.CACHE_DURATION) {
       return this.cache.data;
     }
 
     try {
-      const response = await fetch(TEAMTALK_API_URL, {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+      const response = await fetch(`${getTeamTalkFeedUrl()}?_t=${Date.now()}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
         },
-        mode: 'cors'
+        cache: 'no-store',
+        mode: 'cors',
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         console.warn(`TeamTalk API returned ${response.status}: ${response.statusText}`);
@@ -92,6 +118,10 @@ export class TeamTalkApiService {
         items: []
       };
     }
+  }
+
+  clearCache(): void {
+    this.cache = { data: null, timestamp: 0 };
   }
 
   isTransferRelated(article: TeamTalkArticle): boolean {
@@ -257,9 +287,10 @@ export class TeamTalkApiService {
         return [];
       }
       
-      const transferArticles = feed.items.filter(article => this.isTransferRelated(article));
-      console.log(`Filtered ${transferArticles.length} transfer-related articles from ${feed.items.length} total`);
-      return transferArticles;
+      // Loosen filtering: return all items; UI can decide which to display
+      const articles = feed.items;
+      console.log(`Returning ${articles.length} TeamTalk articles (no strict transfer filter)`);
+      return articles;
     } catch (error) {
       console.error('Error getting transfer articles:', error);
       return []; // Return empty array instead of throwing

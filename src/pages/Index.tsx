@@ -10,6 +10,8 @@ import { Card } from '@/components/ui/card';
 import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { Transfer } from '@/types/transfer';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
+const NewsCarousel = React.lazy(() => import('@/components/NewsCarousel').then(m => ({ default: m.NewsCarousel })));
+const TeamTalkFeed = React.lazy(() => import('@/components/TeamTalkFeed'));
 
 const Index = () => {
   const {
@@ -31,8 +33,8 @@ const Index = () => {
     clearScrapeErrors
   } = useRefreshControl();
 
-  // Set countdown to Monday 1 September 2025 at 19:00 BST (18:00 UTC)
-  const [countdownTarget, setCountdownTarget] = useState('2025-09-01T18:00:00Z');
+  // Set countdown to December 31, 2025 at 23:00 (120 days, 16 hours, 19 minutes from now)
+  const [countdownTarget, setCountdownTarget] = useState('2025-12-31T23:00:00');
   const [allTransfers, setAllTransfers] = useState<Transfer[]>([]);
   
   // Initialize transfers on mount
@@ -44,11 +46,14 @@ const Index = () => {
         const liveTransfers = await liveDataService.getAllTransfers();
         
         console.log('✅ Initialized with live transfer data:', liveTransfers.length, 'transfers');
+        console.log('Sample transfers:', liveTransfers.slice(0, 3));
         setAllTransfers(liveTransfers);
       } catch (error) {
         console.error('❌ Error initializing transfers:', error);
         // Fallback to static data if live data fails
         const staticTransfers = TransferIntegrationService.getAllTransfers();
+        console.log('📚 Using static fallback data:', staticTransfers.length, 'transfers');
+        console.log('Sample static transfers:', staticTransfers.slice(0, 3));
         setAllTransfers(staticTransfers);
       }
     };
@@ -103,6 +108,13 @@ const Index = () => {
           <PollingStatusIndicator />
         </div>
 
+        {/* Latest News (fresh, auto-refreshes) */}
+        <div className="mb-4 sm:mb-8">
+          <React.Suspense fallback={<Card className="p-4">Loading news…</Card>}>
+            <NewsCarousel maxItems={12} />
+          </React.Suspense>
+        </div>
+
         {/* Recent Transfers Highlight - Now using only real transfer data */}
         <div className="mb-4 sm:mb-8">
           <RecentTransfers transfers={allTransfers} />
@@ -120,6 +132,13 @@ const Index = () => {
           transfers={allTransfers}
           lastUpdated={lastUpdated}
         />
+
+        {/* TeamTalk Live Feed list (extra feed view) */}
+        <div className="mt-6">
+          <React.Suspense fallback={<Card className="p-4">Loading feed…</Card>}>
+            <TeamTalkFeed maxItems={20} showTransfersOnly={false} />
+          </React.Suspense>
+        </div>
       </div>
     </div>
   );

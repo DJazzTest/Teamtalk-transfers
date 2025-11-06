@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
-import { Star } from 'lucide-react';
+import { Star, ExternalLink, Newspaper } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { getStatusColor } from '@/utils/statusUtils';
 
@@ -33,6 +33,15 @@ const getStatusIcon = (status: string) => {
 };
 
 export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact = false }) => {
+  // Debug logging
+  React.useEffect(() => {
+    console.log(`🎯 TransferCard rendered for ${transfer.playerName}:`, {
+      hasRelatedNews: !!transfer.relatedNews,
+      newsCount: transfer.relatedNews?.length || 0,
+      newsTitles: transfer.relatedNews?.map(n => n.title) || []
+    });
+  }, [transfer.playerName, transfer.relatedNews]);
+
   // Starred club state (localStorage sync)
   const [starredClubs, setStarredClubs] = React.useState<string[]>(() => {
     const saved = localStorage.getItem('starredClubs');
@@ -60,6 +69,13 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
     window.dispatchEvent(new CustomEvent('starredClubsUpdate', { detail: newStarred }));
   };
   const isStarred = starredClubs.includes(transfer.toClub);
+
+  // Handle news article click
+  const handleNewsClick = (url: string) => {
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   if (isCompact) {
     return (
@@ -100,6 +116,31 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
               </div>
               <p className="text-xs text-gray-300">{transfer.source}</p>
             </div>
+            
+            {/* Player News Section - Compact View */}
+            {transfer.relatedNews && transfer.relatedNews.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-slate-600">
+                <div className="flex items-center gap-2 mb-2">
+                  <Newspaper className="w-4 h-4 text-blue-400" />
+                  <span className="text-xs font-medium text-blue-400">Latest News</span>
+                </div>
+                <div className="space-y-2">
+                  {transfer.relatedNews.slice(0, 1).map((news) => (
+                    <div
+                      key={news.id}
+                      className="bg-slate-700/50 rounded p-2 cursor-pointer hover:bg-slate-700/70 transition-colors"
+                      onClick={() => handleNewsClick(news.url || '')}
+                    >
+                      <p className="text-xs text-white font-medium line-clamp-2">{news.title}</p>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-xs text-gray-400">{news.source}</span>
+                        <span className="text-xs text-gray-400">{news.time}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </Card>
@@ -168,6 +209,49 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
             <p className="text-xs text-gray-400">{new Date(transfer.date).toLocaleDateString()}</p>
           </div>
         </div>
+        
+        {/* Player News Section - Full View */}
+        {transfer.relatedNews && transfer.relatedNews.length > 0 && (
+          <div className="mt-4 pt-4 border-t border-slate-600">
+            <div className="flex items-center gap-2 mb-3">
+              <Newspaper className="w-5 h-5 text-blue-400" />
+              <span className="text-sm font-medium text-blue-400">Related News</span>
+              <Badge variant="secondary" className="text-xs">
+                {transfer.relatedNews.length} article{transfer.relatedNews.length !== 1 ? 's' : ''}
+              </Badge>
+            </div>
+            <div className="grid gap-3">
+              {transfer.relatedNews.map((news) => (
+                <div
+                  key={news.id}
+                  className="bg-slate-700/50 rounded-lg p-3 cursor-pointer hover:bg-slate-700/70 transition-all duration-200 group"
+                  onClick={() => handleNewsClick(news.url || '')}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-sm font-medium text-white group-hover:text-blue-300 transition-colors line-clamp-2">
+                        {news.title}
+                      </h4>
+                      <p className="text-xs text-gray-400 mt-1 line-clamp-2">
+                        {news.summary}
+                      </p>
+                      <div className="flex items-center gap-3 mt-2">
+                        <span className="text-xs text-gray-500">{news.source}</span>
+                        <span className="text-xs text-gray-500">•</span>
+                        <span className="text-xs text-gray-500">{news.time}</span>
+                        <span className="text-xs text-gray-500">•</span>
+                        <span className="text-xs text-gray-500">
+                          {Math.round(news.relevanceScore * 100)}% match
+                        </span>
+                      </div>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-blue-400 transition-colors flex-shrink-0" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </Card>
   );

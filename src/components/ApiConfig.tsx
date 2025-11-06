@@ -3,6 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { ApiKeyManager } from './ApiKeyManager';
 import ApiEndpointManager from './ApiEndpointManager';
+import { UrlTester } from './UrlTester';
 import { RefreshConfig } from './RefreshConfig';
 import { CountdownConfig } from './CountdownConfig';
 import { CrawlErrors } from './CrawlErrors';
@@ -24,6 +25,12 @@ export const ApiConfig: React.FC = () => {
             <h2 className="text-2xl font-bold text-white">API Configuration</h2>
           </div>
           <ApiKeyManager />
+          <div className="mt-6">
+            <ApiEndpointManager />
+          </div>
+          <div className="mt-6">
+            <UrlTester />
+          </div>
         </div>
       </Card>
     </div>

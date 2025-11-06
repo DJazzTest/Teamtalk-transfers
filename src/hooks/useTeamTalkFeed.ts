@@ -24,6 +24,11 @@ export const useTeamTalkFeed = (autoRefresh = true): UseTeamTalkFeedResult => {
     setError(null);
 
     try {
+      // Force-clear any TeamTalk client cache (belt and braces)
+      try {
+        (teamTalkApi as any).clearCache?.();
+      } catch {}
+
       const [fetchedArticles, fetchedTransfers] = await Promise.all([
         teamTalkApi.getTransferArticles(),
         teamTalkApi.getTransfers()

@@ -12,10 +12,15 @@ interface TeamTalkFeedProps {
 }
 
 const TeamTalkFeed: React.FC<TeamTalkFeedProps> = ({ 
-  maxItems = 10, 
+  maxItems = 30, 
   showTransfersOnly = false 
 }) => {
   const { articles, transfers, loading, error, lastUpdated, refresh } = useTeamTalkFeed();
+  
+  // Surface the latest headline to the console for quick verification
+  if (articles && articles.length > 0) {
+    console.log('📰 Latest TeamTalk headline:', articles[0].headline);
+  }
 
   const getStatusBadgeColor = (tag: string) => {
     switch (tag) {

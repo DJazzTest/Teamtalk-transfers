@@ -27,6 +27,21 @@ export interface Transfer {
   pastClubs?: string[];
   rejectionReason?: string;
   playerImage?: string;
+  // Player-specific news articles
+  relatedNews?: PlayerNewsArticle[];
+}
+
+export interface PlayerNewsArticle {
+  id: string;
+  title: string;
+  summary: string;
+  source: string;
+  time: string;
+  category: string;
+  image?: string;
+  url?: string;
+  playerName: string;
+  relevanceScore: number; // 0-1 score for how relevant this article is to the player
 }
 
 export interface CrawlStatus {

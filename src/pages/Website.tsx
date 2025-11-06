@@ -24,7 +24,7 @@ const WebsiteContent = () => {
   const { allTransfers, lastUpdated, refreshAllData } = useTransferDataStore();
   const { refreshCounter } = useRefreshControl();
   const [selectedClub, setSelectedClub] = useState<string | null>(null);
-  const [countdownTarget] = useState('2025-09-01T18:00:00Z');
+  const [countdownTarget] = useState('2025-12-31T23:00:00');
   const [showAllNew, setShowAllNew] = useState(false);
   // All transfer data is now sourced from useTransferDataStore()
 
@@ -109,12 +109,12 @@ const WebsiteContent = () => {
         {/* News Feed - moved to below countdown */}
         <NewsCarousel maxItems={5} />
 
-        {/* New Premier League Transfers & Rumours just added! */}
+        {/* New Premier League Transfers & Rumours */}
         <Card className="mb-6 border-blue-200/50 shadow-lg" style={{ backgroundColor: '#e3f2fd' }}>
           <div className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-              <h2 className="text-lg font-bold text-blue-800">New Premier League Transfers & Rumours just added!</h2>
+              <h2 className="text-lg font-bold text-blue-800">New Premier League Transfers & Rumours</h2>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2" style={{
               scrollbarWidth: 'thin',

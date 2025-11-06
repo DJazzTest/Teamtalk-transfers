@@ -101,17 +101,17 @@ export const TransferDataAdmin: React.FC = () => {
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
   
   // Transfer Window Countdown state
-  const [closeTime, setCloseTime] = useState<string>(() => {
-    return localStorage.getItem('transfer_window_close') || '2025-09-01T18:00';
+  const [openTime, setOpenTime] = useState<string>(() => {
+    return localStorage.getItem('transfer_window_open') || '2025-12-31T23:00';
   });
   const [timeLeft, setTimeLeft] = useState<any>(null);
 
   // Update transfer window countdown
   useEffect(() => {
-    localStorage.setItem('transfer_window_close', closeTime);
+    localStorage.setItem('transfer_window_open', openTime);
     const interval = setInterval(() => {
       const now = new Date();
-      const targetDate = new Date(closeTime);
+      const targetDate = new Date(openTime);
       const diff = targetDate.getTime() - now.getTime();
       if (diff <= 0) {
         setTimeLeft(null);
@@ -124,7 +124,7 @@ export const TransferDataAdmin: React.FC = () => {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [closeTime]);
+  }, [openTime]);
 
   // Helper to check for duplicates in allTransfers and current entries
   const isDuplicate = (playerName: string, toClub: string) => {
@@ -333,18 +333,18 @@ const parseBulkLine = (line: string) => {
       {/* Transfer Window Countdown Setting */}
       <div className="mb-8 p-4 bg-slate-800/60 rounded-lg flex flex-col gap-3">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <label className="block text-white font-semibold text-lg">Transfer Window Closes:</label>
+          <label className="block text-white font-semibold text-lg">Transfer Window Opens:</label>
           <Input
             type="datetime-local"
-            value={closeTime}
-            onChange={e => setCloseTime(e.target.value)}
+            value={openTime}
+            onChange={e => setOpenTime(e.target.value)}
             className="w-64"
           />
         </div>
         <div className="text-blue-200 text-md font-mono">
           {timeLeft
             ? `Countdown: ${timeLeft.days}d ${timeLeft.hours}h ${timeLeft.mins}m ${timeLeft.secs}s`
-            : 'Transfer window is closed.'}
+            : 'Transfer window is now open!'}
         </div>
       </div>
 

@@ -2,6 +2,7 @@ import { Transfer } from '@/types/transfer';
 import { scoreInsideApi } from './scoreinsideApi';
 import { teamTalkApi } from './teamtalkApi';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
+import { ttStagingApi } from './ttStagingApi';
 
 export class LiveDataService {
   private static instance: LiveDataService;
@@ -28,9 +29,10 @@ export class LiveDataService {
     
     try {
       // Fetch data from all sources in parallel
-      const [scoreInsideTransfers, teamTalkTransfers] = await Promise.allSettled([
+      const [scoreInsideTransfers, teamTalkTransfers, stagingTransfers] = await Promise.allSettled([
         this.getScoreInsideData(),
-        this.getTeamTalkData()
+        this.getTeamTalkData(),
+        this.getStagingData()
       ]);
 
       // Collect successful results
@@ -48,6 +50,13 @@ export class LiveDataService {
         console.log('✅ TeamTalk API:', teamTalkTransfers.value.length, 'transfers');
       } else {
         console.warn('⚠️ TeamTalk API failed or returned no data');
+      }
+
+      if (stagingTransfers.status === 'fulfilled' && stagingTransfers.value.length > 0) {
+        allTransfers.push(...stagingTransfers.value);
+        console.log('✅ Staging API:', stagingTransfers.value.length, 'transfers');
+      } else {
+        console.warn('⚠️ Staging API failed or returned no data');
       }
 
       // If no live data is available, fall back to static data
@@ -109,6 +118,69 @@ export class LiveDataService {
       }));
     } catch (error) {
       console.error('TeamTalk API error:', error);
+      return [];
+    }
+  }
+
+  private async getStagingData(): Promise<Transfer[]> {
+    try {
+      const allTransfers: Transfer[] = [];
+      
+      // Get rumours from all teams
+      const rumourTeams = await ttStagingApi.getRumourTeams();
+      if (rumourTeams?.result?.rumour_teams?.data) {
+        for (const team of rumourTeams.result.rumour_teams.data) {
+          try {
+            const rumours = await ttStagingApi.getRumoursByTeam(team.id);
+            if (rumours?.result?.rumours?.data) {
+              const teamTransfers = rumours.result.rumours.data.map(rumour => ({
+                id: `staging-rumour-${rumour.id}`,
+                playerName: rumour.player?.nm || 'Unknown Player',
+                fromClub: rumour.team_from?.nm || 'Unknown Club',
+                toClub: rumour.team_to?.nm || 'Unknown Club',
+                fee: rumour.fee ? `£${rumour.fee}` : undefined,
+                status: 'rumored' as const,
+                date: rumour.created_at || new Date().toISOString(),
+                source: 'Staging API (Rumours)',
+                category: 'Rumours'
+              }));
+              allTransfers.push(...teamTransfers);
+            }
+          } catch (error) {
+            console.warn(`Failed to fetch rumours for team ${team.id}:`, error);
+          }
+        }
+      }
+
+      // Get done deals from all teams
+      const doneDealTeams = await ttStagingApi.getDoneDealTeams();
+      if (doneDealTeams?.result?.donedeal_teams?.data) {
+        for (const team of doneDealTeams.result.donedeal_teams.data) {
+          try {
+            const doneDeals = await ttStagingApi.getDoneDealsByTeam(team.id);
+            if (doneDeals?.result?.donedeals?.data) {
+              const teamTransfers = doneDeals.result.donedeals.data.map(deal => ({
+                id: `staging-done-${deal.id}`,
+                playerName: deal.player?.nm || 'Unknown Player',
+                fromClub: deal.team_from?.nm || 'Unknown Club',
+                toClub: deal.team_to?.nm || 'Unknown Club',
+                fee: deal.fee ? `£${deal.fee}` : undefined,
+                status: 'confirmed' as const,
+                date: deal.created_at || new Date().toISOString(),
+                source: 'Staging API (Done Deals)',
+                category: 'Done Deal'
+              }));
+              allTransfers.push(...teamTransfers);
+            }
+          } catch (error) {
+            console.warn(`Failed to fetch done deals for team ${team.id}:`, error);
+          }
+        }
+      }
+
+      return allTransfers;
+    } catch (error) {
+      console.error('Staging API error:', error);
       return [];
     }
   }

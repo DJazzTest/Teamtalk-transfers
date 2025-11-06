@@ -1,115 +1,209 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Badge } from '@/components/ui/badge';
-import { User } from 'lucide-react';
-
-interface Player {
-  name: string;
-  weeklyWage: number;
-  yearlyWage: number;
-}
+import { User, PoundSterling, Calendar, Shield } from 'lucide-react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { getSquad } from '@/data/squadWages';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
+import { getTeamSlug } from '@/utils/teamMapping';
 
 interface SquadWageCarouselProps {
   club: string;
 }
 
-const arsenalSquad: Player[] = [
-  { name: 'Kai Havertz', weeklyWage: 280000, yearlyWage: 14.56 },
-  { name: 'Gabriel Jesus', weeklyWage: 265000, yearlyWage: 13.78 },
-  { name: 'Declan Rice', weeklyWage: 240000, yearlyWage: 12.48 },
-  { name: 'Martin Ødegaard', weeklyWage: 240000, yearlyWage: 12.48 },
-  { name: 'Viktor Gyökeres', weeklyWage: 200000, yearlyWage: 10.4 },
-  { name: 'Bukayo Saka', weeklyWage: 195000, yearlyWage: 10.14 },
-  { name: 'William Saliba', weeklyWage: 190000, yearlyWage: 9.88 },
-  { name: 'Gabriel Martinelli', weeklyWage: 180000, yearlyWage: 9.36 },
-  { name: 'Gabriel Magalhães', weeklyWage: 150000, yearlyWage: 7.8 },
-  { name: 'Ben White', weeklyWage: 150000, yearlyWage: 7.8 },
-  { name: 'Oleksandr Zinchenko', weeklyWage: 150000, yearlyWage: 7.8 },
-  { name: 'Mikel Merino', weeklyWage: 130000, yearlyWage: 6.76 },
-  { name: 'Riccardo Calafiori', weeklyWage: 120000, yearlyWage: 6.24 },
-  { name: 'Reiss Nelson', weeklyWage: 100000, yearlyWage: 5.2 },
-  { name: 'Fabio Vieira', weeklyWage: 95000, yearlyWage: 4.94 },
-  { name: 'Eberechi Eze', weeklyWage: 90000, yearlyWage: 4.68 },
-  { name: 'David Raya', weeklyWage: 85000, yearlyWage: 4.42 },
-  { name: 'Jurrien Timber', weeklyWage: 80000, yearlyWage: 4.16 },
-  { name: 'Jakub Kiwior', weeklyWage: 75000, yearlyWage: 3.9 },
-  { name: 'Albert Sambi Lokonga', weeklyWage: 70000, yearlyWage: 3.64 },
-  { name: 'Noni Madueke', weeklyWage: 65000, yearlyWage: 3.38 },
-  { name: 'Martin Zubimendi', weeklyWage: 60000, yearlyWage: 3.12 },
-  { name: 'Cristhian Mosquera', weeklyWage: 55000, yearlyWage: 2.86 },
-  { name: 'Tommy Setford', weeklyWage: 30000, yearlyWage: 1.56 },
-  { name: 'Ethan Nwaneri', weeklyWage: 25000, yearlyWage: 1.3 },
-  { name: 'Myles Lewis-Skelly', weeklyWage: 20000, yearlyWage: 1.04 },
-  { name: 'Alexei Rojas', weeklyWage: 15000, yearlyWage: 0.78 },
-  { name: 'Joshua Nichols', weeklyWage: 10000, yearlyWage: 0.52 },
-  { name: 'Louie Copley', weeklyWage: 8000, yearlyWage: 0.416 },
-  { name: 'Ismeal Kabia', weeklyWage: 6000, yearlyWage: 0.312 },
-  { name: 'Max Dowman', weeklyWage: 5000, yearlyWage: 0.26 },
-  { name: 'Andre Harriman-Annous', weeklyWage: 5000, yearlyWage: 0.26 },
-  { name: 'Marli Salmon', weeklyWage: 5000, yearlyWage: 0.26 }
-];
+// Format number with commas
+const formatNumber = (num: number): string => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+// Format wage for display
+const formatWage = (amount: number, isYearly: boolean = false): string => {
+  if (isYearly) {
+    return `£${amount.toFixed(2)}m`;
+  }
+  return `£${formatNumber(amount)}`;
+};
 
 export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) => {
-  // For now, only show Arsenal data
-  if (club !== 'Arsenal') {
-    return null;
-  }
+  const squad = getSquad(club);
+  const clubSlug = useMemo(() => getTeamSlug(club) || club.toLowerCase().replace(/[^a-z0-9]+/g, '-'), [club]);
 
-  const squad = arsenalSquad;
-  const totalWeeklyWages = squad.reduce((sum, player) => sum + player.weeklyWage, 0);
-  const totalYearlyWages = squad.reduce((sum, player) => sum + player.yearlyWage, 0);
+  const slugify = (name: string): string => name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  
+  const totalWeeklyWage = useMemo(() => {
+    return squad.reduce((sum, player) => sum + player.weeklyWage, 0);
+  }, [squad]);
+  
+  const totalYearlyWage = useMemo(() => {
+    return squad.reduce((sum, player) => sum + player.yearlyWage, 0);
+  }, [squad]);
+  
+  if (!squad || squad.length === 0) {
+    return (
+      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 mb-6">
+        <div className="p-6 text-center text-slate-400">
+          No squad data available for {club}
+        </div>
+      </Card>
+    );
+  }
+  
+  // Get position color
+  const getPositionColor = (position?: string) => {
+    if (!position) return 'bg-slate-600';
+    
+    const positionType = position.toLowerCase();
+    if (positionType.includes('forward') || positionType.includes('striker') || positionType.includes('winger')) {
+      return 'bg-red-500/20 text-red-400';
+    } else if (positionType.includes('midfielder') || positionType.includes('playmaker')) {
+      return 'bg-blue-500/20 text-blue-400';
+    } else if (positionType.includes('defender') || positionType.includes('back') || positionType.includes('fullback')) {
+      return 'bg-green-500/20 text-green-400';
+    } else if (positionType.includes('goalkeeper')) {
+      return 'bg-yellow-500/20 text-yellow-400';
+    }
+    return 'bg-slate-600';
+  };
 
   return (
-    <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 mb-6">
+    <Card className="bg-slate-800/80 backdrop-blur-md border-slate-700/50 mb-6 overflow-hidden shadow-lg">
       <div className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-white flex items-center gap-2">
-            <User className="w-5 h-5 text-blue-400" />
-            {club} Squad Wages
-          </h3>
-          <div className="text-right">
-            <div className="text-lg font-bold text-green-400">
-              £{totalWeeklyWages.toLocaleString()}/week
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-full bg-slate-700/50 border border-slate-600/50 shadow-sm">
+              <Shield className="w-5 h-5 text-blue-400" />
             </div>
-            <div className="text-sm text-gray-400">
-              £{totalYearlyWages.toFixed(1)}m/year total
+            <div>
+              <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                {club} Squad
+              </h3>
+              <p className="text-sm text-slate-400 mt-1">{squad.length} Players</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-4 bg-slate-800/80 p-3 rounded-lg border border-slate-700/50 shadow-sm">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-md bg-emerald-500/10">
+                <PoundSterling className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div>
+                <p className="text-xs text-slate-400">Weekly Wage</p>
+                <p className="font-medium text-white">{formatWage(totalWeeklyWage)}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-md bg-blue-500/10">
+                <Calendar className="w-4 h-4 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-xs text-slate-400">Yearly Wage</p>
+                <p className="font-medium text-white">{formatWage(totalYearlyWage, true)}</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <Carousel className="w-full">
-          <CarouselContent className="-ml-2 md:-ml-4">
-            {squad.map((player, index) => (
-              <CarouselItem key={index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                <Card className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200">
-                  <div className="p-4">
-                    <h4 className="font-semibold text-white mb-2 truncate">
-                      {player.name}
-                    </h4>
-                    <div className="space-y-1">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400 text-sm">Weekly:</span>
-                        <Badge className="bg-green-500/20 text-green-400">
-                          £{player.weeklyWage.toLocaleString()}
-                        </Badge>
+        <div className="relative">
+          <ScrollArea className="w-full">
+            <div className="flex space-x-4 pb-4 pr-4">
+              {squad.map((player, index) => (
+                <Card 
+                  key={index} 
+                  className="w-64 flex-shrink-0 bg-slate-800/70 border border-slate-700/50 hover:border-blue-500/30 hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                >
+                  <div className="p-5">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="relative">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full opacity-0 group-hover:opacity-100 blur transition-all duration-300 group-hover:duration-200"></div>
+                        <Avatar className="w-16 h-16 border-2 border-slate-600 group-hover:border-blue-500/50 relative transition-all duration-300">
+                          {(
+                            player.imageUrl || `/player-images/${clubSlug}/${slugify(player.name)}.png`
+                          ) ? (
+                            <img 
+                              src={player.imageUrl || `/player-images/${clubSlug}/${slugify(player.name)}.png`} 
+                              alt={player.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                const target = e.currentTarget as HTMLImageElement;
+                                target.style.display = 'none';
+                                const fallback = target.nextElementSibling as HTMLElement;
+                                if (fallback) fallback.classList.remove('hidden');
+                              }}
+                            />
+                          ) : null}
+                          <AvatarFallback className={cn(
+                            player.imageUrl ? 'hidden' : '',
+                            'bg-slate-700/80 text-white text-lg font-medium group-hover:bg-slate-600/80 transition-colors duration-300',
+                            getPositionColor(player.position).includes('bg-red-500') ? 'bg-red-500/10 group-hover:bg-red-500/20' : '',
+                            getPositionColor(player.position).includes('bg-blue-500') ? 'bg-blue-500/10 group-hover:bg-blue-500/20' : '',
+                            getPositionColor(player.position).includes('bg-green-500') ? 'bg-green-500/10 group-hover:bg-green-500/20' : '',
+                            getPositionColor(player.position).includes('bg-yellow-500') ? 'bg-yellow-500/10 group-hover:bg-yellow-500/20' : ''
+                          )}>
+                            {player.name
+                              .split(' ')
+                              .map(n => n[0])
+                              .join('')
+                              .toUpperCase()
+                              .substring(0, 2)}
+                          </AvatarFallback>
+                        </Avatar>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400 text-sm">Yearly:</span>
-                        <span className="text-blue-400 text-sm font-medium">
-                          £{player.yearlyWage}m
-                        </span>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-white line-clamp-2 leading-tight group-hover:text-blue-300 transition-colors duration-200">
+                          {player.name}
+                        </h4>
+                        {player.position && (
+                          <Badge 
+                            className={cn(
+                              'mt-2 text-xs font-medium px-2 py-0.5',
+                              getPositionColor(player.position),
+                              'border-0 shadow-sm group-hover:shadow-md transition-all duration-200'
+                            )}
+                          >
+                            {player.position}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3 mt-4 pt-4 border-t border-slate-700/50">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-sm text-slate-400">
+                          <PoundSterling className="w-3.5 h-3.5 mr-1.5" />
+                          <span>Weekly</span>
+                        </div>
+                        <span className="font-medium text-white">{formatWage(player.weeklyWage)}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-sm text-slate-400">
+                          <Calendar className="w-3.5 h-3.5 mr-1.5" />
+                          <span>Yearly</span>
+                        </div>
+                        <span className="font-medium text-white">{formatWage(player.yearlyWage, true)}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-3 pt-3 border-t border-slate-700">
+                      <div className="w-full bg-slate-700 rounded-full h-1.5">
+                        <div 
+                          className="bg-blue-500 h-1.5 rounded-full" 
+                          style={{ width: `${Math.min(100, (player.weeklyWage / 300000) * 100)}%` }}
+                        />
+                      </div>
+                      <div className="flex justify-between text-xs text-slate-400 mt-1">
+                        <span>Wage %</span>
+                        <span>{Math.round((player.weeklyWage / totalWeeklyWage) * 100)}%</span>
                       </div>
                     </div>
                   </div>
                 </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="text-white hover:text-blue-300" />
-          <CarouselNext className="text-white hover:text-blue-300" />
-        </Carousel>
+              ))}
+            </div>
+            <ScrollBar orientation="horizontal" className="h-2" />
+          </ScrollArea>
+        </div>
       </div>
     </Card>
   );

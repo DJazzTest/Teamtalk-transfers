@@ -19,4 +19,17 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom"],
+          ui: [
+            "lucide-react"
+          ],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1200,
+  },
 }));
