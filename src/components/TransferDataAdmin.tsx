@@ -228,7 +228,7 @@ const parseBulkLine = (line: string) => {
   }
 
   // Fallback to original format: Player to Club £fee rumored
-  const regex = /^(.*?)\s+to\s+([A-Za-z \&]+)\s+([£€$]?[\d\.]+[mMkK]?|Free|Free transfer|Undisclosed|Loan)?\s*(confirmed|rumored|pending|rejected)?/i;
+  const regex = /^(.*?)\s+to\s+([A-Za-z &]+)\s+([£€$]?[\d.]+[mMkK]?|Free|Free transfer|Undisclosed|Loan)?\s*(confirmed|rumored|pending|rejected)?/i;
   const match = line.match(regex);
   if (match) {
     const [, playerName, toClub, fee, status] = match;
@@ -396,7 +396,7 @@ Anthony Elanga – Nottingham Forest → Newcastle United – £55m`}
             const debugLines: string[] = [];
             for (const line of lines) {
               // If line is a club name (robust: allow 'United', 'Hotspur', etc.)
-              if (/^[A-Za-z .&'\-]+(United|City|Hotspur|Albion|Forest|Villa|Wanderers|Palace|Bournemouth|Brentford|Chelsea|Everton|Fulham|Leeds|Liverpool|Manchester|Newcastle|Nottingham|Sheffield|Southampton|Sunderland|Tottenham|West Ham|Wolves)?$/i.test(line) && line.length < 40) {
+              if (/^[A-Za-z .&'-]+(United|City|Hotspur|Albion|Forest|Villa|Wanderers|Palace|Bournemouth|Brentford|Chelsea|Everton|Fulham|Leeds|Liverpool|Manchester|Newcastle|Nottingham|Sheffield|Southampton|Sunderland|Tottenham|West Ham|Wolves)?$/i.test(line) && line.length < 40) {
                 currentClub = line;
                 clubs.push(currentClub);
                 debugLines.push(`Detected club: ${currentClub}`);

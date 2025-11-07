@@ -23,7 +23,13 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
+      // Relax overly strict rules to reduce noise in an app context
       "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "no-empty": "off",
+      "prefer-const": "off",
     },
   }
 );

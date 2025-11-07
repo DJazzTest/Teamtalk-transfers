@@ -36,7 +36,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
   const [teamData, setTeamData] = useState<TeamData | null>(null);
   const [youtubeVideos, setYoutubeVideos] = useState<YouTubeVideo[]>([]);
   const [youtubeModal, setYoutubeModal] = useState<{ open: boolean; video?: YouTubeVideo }>(() => ({ open: false }));
-  const [teamStripTab, setTeamStripTab] = useState<'results' | 'fixtures' | 'tables'>('results');
+  const [teamStripTab, setTeamStripTab] = useState<'results' | 'fixtures' | 'tables' | 'topscorer'>('results');
   const [teamDataBlocks, setTeamDataBlocks] = useState<{
     results: any[];
     fixtures: any[];
@@ -45,6 +45,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
   const [teamBlocksLoading, setTeamBlocksLoading] = useState<boolean>(false);
   const [matchModal, setMatchModal] = useState<{ open: boolean; matchId?: string; details?: any }>({ open: false });
   const [dataLoading, setDataLoading] = useState(false);
+  const [topScorers, setTopScorers] = useState<Array<{ name: string; goals: number }>>([]);
 
   // Fetch comprehensive team data when team is selected
   useEffect(() => {
@@ -77,93 +78,176 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
     fetchTeamData();
   }, [selectedTeam]);
 
-  // Fetch selected team blocks (results, fixtures, tables) from Sport365
+  // Compute top goal scorers for the team (from finished matches)
+  useEffect(() => {
+    const loadTopScorers = async () => {
+      try {
+        setTopScorers([]);
+        if (!selectedTeam) return;
+        // Past 120 days to cover season
+        const now = new Date();
+        const from = new Date(now.getTime() - 120 * 24 * 60 * 60 * 1000).toISOString();
+        const to = now.toISOString();
+        // Use teamResultsFixturesService to get team finished matches, then tally scorers via getMatchDetails
+        const { teamResultsFixturesService } = await import('@/services/teamResultsFixturesService');
+        const results = await teamResultsFixturesService.getTeamResults(selectedTeam, from, to);
+        const tally = new Map<string, number>();
+        for (const m of results.slice(0, 25)) { // cap details calls
+          if (!m.id) continue;
+          const det = await teamResultsFixturesService.getMatchDetails(m.id);
+          if (!det.goalScorers) continue;
+          for (const g of det.goalScorers) {
+            if (!g.name) continue;
+            const t = (g.team || '').toLowerCase();
+            const ok = !t || t.includes(selectedTeam.toLowerCase()) || selectedTeam.toLowerCase().includes(t);
+            if (ok) tally.set(g.name, (tally.get(g.name) || 0) + 1);
+          }
+        }
+        const arr = Array.from(tally.entries()).map(([name, goals]) => ({ name, goals })).sort((a, b) => b.goals - a.goals).slice(0, 5);
+        setTopScorers(arr);
+      } catch {}
+    };
+    loadTopScorers();
+  }, [selectedTeam]);
+
+  // Fetch selected team blocks (results, fixtures, tables) using team service
   useEffect(() => {
     const loadTeamBlocks = async () => {
       if (!selectedTeam) return;
-      let teamId = getSport365Id?.(selectedTeam);
-      // Hard fallback mapping for Leeds
-      if (!teamId) {
-        const sel = (selectedTeam || '').toLowerCase();
-        if (sel.includes('leeds')) teamId = '1-5254';
-      }
-      // Fallback: search API if mapping missing
-      if (!teamId) {
-        try {
-          const found = await sport365Api.searchTeams?.(selectedTeam);
-          const hit = Array.isArray(found?.data) ? found.data.find((t: any) => (t.name || t.tn || '').toString().toLowerCase().includes(selectedTeam.toLowerCase().replace(/\s+/g, ' '))) : undefined;
-          if (hit?.id) teamId = hit.id;
-        } catch {}
-      }
-      if (!teamId) return;
       setTeamBlocksLoading(true);
       try {
-        const teamPage = await sport365Api.getTeamPage(teamId);
-        const all = (teamPage?.matches || teamPage?.recentMatches || teamPage?.upcomingMatches || []).filter(Boolean);
-        const teamOnly = all.filter((m: any) => {
-          const home = (m.home?.name || m.hn || m.home || '').toString().toLowerCase();
-          const away = (m.away?.name || m.an || m.away || '').toString().toLowerCase();
-          const normalized = (normalizeTeamName?.(selectedTeam || '') || selectedTeam || '').toLowerCase();
-          const base = normalized.replace(/[^a-z\s-]/g, ' ').replace(/\s+/g, ' ').trim();
-          const parts = Array.from(new Set([base, ...base.split(' '), (base.includes('leeds') ? 'leeds' : ''), (base.includes('utd') ? 'utd' : ''), (base.includes('united') ? 'united' : '')].filter(Boolean)));
-          return parts.some(p => home.includes(p) || away.includes(p));
-        });
-        const results = teamOnly.filter((m: any) => (m.status || m.st || '').toString().toLowerCase().includes('fin') || m.ft);
-        const fixtures = teamOnly.filter((m: any) => !((m.status || m.st || '').toString().toLowerCase().includes('fin')) && !m.ft);
-        let table: any[] = [];
-        const stageId = teamPage?.stageId || teamPage?.st_id || teamPage?.league?.st_id;
-        if (stageId && sport365Api.getStageDetails) {
-          const stage = await sport365Api.getStageDetails(stageId);
-          table = stage?.standings || stage?.data?.standings || [];
-        }
-        let nextResults = results?.slice(0, 10) || [];
-        let nextFixtures = fixtures?.slice(0, 10) || [];
+        const { teamResultsFixturesService } = await import('@/services/teamResultsFixturesService');
+        // Season bounds: Aug 1 current season to June 30 next year
+        const now = new Date();
+        const year = now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+        const seasonStart = new Date(Date.UTC(year, 7, 1, 0, 0, 0)).toISOString(); // Aug 1
+        const seasonEnd = new Date(Date.UTC(year + 1, 5, 30, 23, 59, 59)).toISOString(); // Jun 30
 
-        // Fallback: query date-range endpoints if empty
-        if (nextResults.length === 0 || nextFixtures.length === 0) {
-          const now = new Date();
-          const iso = (d: Date) => d.toISOString().slice(0, 19); // YYYY-MM-DDTHH:mm:ss
-          // Past 60 days for results
-          if (nextResults.length === 0) {
-            const fromPast = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
-            try {
-              const urlPast = `https://api.sport365.com/v1/en/matches/soccer/from/${iso(fromPast)}/to/${iso(now)}`;
-              const res = await fetch(urlPast);
-              const data: any[] = await res.json();
-              const filtered = (Array.isArray(data) ? data : []).filter((m: any) => {
-                const home = (m.home?.name || m.hn || m.home || '').toString().toLowerCase();
-                const away = (m.away?.name || m.an || m.away || '').toString().toLowerCase();
-                const normalized = (normalizeTeamName?.(selectedTeam || '') || selectedTeam || '').toLowerCase();
-                const base = normalized.replace(/[^a-z\s-]/g, ' ').replace(/\s+/g, ' ').trim();
-                const tokens = Array.from(new Set([base, ...base.split(' '), 'leeds', 'united', 'utd']));
-                const finished = (m.status || m.st || '').toString().toLowerCase().includes('fin') || m.ft;
-                return finished && tokens.some(t => home.includes(t) || away.includes(t));
-              });
-              nextResults = filtered.slice(0, 10);
-            } catch {}
-          }
-          // Next 60 days for fixtures
-          if (nextFixtures.length === 0) {
-            const toFuture = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000);
-            try {
-              const urlFuture = `https://api.sport365.com/v1/en/matches/soccer/from/${iso(now)}/to/${iso(toFuture)}`;
-              const res = await fetch(urlFuture);
-              const data: any[] = await res.json();
-              const filtered = (Array.isArray(data) ? data : []).filter((m: any) => {
-                const home = (m.home?.name || m.hn || m.home || '').toString().toLowerCase();
-                const away = (m.away?.name || m.an || m.away || '').toString().toLowerCase();
-                const normalized = (normalizeTeamName?.(selectedTeam || '') || selectedTeam || '').toLowerCase();
-                const base = normalized.replace(/[^a-z\s-]/g, ' ').replace(/\s+/g, ' ').trim();
-                const tokens = Array.from(new Set([base, ...base.split(' '), 'leeds', 'united', 'utd']));
-                const finished = (m.status || m.st || '').toString().toLowerCase().includes('fin') || m.ft;
-                return !finished && tokens.some(t => home.includes(t) || away.includes(t));
-              });
-              nextFixtures = filtered.slice(0, 10);
-            } catch {}
-          }
+        const [results, fixtures] = await Promise.all([
+          teamResultsFixturesService.getTeamResults(selectedTeam, seasonStart, seasonEnd),
+          teamResultsFixturesService.getTeamFixtures(selectedTeam, seasonStart, seasonEnd)
+        ]);
+
+        // Fallback: directly fetch and flatten competitions if results empty
+        let nextResults = results;
+        if (!nextResults || nextResults.length === 0) {
+          try {
+            const { sport365Api } = await import('@/services/sport365Api');
+            const raw = await sport365Api.getMatchesFromTo(seasonStart, seasonEnd);
+            const list: any[] = [];
+            if (Array.isArray(raw)) {
+              if (raw.length > 0 && raw[0].matches && Array.isArray(raw[0].matches)) {
+                for (const comp of raw) {
+                  if (comp.matches && Array.isArray(comp.matches)) list.push(...comp.matches);
+                }
+              } else {
+                list.push(...raw);
+              }
+            } else if (raw?.data && Array.isArray(raw.data)) {
+              list.push(...raw.data);
+            } else if (raw?.matches && Array.isArray(raw.matches)) {
+              list.push(...raw.matches);
+            }
+
+            const nameNorm = (n: string) => (n || '').toLowerCase();
+            const isTeam = (m: any) => {
+              if (m.teams && Array.isArray(m.teams)) {
+                return m.teams.some((t: any) => nameNorm(t.name).includes(nameNorm(selectedTeam)) || nameNorm(selectedTeam).includes(nameNorm(t.name)));
+              }
+              const hn = nameNorm(m.home_name || m.hn || m.home?.name || m.home || '');
+              const an = nameNorm(m.away_name || m.an || m.away?.name || m.away || '');
+              const sel = nameNorm(selectedTeam);
+              return hn.includes(sel) || an.includes(sel) || sel.includes(hn) || sel.includes(an);
+            };
+            const isFinished = (m: any) => m.status === 6 || (Array.isArray(m.ft_score) && m.ft_score.length >= 2) || (Array.isArray(m.score) && m.score.length >= 2);
+
+            const filtered = list.filter(isTeam).filter(isFinished);
+            nextResults = filtered.slice(0, 20).map((m: any) => ({
+              id: m.id || m.mid || '',
+              homeTeam: m.teams && m.teams[0]?.name ? m.teams[0].name : (m.home_name || m.hn || m.home?.name || m.home || ''),
+              awayTeam: m.teams && m.teams[1]?.name ? m.teams[1].name : (m.away_name || m.an || m.away?.name || m.away || ''),
+              homeScore: Array.isArray(m.score) ? m.score[0] : (Array.isArray(m.ft_score) ? m.ft_score[0] : undefined),
+              awayScore: Array.isArray(m.score) ? m.score[1] : (Array.isArray(m.ft_score) ? m.ft_score[1] : undefined),
+              date: (() => {
+                const s = (m.start || '').toString();
+                if (s && s.length === 14) return `${s.substring(0,4)}-${s.substring(4,6)}-${s.substring(6,8)}T${s.substring(8,10)}:${s.substring(10,12)}:${s.substring(12,14)}`;
+                return m.start_time || m.date || m.dt || '';
+              })(),
+              status: 'finished',
+              competition: m.c_name || ''
+            }));
+          } catch {}
         }
 
-        setTeamDataBlocks({ results: nextResults, fixtures: nextFixtures, table });
+        // Fallback 2: team page by team id if still empty
+        if (!nextResults || nextResults.length === 0) {
+          try {
+            const teamId = getSport365Id?.(selectedTeam);
+            if (teamId) {
+              const { sport365Api } = await import('@/services/sport365Api');
+              const page = await sport365Api.getTeamPage(teamId);
+              const buckets: any[] = [];
+              if (page?.matches && Array.isArray(page.matches)) buckets.push(...page.matches);
+              if (page?.recentMatches && Array.isArray(page.recentMatches)) buckets.push(...page.recentMatches);
+              if (page?.upcomingMatches && Array.isArray(page.upcomingMatches)) buckets.push(...page.upcomingMatches);
+              const finished = buckets.filter((m: any) => (Array.isArray(m.ft_score) && m.ft_score.length >= 2) || m.status === 6);
+              nextResults = finished.slice(0, 20).map((m: any) => ({
+                id: m.id || m.mid || '',
+                homeTeam: m.teams && m.teams[0]?.name ? m.teams[0].name : (m.home_name || m.hn || m.home?.name || m.home || ''),
+                awayTeam: m.teams && m.teams[1]?.name ? m.teams[1].name : (m.away_name || m.an || m.away?.name || m.away || ''),
+                homeScore: Array.isArray(m.ft_score) ? m.ft_score[0] : (Array.isArray(m.score) ? m.score[0] : undefined),
+                awayScore: Array.isArray(m.ft_score) ? m.ft_score[1] : (Array.isArray(m.score) ? m.score[1] : undefined),
+                date: (() => {
+                  const s = (m.start || '').toString();
+                  if (s && s.length === 14) return `${s.substring(0,4)}-${s.substring(4,6)}-${s.substring(6,8)}T${s.substring(8,10)}:${s.substring(10,12)}:${s.substring(12,14)}`;
+                  return m.start_time || m.date || m.dt || '';
+                })(),
+                status: 'finished',
+                competition: m.c_name || page?.st_name || ''
+              }));
+            }
+          } catch {}
+        }
+
+        // Load league table via team config endpoint
+        let tableRows: any[] = [];
+        try {
+          const { getTeamConfig } = await import('@/data/teamApiConfig');
+          const cfg = getTeamConfig(selectedTeam);
+          const tableUrl = cfg?.leagueTable?.tableApi;
+          if (tableUrl) {
+            let raw: any = null;
+            try {
+              const res = await fetch(tableUrl, { headers: { 'Accept': 'application/json' } });
+              if (res.ok) {
+                raw = await res.json();
+              } else {
+                throw new Error(`HTTP ${res.status}`);
+              }
+            } catch {
+              // Retry via permissive CORS proxy
+              const proxied = `https://cors.isomorphic-git.org/${tableUrl}`;
+              const res2 = await fetch(proxied, { headers: { 'Accept': 'application/json' } });
+              raw = await res2.json();
+            }
+            // Try common shapes
+            if (raw?.standings && Array.isArray(raw.standings)) {
+              tableRows = raw.standings;
+            } else if (raw?.data?.standings && Array.isArray(raw.data.standings)) {
+              tableRows = raw.data.standings;
+            } else if (Array.isArray(raw)) {
+              // Some endpoints may return array of groups with table inside
+              const rows: any[] = [];
+              for (const g of raw) {
+                if (g?.standings && Array.isArray(g.standings)) rows.push(...g.standings);
+                if (g?.table && Array.isArray(g.table)) rows.push(...g.table);
+              }
+              tableRows = rows;
+            }
+          }
+        } catch {}
+
+        setTeamDataBlocks({ results: nextResults, fixtures, table: tableRows });
       } catch (e) {
         setTeamDataBlocks({ results: [], fixtures: [], table: [] });
       } finally {
@@ -292,6 +376,14 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 >
                   Tables
                 </button>
+                <span className="text-slate-500">•</span>
+                <button
+                  type="button"
+                  onClick={() => setTeamStripTab('topscorer')}
+                  className={`uppercase tracking-wide ${teamStripTab === 'topscorer' ? 'text-white font-semibold' : 'text-slate-300 hover:text-white'} `}
+                >
+                  Top Goal Scorer
+                </button>
               </div>
             )}
             {!!selectedTeam && getSport365Id?.(selectedTeam) && (
@@ -299,58 +391,111 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 <div className="p-4">
                   {teamStripTab === 'results' && (
                     <div>
-                      <h4 className="text-white font-semibold mb-3">Recent Results</h4>
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-white font-semibold">Recent Results</h4>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-blue-300 border-slate-600 hover:border-slate-500"
+                          onClick={() => {
+                            setSelectedTeam(null);
+                            onBack?.();
+                          }}
+                        >
+                          Back
+                        </Button>
+                      </div>
                       {teamBlocksLoading && <p className="text-slate-300 text-sm">Loading...</p>}
                       {!teamBlocksLoading && teamDataBlocks.results.length === 0 && (
                         <p className="text-slate-300 text-sm">No recent results found.</p>
                       )}
+                      {!teamBlocksLoading && teamDataBlocks.results.length > 0 && (
+                        <p className="text-slate-400 text-xs mb-2">Showing {teamDataBlocks.results.length} results</p>
+                      )}
                       <div className="space-y-2">
-                        {teamDataBlocks.results.map((m: any, idx: number) => (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() => setMatchModal({ open: true, matchId: m.id || m.mid })}
-                            className="w-full text-left bg-slate-700/40 hover:bg-slate-700/70 transition-colors rounded px-3 py-2"
-                          >
-                            <div className="flex items-center justify-between">
-                              <div className="text-slate-200 text-sm">
-                                {(m.home?.name || m.hn || m.home) || 'Home'} {m.score ? m.score : m.ft ? m.ft : ''} {(m.away?.name || m.an || m.away) || 'Away'}
+                        {teamDataBlocks.results.map((m: any, idx: number) => {
+                          const home = m.homeTeam || m.home?.name || m.hn || m.home || 'Home';
+                          const away = m.awayTeam || m.away?.name || m.an || m.away || 'Away';
+                          const score = (typeof m.homeScore === 'number' && typeof m.awayScore === 'number') ? `${m.homeScore}–${m.awayScore}` : (m.score || m.ft || '');
+                          const date = m.date || m.dt || '';
+                          return (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => setMatchModal({ open: true, matchId: m.id || m.mid })}
+                              className="w-full text-left bg-slate-700/40 hover:bg-slate-700/70 transition-colors rounded px-3 py-2"
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="text-slate-200 text-sm">
+                                  {home} {score} {away}
+                                </div>
+                                <div className="text-slate-400 text-xs">
+                                  {date}
+                                </div>
                               </div>
-                              <div className="text-slate-400 text-xs">
-                                {m.date || m.dt || ''}
-                              </div>
-                            </div>
-                          </button>
-                        ))}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
                   {teamStripTab === 'fixtures' && (
                     <div>
-                      <h4 className="text-white font-semibold mb-3">Upcoming Fixtures</h4>
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-white font-semibold">Upcoming Fixtures</h4>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-blue-300 border-slate-600 hover:border-slate-500"
+                          onClick={() => {
+                            setSelectedTeam(null);
+                            onBack?.();
+                          }}
+                        >
+                          Back
+                        </Button>
+                      </div>
                       {teamBlocksLoading && <p className="text-slate-300 text-sm">Loading...</p>}
                       {!teamBlocksLoading && teamDataBlocks.fixtures.length === 0 && (
                         <p className="text-slate-300 text-sm">No upcoming fixtures found.</p>
                       )}
                       <div className="space-y-2">
-                        {teamDataBlocks.fixtures.map((m: any, idx: number) => (
-                          <div key={idx} className="w-full text-left bg-slate-700/40 rounded px-3 py-2">
-                            <div className="flex items-center justify-between">
-                              <div className="text-slate-200 text-sm">
-                                {(m.home?.name || m.hn || m.home) || 'Home'} vs {(m.away?.name || m.an || m.away) || 'Away'}
-                              </div>
-                              <div className="text-slate-400 text-xs">
-                                {m.date || m.dt || ''}
+                        {teamDataBlocks.fixtures.map((m: any, idx: number) => {
+                          const home = m.homeTeam || m.home?.name || m.hn || m.home || 'Home';
+                          const away = m.awayTeam || m.away?.name || m.an || m.away || 'Away';
+                          const date = m.date || m.dt || '';
+                          return (
+                            <div key={idx} className="w-full text-left bg-slate-700/40 rounded px-3 py-2">
+                              <div className="flex items-center justify-between">
+                                <div className="text-slate-200 text-sm">
+                                  {home} vs {away}
+                                </div>
+                                <div className="text-slate-400 text-xs">
+                                  {date}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}
                   {teamStripTab === 'tables' && (
                     <div>
-                      <h4 className="text-white font-semibold mb-3">League Table</h4>
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-white font-semibold">League Table</h4>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-blue-300 border-slate-600 hover:border-slate-500"
+                          onClick={() => {
+                            setSelectedTeam(null);
+                            onBack?.();
+                          }}
+                        >
+                          Back
+                        </Button>
+                      </div>
                       {teamBlocksLoading && <p className="text-slate-300 text-sm">Loading...</p>}
                       {!teamBlocksLoading && (!teamDataBlocks.table || teamDataBlocks.table.length === 0) && (
                         <p className="text-slate-300 text-sm">No table data available.</p>
@@ -373,22 +518,57 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                               </tr>
                             </thead>
                             <tbody>
-                              {teamDataBlocks.table.map((row: any, i: number) => (
-                                <tr key={i} className="border-t border-slate-700/50">
-                                  <td className="py-2 pr-2">{row.rank || row.pos || row.position || i + 1}</td>
-                                  <td className="py-2 pr-4">{row.team?.name || row.tn || row.team || '-'}</td>
-                                  <td className="py-2 pr-2">{row.played || row.p || '-'}</td>
-                                  <td className="py-2 pr-2">{row.won || row.w || '-'}</td>
-                                  <td className="py-2 pr-2">{row.draw || row.d || '-'}</td>
-                                  <td className="py-2 pr-2">{row.lost || row.l || '-'}</td>
-                                  <td className="py-2 pr-2">{row.goalsFor || row.gf || '-'}</td>
-                                  <td className="py-2 pr-2">{row.goalsAgainst || row.ga || '-'}</td>
-                                  <td className="py-2 pr-2">{(row.goalsFor - row.goalsAgainst) || row.gd || '-'}</td>
-                                  <td className="py-2 pr-2">{row.points || row.pts || '-'}</td>
-                                </tr>
-                              ))}
+                              {teamDataBlocks.table.map((row: any, i: number) => {
+                                const rowTeam = row.team?.name || row.tn || row.team || '-';
+                                const isSelected = (rowTeam || '').toString().toLowerCase().includes((selectedTeam || '').toLowerCase());
+                                return (
+                                  <tr key={i} className={`border-t border-slate-700/50 ${isSelected ? 'bg-yellow-900/30' : ''}`}>
+                                    <td className="py-2 pr-2">{row.rank || row.pos || row.position || i + 1}</td>
+                                    <td className="py-2 pr-4 font-semibold">{rowTeam}</td>
+                                    <td className="py-2 pr-2">{row.played ?? row.p ?? '-'}</td>
+                                    <td className="py-2 pr-2">{row.won ?? row.w ?? '-'}</td>
+                                    <td className="py-2 pr-2">{row.draw ?? row.d ?? '-'}</td>
+                                    <td className="py-2 pr-2">{row.lost ?? row.l ?? '-'}</td>
+                                    <td className="py-2 pr-2">{row.goalsFor ?? row.gf ?? '-'}</td>
+                                    <td className="py-2 pr-2">{row.goalsAgainst ?? row.ga ?? '-'}</td>
+                                    <td className="py-2 pr-2">{(row.goalsFor !== undefined && row.goalsAgainst !== undefined) ? (row.goalsFor - row.goalsAgainst) : (row.gd ?? '-')}</td>
+                                    <td className="py-2 pr-2">{row.points ?? row.pts ?? '-'}</td>
+                                  </tr>
+                                );
+                              })}
                             </tbody>
                           </table>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {teamStripTab === 'topscorer' && (
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-white font-semibold">Top Goal Scorer</h4>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-blue-300 border-slate-600 hover:border-slate-500"
+                          onClick={() => {
+                            setSelectedTeam(null);
+                            onBack?.();
+                          }}
+                        >
+                          Back
+                        </Button>
+                      </div>
+                      {topScorers.length === 0 && (
+                        <p className="text-slate-300 text-sm">No scorer data available yet.</p>
+                      )}
+                      {topScorers.length > 0 && (
+                        <div className="space-y-2">
+                          {topScorers.map((s, i) => (
+                            <div key={s.name} className="flex items-center justify-between bg-slate-700/40 rounded px-3 py-2">
+                              <div className="text-slate-200 text-sm">{i + 1}. {s.name}</div>
+                              <div className="text-slate-300 text-xs">{s.goals} goals</div>
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>

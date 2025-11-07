@@ -140,14 +140,28 @@ export const comprehensiveNewsApi = {
   async getSport365News(): Promise<NewsItem[]> {
     try {
       const response = await fetch(SPORT365_NEWS_API);
-      const data = await safeJson<any>(response);
+      const text = await response.text();
       
       // Handle base64 encoded response
-      let entries = data;
-      if (Array.isArray(data)) {
-        entries = data;
-      } else if (data.entries && Array.isArray(data.entries)) {
-        entries = data.entries;
+      let decodedData: any;
+      try {
+        // Try to decode base64 if it's a base64 string
+        if (typeof text === 'string' && /^[A-Za-z0-9+/=]+$/.test(text.trim())) {
+          const decoded = atob(text.trim());
+          decodedData = JSON.parse(decoded);
+        } else {
+          decodedData = JSON.parse(text);
+        }
+      } catch {
+        // If parsing fails, try direct JSON parse
+        decodedData = JSON.parse(text);
+      }
+      
+      let entries = decodedData;
+      if (Array.isArray(decodedData)) {
+        entries = decodedData;
+      } else if (decodedData.entries && Array.isArray(decodedData.entries)) {
+        entries = decodedData.entries;
       } else {
         return [];
       }
