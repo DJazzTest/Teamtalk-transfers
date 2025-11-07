@@ -21,6 +21,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button as UIButton } from '@/components/ui/button';
 import { LeagueTable } from './LeagueTable';
 import { getTeamConfig } from '@/data/teamApiConfig';
+import { TopScorersVisualization } from './TopScorersVisualization';
 
 // Build a map of club -> spend from the topSpendingClubs data
 const clubSpendMap: Record<string, number> = Object.fromEntries(
@@ -498,9 +499,9 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                     </div>
                   )}
                   {teamStripTab === 'topscorer' && (
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <h4 className="text-white font-semibold">Top Goal Scorers</h4>
+                    <div className="flex flex-col w-full">
+                      <div className="flex items-center justify-between mb-3 w-full">
+                        <h4 className="text-white font-semibold text-lg">Top Goal Scorers</h4>
                         <Button 
                           variant="outline" 
                           size="sm"
@@ -513,22 +514,9 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                           Back
                         </Button>
                       </div>
-                      {topScorers.length === 0 && (
-                        <p className="text-slate-300 text-sm">No scorer data available yet.</p>
-                      )}
-                      {topScorers.length > 0 && (
-                        <div className="space-y-2 max-h-96 overflow-y-auto">
-                          {topScorers.map((s, i) => (
-                            <div key={`${s.name}-${i}`} className="flex items-center justify-between bg-slate-700/40 rounded px-3 py-2 hover:bg-slate-700/60 transition-colors">
-                              <div className="flex items-center gap-3">
-                                <span className="text-slate-400 text-xs font-bold w-6 text-right">{i + 1}.</span>
-                                <div className="text-slate-200 text-sm font-medium">{s.name}</div>
-                              </div>
-                              <div className="text-blue-400 text-sm font-semibold">{s.goals} {s.goals === 1 ? 'goal' : 'goals'}</div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <div className="w-full max-w-lg mx-auto">
+                        <TopScorersVisualization scorers={topScorers} />
+                      </div>
                     </div>
                   )}
                 </div>
