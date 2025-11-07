@@ -357,6 +357,37 @@ export class TeamResultsFixturesService {
         }
       }
 
+      // Variant 4: incs (incidents) structure - this is where Sport365 stores goal events
+      // Always check incs as it's the most reliable source for Sport365
+      if (full?.incs && typeof full.incs === 'object') {
+        const incs = full.incs as Record<string, Record<string, any[]>>;
+        // incs is a dict where keys are team IDs, values are dicts of minute -> events
+        for (const teamId in incs) {
+          const teamIncs = incs[teamId];
+          if (teamIncs && typeof teamIncs === 'object') {
+            for (const minute in teamIncs) {
+              const events = teamIncs[minute];
+              if (Array.isArray(events)) {
+                for (const ev of events) {
+                  // Type 1 is goal in Sport365 API
+                  if (ev.type === 1 || ev.type === '1') {
+                    const playerName = ev.pl_name || ev.player_name || ev.player || ev.name;
+                    if (playerName && playerName !== 'Unknown') {
+                      goalScorers.push({
+                        name: playerName,
+                        minute: ev.min ? `${ev.min}'` : ev.minute ? `${ev.minute}'` : minute ? `${minute}'` : undefined,
+                        team: ev.team || ev.team_name || undefined,
+                        type: ev.detail || undefined
+                      });
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
       if (goalScorers.length > 0) {
         details.goalScorers = goalScorers;
       }

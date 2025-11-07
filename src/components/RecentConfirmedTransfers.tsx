@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { CheckCircle, TrendingUp, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { deduplicateTransfersUI } from '../utils/transferDeduplication';
+import { getPlayerImage } from '@/utils/playerImageUtils';
 
 interface RecentConfirmedTransfersProps {
   transfers: Transfer[];
@@ -65,13 +67,28 @@ export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> =
                     </Badge>
                   </div>
                   
-                  <div>
-                    <h4 className="font-bold text-gray-800 text-base sm:text-lg leading-tight">{transfer.playerName}</h4>
-                    <div className="text-xs sm:text-sm text-gray-600 mt-1">
-                      <div className="flex items-center gap-1 flex-wrap">
-                        <span className="truncate">{transfer.fromClub}</span>
-                        <span>→</span>
-                        <span className="font-semibold text-gray-800 truncate">{transfer.toClub}</span>
+                  <div className="flex items-center gap-3">
+                    <Avatar className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
+                      <AvatarImage 
+                        src={getPlayerImage(transfer.playerName, transfer.toClub)} 
+                        alt={transfer.playerName}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                      <AvatarFallback className="bg-green-100 text-green-600 text-sm sm:text-base">
+                        {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-bold text-gray-800 text-base sm:text-lg leading-tight">{transfer.playerName}</h4>
+                      <div className="text-xs sm:text-sm text-gray-600 mt-1">
+                        <div className="flex items-center gap-1 flex-wrap">
+                          <span className="truncate">{transfer.fromClub}</span>
+                          <span>→</span>
+                          <span className="font-semibold text-gray-800 truncate">{transfer.toClub}</span>
+                        </div>
                       </div>
                     </div>
                   </div>

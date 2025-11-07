@@ -1,13 +1,17 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { User, PoundSterling, Calendar, Shield } from 'lucide-react';
+import { User, PoundSterling, Calendar, Shield, ChevronDown } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { getSquad } from '@/data/squadWages';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { getTeamSlug } from '@/utils/teamMapping';
+import { PlayerDetailModal } from './PlayerDetailModal';
+import { ShirtNumberIcon } from './ShirtNumberIcon';
+import { PlayerBioModal } from './PlayerBioModal';
+import { Button } from '@/components/ui/button';
 
 interface SquadWageCarouselProps {
   club: string;
@@ -27,8 +31,27 @@ const formatWage = (amount: number, isYearly: boolean = false): string => {
 };
 
 export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) => {
-  const squad = getSquad(club);
+  const [squad, setSquad] = useState(() => getSquad(club));
+  const [selectedPlayer, setSelectedPlayer] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bioPlayer, setBioPlayer] = useState<{ name: string; bio: any } | null>(null);
+  const [isBioModalOpen, setIsBioModalOpen] = useState(false);
   const clubSlug = useMemo(() => getTeamSlug(club) || club.toLowerCase().replace(/[^a-z0-9]+/g, '-'), [club]);
+
+  // Listen for player data updates from CMS
+  useEffect(() => {
+    const handlePlayerUpdate = () => {
+      setSquad(getSquad(club));
+    };
+    
+    window.addEventListener('playerDataUpdated', handlePlayerUpdate);
+    return () => window.removeEventListener('playerDataUpdated', handlePlayerUpdate);
+  }, [club]);
+
+  const handlePlayerClick = (player: any) => {
+    setSelectedPlayer(player);
+    setIsModalOpen(true);
+  };
 
   const slugify = (name: string): string => name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
   
@@ -111,7 +134,8 @@ export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) =>
               {squad.map((player, index) => (
                 <Card 
                   key={index} 
-                  className="w-64 flex-shrink-0 bg-slate-800/70 border border-slate-700/50 hover:border-blue-500/30 hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                  className="w-64 flex-shrink-0 bg-slate-800/70 border border-slate-700/50 hover:border-blue-500/30 hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer"
+                  onClick={() => handlePlayerClick(player)}
                 >
                   <div className="p-5">
                     <div className="flex items-start gap-4 mb-4">
@@ -151,9 +175,21 @@ export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) =>
                         </Avatar>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-white line-clamp-2 leading-tight group-hover:text-blue-300 transition-colors duration-200">
-                          {player.name}
-                        </h4>
+                        <div className="flex items-center gap-2">
+                          {(player as any).shirtNumber && (
+                            <ShirtNumberIcon 
+                              number={(player as any).shirtNumber} 
+                              size="sm"
+                              className="text-blue-400"
+                            />
+                          )}
+                          <h4 className="font-semibold text-white line-clamp-2 leading-tight group-hover:text-blue-300 transition-colors duration-200">
+                            {player.name}
+                          </h4>
+                        </div>
+                        {(player as any).age && (
+                          <p className="text-xs text-slate-400 mt-0.5">Age: {(player as any).age}</p>
+                        )}
                         {player.position && (
                           <Badge 
                             className={cn(
@@ -184,6 +220,25 @@ export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) =>
                         <span className="font-medium text-white">{formatWage(player.yearlyWage, true)}</span>
                       </div>
                     </div>
+
+                    {/* Bio Button */}
+                    {(player as any).bio && Object.keys((player as any).bio).length > 0 && (
+                      <div className="mt-3 pt-3 border-t border-slate-700/50">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full bg-slate-700/50 border-slate-600 hover:bg-slate-600 text-white text-xs"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setBioPlayer({ name: player.name, bio: (player as any).bio });
+                            setIsBioModalOpen(true);
+                          }}
+                        >
+                          <ChevronDown className="w-3 h-3 mr-1.5" />
+                          View Bio
+                        </Button>
+                      </div>
+                    )}
                     
                     <div className="mt-3 pt-3 border-t border-slate-700">
                       <div className="w-full bg-slate-700 rounded-full h-1.5">
@@ -205,6 +260,26 @@ export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) =>
           </ScrollArea>
         </div>
       </div>
+      
+      <PlayerDetailModal
+        player={selectedPlayer}
+        teamName={club}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedPlayer(null);
+        }}
+      />
+      
+      <PlayerBioModal
+        playerName={bioPlayer?.name || ''}
+        bio={bioPlayer?.bio || {}}
+        isOpen={isBioModalOpen}
+        onClose={() => {
+          setIsBioModalOpen(false);
+          setBioPlayer(null);
+        }}
+      />
     </Card>
   );
 };

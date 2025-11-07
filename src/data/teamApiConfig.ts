@@ -23,7 +23,7 @@ export interface TeamApiConfig {
 const LEAGUE_TABLES: Record<string, LeagueTableConfig> = {
   'Premier League': {
     leagueName: 'Premier League',
-    tableApi: 'https://api.sport365.com/v1/en/stage/lg/soccer/9d5918a8-febc-47b8-abbe-29d0777064a0',
+    tableApi: 'https://api.sport365.com/v1/en/stage/lg/soccer/91b797a0-1bb1-4c67-b359-5569369c5d56',
     provider: 'sport365'
   },
   'Championship': {

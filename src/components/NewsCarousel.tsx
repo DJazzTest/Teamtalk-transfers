@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Clock, ExternalLink } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Clock, ExternalLink, X } from 'lucide-react';
 import { newsApi } from '@/services/newsApi';
-import { StaleDataNotification } from './StaleDataNotification';
 
 // Premier League clubs filter
 const premierLeagueClubs = [
@@ -34,6 +34,8 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchNews = async (forceRefresh = false) => {
@@ -47,6 +49,16 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
           return premierLeagueClubs.some(club => 
             content.includes(club.toLowerCase())
           );
+        });
+        
+        // Debug: Log articles with images
+        console.log('📰 News articles fetched:', filteredArticles.length);
+        filteredArticles.forEach((article, idx) => {
+          if (article.image) {
+            console.log(`  Article ${idx + 1}: ${article.title.substring(0, 50)}... - Image: ${article.image.substring(0, 80)}...`);
+          } else {
+            console.log(`  Article ${idx + 1}: ${article.title.substring(0, 50)}... - No image`);
+          }
         });
         
         setNewsArticles(filteredArticles);
@@ -105,12 +117,11 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
 
   return (
     <>
-      <StaleDataNotification onRefresh={handleRefresh} />
       <Card className="mb-6 border-gray-200/50 shadow-lg" style={{ backgroundColor: '#e6f3ff' }}>
         <div className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-          <h2 className="text-lg font-bold text-blue-800">Latest Transfer News</h2>
+          <h2 className="text-lg font-bold text-blue-800">Transfer news & Gossip</h2>
         </div>
         
         {loading ? (
@@ -134,20 +145,50 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
               <Card 
                 key={article.id}
                 className="min-w-[280px] max-w-sm bg-gradient-to-br from-blue-50 to-white border-blue-200 hover:shadow-md transition-all duration-200 hover:border-blue-300 cursor-pointer"
-                onClick={() => article.url && window.open(article.url, '_blank')}
+                onClick={() => {
+                  setSelectedArticle(article);
+                  setIsModalOpen(true);
+                }}
               >
                 <div className="p-4 flex flex-col gap-3">
-                  {article.image && (
-                    <div className="w-full h-32 rounded-lg overflow-hidden">
+                  {article.image ? (
+                    <div className="w-full h-32 rounded-lg overflow-hidden bg-gray-200 relative">
                       <img 
                         src={article.image} 
                         alt={article.title}
                         className="w-full h-full object-cover"
                         onError={(e) => {
+                          console.error('❌ Image failed to load');
+                          console.error('  Article:', article.title);
+                          console.error('  Image URL:', article.image);
+                          console.error('  Error event:', e);
+                          
+                          // Try to test if the proxy URL is accessible
+                          if (article.image) {
+                            fetch(article.image, { method: 'HEAD', mode: 'no-cors' })
+                              .then(() => console.log('  ✅ Proxy URL is accessible'))
+                              .catch((err) => console.error('  ❌ Proxy URL test failed:', err));
+                          }
+                          
                           const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent) {
+                            parent.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200"><span class="text-blue-600 text-xs font-medium">Image unavailable</span></div>';
+                          }
                         }}
+                        onLoad={(e) => {
+                          console.log('✅ Image loaded successfully');
+                          console.log('  Article:', article.title);
+                          console.log('  Image URL:', article.image?.substring(0, 100));
+                          const target = e.target as HTMLImageElement;
+                          console.log('  Image dimensions:', target.naturalWidth, 'x', target.naturalHeight);
+                        }}
+                        loading="lazy"
                       />
+                    </div>
+                  ) : (
+                    <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                      <span className="text-blue-600 text-xs font-medium">No Image</span>
                     </div>
                   )}
                   
@@ -173,9 +214,7 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
                         <Clock className="w-3 h-3" />
                         {article.time}
                       </div>
-                      {article.url && (
-                        <ExternalLink className="w-3 h-3 text-gray-400" />
-                      )}
+                      <ExternalLink className="w-3 h-3 text-gray-400" />
                     </div>
                   </div>
                 </div>
@@ -203,6 +242,91 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
         </div>
       </div>
     </Card>
+
+    {/* News Detail Modal */}
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white">
+        <DialogHeader>
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-2xl font-bold text-blue-800 pr-8">
+              {selectedArticle?.title}
+            </DialogTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsModalOpen(false)}
+              className="absolute right-4 top-4"
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+        </DialogHeader>
+
+        {selectedArticle && (
+          <div className="space-y-4 mt-4">
+            {/* Image */}
+            {selectedArticle.image && (
+              <div className="w-full h-64 rounded-lg overflow-hidden bg-gray-200 relative">
+                <img 
+                  src={selectedArticle.image} 
+                  alt={selectedArticle.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error('Modal image failed to load:', selectedArticle.image);
+                    const target = e.target as HTMLImageElement;
+                    const parent = target.parentElement;
+                    if (parent) {
+                      parent.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gray-300"><span class="text-gray-600 text-sm">Image unavailable</span></div>';
+                    }
+                  }}
+                  onLoad={() => {
+                    console.log('✅ Modal image loaded:', selectedArticle.image?.substring(0, 80));
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Meta Info */}
+            <div className="flex items-center gap-4 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <span className="font-medium">{selectedArticle.category}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                <span>{selectedArticle.time}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="font-medium">Source:</span>
+                <span>{selectedArticle.source === 'ScoreInside' ? 'TeamTalk' : selectedArticle.source}</span>
+              </div>
+            </div>
+
+            {/* Summary */}
+            {selectedArticle.summary && (
+              <div className="prose max-w-none">
+                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  {selectedArticle.summary}
+                </p>
+              </div>
+            )}
+
+            {/* External Link Button */}
+            {selectedArticle.url && (
+              <div className="pt-4 border-t border-gray-200">
+                <Button
+                  onClick={() => window.open(selectedArticle.url, '_blank', 'noopener,noreferrer')}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  Read Full Article
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
     </>
   );
 };

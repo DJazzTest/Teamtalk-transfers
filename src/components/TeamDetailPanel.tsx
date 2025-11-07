@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TeamResults } from '@/components/TeamResults';
 import { TeamFixtures } from '@/components/TeamFixtures';
+import { LeagueTable } from '@/components/LeagueTable';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getTeamConfig } from '@/data/teamApiConfig';
@@ -18,6 +19,17 @@ export const TeamDetailPanel: React.FC<TeamDetailPanelProps> = ({ slug, onClose 
   const team = useMemo(() => getTeamConfig(slug) || getTeamConfig(slug.replace(/-/g, ' ')), [slug]);
   const teamName = team?.teamName || slug;
   const youtubeUrl = getTeamYoutubeUrl(teamName);
+  const [squad, setSquad] = useState(() => getSquad(teamName));
+
+  // Listen for player data updates from CMS
+  useEffect(() => {
+    const handlePlayerUpdate = () => {
+      setSquad(getSquad(teamName));
+    };
+    
+    window.addEventListener('playerDataUpdated', handlePlayerUpdate);
+    return () => window.removeEventListener('playerDataUpdated', handlePlayerUpdate);
+  }, [teamName]);
 
   const getClubBadge = (club: string): string => {
     const badgeMap: Record<string, string> = {
@@ -69,7 +81,7 @@ export const TeamDetailPanel: React.FC<TeamDetailPanelProps> = ({ slug, onClose 
           <div className="font-semibold mb-2">{teamName} squad</div>
           <div className="text-sm text-gray-400 mb-2">weekly wage • yearly wage</div>
           <div className="space-y-1 text-sm max-h-64 overflow-auto">
-            {getSquad(teamName).slice(0, 12).map(p => (
+            {squad.slice(0, 12).map(p => (
               <div key={p.name} className="flex justify-between">
                 <span>{p.name}</span>
                 <span>£{p.weeklyWage.toLocaleString()}/wk • £{p.yearlyWage.toFixed(2)}m/yr</span>
@@ -112,12 +124,11 @@ export const TeamDetailPanel: React.FC<TeamDetailPanelProps> = ({ slug, onClose 
 
         <TabsContent value="table">
           {team?.leagueTable?.tableApi ? (
-            <div className="text-sm">
-              <div className="mb-2">League Table API:</div>
-              <a className="underline" href={team.leagueTable.tableApi} target="_blank" rel="noreferrer">
-                Open {team.leagueTable.leagueName} Table
-              </a>
-            </div>
+            <LeagueTable 
+              tableApiUrl={team.leagueTable.tableApi}
+              selectedTeam={teamName}
+              leagueName={team.leagueTable.leagueName}
+            />
           ) : (
             <Card className="p-4 text-sm text-gray-400">No table configured.</Card>
           )}

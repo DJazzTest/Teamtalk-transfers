@@ -8,9 +8,9 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Kepa Arrizabalaga',
     fromClub: 'Chelsea',
     toClub: 'Arsenal',
-    fee: '£5m',
+    fee: 'Transfer In',
     date: '2025-07-04T12:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -18,9 +18,9 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Martin Zubimendi',
     fromClub: 'Real Sociedad',
     toClub: 'Arsenal',
-    fee: '£60m',
+    fee: 'Transfer In',
     date: '2025-07-06T12:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -28,9 +28,9 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Christian Norgaard',
     fromClub: 'Brentford',
     toClub: 'Arsenal',
-    fee: '£15m (£10m + £5m add-ons)',
+    fee: 'Transfer In',
     date: '2025-08-20T14:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -38,9 +38,9 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Noni Madueke',
     fromClub: 'Chelsea',
     toClub: 'Arsenal',
-    fee: '£52m (£48.5m + £3.5m add-ons)',
+    fee: 'Transfer In',
     date: '2025-01-21T13:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -48,9 +48,9 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Cristhian Mosquera',
     fromClub: 'Valencia',
     toClub: 'Arsenal',
-    fee: '£35m',
+    fee: 'Transfer In',
     date: '2025-01-15T14:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -58,9 +58,9 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Viktor Gyokeres',
     fromClub: 'Sporting',
     toClub: 'Arsenal',
-    fee: '£65m',
+    fee: 'Transfer In',
     date: '2025-01-12T16:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -68,21 +68,31 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Eberechi Eze',
     fromClub: 'Crystal Palace',
     toClub: 'Arsenal',
-    fee: '£60m',
+    fee: 'Transfer In',
     date: '2025-01-10T15:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-hincapie-2025',
+    playerName: 'Piero Hincapie',
+    fromClub: 'Bayer Leverkusen',
+    toClub: 'Arsenal',
+    fee: 'Loan In',
+    date: '2025-01-15T12:00:00Z',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
 
-  // RELEASES AND DEPARTURES
+  // TRANSFERS OUT - RELEASED
   {
     id: 'arsenal-jorginho-2025',
     playerName: 'Jorginho',
     fromClub: 'Arsenal',
     toClub: 'Flamengo',
-    fee: 'Free Transfer (mutual agreement)',
+    fee: 'Released',
     date: '2025-07-06T12:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -90,9 +100,9 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Nathan Butler-Oyedeji',
     fromClub: 'Arsenal',
     toClub: 'Lausanne',
-    fee: 'Free Transfer (£300k FIFA compensation)',
+    fee: 'Released',
     date: '2025-01-02T12:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -102,7 +112,7 @@ export const arsenalTransfers: Transfer[] = [
     toClub: 'Alajuelense',
     fee: 'Released',
     date: '2025-01-02T12:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -110,11 +120,23 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Kieran Tierney',
     fromClub: 'Arsenal',
     toClub: 'Celtic',
-    fee: 'Free Transfer (contract expired)',
+    fee: 'Released',
     date: '2025-07-06T12:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
+  {
+    id: 'arsenal-tomiyasu-2025',
+    playerName: 'Takehiro Tomiyasu',
+    fromClub: 'Arsenal',
+    toClub: '-',
+    fee: 'Released',
+    date: '2025-01-05T12:00:00Z',
+    source: 'FootballTransfers.com',
+    status: 'confirmed'
+  },
+
+  // TRANSFERS OUT - END OF LOAN
   {
     id: 'arsenal-sterling-2025',
     playerName: 'Raheem Sterling',
@@ -122,7 +144,7 @@ export const arsenalTransfers: Transfer[] = [
     toClub: 'Chelsea',
     fee: 'End of loan',
     date: '2025-01-10T16:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -132,17 +154,19 @@ export const arsenalTransfers: Transfer[] = [
     toClub: 'Bournemouth',
     fee: 'End of loan',
     date: '2025-01-08T12:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
+
+  // TRANSFERS OUT
   {
     id: 'arsenal-tavares-2025',
     playerName: 'Nuno Tavares',
     fromClub: 'Arsenal',
     toClub: 'Lazio',
-    fee: '£6.5m (rising to £7.5m)',
+    fee: 'Transfer Out',
     date: '2025-07-05T12:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
@@ -150,19 +174,19 @@ export const arsenalTransfers: Transfer[] = [
     playerName: 'Marquinhos',
     fromClub: 'Arsenal',
     toClub: 'Cruzeiro',
-    fee: '£2.5m+ (with sell-on clause)',
+    fee: 'Transfer Out',
     date: '2025-07-05T12:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
   {
-    id: 'arsenal-tomiyasu-2025',
-    playerName: 'Takehiro Tomiyasu',
+    id: 'arsenal-lokonga-2025',
+    playerName: 'Sambi Lokonga',
     fromClub: 'Arsenal',
-    toClub: 'Free Agent',
-    fee: 'Released',
-    date: '2025-01-05T12:00:00Z',
-    source: 'arsenal.com',
+    toClub: 'Hamburger SV',
+    fee: 'Transfer Out',
+    date: '2025-07-10T12:00:00Z',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   },
 
@@ -174,7 +198,77 @@ export const arsenalTransfers: Transfer[] = [
     toClub: 'Werder Bremen',
     fee: 'Loan Out',
     date: '2025-01-03T14:00:00Z',
-    source: 'arsenal.com',
+    source: 'FootballTransfers.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-kabia-2025',
+    playerName: 'Ismeal Kabia',
+    fromClub: 'Arsenal',
+    toClub: 'Shrewsbury Town',
+    fee: 'Loan Out',
+    date: '2025-01-05T12:00:00Z',
+    source: 'FootballTransfers.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-nygaard-2025',
+    playerName: 'Lucas Martin Nygaard',
+    fromClub: 'Arsenal',
+    toClub: 'Brabrand IF',
+    fee: 'Loan Out',
+    date: '2025-01-06T12:00:00Z',
+    source: 'FootballTransfers.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-vieira-2025',
+    playerName: 'Fabio Vieira',
+    fromClub: 'Arsenal',
+    toClub: 'Hamburger SV',
+    fee: 'Loan Out',
+    date: '2025-01-08T12:00:00Z',
+    source: 'FootballTransfers.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-kiwior-2025',
+    playerName: 'Jakub Kiwior',
+    fromClub: 'Arsenal',
+    toClub: 'Porto',
+    fee: 'Loan Out',
+    date: '2025-01-10T12:00:00Z',
+    source: 'FootballTransfers.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-zinchenko-2025',
+    playerName: 'Oleksandr Zinchenko',
+    fromClub: 'Arsenal',
+    toClub: 'Nottingham Forest',
+    fee: 'Loan Out',
+    date: '2025-01-12T12:00:00Z',
+    source: 'FootballTransfers.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-nelson-2025',
+    playerName: 'Reiss Nelson',
+    fromClub: 'Arsenal',
+    toClub: 'Brentford',
+    fee: 'Loan Out',
+    date: '2025-01-14T12:00:00Z',
+    source: 'FootballTransfers.com',
+    status: 'confirmed'
+  },
+  {
+    id: 'arsenal-kacurri-2025',
+    playerName: 'Maldini Kacurri',
+    fromClub: 'Arsenal',
+    toClub: 'Morecambe',
+    fee: 'Loan Out',
+    date: '2025-01-16T12:00:00Z',
+    source: 'FootballTransfers.com',
     status: 'confirmed'
   }
 ];

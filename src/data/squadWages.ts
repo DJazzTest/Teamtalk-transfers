@@ -1,9 +1,128 @@
+export interface CompetitionStats {
+  competition: string;
+  matches: number;
+  minutes: number;
+  cleanSheets?: number;
+  goalsConceded?: number;
+  goals?: number;
+  assists?: number;
+  // Detailed stats (optional, for comprehensive data like Kepa's 2025-26 season)
+  averageRating?: number;
+  appearances?: number;
+  started?: number;
+  minutesPerGame?: number;
+  totalMinutes?: number;
+  teamOfTheWeek?: number;
+  // Goalkeeping
+  goalsConcededPerGame?: number;
+  penaltiesSaved?: string; // Format: "saved/total"
+  savesPerGame?: number;
+  savesPerGamePercentage?: number;
+  succRunsOutPerGame?: number;
+  succRunsOutPercentage?: number;
+  concededFromInsideBox?: number;
+  concededFromOutsideBox?: number;
+  saves?: number;
+  goalsPrevented?: number;
+  savesFromInsideBox?: number;
+  savesFromOutsideBox?: number;
+  savesCaught?: number;
+  savesParried?: number;
+  // Attacking
+  expectedGoals?: number;
+  scoringFrequency?: number;
+  goalsPerGame?: number;
+  totalShots?: number;
+  shotsOnTargetPerGame?: number;
+  bigChancesMissed?: number;
+  goalConversion?: number;
+  penaltyGoals?: number;
+  penaltyConversion?: number;
+  freeKickGoals?: number;
+  freeKickConversion?: number;
+  goalsFromInsideBox?: string; // Format: "goals/shots"
+  goalsFromOutsideBox?: number;
+  headedGoals?: number;
+  leftFootedGoals?: number;
+  rightFootedGoals?: number;
+  penaltyWon?: number;
+  // Passing
+  expectedAssists?: number;
+  touches?: number;
+  bigChancesCreated?: number;
+  keyPasses?: number;
+  accuratePasses?: number;
+  accuratePassesPercentage?: number;
+  accOwnHalf?: number;
+  accOwnHalfPercentage?: number;
+  accOppositionHalf?: number;
+  accOppositionHalfPercentage?: number;
+  longBallsAccurate?: number;
+  longBallsPercentage?: number;
+  accurateChipPasses?: number;
+  accurateChipPassesPercentage?: number;
+  accurateCrosses?: number;
+  // Defending
+  interceptions?: number;
+  tacklesPerGame?: number;
+  possessionWonFinalThird?: number;
+  ballsRecoveredPerGame?: number;
+  dribbledPastPerGame?: number;
+  clearancesPerGame?: number;
+  blockedShotsPerGame?: number;
+  errorsLeadingToShot?: number;
+  errorsLeadingToGoal?: number;
+  penaltiesCommitted?: number;
+  // Other
+  succDribbles?: number;
+  succDribblesPercentage?: number;
+  totalDuelsWon?: number;
+  totalDuelsWonPercentage?: number;
+  groundDuelsWon?: number;
+  groundDuelsWonPercentage?: number;
+  aerialDuelsWon?: number;
+  aerialDuelsWonPercentage?: number;
+  possessionLost?: number;
+  foulsPerGame?: number;
+  wasFouled?: number;
+  offsides?: number;
+  goalKicksPerGame?: number;
+  // Cards
+  yellowCards?: number;
+  redCards2Yellows?: number;
+  redCards?: number;
+  // Match info
+  matchDates?: string[];
+  opponents?: string[];
+}
+
+export interface PlayerSeasonStats {
+  season: string;
+  competitions: CompetitionStats[];
+  injuries?: {
+    timeOut?: string;
+    description?: string;
+  };
+}
+
 interface Player {
   name: string;
   weeklyWage: number;
   yearlyWage: number;
   position?: string;
   imageUrl?: string;
+  age?: number;
+  shirtNumber?: number;
+  seasonStats?: PlayerSeasonStats;
+  bio?: {
+    height?: string;
+    weight?: string;
+    nationality?: string;
+    dateOfBirth?: string;
+    placeOfBirth?: string;
+    preferredFoot?: string;
+    description?: string;
+  };
 }
 
 // Base wage multipliers for each club tier
@@ -61,39 +180,229 @@ const generateSquad = (club: string, size: number, wageMultiplier: number): Play
 
 export const clubSquads: Record<string, Player[]> = {
   'Arsenal': [
-    { name: 'Kai Havertz', position: 'Midfielder', weeklyWage: 280000, yearlyWage: 14.56 },
-    { name: 'Gabriel Jesus', position: 'Forward', weeklyWage: 265000, yearlyWage: 13.78 },
-    { name: 'Declan Rice', position: 'Midfielder', weeklyWage: 240000, yearlyWage: 12.48 },
-    { name: 'Martin Ødegaard', position: 'Midfielder', weeklyWage: 240000, yearlyWage: 12.48 },
-    { name: 'Viktor Gyökeres', position: 'Forward', weeklyWage: 200000, yearlyWage: 10.4 },
-    { name: 'Bukayo Saka', position: 'Midfielder', weeklyWage: 195000, yearlyWage: 10.14 },
-    { name: 'William Saliba', position: 'Defender', weeklyWage: 190000, yearlyWage: 9.88 },
-    { name: 'Gabriel Martinelli', position: 'Forward', weeklyWage: 180000, yearlyWage: 9.36 },
-    { name: 'Gabriel Magalhães', position: 'Defender', weeklyWage: 150000, yearlyWage: 7.8 },
-    { name: 'Ben White', position: 'Defender', weeklyWage: 150000, yearlyWage: 7.8 },
-    { name: 'Oleksandr Zinchenko', position: 'Defender', weeklyWage: 150000, yearlyWage: 7.8 },
-    { name: 'Mikel Merino', position: 'Midfielder', weeklyWage: 130000, yearlyWage: 6.76 },
-    { name: 'Riccardo Calafiori', position: 'Defender', weeklyWage: 120000, yearlyWage: 6.24 },
-    { name: 'Reiss Nelson', position: 'Forward', weeklyWage: 100000, yearlyWage: 5.2 },
-    { name: 'Fabio Vieira', position: 'Midfielder', weeklyWage: 95000, yearlyWage: 4.94 },
-    { name: 'Eberechi Eze', position: 'Midfielder', weeklyWage: 90000, yearlyWage: 4.68 },
-    { name: 'David Raya', position: 'Goalkeeper', weeklyWage: 85000, yearlyWage: 4.42 },
-    { name: 'Jurrien Timber', position: 'Defender', weeklyWage: 80000, yearlyWage: 4.16 },
-    { name: 'Jakub Kiwior', position: 'Defender', weeklyWage: 75000, yearlyWage: 3.9 },
-    { name: 'Albert Sambi Lokonga', position: 'Midfielder', weeklyWage: 70000, yearlyWage: 3.64 },
-    { name: 'Noni Madueke', position: 'Forward', weeklyWage: 65000, yearlyWage: 3.38 },
-    { name: 'Martin Zubimendi', position: 'Midfielder', weeklyWage: 60000, yearlyWage: 3.12 },
-    { name: 'Cristhian Mosquera', position: 'Defender', weeklyWage: 55000, yearlyWage: 2.86 },
-    { name: 'Tommy Setford', position: 'Goalkeeper', weeklyWage: 30000, yearlyWage: 1.56 },
-    { name: 'Ethan Nwaneri', position: 'Midfielder', weeklyWage: 25000, yearlyWage: 1.3 },
-    { name: 'Myles Lewis-Skelly', position: 'Midfielder', weeklyWage: 20000, yearlyWage: 1.04 },
-    { name: 'Alexei Rojas', position: 'Forward', weeklyWage: 15000, yearlyWage: 0.78 },
-    { name: 'Joshua Nichols', position: 'Midfielder', weeklyWage: 10000, yearlyWage: 0.52 },
-    { name: 'Louie Copley', position: 'Midfielder', weeklyWage: 8000, yearlyWage: 0.416 },
-    { name: 'Ismeal Kabia', position: 'Forward', weeklyWage: 6000, yearlyWage: 0.312 },
-    { name: 'Max Dowman', position: 'Midfielder', weeklyWage: 5000, yearlyWage: 0.26 },
-    { name: 'Andre Harriman-Annous', position: 'Midfielder', weeklyWage: 5000, yearlyWage: 0.26 },
-    { name: 'Marli Salmon', position: 'Midfielder', weeklyWage: 5000, yearlyWage: 0.26 }
+    // Goalkeepers
+    { 
+      name: 'David Raya', 
+      position: 'Goalkeeper', 
+      shirtNumber: 1, 
+      weeklyWage: 85000, 
+      yearlyWage: 4.42,
+      seasonStats: {
+        season: '2025-26',
+        competitions: [
+          {
+            competition: 'Premier League',
+            matches: 10,
+            minutes: 900,
+            cleanSheets: 7,
+            goalsConceded: 3
+          },
+          {
+            competition: 'Champions League',
+            matches: 4,
+            minutes: 360,
+            cleanSheets: 4,
+            goalsConceded: 0
+          }
+        ],
+        injuries: {
+          timeOut: 'No time out this season for injuries'
+        }
+      }
+    },
+    { 
+      name: 'Kepa Arrizabalaga', 
+      position: 'Goalkeeper', 
+      shirtNumber: 13, 
+      weeklyWage: 85000, 
+      yearlyWage: 4.42,
+      age: 31,
+      bio: {
+        height: '188 cm',
+        nationality: 'Spain',
+        dateOfBirth: '1994-10-03',
+        preferredFoot: 'Right'
+      },
+      seasonStats: {
+        season: '2025-26',
+        competitions: [
+          {
+            competition: 'Premier League',
+            matches: 31,
+            minutes: 2790,
+            appearances: 31,
+            started: 31,
+            minutesPerGame: 90,
+            totalMinutes: 2790,
+            teamOfTheWeek: 1,
+            // Goalkeeping
+            goalsConcededPerGame: 1.3,
+            penaltiesSaved: '0/4',
+            savesPerGame: 3.1,
+            savesPerGamePercentage: 71,
+            succRunsOutPerGame: 0.6,
+            succRunsOutPercentage: 90,
+            goalsConceded: 39,
+            concededFromInsideBox: 37,
+            concededFromOutsideBox: 2,
+            saves: 97,
+            goalsPrevented: 2.14,
+            savesFromInsideBox: 62,
+            savesFromOutsideBox: 33,
+            savesCaught: 0,
+            savesParried: 15,
+            cleanSheets: 8,
+            // Attacking
+            goals: 0,
+            expectedGoals: 0.06,
+            scoringFrequency: 0,
+            goalsPerGame: 0.0,
+            totalShots: 0.03,
+            shotsOnTargetPerGame: 0.0,
+            bigChancesMissed: 0,
+            goalConversion: 0,
+            penaltyGoals: 0,
+            penaltyConversion: 0,
+            freeKickGoals: 0,
+            freeKickConversion: 0,
+            goalsFromInsideBox: '0/1',
+            goalsFromOutsideBox: 0,
+            headedGoals: 0,
+            leftFootedGoals: 0,
+            rightFootedGoals: 0,
+            penaltyWon: 0,
+            // Passing
+            assists: 0,
+            expectedAssists: 0.05,
+            touches: 38.6,
+            bigChancesCreated: 0,
+            keyPasses: 0.03,
+            accuratePasses: 20.5,
+            accuratePassesPercentage: 70,
+            accOwnHalf: 17.0,
+            accOwnHalfPercentage: 91,
+            accOppositionHalf: 3.4,
+            accOppositionHalfPercentage: 33,
+            longBallsAccurate: 5.6,
+            longBallsPercentage: 40,
+            accurateChipPasses: 1.5,
+            accurateChipPassesPercentage: 61,
+            accurateCrosses: 0.0,
+            // Defending
+            interceptions: 0.0,
+            tacklesPerGame: 0.03,
+            possessionWonFinalThird: 0.0,
+            ballsRecoveredPerGame: 8.1,
+            dribbledPastPerGame: 0.06,
+            clearancesPerGame: 1.2,
+            errorsLeadingToShot: 2,
+            errorsLeadingToGoal: 1,
+            penaltiesCommitted: 2,
+            // Other
+            succDribbles: 0.03,
+            succDribblesPercentage: 100,
+            totalDuelsWon: 0.5,
+            totalDuelsWonPercentage: 75,
+            groundDuelsWon: 0.2,
+            groundDuelsWonPercentage: 64,
+            aerialDuelsWon: 0.3,
+            aerialDuelsWonPercentage: 89,
+            possessionLost: 8.9,
+            foulsPerGame: 0.06,
+            wasFouled: 0.2,
+            offsides: 0.0,
+            goalKicksPerGame: 6.2,
+            // Cards
+            yellowCards: 3,
+            redCards2Yellows: 0,
+            redCards: 0,
+            // Match info
+            matchDates: ['14 Apr', '19 Apr', '27 Apr', '3 May', '10 May', '20 May', '25 May'],
+            opponents: ['Fulham', 'Crystal Palace', 'Manchester United', 'Arsenal', 'Aston Villa', 'Manchester City', 'Leicester City']
+          }
+        ],
+        injuries: {
+          timeOut: 'No time out this season for injuries'
+        }
+      }
+    },
+    { 
+      name: 'Tommy Setford', 
+      position: 'Goalkeeper', 
+      shirtNumber: 35, 
+      weeklyWage: 30000, 
+      yearlyWage: 1.56,
+      age: 19,
+      bio: {
+        height: '185 cm',
+        nationality: 'England',
+        dateOfBirth: '2006-03-13',
+        preferredFoot: 'Right'
+      },
+      seasonStats: {
+        season: '2025-26',
+        competitions: [
+          {
+            competition: 'Premier League',
+            matches: 4,
+            minutes: 312,
+            appearances: 4,
+            started: 4,
+            minutesPerGame: 78,
+            totalMinutes: 312,
+            // Goalkeeping
+            goalsConcededPerGame: 1.8,
+            goalsConceded: 7,
+            cleanSheets: 1,
+            // Attacking
+            goals: 0,
+            goalsPerGame: 0.0,
+            penaltyGoals: 0,
+            // Passing
+            assists: 0,
+            // Cards
+            yellowCards: 0,
+            redCards2Yellows: 0,
+            redCards: 0
+          }
+        ],
+        injuries: {
+          timeOut: 'No time out this season for injuries'
+        }
+      }
+    },
+    { name: 'Alexei Rojas', position: 'Goalkeeper', shirtNumber: 51, weeklyWage: 15000, yearlyWage: 0.78 },
+    
+    // Defenders
+    { name: 'William Saliba', position: 'Defender', shirtNumber: 2, weeklyWage: 190000, yearlyWage: 9.88 },
+    { name: 'Cristhian Mosquera', position: 'Defender', shirtNumber: 3, weeklyWage: 55000, yearlyWage: 2.86 },
+    { name: 'Ben White', position: 'Defender', shirtNumber: 4, weeklyWage: 150000, yearlyWage: 7.8 },
+    { name: 'Piero Hincapie', position: 'Defender', shirtNumber: 5, weeklyWage: 50000, yearlyWage: 2.6 },
+    { name: 'Gabriel Magalhães', position: 'Defender', shirtNumber: 6, weeklyWage: 150000, yearlyWage: 7.8 },
+    { name: 'Jurrien Timber', position: 'Defender', shirtNumber: 12, weeklyWage: 80000, yearlyWage: 4.16 },
+    { name: 'Oleksandr Zinchenko', position: 'Defender', shirtNumber: 17, weeklyWage: 150000, yearlyWage: 7.8 },
+    { name: 'Riccardo Calafiori', position: 'Defender', shirtNumber: 33, weeklyWage: 120000, yearlyWage: 6.24 },
+    { name: 'Myles Lewis-Skelly', position: 'Defender', shirtNumber: 49, weeklyWage: 20000, yearlyWage: 1.04 },
+    
+    // Midfielders
+    { name: 'Martin Ødegaard', position: 'Midfielder', shirtNumber: 8, weeklyWage: 240000, yearlyWage: 12.48 },
+    { name: 'Christian Norgaard', position: 'Midfielder', shirtNumber: 16, weeklyWage: 60000, yearlyWage: 3.12 },
+    { name: 'Mikel Merino', position: 'Midfielder', shirtNumber: 23, weeklyWage: 130000, yearlyWage: 6.76 },
+    { name: 'Martin Zubimendi', position: 'Midfielder', shirtNumber: 36, weeklyWage: 60000, yearlyWage: 3.12 },
+    { name: 'Declan Rice', position: 'Midfielder', shirtNumber: 41, weeklyWage: 240000, yearlyWage: 12.48 },
+    { name: 'Ethan Nwaneri', position: 'Midfielder', shirtNumber: 53, weeklyWage: 25000, yearlyWage: 1.3 },
+    { name: 'Max Dowman', position: 'Midfielder', shirtNumber: 56, weeklyWage: 5000, yearlyWage: 0.26 },
+    
+    // Forwards
+    { name: 'Gabriel Jesus', position: 'Forward', shirtNumber: 9, weeklyWage: 265000, yearlyWage: 13.78 },
+    { name: 'Viktor Gyökeres', position: 'Forward', shirtNumber: 14, weeklyWage: 200000, yearlyWage: 10.4 },
+    { name: 'Leandro Trossard', position: 'Forward', shirtNumber: 19, weeklyWage: 90000, yearlyWage: 4.68 },
+    { name: 'Reiss Nelson', position: 'Forward', shirtNumber: 24, weeklyWage: 100000, yearlyWage: 5.2 },
+    { name: 'Kai Havertz', position: 'Forward', shirtNumber: 29, weeklyWage: 280000, yearlyWage: 14.56 },
+    { name: 'Noni Madueke', position: 'Forward', shirtNumber: 43, weeklyWage: 65000, yearlyWage: 3.38 },
+    { name: 'Eberechi Eze', position: 'Forward', shirtNumber: 45, weeklyWage: 90000, yearlyWage: 4.68 },
+    { name: 'Gabriel Martinelli', position: 'Forward', shirtNumber: 11, weeklyWage: 180000, yearlyWage: 9.36 },
+    { name: 'Bukayo Saka', position: 'Forward', shirtNumber: 7, weeklyWage: 195000, yearlyWage: 10.14 }
   ].map(player => ({
     ...player,
     imageUrl: `/player-images/arsenal/${player.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}.png`
@@ -193,12 +502,48 @@ export const clubSquads: Record<string, Player[]> = {
   }))
 };
 
-export const getSquad = (club: string): Player[] => {
-  // Return real squad data if available, otherwise generate placeholder data
-  if (clubSquads[club]) {
-    return clubSquads[club];
+// Get player edits from localStorage
+const getPlayerEdits = (club: string): Record<string, { position?: string; age?: number; shirtNumber?: number; imageUrl?: string; seasonStats?: PlayerSeasonStats; bio?: any }> => {
+  try {
+    const savedPlayers = JSON.parse(localStorage.getItem('playerEdits') || '{}');
+    return savedPlayers[club] || {};
+  } catch {
+    return {};
   }
+};
+
+// Get player images from localStorage
+const getPlayerImages = (club: string): Record<string, string> => {
+  try {
+    const imageData = localStorage.getItem('playerImages') || '{}';
+    const images = JSON.parse(imageData);
+    return images[club] || {};
+  } catch {
+    return {};
+  }
+};
+
+export const getSquad = (club: string): Player[] => {
+  // Get base squad data
+  const baseSquad = clubSquads[club] || generateSquad(club, 25, wageTiers.midtable);
   
-  // Generate a default squad for any club not explicitly listed
-  return generateSquad(club, 25, wageTiers.midtable);
+  // Get edits and images from localStorage
+  const edits = getPlayerEdits(club);
+  const images = getPlayerImages(club);
+
+  // Merge localStorage data with base squad data
+  return baseSquad.map(player => {
+    const edit = edits[player.name];
+    const image = images[player.name];
+    
+    return {
+      ...player,
+      position: edit?.position || player.position,
+      age: edit?.age || player.age,
+      shirtNumber: edit?.shirtNumber !== undefined ? edit.shirtNumber : player.shirtNumber,
+      imageUrl: image || edit?.imageUrl || player.imageUrl,
+      seasonStats: edit?.seasonStats || player.seasonStats,
+      bio: edit?.bio || player.bio
+    };
+  });
 };

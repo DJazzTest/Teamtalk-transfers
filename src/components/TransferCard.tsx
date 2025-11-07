@@ -8,6 +8,7 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/comp
 import { Star, ExternalLink, Newspaper } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { getStatusColor } from '@/utils/statusUtils';
+import { getPlayerImage } from '@/utils/playerImageUtils';
 
 interface TransferCardProps {
   transfer: Transfer;
@@ -84,7 +85,14 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Avatar className="w-8 h-8">
-                {transfer.playerImage && <AvatarImage src={transfer.playerImage} alt={transfer.playerName} />}
+                <AvatarImage 
+                  src={transfer.playerImage || getPlayerImage(transfer.playerName, transfer.toClub)} 
+                  alt={transfer.playerName}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
                 <AvatarFallback className="bg-slate-600 text-white text-xs">
                   {getPlayerInitials(transfer.playerName)}
                 </AvatarFallback>
@@ -153,7 +161,14 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex-1 flex items-center gap-4">
             <Avatar className="w-12 h-12">
-              {transfer.playerImage && <AvatarImage src={transfer.playerImage} alt={transfer.playerName} />}
+              <AvatarImage 
+                src={transfer.playerImage || getPlayerImage(transfer.playerName, transfer.toClub)} 
+                alt={transfer.playerName}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
               <AvatarFallback className="bg-slate-600 text-white">
                 {getPlayerInitials(transfer.playerName)}
               </AvatarFallback>

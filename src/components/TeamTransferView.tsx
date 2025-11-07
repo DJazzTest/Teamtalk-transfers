@@ -19,6 +19,8 @@ import { sport365Api } from '@/services/sport365Api';
 import { youtubeApi, YouTubeVideo } from '@/services/youtubeApi';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button as UIButton } from '@/components/ui/button';
+import { LeagueTable } from './LeagueTable';
+import { getTeamConfig } from '@/data/teamApiConfig';
 
 // Build a map of club -> spend from the topSpendingClubs data
 const clubSpendMap: Record<string, number> = Object.fromEntries(
@@ -78,34 +80,28 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
     fetchTeamData();
   }, [selectedTeam]);
 
-  // Compute top goal scorers for the team (from finished matches)
+  // Load top goal scorers for the team from data file
   useEffect(() => {
     const loadTopScorers = async () => {
       try {
         setTopScorers([]);
         if (!selectedTeam) return;
-        // Past 120 days to cover season
-        const now = new Date();
-        const from = new Date(now.getTime() - 120 * 24 * 60 * 60 * 1000).toISOString();
-        const to = now.toISOString();
-        // Use teamResultsFixturesService to get team finished matches, then tally scorers via getMatchDetails
-        const { teamResultsFixturesService } = await import('@/services/teamResultsFixturesService');
-        const results = await teamResultsFixturesService.getTeamResults(selectedTeam, from, to);
-        const tally = new Map<string, number>();
-        for (const m of results.slice(0, 25)) { // cap details calls
-          if (!m.id) continue;
-          const det = await teamResultsFixturesService.getMatchDetails(m.id);
-          if (!det.goalScorers) continue;
-          for (const g of det.goalScorers) {
-            if (!g.name) continue;
-            const t = (g.team || '').toLowerCase();
-            const ok = !t || t.includes(selectedTeam.toLowerCase()) || selectedTeam.toLowerCase().includes(t);
-            if (ok) tally.set(g.name, (tally.get(g.name) || 0) + 1);
-          }
+        
+        // Use the provided top scorers data
+        const { getTeamTopScorers } = await import('@/data/teamTopScorers');
+        const scorers = getTeamTopScorers(selectedTeam);
+        
+        if (scorers.length > 0) {
+          // Already sorted by goals (descending) in the data file
+          setTopScorers(scorers);
+        } else {
+          // If no data available, show empty state
+          setTopScorers([]);
         }
-        const arr = Array.from(tally.entries()).map(([name, goals]) => ({ name, goals })).sort((a, b) => b.goals - a.goals).slice(0, 5);
-        setTopScorers(arr);
-      } catch {}
+      } catch (error) {
+        console.error('Error loading top scorers:', error);
+        setTopScorers([]);
+      }
     };
     loadTopScorers();
   }, [selectedTeam]);
@@ -482,70 +478,29 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   )}
                   {teamStripTab === 'tables' && (
                     <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <h4 className="text-white font-semibold">League Table</h4>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="text-blue-300 border-slate-600 hover:border-slate-500"
-                          onClick={() => {
-                            setSelectedTeam(null);
-                            onBack?.();
-                          }}
-                        >
-                          Back
-                        </Button>
-                      </div>
-                      {teamBlocksLoading && <p className="text-slate-300 text-sm">Loading...</p>}
-                      {!teamBlocksLoading && (!teamDataBlocks.table || teamDataBlocks.table.length === 0) && (
-                        <p className="text-slate-300 text-sm">No table data available.</p>
-                      )}
-                      {!!teamDataBlocks.table && teamDataBlocks.table.length > 0 && (
-                        <div className="overflow-x-auto">
-                          <table className="w-full text-left text-sm text-slate-200">
-                            <thead className="text-slate-400">
-                              <tr>
-                                <th className="py-2 pr-2">#</th>
-                                <th className="py-2 pr-4">Team</th>
-                                <th className="py-2 pr-2">P</th>
-                                <th className="py-2 pr-2">W</th>
-                                <th className="py-2 pr-2">D</th>
-                                <th className="py-2 pr-2">L</th>
-                                <th className="py-2 pr-2">GF</th>
-                                <th className="py-2 pr-2">GA</th>
-                                <th className="py-2 pr-2">GD</th>
-                                <th className="py-2 pr-2">Pts</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {teamDataBlocks.table.map((row: any, i: number) => {
-                                const rowTeam = row.team?.name || row.tn || row.team || '-';
-                                const isSelected = (rowTeam || '').toString().toLowerCase().includes((selectedTeam || '').toLowerCase());
-                                return (
-                                  <tr key={i} className={`border-t border-slate-700/50 ${isSelected ? 'bg-yellow-900/30' : ''}`}>
-                                    <td className="py-2 pr-2">{row.rank || row.pos || row.position || i + 1}</td>
-                                    <td className="py-2 pr-4 font-semibold">{rowTeam}</td>
-                                    <td className="py-2 pr-2">{row.played ?? row.p ?? '-'}</td>
-                                    <td className="py-2 pr-2">{row.won ?? row.w ?? '-'}</td>
-                                    <td className="py-2 pr-2">{row.draw ?? row.d ?? '-'}</td>
-                                    <td className="py-2 pr-2">{row.lost ?? row.l ?? '-'}</td>
-                                    <td className="py-2 pr-2">{row.goalsFor ?? row.gf ?? '-'}</td>
-                                    <td className="py-2 pr-2">{row.goalsAgainst ?? row.ga ?? '-'}</td>
-                                    <td className="py-2 pr-2">{(row.goalsFor !== undefined && row.goalsAgainst !== undefined) ? (row.goalsFor - row.goalsAgainst) : (row.gd ?? '-')}</td>
-                                    <td className="py-2 pr-2">{row.points ?? row.pts ?? '-'}</td>
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
-                          </table>
-                        </div>
-                      )}
+                      {(() => {
+                        const teamConfig = getTeamConfig(selectedTeam || '');
+                        if (teamConfig?.leagueTable?.tableApi) {
+                          return (
+                            <LeagueTable 
+                              tableApiUrl={teamConfig.leagueTable.tableApi}
+                              selectedTeam={selectedTeam || undefined}
+                              leagueName={teamConfig.leagueTable.leagueName}
+                            />
+                          );
+                        }
+                        return (
+                          <div className="text-slate-300 text-sm">
+                            {teamBlocksLoading ? 'Loading...' : 'No table data available.'}
+                          </div>
+                        );
+                      })()}
                     </div>
                   )}
                   {teamStripTab === 'topscorer' && (
                     <div>
                       <div className="flex items-center justify-between mb-3">
-                        <h4 className="text-white font-semibold">Top Goal Scorer</h4>
+                        <h4 className="text-white font-semibold">Top Goal Scorers</h4>
                         <Button 
                           variant="outline" 
                           size="sm"
@@ -562,11 +517,14 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                         <p className="text-slate-300 text-sm">No scorer data available yet.</p>
                       )}
                       {topScorers.length > 0 && (
-                        <div className="space-y-2">
+                        <div className="space-y-2 max-h-96 overflow-y-auto">
                           {topScorers.map((s, i) => (
-                            <div key={s.name} className="flex items-center justify-between bg-slate-700/40 rounded px-3 py-2">
-                              <div className="text-slate-200 text-sm">{i + 1}. {s.name}</div>
-                              <div className="text-slate-300 text-xs">{s.goals} goals</div>
+                            <div key={`${s.name}-${i}`} className="flex items-center justify-between bg-slate-700/40 rounded px-3 py-2 hover:bg-slate-700/60 transition-colors">
+                              <div className="flex items-center gap-3">
+                                <span className="text-slate-400 text-xs font-bold w-6 text-right">{i + 1}.</span>
+                                <div className="text-slate-200 text-sm font-medium">{s.name}</div>
+                              </div>
+                              <div className="text-blue-400 text-sm font-semibold">{s.goals} {s.goals === 1 ? 'goal' : 'goals'}</div>
                             </div>
                           ))}
                         </div>

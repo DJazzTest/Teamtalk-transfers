@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { CheckCircle } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
+import { getPlayerImage } from '@/utils/playerImageUtils';
 
 interface HomeRecentConfirmedProps {
   transfers: Transfer[];
@@ -40,8 +42,21 @@ export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transf
             <Card key={transfer.id} className="min-w-[240px] max-w-xs bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-md transition-all duration-200 hover:border-green-300">
               <div className="p-3 flex flex-col gap-2">
                 <div className="flex items-center gap-2">
+                  <Avatar className="w-10 h-10 flex-shrink-0">
+                    <AvatarImage 
+                      src={getPlayerImage(transfer.playerName, transfer.toClub)} 
+                      alt={transfer.playerName}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                    <AvatarFallback className="bg-green-100 text-green-600 text-xs">
+                      {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                    </AvatarFallback>
+                  </Avatar>
                   <span
-                    className="font-semibold text-green-700 hover:underline cursor-pointer text-base truncate"
+                    className="font-semibold text-green-700 hover:underline cursor-pointer text-base truncate flex-1"
                     onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
                     title={`View ${transfer.toClub} transfers`}
                   >
