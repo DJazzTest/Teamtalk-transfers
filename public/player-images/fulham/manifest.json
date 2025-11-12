@@ -1,0 +1,138 @@
+{
+  "team": "fulham",
+  "count": 22,
+  "images": [
+    {
+      "name": "Benjamin Lecomte",
+      "slug": "benjamin-lecomte",
+      "image": "/player-images/fulham/benjamin-lecomte.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/3101.png&h=120"
+    },
+    {
+      "name": "Bernd Leno",
+      "slug": "bernd-leno",
+      "image": "/player-images/fulham/bernd-leno.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/4181.png&h=120"
+    },
+    {
+      "name": "Antonee Robinson",
+      "slug": "antonee-robinson",
+      "image": "/player-images/fulham/antonee-robinson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/143896-alt.webp&h=120"
+    },
+    {
+      "name": "Calvin Bassey",
+      "slug": "calvin-bassey",
+      "image": "/player-images/fulham/calvin-bassey.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/207800.png&h=120"
+    },
+    {
+      "name": "Jorge Cuenca",
+      "slug": "jorge-cuenca",
+      "image": "/player-images/fulham/jorge-cuenca.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/351933.png&h=120"
+    },
+    {
+      "name": "Kenny Tete",
+      "slug": "kenny-tete",
+      "image": "/player-images/fulham/kenny-tete.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/41085.png&h=120"
+    },
+    {
+      "name": "Ryan Sessegnon",
+      "slug": "ryan-sessegnon",
+      "image": "/player-images/fulham/ryan-sessegnon.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/186361.png&h=120"
+    },
+    {
+      "name": "Timothy Castagne",
+      "slug": "timothy-castagne",
+      "image": "/player-images/fulham/timothy-castagne.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/72390.png&h=120"
+    },
+    {
+      "name": "Joachim Andersen",
+      "slug": "joachim-andersen",
+      "image": "/player-images/fulham/joachim-andersen.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/88564.png&h=120"
+    },
+    {
+      "name": "Issa Diop",
+      "slug": "issa-diop",
+      "image": "/player-images/fulham/issa-diop.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/82622.png&h=120"
+    },
+    {
+      "name": "Emile Smith Rowe",
+      "slug": "emile-smith-rowe",
+      "image": "/player-images/fulham/emile-smith-rowe.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/207757.png&h=120"
+    },
+    {
+      "name": "Josh King",
+      "slug": "josh-king",
+      "image": "/player-images/fulham/josh-king.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/uk.png"
+    },
+    {
+      "name": "Sander Berge",
+      "slug": "sander-berge",
+      "image": "/player-images/fulham/sander-berge.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/128002.png&h=120"
+    },
+    {
+      "name": "Saša Lukić",
+      "slug": "sasa-lukic",
+      "image": "/player-images/fulham/sasa-lukic.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/61892-alt.png&h=120"
+    },
+    {
+      "name": "Tom Cairney",
+      "slug": "tom-cairney",
+      "image": "/player-images/fulham/tom-cairney.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/13139.png&h=120"
+    },
+    {
+      "name": "Harrison Reed",
+      "slug": "harrison-reed",
+      "image": "/player-images/fulham/harrison-reed.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/75008.png&h=120"
+    },
+    {
+      "name": "Jonah Kusi-Asare",
+      "slug": "jonah-kusi-asare",
+      "image": "/player-images/fulham/jonah-kusi-asare.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/se.png"
+    },
+    {
+      "name": "Raúl Jiménez",
+      "slug": "raul-jimenez",
+      "image": "/player-images/fulham/raul-jimenez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/39533.png&h=120"
+    },
+    {
+      "name": "Adama Traoré",
+      "slug": "adama-traore",
+      "image": "/player-images/fulham/adama-traore.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/64741.png&h=120"
+    },
+    {
+      "name": "Samuel Chukwueze",
+      "slug": "samuel-chukwueze",
+      "image": "/player-images/fulham/samuel-chukwueze.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/126993-alt.png&h=120"
+    },
+    {
+      "name": "Alex Iwobi",
+      "slug": "alex-iwobi",
+      "image": "/player-images/fulham/alex-iwobi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/77684.png&h=120"
+    },
+    {
+      "name": "Rodrigo Muniz",
+      "slug": "rodrigo-muniz",
+      "image": "/player-images/fulham/rodrigo-muniz.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/246256-alt.webp&h=120"
+    }
+  ]
+}

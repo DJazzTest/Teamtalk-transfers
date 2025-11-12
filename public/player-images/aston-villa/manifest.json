@@ -1,0 +1,144 @@
+{
+  "team": "aston-villa",
+  "count": 23,
+  "images": [
+    {
+      "name": "Marco Bizot",
+      "slug": "marco-bizot",
+      "image": "/player-images/aston-villa/marco-bizot.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/13750.png&h=120"
+    },
+    {
+      "name": "Emiliano Martínez",
+      "slug": "emiliano-martinez",
+      "image": "/player-images/aston-villa/emiliano-martinez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/7821-alt.webp&h=120"
+    },
+    {
+      "name": "Lucas Digne",
+      "slug": "lucas-digne",
+      "image": "/player-images/aston-villa/lucas-digne.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/4219.png&h=120"
+    },
+    {
+      "name": "Matty Cash",
+      "slug": "matty-cash",
+      "image": "/player-images/aston-villa/matty-cash.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/131201.png&h=120"
+    },
+    {
+      "name": "Ian Maatsen",
+      "slug": "ian-maatsen",
+      "image": "/player-images/aston-villa/ian-maatsen.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/412247-alt.png&h=120"
+    },
+    {
+      "name": "Tyrone Mings",
+      "slug": "tyrone-mings",
+      "image": "/player-images/aston-villa/tyrone-mings.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/66635-alt.webp&h=120"
+    },
+    {
+      "name": "Ezri Konsa",
+      "slug": "ezri-konsa",
+      "image": "/player-images/aston-villa/ezri-konsa.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/172343-alt.webp&h=120"
+    },
+    {
+      "name": "Pau Torres",
+      "slug": "pau-torres",
+      "image": "/player-images/aston-villa/pau-torres.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/165475-alt.webp&h=120"
+    },
+    {
+      "name": "Victor Lindelöf",
+      "slug": "victor-lindelof",
+      "image": "/player-images/aston-villa/victor-lindelof.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/47440.png&h=120"
+    },
+    {
+      "name": "Andrés García",
+      "slug": "andres-garcia",
+      "image": "/player-images/aston-villa/andres-garcia.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/305489832-alt.webp&h=120"
+    },
+    {
+      "name": "Boubacar Kamara",
+      "slug": "boubacar-kamara",
+      "image": "/player-images/aston-villa/boubacar-kamara.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/169291-alt.webp&h=120"
+    },
+    {
+      "name": "John McGinn",
+      "slug": "john-mcginn",
+      "image": "/player-images/aston-villa/john-mcginn.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/58405.png&h=120"
+    },
+    {
+      "name": "Amadou Onana",
+      "slug": "amadou-onana",
+      "image": "/player-images/aston-villa/amadou-onana.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/401197-alt.webp&h=120"
+    },
+    {
+      "name": "Harvey Elliott",
+      "slug": "harvey-elliott",
+      "image": "/player-images/aston-villa/harvey-elliott.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/433813-alt.webp&h=120"
+    },
+    {
+      "name": "Ross Barkley",
+      "slug": "ross-barkley",
+      "image": "/player-images/aston-villa/ross-barkley.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/2396-alt.webp&h=120"
+    },
+    {
+      "name": "Lamare Bogarde",
+      "slug": "lamare-bogarde",
+      "image": "/player-images/aston-villa/lamare-bogarde.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/551937-alt.webp&h=120"
+    },
+    {
+      "name": "Youri Tielemans",
+      "slug": "youri-tielemans",
+      "image": "/player-images/aston-villa/youri-tielemans.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/74351.png&h=120"
+    },
+    {
+      "name": "Emiliano Buendía",
+      "slug": "emiliano-buendia",
+      "image": "/player-images/aston-villa/emiliano-buendia.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/93647-alt.png&h=120"
+    },
+    {
+      "name": "Morgan Rogers",
+      "slug": "morgan-rogers",
+      "image": "/player-images/aston-villa/morgan-rogers.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/253477-alt.webp&h=120"
+    },
+    {
+      "name": "Ollie Watkins",
+      "slug": "ollie-watkins",
+      "image": "/player-images/aston-villa/ollie-watkins.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/96337-alt.webp&h=120"
+    },
+    {
+      "name": "Donyell Malen",
+      "slug": "donyell-malen",
+      "image": "/player-images/aston-villa/donyell-malen.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/129720-ss.png&h=120"
+    },
+    {
+      "name": "Jadon Sancho",
+      "slug": "jadon-sancho",
+      "image": "/player-images/aston-villa/jadon-sancho.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/185982-alt.webp&h=120"
+    },
+    {
+      "name": "Evann Guessand",
+      "slug": "evann-guessand",
+      "image": "/player-images/aston-villa/evann-guessand.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/231564-alt.webp&h=120"
+    }
+  ]
+}

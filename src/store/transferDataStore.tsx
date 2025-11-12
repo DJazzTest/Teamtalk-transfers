@@ -39,6 +39,7 @@ interface TransferDataStore {
   refreshTeamData: (teamSlug: string) => Promise<void>;
   getTeamTransfers: (teamSlug: string) => Transfer[];
   manualPollingRefresh: () => Promise<void>;
+  feedErrors: string[];
 }
 
 const TransferDataContext = createContext<TransferDataStore | undefined>(undefined);
@@ -146,12 +147,37 @@ export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ childr
     };
   }, [isPollingEnabled, pollingInterval, performPolling]);
 
-  // Use static transfers with real values
-  const allTransfers = useMemo(() => {
-    const staticTransfers = TransferIntegrationService.getAllTransfers();
-    console.log('✅ Using static data with real transfer fees');
-    return staticTransfers;
-  }, []);
+  // Dynamically combine live feeds with static fallback
+  const liveTransfers = useMemo(() => {
+    const combined = [...teamTalkTransfers, ...scoreInsideAllTransfers];
+
+    const deduped = deduplicateTransfersUI(combined);
+    const sorted = deduped.sort((a, b) => {
+      const aTime = new Date(a.date).getTime();
+      const bTime = new Date(b.date).getTime();
+      return bTime - aTime;
+    });
+
+    return sorted;
+  }, [teamTalkTransfers, scoreInsideAllTransfers]);
+
+  const feedErrors = useMemo(() => {
+    const errors: string[] = [];
+
+    if (teamTalkError) {
+      errors.push(`TeamTalk feed error: ${teamTalkError}`);
+    } else if (teamTalkTransfers.length === 0) {
+      errors.push('TeamTalk feed returned no results');
+    }
+
+    if (scoreInsideError) {
+      errors.push(`ScoreInside feed error: ${scoreInsideError}`);
+    } else if (scoreInsideAllTransfers.length === 0) {
+      errors.push('ScoreInside feed returned no results');
+    }
+
+    return errors;
+  }, [teamTalkError, scoreInsideError, teamTalkTransfers.length, scoreInsideAllTransfers.length]);
 
   const refreshAllData = async () => {
     console.log('Refreshing all API data sources...');
@@ -171,7 +197,7 @@ export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ childr
     teamTalkTransfers,
     scoreInsideAllTransfers,
     teamSpecificTransfers,
-    allTransfers,
+    allTransfers: liveTransfers,
     lastUpdated,
     teamTalkLastUpdated,
     scoreInsideLastUpdated,
@@ -186,7 +212,8 @@ export const TransferDataProvider: React.FC<{ children: ReactNode }> = ({ childr
     refreshAllData,
     refreshTeamData,
     getTeamTransfers,
-    manualPollingRefresh
+    manualPollingRefresh,
+    feedErrors
   };
 
   return (

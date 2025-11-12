@@ -6,6 +6,8 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { TrendingUp, MessageCircle, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { getPlayerImage } from '@/utils/playerImageUtils';
+import { PlayerNameLink } from './PlayerNameLink';
+import { findPlayerInSquads } from '@/utils/playerUtils';
 
 interface HomeRecentRumoursProps {
   transfers: Transfer[];
@@ -66,13 +68,28 @@ export const HomeRecentRumours: React.FC<HomeRecentRumoursProps> = ({ transfers,
                   </Avatar>
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     <MessageCircle className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                    <span
-                      className="font-semibold text-blue-600 hover:underline cursor-pointer text-base truncate"
-                      onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
-                      title={`View ${transfer.toClub} transfers`}
-                    >
-                      {transfer.playerName}
-                    </span>
+                    {(() => {
+                      const playerInfo = findPlayerInSquads(transfer.playerName);
+                      if (playerInfo.found) {
+                        return (
+                          <PlayerNameLink
+                            playerName={transfer.playerName}
+                            teamName={playerInfo.club}
+                            playerData={playerInfo.player}
+                            className="text-blue-600 text-base font-semibold truncate"
+                          />
+                        );
+                      }
+                      return (
+                        <span
+                          className="font-semibold text-blue-600 hover:underline cursor-pointer text-base truncate"
+                          onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
+                          title={`View ${transfer.toClub} transfers`}
+                        >
+                          {transfer.playerName}
+                        </span>
+                      );
+                    })()}
                   </div>
                 </div>
                 <div className="text-xs text-gray-600">

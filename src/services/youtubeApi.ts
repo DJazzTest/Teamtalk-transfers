@@ -134,41 +134,188 @@ const SAMPLE_VIDEOS: Record<string, YouTubeVideo[]> = {
 export const youtubeApi = {
   async getTeamVideos(teamName: string, maxResults: number = 5): Promise<YouTubeVideo[]> {
     try {
-      const searchTerm = TEAM_SEARCH_TERMS[teamName];
-      if (!searchTerm) {
-        return this.getDefaultVideos(teamName);
-      }
-
-      const response = await fetch(
-        `${YOUTUBE_BASE_URL}/search?part=snippet&q=${encodeURIComponent(searchTerm)}&type=video&maxResults=${maxResults}&order=date&key=${YOUTUBE_API_KEY}`
-      );
-
-      if (!response.ok) {
-        throw new Error(`YouTube API error: ${response.status}`);
-      }
-
-      const data = await response.json();
+      console.log(`🔍 Fetching YouTube videos for ${teamName}...`);
       
-      if (!data.items || data.items.length === 0) {
-        return this.getDefaultVideos(teamName);
-      }
+      // Try to get YouTube URL from team mapping
+      const { getTeamYoutubeUrl } = await import('@/utils/teamMapping');
+      const youtubeUrl = getTeamYoutubeUrl(teamName);
+      
+      if (youtubeUrl) {
+        console.log(`📺 YouTube URL for ${teamName}: ${youtubeUrl}`);
+        
+        // Check if it's a search query URL
+        if (youtubeUrl.includes('search_query=')) {
+          // Extract search query from URL
+          const searchMatch = youtubeUrl.match(/search_query=([^&]+)/);
+          if (searchMatch) {
+            const searchQuery = decodeURIComponent(searchMatch[1].replace(/\+/g, ' '));
+            console.log(`🔎 Using search query: ${searchQuery}`);
+            
+            const response = await fetch(
+              `${YOUTUBE_BASE_URL}/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=${maxResults}&order=date&key=${YOUTUBE_API_KEY}`
+            );
 
-      // Transform YouTube API response to our format
-      return data.items.map((item: any) => ({
-        id: item.id.videoId,
-        title: item.snippet.title,
-        description: item.snippet.description,
-        thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url,
-        url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-        embedUrl: `https://www.youtube.com/embed/${item.id.videoId}`,
-        duration: 'N/A', // Duration requires additional API call
-        publishedAt: item.snippet.publishedAt,
-        viewCount: 'N/A', // View count requires additional API call
-        channelTitle: item.snippet.channelTitle
-      }));
+            if (response.ok) {
+              const data = await response.json();
+              if (data.items && data.items.length > 0) {
+                console.log(`✅ Found ${data.items.length} videos via search query`);
+                return data.items.map((item: any) => ({
+                  id: item.id.videoId,
+                  title: item.snippet.title,
+                  description: item.snippet.description,
+                  thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url,
+                  url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+                  embedUrl: `https://www.youtube.com/embed/${item.id.videoId}`,
+                  duration: 'N/A',
+                  publishedAt: item.snippet.publishedAt,
+                  viewCount: 'N/A',
+                  channelTitle: item.snippet.channelTitle
+                }));
+              }
+            } else {
+              console.error(`❌ YouTube API search error: ${response.status}`);
+            }
+          }
+        } else {
+          // Extract channel handle or ID from URL
+          let channelHandle: string | null = null;
+          let channelId: string | null = null;
+          
+          // Handle different URL formats
+          if (youtubeUrl.includes('/@')) {
+            // Modern handle format: https://www.youtube.com/@arsenal/videos
+            const match = youtubeUrl.match(/\/@([^\/]+)/);
+            if (match) {
+              channelHandle = `@${match[1]}`;
+              console.log(`📌 Extracted channel handle: ${channelHandle}`);
+            }
+          } else if (youtubeUrl.includes('/user/')) {
+            // Old user format: https://www.youtube.com/user/chelseafc
+            const match = youtubeUrl.match(/\/user\/([^\/]+)/);
+            if (match) {
+              channelHandle = match[1];
+              console.log(`📌 Extracted user handle: ${channelHandle}`);
+            }
+          } else if (youtubeUrl.includes('/channel/')) {
+            // Channel ID format: https://www.youtube.com/channel/UC...
+            const match = youtubeUrl.match(/\/channel\/([^\/]+)/);
+            if (match) {
+              channelId = match[1];
+              console.log(`📌 Extracted channel ID: ${channelId}`);
+            }
+          } else if (youtubeUrl.includes('/c/')) {
+            // Custom URL format: https://www.youtube.com/c/sheffieldunited/videos
+            const match = youtubeUrl.match(/\/c\/([^\/]+)/);
+            if (match) {
+              channelHandle = match[1];
+              console.log(`📌 Extracted custom URL handle: ${channelHandle}`);
+            }
+          }
+          
+          // Try to fetch videos from channel
+          if (channelHandle || channelId) {
+            try {
+              let finalChannelId = channelId;
+              
+              // If we have a handle, resolve it to a channel ID
+              if (channelHandle && !channelId) {
+                console.log(`🔍 Resolving channel handle to ID: ${channelHandle}`);
+                const channelResponse = await fetch(
+                  `${YOUTUBE_BASE_URL}/search?part=snippet&q=${encodeURIComponent(channelHandle)}&type=channel&maxResults=1&key=${YOUTUBE_API_KEY}`
+                );
+                
+                if (channelResponse.ok) {
+                  const channelData = await channelResponse.json();
+                  if (channelData.items && channelData.items.length > 0) {
+                    finalChannelId = channelData.items[0].id.channelId;
+                    console.log(`✅ Resolved to channel ID: ${finalChannelId}`);
+                  } else {
+                    console.warn(`⚠️ No channel found for handle: ${channelHandle}`);
+                  }
+                } else {
+                  console.error(`❌ Channel resolution failed: ${channelResponse.status}`);
+                }
+              }
+              
+              // Fetch videos from the channel
+              if (finalChannelId) {
+                console.log(`📹 Fetching videos from channel: ${finalChannelId}`);
+                const videosResponse = await fetch(
+                  `${YOUTUBE_BASE_URL}/search?part=snippet&channelId=${finalChannelId}&type=video&maxResults=${maxResults}&order=date&key=${YOUTUBE_API_KEY}`
+                );
+                
+                if (videosResponse.ok) {
+                  const videosData = await videosResponse.json();
+                  if (videosData.items && videosData.items.length > 0) {
+                    console.log(`✅ Found ${videosData.items.length} videos from channel`);
+                    return videosData.items.map((item: any) => ({
+                      id: item.id.videoId,
+                      title: item.snippet.title,
+                      description: item.snippet.description,
+                      thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url,
+                      url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+                      embedUrl: `https://www.youtube.com/embed/${item.id.videoId}`,
+                      duration: 'N/A',
+                      publishedAt: item.snippet.publishedAt,
+                      viewCount: 'N/A',
+                      channelTitle: item.snippet.channelTitle
+                    }));
+                  } else {
+                    console.warn(`⚠️ No videos found in channel: ${finalChannelId}`);
+                  }
+                } else {
+                  const errorData = await videosResponse.json().catch(() => ({}));
+                  console.error(`❌ Videos fetch failed: ${videosResponse.status}`, errorData);
+                }
+              } else {
+                console.warn(`⚠️ Could not resolve channel ID for ${teamName}`);
+              }
+            } catch (channelError) {
+              console.error(`❌ Error fetching from ${teamName} channel:`, channelError);
+              // Fall through to regular search
+            }
+          }
+        }
+      }
+      
+      // Regular search for other teams or fallback
+      const searchTerm = TEAM_SEARCH_TERMS[teamName];
+      if (searchTerm) {
+        console.log(`🔎 Fallback: Using search term: ${searchTerm}`);
+        const response = await fetch(
+          `${YOUTUBE_BASE_URL}/search?part=snippet&q=${encodeURIComponent(searchTerm)}&type=video&maxResults=${maxResults}&order=date&key=${YOUTUBE_API_KEY}`
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.items && data.items.length > 0) {
+            console.log(`✅ Found ${data.items.length} videos via search term`);
+            return data.items.map((item: any) => ({
+              id: item.id.videoId,
+              title: item.snippet.title,
+              description: item.snippet.description,
+              thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url,
+              url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+              embedUrl: `https://www.youtube.com/embed/${item.id.videoId}`,
+              duration: 'N/A',
+              publishedAt: item.snippet.publishedAt,
+              viewCount: 'N/A',
+              channelTitle: item.snippet.channelTitle
+            }));
+          }
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error(`❌ YouTube API search error: ${response.status}`, errorData);
+        }
+      } else {
+        console.warn(`⚠️ No search term available for ${teamName}`);
+      }
+      
+      console.log(`❌ No videos found for ${teamName}`);
+      return [];
     } catch (error) {
-      console.error(`Error fetching YouTube videos for ${teamName}:`, error);
-      return this.getDefaultVideos(teamName);
+      console.error(`❌ Error fetching YouTube videos for ${teamName}:`, error);
+      return [];
     }
   },
 

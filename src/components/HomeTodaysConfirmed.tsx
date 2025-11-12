@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
+import { PlayerNameLink } from './PlayerNameLink';
 
 interface HomeTodaysConfirmedProps {
   transfers: Transfer[];
@@ -35,13 +36,18 @@ export const HomeTodaysConfirmed: React.FC<HomeTodaysConfirmedProps> = ({ transf
               <Card key={transfer.id} className="min-w-[240px] max-w-xs bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-md transition-all duration-200 hover:border-green-300">
                 <div className="p-3 flex flex-col gap-2">
                   <div className="flex items-center gap-2">
-                    <span
-                      className="font-semibold text-green-700 hover:underline cursor-pointer text-base truncate"
-                      onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
-                      title={`View ${transfer.toClub} transfers`}
-                    >
-                      {transfer.playerName}
-                    </span>
+                    <PlayerNameLink
+                      playerName={transfer.playerName}
+                      teamName={transfer.toClub}
+                      playerData={{
+                        age: transfer.age,
+                        bio: transfer.country || transfer.dateOfBirth
+                          ? { nationality: transfer.country, dateOfBirth: transfer.dateOfBirth }
+                          : undefined
+                      }}
+                      className="text-base text-green-700 hover:text-green-600 truncate"
+                      stopPropagation={false}
+                    />
                   </div>
                   <div className="text-xs text-gray-600">
                     <span>{transfer.fromClub}</span> → <span className="font-semibold text-gray-800">{transfer.toClub}</span>

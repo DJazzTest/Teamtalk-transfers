@@ -1,0 +1,162 @@
+{
+  "team": "brighton",
+  "count": 26,
+  "images": [
+    {
+      "name": "Bart Verbruggen",
+      "slug": "bart-verbruggen",
+      "image": "/player-images/brighton/bart-verbruggen.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/548991-alt.webp&h=120"
+    },
+    {
+      "name": "Tom McGill",
+      "slug": "tom-mcgill",
+      "image": "/player-images/brighton/tom-mcgill.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/208130.png&h=120"
+    },
+    {
+      "name": "Jason Steele",
+      "slug": "jason-steele",
+      "image": "/player-images/brighton/jason-steele.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/6261.png&h=120"
+    },
+    {
+      "name": "Adam Webster",
+      "slug": "adam-webster",
+      "image": "/player-images/brighton/adam-webster.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/51350.png&h=120"
+    },
+    {
+      "name": "Ferdi Kadıoğlu",
+      "slug": "ferdi-kadoglu",
+      "image": "/player-images/brighton/ferdi-kadoglu.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/169764.png&h=120"
+    },
+    {
+      "name": "Jan Paul van Hecke",
+      "slug": "jan-paul-van-hecke",
+      "image": "/player-images/brighton/jan-paul-van-hecke.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/467894-alt.webp&h=120"
+    },
+    {
+      "name": "Lewis Dunk",
+      "slug": "lewis-dunk",
+      "image": "/player-images/brighton/lewis-dunk.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/8248.png&h=120"
+    },
+    {
+      "name": "Maxim De Cuyper",
+      "slug": "maxim-de-cuyper",
+      "image": "/player-images/brighton/maxim-de-cuyper.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/331203-alt.webp&h=120"
+    },
+    {
+      "name": "Olivier Boscagli",
+      "slug": "olivier-boscagli",
+      "image": "/player-images/brighton/olivier-boscagli.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/92559-ss.png&h=120"
+    },
+    {
+      "name": "Joël Veltman",
+      "slug": "joel-veltman",
+      "image": "/player-images/brighton/joel-veltman.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/43310.png&h=120"
+    },
+    {
+      "name": "Diego Coppola",
+      "slug": "diego-coppola",
+      "image": "/player-images/brighton/diego-coppola.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/658891-alt.webp&h=120"
+    },
+    {
+      "name": "Carlos Baleba",
+      "slug": "carlos-baleba",
+      "image": "/player-images/brighton/carlos-baleba.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221635562-alt.webp&h=120"
+    },
+    {
+      "name": "Jack Hinshelwood",
+      "slug": "jack-hinshelwood",
+      "image": "/player-images/brighton/jack-hinshelwood.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303380144-ss.png&h=120"
+    },
+    {
+      "name": "Mats Wieffer",
+      "slug": "mats-wieffer",
+      "image": "/player-images/brighton/mats-wieffer.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/272481-ss.png&h=120"
+    },
+    {
+      "name": "Yasin Ayari",
+      "slug": "yasin-ayari",
+      "image": "/player-images/brighton/yasin-ayari.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/631272-ss.png&h=120"
+    },
+    {
+      "name": "Diego Gómez",
+      "slug": "diego-gomez",
+      "image": "/player-images/brighton/diego-gomez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/643517.png&h=120"
+    },
+    {
+      "name": "James Milner",
+      "slug": "james-milner",
+      "image": "/player-images/brighton/james-milner.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/1385-alt.webp&h=120"
+    },
+    {
+      "name": "Brajan Gruda",
+      "slug": "brajan-gruda",
+      "image": "/player-images/brighton/brajan-gruda.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/609367.png&h=120"
+    },
+    {
+      "name": "Charalampos Kostoulas",
+      "slug": "charalampos-kostoulas",
+      "image": "/player-images/brighton/charalampos-kostoulas.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/287193616-ss.png&h=120"
+    },
+    {
+      "name": "Stefanos Tzimas",
+      "slug": "stefanos-tzimas",
+      "image": "/player-images/brighton/stefanos-tzimas.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/200850144-alt.png&h=120"
+    },
+    {
+      "name": "Tom Watson",
+      "slug": "tom-watson",
+      "image": "/player-images/brighton/tom-watson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/156461173.png&h=120"
+    },
+    {
+      "name": "Danny Welbeck",
+      "slug": "danny-welbeck",
+      "image": "/player-images/brighton/danny-welbeck.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/302.png&h=120"
+    },
+    {
+      "name": "Kaoru Mitoma",
+      "slug": "kaoru-mitoma",
+      "image": "/player-images/brighton/kaoru-mitoma.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/396785-alt.png&h=120"
+    },
+    {
+      "name": "Solly March",
+      "slug": "solly-march",
+      "image": "/player-images/brighton/solly-march.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/66548.png&h=120"
+    },
+    {
+      "name": "Yankuba Minteh",
+      "slug": "yankuba-minteh",
+      "image": "/player-images/brighton/yankuba-minteh.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/223209254-alt.webp&h=120"
+    },
+    {
+      "name": "Georginio Rutter",
+      "slug": "georginio-rutter",
+      "image": "/player-images/brighton/georginio-rutter.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/439854-alt.webp&h=120"
+    }
+  ]
+}

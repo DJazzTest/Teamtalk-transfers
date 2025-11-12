@@ -28,6 +28,16 @@ interface Player {
   };
   weeklyWage?: number;
   yearlyWage?: number;
+  previousMatches?: Array<{
+    competition: string;
+    date: string;
+    team: string;
+    opponent: string;
+    score: string;
+    outcome?: 'Win' | 'Draw' | 'Loss';
+    venue?: string;
+    rating?: number;
+  }>;
 }
 
 interface PlayerComparisonModalProps {
@@ -45,6 +55,8 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
 }) => {
   const [team2, setTeam2] = useState<string>('');
   const [player2, setPlayer2] = useState<Player | null>(null);
+
+  const isGoalkeeper = player1?.position?.toLowerCase().includes('goalkeeper');
   const [upcomingFixtures, setUpcomingFixtures] = useState<Array<{ opponent: string; date: string }>>([]);
   const [loadingFixtures, setLoadingFixtures] = useState(false);
 
@@ -124,6 +136,150 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
   const p1Stats = useMemo(() => getPlayerComparisonData(player1?.name || '', player1), [player1]);
   const p2Stats = useMemo(() => getPlayerComparisonData(player2?.name || '', player2), [player2]);
 
+  const parseNumericValue = (value: unknown): number => {
+    if (typeof value === 'number') return value;
+    if (typeof value === 'string') {
+      const cleaned = parseFloat(value.replace(/[^0-9.-]/g, ''));
+      return Number.isNaN(cleaned) ? NaN : cleaned;
+    }
+    return NaN;
+  };
+
+  const formatMetricValue = (
+    value: number,
+    options: { unit?: string; decimals?: number; percent?: boolean } = {}
+  ): string => {
+    const { unit, percent, decimals } = options;
+    const precision = decimals !== undefined ? decimals : (Math.abs(value) >= 10 ? 0 : 1);
+    const formatted = Number.isInteger(value) && !percent && decimals === undefined
+      ? value.toString()
+      : value.toFixed(precision);
+    if (percent) {
+      return `${formatted}%`;
+    }
+    if (unit) {
+      return `${formatted}${unit}`;
+    }
+    return formatted;
+  };
+
+  const computeComparisonInsights = (
+    primaryStats: DetailedPlayerStats,
+    secondaryStats: DetailedPlayerStats,
+    isKeeper: boolean
+  ) => {
+    const summary = {
+      player1: [] as string[],
+      player2: [] as string[]
+    };
+
+    const compare = (
+      label: string,
+      a: unknown,
+      b: unknown,
+      options: {
+        higherIsBetter?: boolean;
+        unit?: string;
+        decimals?: number;
+        percent?: boolean;
+        threshold?: number;
+      } = {}
+    ) => {
+      const value1 = parseNumericValue(a);
+      const value2 = parseNumericValue(b);
+      if (!Number.isFinite(value1) || !Number.isFinite(value2)) return;
+      const diff = Math.abs(value1 - value2);
+      if (diff < (options.threshold ?? 0.01)) return;
+
+      const formatted1 = formatMetricValue(value1, options);
+      const formatted2 = formatMetricValue(value2, options);
+      const descriptor = `${label}: ${formatted1} vs ${formatted2}`;
+      const higherIsBetter = options.higherIsBetter ?? true;
+
+      if (higherIsBetter ? value1 > value2 : value1 < value2) {
+        if (!summary.player1.includes(descriptor)) summary.player1.push(descriptor);
+      } else if (higherIsBetter ? value2 > value1 : value2 < value1) {
+        if (!summary.player2.includes(descriptor)) summary.player2.push(descriptor);
+      }
+    };
+
+    compare('Goals scored', primaryStats.goals, secondaryStats.goals, { higherIsBetter: true, decimals: 0, threshold: 0.1 });
+    compare('Assists provided', primaryStats.assists, secondaryStats.assists, { higherIsBetter: true, decimals: 0, threshold: 0.1 });
+    compare('Average rating', primaryStats.sofascoreRating, secondaryStats.sofascoreRating, { higherIsBetter: true, decimals: 2, threshold: 0.05 });
+    compare('Minutes per game', primaryStats.minutesPerGame, secondaryStats.minutesPerGame, { higherIsBetter: true, decimals: 0, threshold: 1 });
+    compare('Total minutes played', primaryStats.totalMinutes, secondaryStats.totalMinutes, { higherIsBetter: true, decimals: 0, threshold: 50 });
+
+    if (isKeeper) {
+      compare('Saves per game', primaryStats.saves, secondaryStats.saves, { higherIsBetter: true, decimals: 1, threshold: 0.2 });
+      compare('Goals prevented', primaryStats.goalsPrevented, secondaryStats.goalsPrevented, { higherIsBetter: true, decimals: 2, threshold: 0.2 });
+      compare('Clean sheets', primaryStats.cleanSheets, secondaryStats.cleanSheets, { higherIsBetter: true, decimals: 0, threshold: 0.1 });
+      compare('Goals conceded per game', primaryStats.goalsConceded, secondaryStats.goalsConceded, { higherIsBetter: false, decimals: 1, threshold: 0.1 });
+      compare('Accurate passes per game', primaryStats.accuratePasses, secondaryStats.accuratePasses, { higherIsBetter: true, decimals: 1, threshold: 0.5 });
+      compare('Accurate long balls per game', primaryStats.accurateLongBalls, secondaryStats.accurateLongBalls, { higherIsBetter: true, decimals: 1, threshold: 0.5 });
+    } else {
+      compare('Successful dribbles %', primaryStats.successfulDribblesPercentage, secondaryStats.successfulDribblesPercentage, { higherIsBetter: true, percent: true, threshold: 1 });
+      compare('Ground duels won %', primaryStats.groundDuelsWonPercentage, secondaryStats.groundDuelsWonPercentage, { higherIsBetter: true, percent: true, threshold: 1 });
+      compare('Aerial duels won %', primaryStats.aerialDuelsWonPercentage, secondaryStats.aerialDuelsWonPercentage, { higherIsBetter: true, percent: true, threshold: 1 });
+      compare('Was fouled per game', primaryStats.wasFouled, secondaryStats.wasFouled, { higherIsBetter: true, decimals: 2, threshold: 0.05 });
+      compare('Possession lost per game', primaryStats.possessionLost, secondaryStats.possessionLost, { higherIsBetter: false, decimals: 1, threshold: 0.3 });
+      compare('Interceptions per game', primaryStats.interceptions, secondaryStats.interceptions, { higherIsBetter: true, decimals: 2, threshold: 0.1 });
+      compare('Tackles per game', primaryStats.tackles, secondaryStats.tackles, { higherIsBetter: true, decimals: 2, threshold: 0.1 });
+      compare('Big chances created', primaryStats.bigChancesCreated, secondaryStats.bigChancesCreated, { higherIsBetter: true, decimals: 0, threshold: 0.1 });
+    }
+
+    return {
+      player1: Array.from(new Set(summary.player1)).slice(0, 4),
+      player2: Array.from(new Set(summary.player2)).slice(0, 4)
+    };
+  };
+
+  const formatMatchDate = (value: string): string => {
+    if (!value) return 'N/A';
+    const isoDate = Date.parse(value);
+    if (!Number.isNaN(isoDate)) {
+      return new Date(isoDate).toLocaleDateString(undefined, { day: '2-digit', month: 'short' });
+    }
+    const fallbackMatch = value.match(/^(\d{2})\/(\d{2})\/(\d{2,4})$/);
+    if (fallbackMatch) {
+      const [, day, month, year] = fallbackMatch;
+      const fullYear = year.length === 2 ? 2000 + parseInt(year, 10) : parseInt(year, 10);
+      const parsed = new Date(fullYear, parseInt(month, 10) - 1, parseInt(day, 10));
+      if (!Number.isNaN(parsed.getTime())) {
+        return parsed.toLocaleDateString(undefined, { day: '2-digit', month: 'short' });
+      }
+    }
+    return value;
+  };
+
+  const getOutcomeStyles = (outcome?: string) => {
+    switch (outcome) {
+      case 'Win':
+        return 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
+      case 'Draw':
+        return 'bg-amber-500/15 text-amber-300 border border-amber-500/30';
+      case 'Loss':
+        return 'bg-rose-500/15 text-rose-300 border border-rose-500/30';
+      default:
+        return 'bg-slate-600/30 text-slate-200 border border-slate-500/30';
+    }
+  };
+
+  const recentMatches1 = useMemo(
+    () => (player1?.previousMatches || []).slice(0, 5),
+    [player1?.previousMatches]
+  );
+  const recentMatches2 = useMemo(
+    () => (player2?.previousMatches || []).slice(0, 5),
+    [player2?.previousMatches]
+  );
+
+  const insights = useMemo(() => {
+    if (!player2) {
+      return { player1: [] as string[], player2: [] as string[] };
+    }
+    return computeComparisonInsights(p1Stats, p2Stats, isGoalkeeper);
+  }, [player2, p1Stats, p2Stats, isGoalkeeper]);
+
   const renderComparisonRow = (
     label: string,
     value1: string | number | undefined,
@@ -162,8 +318,6 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
   };
 
   if (!player1) return null;
-
-  const isGoalkeeper = player1.position?.toLowerCase().includes('goalkeeper');
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -294,9 +448,135 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
             </div>
           </Card>
 
-          {/* Detailed Comparison Stats */}
           {player2 && (
             <>
+              {/* Key Insights */}
+              <Card className="p-4 bg-slate-700/50 border-slate-600">
+                <h3 className="text-lg font-semibold text-white mb-4">Key Advantages</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="text-sm uppercase tracking-wide text-blue-300 mb-3">{player1.name}</h4>
+                    {insights.player1.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {insights.player1.map((text, index) => (
+                          <Badge
+                            key={`p1-insight-${index}`}
+                            className="bg-blue-500/15 text-blue-200 border border-blue-400/30 font-normal whitespace-normal py-1 px-2"
+                          >
+                            {text}
+                          </Badge>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-400">No clear statistical edge recorded yet.</p>
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-sm uppercase tracking-wide text-purple-300 mb-3">{player2.name}</h4>
+                    {insights.player2.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {insights.player2.map((text, index) => (
+                          <Badge
+                            key={`p2-insight-${index}`}
+                            className="bg-purple-500/15 text-purple-200 border border-purple-400/30 font-normal whitespace-normal py-1 px-2"
+                          >
+                            {text}
+                          </Badge>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-400">No clear statistical edge recorded yet.</p>
+                    )}
+                  </div>
+                </div>
+              </Card>
+
+              {/* Recent Form */}
+              {(recentMatches1.length > 0 || recentMatches2.length > 0) && (
+                <Card className="p-4 bg-slate-700/50 border-slate-600">
+                  <h3 className="text-lg font-semibold text-white mb-4">Recent Form (Last 5 matches)</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-sm uppercase tracking-wide text-blue-300 mb-3">{player1.name}</h4>
+                      <div className="space-y-2">
+                        {recentMatches1.length > 0 ? recentMatches1.map((match, index) => (
+                          <div
+                            key={`p1-match-${index}-${match.date}`}
+                            className="p-3 rounded-lg border border-slate-600/60 bg-slate-700/30"
+                          >
+                            <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
+                              <span>{formatMatchDate(match.date)}</span>
+                              <span className="truncate">{match.competition}</span>
+                              <span className="text-white font-semibold">{match.score}</span>
+                            </div>
+                            <div className="flex items-center justify-between text-xs text-gray-300">
+                              <span className="truncate">
+                                {(match.team || team1) && (match.opponent)
+                                  ? `${match.team || team1} vs ${match.opponent}`
+                                  : match.team || match.opponent || 'N/A'}
+                              </span>
+                              <div className="flex items-center gap-2">
+                                {match.outcome && (
+                                  <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${getOutcomeStyles(match.outcome)}`}>
+                                    {match.outcome}
+                                  </span>
+                                )}
+                                {typeof match.rating === 'number' && (
+                                  <span className="text-amber-300 font-semibold">
+                                    {match.rating.toFixed(1)}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )) : (
+                          <p className="text-sm text-gray-400">No recent matches available.</p>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-sm uppercase tracking-wide text-purple-300 mb-3">{player2.name}</h4>
+                      <div className="space-y-2">
+                        {recentMatches2.length > 0 ? recentMatches2.map((match, index) => (
+                          <div
+                            key={`p2-match-${index}-${match.date}`}
+                            className="p-3 rounded-lg border border-slate-600/60 bg-slate-700/30"
+                          >
+                            <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
+                              <span>{formatMatchDate(match.date)}</span>
+                              <span className="truncate">{match.competition}</span>
+                              <span className="text-white font-semibold">{match.score}</span>
+                            </div>
+                            <div className="flex items-center justify-between text-xs text-gray-300">
+                              <span className="truncate">
+                                {(match.team || team2) && (match.opponent)
+                                  ? `${match.team || team2} vs ${match.opponent}`
+                                  : match.team || match.opponent || 'N/A'}
+                              </span>
+                              <div className="flex items-center gap-2">
+                                {match.outcome && (
+                                  <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${getOutcomeStyles(match.outcome)}`}>
+                                    {match.outcome}
+                                  </span>
+                                )}
+                                {typeof match.rating === 'number' && (
+                                  <span className="text-amber-300 font-semibold">
+                                    {match.rating.toFixed(1)}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )) : (
+                          <p className="text-sm text-gray-400">No recent matches available.</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
+              {/* Detailed Comparison Stats */}
               {/* General - Bar Chart */}
               <Card className="p-4 bg-slate-700/50 border-slate-600">
                 <h3 className="text-lg font-semibold text-white mb-4">General</h3>
@@ -315,7 +595,7 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
                           [player2.name]: p2Stats.height ? parseFloat(p2Stats.height.replace(/\D/g, '')) : 0 
                         },
                         { 
-                          name: 'Sofascore Rating', 
+                          name: 'Average Rating', 
                           [player1.name]: (p1Stats.sofascoreRating || 0) * 10, 
                           [player2.name]: (p2Stats.sofascoreRating || 0) * 10 
                         }
@@ -327,7 +607,7 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
                       <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} />
                       <Tooltip
                         formatter={(value: number, name: string) => {
-                          if (name === 'Sofascore Rating') {
+                          if (name === 'Average Rating') {
                             return [(value / 10).toFixed(1), name];
                           }
                           return [value, name];

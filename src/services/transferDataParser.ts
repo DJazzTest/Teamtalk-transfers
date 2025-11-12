@@ -8,23 +8,38 @@ export interface TransferEntry {
 
 export const TEAMS_TRANSFER_DATA: Record<string, TransferEntry[]> = {
   'Arsenal': [
+    // TRANSFERS OUT - RELEASED
     { player: 'Jorginho', transferType: 'Released', club: 'Flamengo' },
     { player: 'Nathan Butler-Oyedeji', transferType: 'Released', club: 'Lausanne' },
     { player: 'Elian Quesada-Thorn', transferType: 'Released', club: 'Alajuelense' },
     { player: 'Kieran Tierney', transferType: 'Released', club: 'Celtic' },
+    { player: 'Takehiro Tomiyasu', transferType: 'Released', club: '-' },
+    // TRANSFERS OUT - END OF LOAN
     { player: 'Raheem Sterling', transferType: 'End of loan', club: 'Chelsea' },
     { player: 'Neto', transferType: 'End of loan', club: 'Bournemouth' },
+    // TRANSFERS OUT
     { player: 'Nuno Tavares', transferType: 'Transfer Out', club: 'Lazio' },
     { player: 'Marquinhos', transferType: 'Transfer Out', club: 'Cruzeiro' },
+    { player: 'Sambi Lokonga', transferType: 'Transfer Out', club: 'Hamburger SV' },
+    // TRANSFERS IN
     { player: 'Kepa Arrizabalaga', transferType: 'Transfer In', club: 'Chelsea' },
-    { player: 'Takehiro Tomiyasu', transferType: 'Released', club: '-' },
     { player: 'Martin Zubimendi', transferType: 'Transfer In', club: 'Real Sociedad' },
     { player: 'Christian Norgaard', transferType: 'Transfer In', club: 'Brentford' },
     { player: 'Noni Madueke', transferType: 'Transfer In', club: 'Chelsea' },
     { player: 'Cristhian Mosquera', transferType: 'Transfer In', club: 'Valencia' },
     { player: 'Viktor Gyokeres', transferType: 'Transfer In', club: 'Sporting' },
+    { player: 'Eberechi Eze', transferType: 'Transfer In', club: 'Crystal Palace' },
+    // LOANS OUT
     { player: 'Karl Hein', transferType: 'Loan Out', club: 'Werder Bremen' },
-    { player: 'Eberechi Eze', transferType: 'Transfer In', club: 'Crystal Palace' }
+    { player: 'Ismeal Kabia', transferType: 'Loan Out', club: 'Shrewsbury Town' },
+    { player: 'Lucas Martin Nygaard', transferType: 'Loan Out', club: 'Brabrand IF' },
+    { player: 'Fabio Vieira', transferType: 'Loan Out', club: 'Hamburger SV' },
+    { player: 'Jakub Kiwior', transferType: 'Loan Out', club: 'Porto' },
+    { player: 'Oleksandr Zinchenko', transferType: 'Loan Out', club: 'Nottingham Forest' },
+    { player: 'Reiss Nelson', transferType: 'Loan Out', club: 'Brentford' },
+    { player: 'Maldini Kacurri', transferType: 'Loan Out', club: 'Morecambe' },
+    // LOANS IN
+    { player: 'Piero Hincapie', transferType: 'Loan In', club: 'Bayer Leverkusen' }
   ],
   'Aston Villa': [
     { player: 'Yasin Ozcan', transferType: 'Transfer In', club: 'Kasimpasa' },

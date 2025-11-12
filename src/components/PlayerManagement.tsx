@@ -7,10 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { PlayerImageUpload } from './PlayerImageUpload';
 import { clubSquads, getSquad } from '@/data/squadWages';
-import { Search, Save, X, Download, RefreshCw } from 'lucide-react';
+import { Search, Save, X, Download, RefreshCw, Database } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { ShirtNumberIcon } from './ShirtNumberIcon';
 import { useTeamPlayerStats } from '@/hooks/usePlayerStats';
+import { syncPlayerToCMS, syncTeamToCMS } from '@/utils/syncPlayerDataToCMS';
 
 interface PlayerData {
   name: string;
@@ -119,6 +120,84 @@ export const PlayerManagement: React.FC = () => {
     }
   };
 
+  // Sync player data to CMS (localStorage)
+  const handleSyncPlayer = () => {
+    if (!editedPlayer || !selectedTeam) {
+      toast({
+        title: 'Error',
+        description: 'Please select a team and player first.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      const success = syncPlayerToCMS(selectedTeam, editedPlayer.name);
+      if (success) {
+        toast({
+          title: 'Player synced',
+          description: `${editedPlayer.name}'s data has been synced to CMS.`,
+        });
+        // Refresh the player list
+        const currentQuery = searchQuery;
+        setSearchQuery('');
+        setTimeout(() => setSearchQuery(currentQuery), 100);
+      } else {
+        toast({
+          title: 'Sync failed',
+          description: `Could not sync ${editedPlayer.name} to CMS.`,
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      console.error('Sync error:', error);
+      toast({
+        title: 'Sync error',
+        description: `Failed to sync player: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: 'destructive',
+      });
+    }
+  };
+
+  // Sync entire team to CMS
+  const handleSyncTeam = () => {
+    if (!selectedTeam) {
+      toast({
+        title: 'Error',
+        description: 'Please select a team first.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      const count = syncTeamToCMS(selectedTeam);
+      if (count > 0) {
+        toast({
+          title: 'Team synced',
+          description: `Synced ${count} players from ${selectedTeam} to CMS.`,
+        });
+        // Refresh the player list
+        const currentQuery = searchQuery;
+        setSearchQuery('');
+        setTimeout(() => setSearchQuery(currentQuery), 100);
+      } else {
+        toast({
+          title: 'Sync failed',
+          description: `Could not sync ${selectedTeam} to CMS.`,
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      console.error('Sync error:', error);
+      toast({
+        title: 'Sync error',
+        description: `Failed to sync team: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: 'destructive',
+      });
+    }
+  };
+
   // Save player changes
   const handleSave = async () => {
     if (!editedPlayer || !selectedTeam) {
@@ -206,7 +285,7 @@ export const PlayerManagement: React.FC = () => {
     if (!url || !url.includes('sofascore.com')) {
       toast({
         title: 'Invalid URL',
-        description: 'Please provide a valid SofaScore player URL',
+        description: 'Please provide a valid player data URL',
         variant: 'destructive',
       });
       return;
@@ -224,7 +303,7 @@ export const PlayerManagement: React.FC = () => {
     try {
       toast({
         title: 'Importing...',
-        description: 'Fetching comprehensive player data from SofaScore',
+        description: 'Fetching comprehensive player data',
       });
 
       // Extract player ID from URL
@@ -441,7 +520,7 @@ export const PlayerManagement: React.FC = () => {
 
       toast({
         title: 'Data imported successfully',
-        description: `Imported ${importedFields.join(', ')} from SofaScore${seasonStats ? ` (${seasonStats.competitions.length} competitions)` : ''}`,
+        description: `Imported ${importedFields.join(', ')}${seasonStats ? ` (${seasonStats.competitions.length} competitions)` : ''}`,
       });
     } catch (error) {
       console.error('[SofaScore Import] Error:', error);
@@ -891,11 +970,11 @@ export const PlayerManagement: React.FC = () => {
                 </div>
 
                 <div>
-                  <Label className="text-white mb-2 block">Import from SofaScore</Label>
+                  <Label className="text-white mb-2 block">Import Player Data</Label>
                   <div className="flex gap-2 mb-2">
                     <Input
                       id="sofascore-url"
-                      placeholder="Paste SofaScore player URL..."
+                      placeholder="Paste player data URL..."
                       className="bg-slate-600 border-slate-500 text-white flex-1"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
@@ -914,8 +993,7 @@ export const PlayerManagement: React.FC = () => {
                     </Button>
                   </div>
                   <p className="text-gray-400 text-xs mb-3">
-                    Example: https://www.sofascore.com/football/player/david-raya/581310<br/>
-                    Or: https://www.sofascore.com/football/player/kepa-arrizabalaga/232422
+                    Example player data URL format
                   </p>
                   <Button
                     variant="outline"
@@ -946,7 +1024,7 @@ export const PlayerManagement: React.FC = () => {
                         } else {
                           toast({
                             title: 'No file found',
-                            description: `No saved data found for ${editedPlayer.name}. Use SofaScore import instead.`,
+                            description: `No saved data found for ${editedPlayer.name}. Use player data import instead.`,
                             variant: 'destructive',
                           });
                         }
@@ -1032,6 +1110,15 @@ export const PlayerManagement: React.FC = () => {
                   >
                     <Save className="w-4 h-4 mr-2" />
                     Save Changes
+                  </Button>
+                  <Button
+                    onClick={handleSyncPlayer}
+                    variant="outline"
+                    className="bg-slate-700 border-slate-600 text-white hover:bg-slate-600"
+                    title="Sync this player's data from base squad to CMS (localStorage)"
+                  >
+                    <Database className="w-4 h-4 mr-2" />
+                    Sync to CMS
                   </Button>
                   <Button
                     onClick={() => {

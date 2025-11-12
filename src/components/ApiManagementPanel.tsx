@@ -44,6 +44,22 @@ const DEFAULT_APIS: ApiEndpoint[] = [
 
 const STORAGE_KEY = 'api_endpoints';
 
+const deserializeApi = (raw: any): ApiEndpoint | null => {
+  if (!raw || typeof raw !== 'object') return null;
+  return {
+    id: String(raw.id ?? ''),
+    name: String(raw.name ?? ''),
+    url: String(raw.url ?? ''),
+    description: String(raw.description ?? ''),
+    status: (raw.status === 'online' || raw.status === 'offline' || raw.status === 'checking' || raw.status === 'untested')
+      ? raw.status
+      : 'untested',
+    lastChecked: raw.lastChecked ? new Date(raw.lastChecked) : undefined,
+    responseTime: typeof raw.responseTime === 'number' ? raw.responseTime : undefined,
+    error: raw.error ? String(raw.error) : undefined,
+  };
+};
+
 export const ApiManagementPanel: React.FC = () => {
   const [apis, setApis] = useState<ApiEndpoint[]>(DEFAULT_APIS);
   const [editingApi, setEditingApi] = useState<ApiEndpoint | null>(null);
@@ -60,9 +76,19 @@ export const ApiManagementPanel: React.FC = () => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
-        setApis(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          const normalized = parsed
+            .map(deserializeApi)
+            .filter((api): api is ApiEndpoint => !!api);
+
+          if (normalized.length > 0) {
+            setApis(normalized);
+            return;
+          }
+        }
+        setApis(DEFAULT_APIS);
       } catch {
-        // If parsing fails, use defaults
         setApis(DEFAULT_APIS);
       }
     }
@@ -70,7 +96,11 @@ export const ApiManagementPanel: React.FC = () => {
 
   const saveApis = (newApis: ApiEndpoint[]) => {
     setApis(newApis);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newApis));
+    const serializable = newApis.map(api => ({
+      ...api,
+      lastChecked: api.lastChecked ? api.lastChecked.toISOString() : undefined
+    }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
   };
 
   const testApiEndpoint = async (api: ApiEndpoint): Promise<ApiEndpoint> => {
@@ -79,21 +109,41 @@ export const ApiManagementPanel: React.FC = () => {
     try {
       // Try different approaches for different API types
       let response: Response;
+      let useCorsProxy = false;
       
       if (api.url.includes('teamtalk.com')) {
-        // TeamTalk feed might need different headers or no-cors mode
-        response = await fetch(api.url, {
-          method: 'GET',
-          mode: 'no-cors',
-          headers: {
-            'Accept': '*/*',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        // TeamTalk API works with CORS, try direct first
+        try {
+          response = await fetch(api.url, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Accept': 'application/json',
+              'Cache-Control': 'no-cache'
+            },
+            cache: 'no-store'
+          });
+          // Check if response is ok before proceeding
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
           }
-        });
+        } catch (corsError) {
+          // If CORS fails or response not ok, try with proxy (like the service does)
+          useCorsProxy = true;
+          const proxyUrl = `https://cors.isomorphic-git.org/${api.url}`;
+          response = await fetch(proxyUrl, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+        }
       } else {
         // Other APIs with standard approach
         response = await fetch(api.url, {
           method: 'GET',
+          mode: 'cors',
           headers: {
             'Accept': 'application/json',
             'User-Agent': 'TransferCentre/1.0'
@@ -103,22 +153,47 @@ export const ApiManagementPanel: React.FC = () => {
       
       const responseTime = Date.now() - startTime;
       
-      // For no-cors requests, we can't read the status, so assume success if no error thrown
-      if (api.url.includes('teamtalk.com') || response.ok) {
-        // Try to read response text to verify it's actually working
-        try {
-          const text = await response.text();
-          const isValidResponse = text && text.length > 0;
-          
+      if (!response.ok) {
+        return {
+          ...api,
+          status: 'offline',
+          lastChecked: new Date(),
+          responseTime,
+          error: `HTTP ${response.status}: ${response.statusText}`
+        };
+      }
+      
+      // Try to read and parse the response to verify it's valid
+      try {
+        const text = await response.text();
+        
+        if (!text || text.length === 0) {
           return {
             ...api,
-            status: isValidResponse ? 'online' : 'offline',
+            status: 'offline',
             lastChecked: new Date(),
             responseTime,
-            error: isValidResponse ? undefined : 'Empty response received'
+            error: 'Empty response received'
           };
-        } catch (readError) {
-          // For CORS-restricted APIs, we can't read the response but no error means it's reachable
+        }
+        
+        // Try to parse as JSON to verify it's valid
+        try {
+          const json = JSON.parse(text);
+          
+          // For TeamTalk API, check for expected structure
+          if (api.url.includes('teamtalk.com')) {
+            const isValid = json.status === 200 && json.message === 'success' && Array.isArray(json.items);
+            return {
+              ...api,
+              status: isValid ? 'online' : 'offline',
+              lastChecked: new Date(),
+              responseTime,
+              error: isValid ? undefined : `Unexpected response structure. Expected status: 200, message: success, items array. Got: ${JSON.stringify({ status: json.status, message: json.message, hasItems: Array.isArray(json.items) })}`
+            };
+          }
+          
+          // For other APIs, just check if it's valid JSON
           return {
             ...api,
             status: 'online',
@@ -126,21 +201,33 @@ export const ApiManagementPanel: React.FC = () => {
             responseTime,
             error: undefined
           };
+        } catch (parseError) {
+          // Not JSON, but has content - might be HTML or other format
+          return {
+            ...api,
+            status: 'online',
+            lastChecked: new Date(),
+            responseTime,
+            error: useCorsProxy ? 'Response received (via proxy) but not JSON format' : undefined
+          };
         }
-      } else {
+      } catch (readError) {
+        // Can't read response (CORS issue)
         return {
           ...api,
           status: 'offline',
           lastChecked: new Date(),
-          error: `HTTP ${response.status}: ${response.statusText}`
+          responseTime,
+          error: 'Cannot read response. CORS policy may be blocking access. API may still be working.'
         };
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const responseTime = Date.now() - startTime;
       
       // Provide more specific error messages
       let detailedError = errorMessage;
-      if (errorMessage.includes('CORS')) {
+      if (errorMessage.includes('CORS') || errorMessage.includes('cors')) {
         detailedError = 'CORS policy blocks this request. API may still be working but inaccessible from browser.';
       } else if (errorMessage.includes('Failed to fetch')) {
         detailedError = 'Network error or API is down. Check URL and network connectivity.';
@@ -150,6 +237,7 @@ export const ApiManagementPanel: React.FC = () => {
         ...api,
         status: 'offline',
         lastChecked: new Date(),
+        responseTime,
         error: detailedError
       };
     }

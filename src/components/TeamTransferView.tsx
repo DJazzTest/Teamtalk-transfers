@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
-import { Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock, Home } from 'lucide-react';
+import { Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock, Home, ChevronDown, ChevronUp } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { SquadWageCarousel } from './SquadWageCarousel';
@@ -38,7 +38,9 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
   const [selectedTeam, setSelectedTeam] = useState<string | null>(externalSelectedTeam || null);
   const [teamData, setTeamData] = useState<TeamData | null>(null);
   const [youtubeVideos, setYoutubeVideos] = useState<YouTubeVideo[]>([]);
+  const [youtubeVideosLoading, setYoutubeVideosLoading] = useState(false);
   const [youtubeModal, setYoutubeModal] = useState<{ open: boolean; video?: YouTubeVideo }>(() => ({ open: false }));
+  const [mediaHubModal, setMediaHubModal] = useState<{ open: boolean; item?: any; content?: string; loading?: boolean }>(() => ({ open: false, loading: false }));
   const [teamStripTab, setTeamStripTab] = useState<'results' | 'fixtures' | 'tables' | 'topscorer'>('results');
   const [teamDataBlocks, setTeamDataBlocks] = useState<{
     results: any[];
@@ -49,6 +51,15 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
   const [matchModal, setMatchModal] = useState<{ open: boolean; matchId?: string; details?: any }>({ open: false });
   const [dataLoading, setDataLoading] = useState(false);
   const [topScorers, setTopScorers] = useState<Array<{ name: string; goals: number }>>([]);
+  const [expandedSections, setExpandedSections] = useState<{
+    doneDeals: boolean;
+    departures: boolean;
+    rumours: boolean;
+  }>({
+    doneDeals: false,
+    departures: false,
+    rumours: false,
+  });
 
   // Fetch comprehensive team data when team is selected
   useEffect(() => {
@@ -56,18 +67,29 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
       if (!selectedTeam) return;
       
       setDataLoading(true);
+      setYoutubeVideosLoading(true);
+      setYoutubeVideos([]); // Reset videos when team changes
+      
       try {
         const [teamDataResult, youtubeVideosResult] = await Promise.allSettled([
           teamDataService.getTeamData(selectedTeam),
-          youtubeApi.getTeamVideos(selectedTeam, 5)
+          youtubeApi.getTeamVideos(selectedTeam, 15)
         ]);
         
         if (teamDataResult.status === 'fulfilled') {
           setTeamData(teamDataResult.value);
+        } else {
+          console.error('Error fetching team data:', teamDataResult.reason);
+          setTeamData(null);
         }
         
         if (youtubeVideosResult.status === 'fulfilled') {
-          setYoutubeVideos(youtubeVideosResult.value);
+          const videos = youtubeVideosResult.value || [];
+          setYoutubeVideos(videos);
+          console.log(`✅ Loaded ${videos.length} YouTube videos for ${selectedTeam}`);
+        } else {
+          console.error('Error fetching YouTube videos:', youtubeVideosResult.reason);
+          setYoutubeVideos([]);
         }
       } catch (error) {
         console.error('Error fetching team data:', error);
@@ -75,6 +97,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
         setYoutubeVideos([]);
       } finally {
         setDataLoading(false);
+        setYoutubeVideosLoading(false);
       }
     };
 
@@ -539,25 +562,91 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
 
         {/* Removed Latest Transfer News; Media Hub below uses Crowdy/SB Live */}
 
-        {/* Media Hub (Crowdy/SB Live) */}
-        {teamData?.mediaHub && teamData.mediaHub.length > 0 && (
+        {/* Media Hub */}
+        {teamData?.mediaHub && teamData.mediaHub.filter(item => item.image).length > 0 && (
           <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
             <div className="p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <ExternalLink className="w-5 h-5 text-purple-400" />
-                Media Hub ({teamData.mediaHub.length})
+                Media Hub ({teamData.mediaHub.filter(item => item.image).length})
               </h3>
               <div className="relative">
                 <div 
                   className="media-hub-scroll flex gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 pb-4"
                   style={{ scrollbarWidth: 'thin' }}
                 >
-                  {teamData.mediaHub.map((item, index) => (
+                  {teamData.mediaHub
+                    .filter(item => item.image) // Only show items with images
+                    .map((item, index) => (
                     <div key={`${item.id || index}`} className="flex-none w-80">
-                      <Card className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full">
+                      <Card 
+                        className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full cursor-pointer"
+                        onClick={async () => {
+                          setMediaHubModal({ open: true, item, loading: item.source === 'Crowdy News' && item.url ? true : false, content: undefined });
+                          
+                          // If it's a Crowdy News item, try to fetch the content
+                          if (item.source === 'Crowdy News' && item.url) {
+                            try {
+                              // Try multiple CORS proxies
+                              const proxies = [
+                                `https://api.allorigins.win/get?url=${encodeURIComponent(item.url)}`,
+                                `https://corsproxy.io/?${encodeURIComponent(item.url)}`,
+                                `https://cors.isomorphic-git.org/${item.url}`
+                              ];
+                              
+                              let content = null;
+                              for (const proxyUrl of proxies) {
+                                try {
+                                  const response = await fetch(proxyUrl);
+                                  const data = await response.text();
+                                  
+                                  // Handle allorigins.win format
+                                  if (proxyUrl.includes('allorigins.win')) {
+                                    const json = JSON.parse(data);
+                                    content = json.contents || json.content || data;
+                                  } else {
+                                    content = data;
+                                  }
+                                  
+                                  if (content && content.length > 100) {
+                                    // Extract main content from HTML
+                                    const parser = new DOMParser();
+                                    const doc = parser.parseFromString(content, 'text/html');
+                                    
+                                    // Remove scripts, styles, and other unwanted elements
+                                    const scripts = doc.querySelectorAll('script, style, nav, header, footer, aside, .ad, .advertisement, [class*="ad-"], [id*="ad-"]');
+                                    scripts.forEach(el => el.remove());
+                                    
+                                    // Try to find main content
+                                    const mainContent = doc.querySelector('main, article, [role="main"], .content, .post-content, .article-content, .entry-content') || doc.body;
+                                    
+                                    // Clean up the content
+                                    const cleanedContent = mainContent.innerHTML
+                                      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                                      .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+                                    
+                                    setMediaHubModal(prev => ({ ...prev, content: cleanedContent, loading: false }));
+                                    break;
+                                  }
+                                } catch (err) {
+                                  console.error('Proxy failed:', proxyUrl, err);
+                                  continue;
+                                }
+                              }
+                              
+                              if (!content) {
+                                setMediaHubModal(prev => ({ ...prev, loading: false }));
+                              }
+                            } catch (error) {
+                              console.error('Error fetching Crowdy News content:', error);
+                              setMediaHubModal(prev => ({ ...prev, loading: false }));
+                            }
+                          }
+                        }}
+                      >
                         <div className="flex flex-col h-full">
                           {/* Thumbnail Image */}
-                          <div className="w-full h-32 flex-shrink-0">
+                          <div className="w-full h-32 flex-shrink-0 relative">
                             {item.image ? (
                               <img
                                 src={item.image}
@@ -572,43 +661,35 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                                 <ExternalLink className="w-6 h-6 text-gray-400" />
                               </div>
                             )}
+                            {(item.videoUrl || item.url) && (
+                              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
+                                  <svg className="w-6 h-6 text-white ml-1" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z"/>
+                                  </svg>
+                                </div>
+                              </div>
+                            )}
                           </div>
                           
                           {/* Content */}
                           <div className="flex-1 p-4">
-                            <div className="flex items-center gap-2 mb-2">
-                              <Badge className={
-                                item.source === 'Crowdy News' ? 'bg-blue-500 text-white' :
-                                item.source === 'SB Live' ? 'bg-purple-500 text-white' :
-                                'bg-gray-500 text-white'
-                              }>
-                                {item.source || 'Media'}
-                              </Badge>
-                            </div>
+                            {/* Only show badge for SB Live, hide for Crowdy News */}
+                            {item.source === 'SB Live' && (
+                              <div className="flex items-center gap-2 mb-2">
+                                <Badge className="bg-purple-500 text-white">
+                                  {item.source}
+                                </Badge>
+                              </div>
+                            )}
                             
                             <h4 className="text-white font-semibold text-sm leading-tight mb-2 line-clamp-3">
-                              {item.title ? (
-                                <span 
-                                  dangerouslySetInnerHTML={{ 
-                                    __html: item.title.replace(
-                                      /(https?:\/\/[^\s]+|@\w+)/g, 
-                                      '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 underline">$1</a>'
-                                    )
-                                  }} 
-                                />
-                              ) : 'Untitled'}
+                              {item.title || 'Untitled'}
                             </h4>
                             
                             {item.summary && (
                               <p className="text-gray-300 text-xs line-clamp-2 mb-3">
-                                <span 
-                                  dangerouslySetInnerHTML={{ 
-                                    __html: item.summary.replace(
-                                      /(https?:\/\/[^\s]+|@\w+)/g, 
-                                      '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 underline">$1</a>'
-                                    )
-                                  }} 
-                                />
+                                {item.summary}
                               </p>
                             )}
                             
@@ -617,16 +698,9 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                                 <Clock className="w-3 h-3" />
                                 Media
                               </div>
-                              {(item.url || item.videoUrl) && (
-                                <a 
-                                  href={item.url || item.videoUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-purple-400 hover:text-purple-300 transition-colors"
-                                >
-                                  <ExternalLink className="w-4 h-4" />
-                                </a>
-                              )}
+                              <div className="text-purple-400 text-xs">
+                                Click to view
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -636,7 +710,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 </div>
                 
                 {/* Show More Button */}
-                {teamData.mediaHub.length > 5 && (
+                {teamData.mediaHub.filter(item => item.image).length > 5 && (
                   <div className="flex justify-center mt-4">
                     <Button
                       onClick={() => {
@@ -649,7 +723,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       size="sm"
                       className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white"
                     >
-                      Show More ({teamData.mediaHub.length - 5} more)
+                      Show More ({teamData.mediaHub.filter(item => item.image).length - 5} more)
                     </Button>
                   </div>
                 )}
@@ -733,9 +807,10 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
             <div className="p-6">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                 <ExternalLink className="w-5 h-5 text-red-400" />
-                Official YouTube Channel
+                Official YouTube Channel {youtubeVideos.length > 0 && `(${youtubeVideos.length} videos)`}
               </h3>
               <div className="flex gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 pb-4">
+                {/* YouTube Channel Link Card */}
                 <div className="flex-none w-80">
                   <Card className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full">
                     <div className="flex flex-col h-full">
@@ -786,10 +861,22 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   </Card>
                 </div>
 
-                {/* YouTube Videos */}
-                {youtubeVideos.map((video, index) => (
+                {/* YouTube Videos - Show all videos */}
+                {youtubeVideosLoading ? (
+                  <div className="flex-none w-80">
+                    <Card className="bg-slate-700/50 border-slate-600 p-4">
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-400 mb-2"></div>
+                        <p className="text-gray-400 text-sm text-center">Loading videos...</p>
+                      </div>
+                    </Card>
+                  </div>
+                ) : youtubeVideos.length > 0 ? (
+                  youtubeVideos.map((video, index) => (
                   <div key={index} className="flex-none w-80">
-                    <Card className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full">
+                    <Card className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full cursor-pointer"
+                      onClick={() => setYoutubeModal({ open: true, video })}
+                    >
                       <div className="flex flex-col h-full">
                         {/* Video Thumbnail */}
                         <div className="w-full h-32 flex-shrink-0 relative">
@@ -801,18 +888,13 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                               (e.target as HTMLImageElement).src = 'https://via.placeholder.com/320x180/1e293b/64748b?text=Video+Thumbnail';
                             }}
                           />
-                          <button
-                            type="button"
-                            aria-label="Play video"
-                            onClick={() => setYoutubeModal({ open: true, video })}
-                            className="absolute inset-0 bg-black/40 flex items-center justify-center"
-                          >
-                            <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-red-700 transition-colors">
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
                               <svg className="w-6 h-6 text-white ml-1" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M8 5v14l11-7z"/>
                               </svg>
                             </div>
-                          </button>
+                          </div>
                         </div>
                         
                         {/* Content */}
@@ -850,7 +932,14 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       </div>
                     </Card>
                   </div>
-                ))}
+                  ))
+                ) : (
+                  <div className="flex-none w-80">
+                    <Card className="bg-slate-700/50 border-slate-600 p-4">
+                      <p className="text-gray-400 text-sm text-center">No videos available</p>
+                    </Card>
+                  </div>
+                )}
               </div>
             </div>
           </Card>
@@ -866,10 +955,13 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   <UIButton
                     variant="outline"
                     size="sm"
-                    className="border-slate-500 text-slate-200 hover:bg-slate-700 hover:text-white"
+                    className="border-slate-500 text-slate-200 hover:bg-slate-700 hover:text-white flex items-center gap-2"
                     onClick={() => setYoutubeModal({ open: false })}
                   >
-                    Back
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Dismiss
                   </UIButton>
                 </div>
               </div>
@@ -880,6 +972,179 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               />
+            </DialogContent>
+          </Dialog>
+        )}
+
+        {/* Media Hub Modal */}
+        {mediaHubModal.open && mediaHubModal.item && (
+          <Dialog open={mediaHubModal.open} onOpenChange={(open) => setMediaHubModal((prev) => ({ open, item: open ? prev.item : undefined }))}>
+            <DialogContent className="max-w-5xl h-[85vh] p-0 overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-2 bg-slate-900 text-white border-b border-slate-700">
+                <div className="font-semibold truncate pr-2">{mediaHubModal.item.title || 'Media Item'}</div>
+                <div className="flex items-center gap-2">
+                  <UIButton
+                    variant="outline"
+                    size="sm"
+                    className="border-slate-500 text-slate-200 hover:bg-slate-700 hover:text-white flex items-center gap-2"
+                    onClick={() => setMediaHubModal({ open: false })}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Dismiss
+                  </UIButton>
+                </div>
+              </div>
+              <div className="w-full h-[calc(85vh-42px)] overflow-auto bg-slate-900">
+                {mediaHubModal.item.videoUrl ? (
+                  // Video content
+                  <div className="w-full h-full flex flex-col">
+                    <div className="flex-1 flex items-center justify-center bg-black">
+                      <video
+                        src={mediaHubModal.item.videoUrl}
+                        controls
+                        className="w-full h-full max-h-full object-contain"
+                        autoPlay
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                    {(mediaHubModal.item.title || mediaHubModal.item.summary) && (
+                      <div className="p-4 bg-slate-800 border-t border-slate-700">
+                        {mediaHubModal.item.title && (
+                          <h3 className="text-white font-semibold text-lg mb-2">{mediaHubModal.item.title}</h3>
+                        )}
+                        {mediaHubModal.item.summary && (
+                          <p className="text-gray-300 text-sm">{mediaHubModal.item.summary}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : mediaHubModal.item.url ? (
+                  // Article/URL content
+                  mediaHubModal.item.source === 'Crowdy News' ? (
+                    // Crowdy News items - fetch and display content in modal
+                    mediaHubModal.loading ? (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
+                          <p className="text-gray-300">Loading article...</p>
+                        </div>
+                      </div>
+                    ) : mediaHubModal.content ? (
+                      // Display fetched content
+                      <div className="w-full h-full p-6 overflow-auto">
+                        <div 
+                          className="prose prose-invert max-w-none"
+                          dangerouslySetInnerHTML={{ __html: mediaHubModal.content }}
+                          style={{
+                            color: '#e2e8f0',
+                          }}
+                          onClick={(e) => {
+                            // Handle links within the content
+                            const target = e.target as HTMLElement;
+                            if (target.tagName === 'A' && target.getAttribute('href')) {
+                              e.preventDefault();
+                              const href = target.getAttribute('href');
+                              if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+                                // Open external links in new tab
+                                window.open(href, '_blank', 'noopener,noreferrer');
+                              }
+                            }
+                          }}
+                        />
+                        <style>{`
+                          .prose a {
+                            color: #60a5fa;
+                            text-decoration: underline;
+                          }
+                          .prose a:hover {
+                            color: #93c5fd;
+                          }
+                          .prose img {
+                            max-width: 100%;
+                            height: auto;
+                            border-radius: 0.5rem;
+                          }
+                          .prose iframe {
+                            max-width: 100%;
+                            height: auto;
+                            aspect-ratio: 16 / 9;
+                          }
+                          .prose video {
+                            max-width: 100%;
+                            height: auto;
+                          }
+                          .prose table {
+                            width: 100%;
+                            display: block;
+                            overflow-x: auto;
+                          }
+                        `}</style>
+                      </div>
+                    ) : (
+                      // Fallback preview
+                      <div className="w-full h-full flex flex-col items-center justify-center p-6">
+                        {mediaHubModal.item.image && (
+                          <img
+                            src={mediaHubModal.item.image}
+                            alt={mediaHubModal.item.title || 'Media Item'}
+                            className="w-full max-w-2xl max-h-96 object-contain mb-6 rounded"
+                          />
+                        )}
+                        {mediaHubModal.item.title && (
+                          <h3 className="text-white font-semibold text-2xl mb-4 text-center">{mediaHubModal.item.title}</h3>
+                        )}
+                        {mediaHubModal.item.summary && (
+                          <p className="text-gray-300 text-base leading-relaxed mb-6 max-w-2xl text-center">{mediaHubModal.item.summary}</p>
+                        )}
+                        <p className="text-gray-400 text-sm mb-4">Unable to load full article content.</p>
+                        <UIButton
+                          onClick={() => {
+                            window.open(mediaHubModal.item.url, '_blank', 'noopener,noreferrer');
+                          }}
+                          variant="outline"
+                          className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Open in New Tab
+                        </UIButton>
+                      </div>
+                    )
+                  ) : (
+                    // SB Live items - display in iframe
+                    <iframe
+                      src={mediaHubModal.item.url}
+                      title={mediaHubModal.item.title || 'Media Item'}
+                      className="w-full h-full border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      onError={() => {
+                        // If iframe fails, show fallback
+                        console.error('Failed to load iframe');
+                      }}
+                    />
+                  )
+                ) : (
+                  // Fallback: show image and text
+                  <div className="p-6">
+                    {mediaHubModal.item.image && (
+                      <img
+                        src={mediaHubModal.item.image}
+                        alt={mediaHubModal.item.title || 'Media Item'}
+                        className="w-full max-h-96 object-contain mb-4 rounded"
+                      />
+                    )}
+                    {mediaHubModal.item.title && (
+                      <h3 className="text-white font-semibold text-xl mb-3">{mediaHubModal.item.title}</h3>
+                    )}
+                    {mediaHubModal.item.summary && (
+                      <p className="text-gray-300 text-base leading-relaxed whitespace-pre-wrap">{mediaHubModal.item.summary}</p>
+                    )}
+                  </div>
+                )}
+              </div>
             </DialogContent>
           </Dialog>
         )}
@@ -920,81 +1185,225 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
           </Card>
         </div>
 
-        {/* Transfers In */}
-        {(transfersIn.length > 0 || (teamData?.transfers && teamData.transfers.length > 0)) && (
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-green-400" />
-                Recent Signings ({transfersIn.length + (teamData?.transfers?.filter(t => t.status === 'confirmed' && t.toClub === selectedTeam).length || 0)})
-              </h3>
-              <div className="space-y-3">
-                {transfersIn.map((transfer) => (
-                  <TransferCard key={transfer.id} transfer={transfer} />
-                ))}
-                {teamData?.transfers?.filter(t => t.status === 'confirmed' && t.toClub === selectedTeam).map((transfer) => (
-                  <TransferCard key={transfer.id} transfer={transfer} />
-                ))}
-              </div>
-            </div>
-          </Card>
-        )}
+        {/* Transfers Section - Side by Side */}
+        {((transfersIn.length > 0 || (teamData?.transfers && teamData.transfers.length > 0) || (teamData?.doneDeals && teamData.doneDeals.some(t => t.toClub === selectedTeam))) ||
+          (transfersOut.length > 0 || (teamData?.transfers && teamData.transfers.length > 0) || (teamData?.doneDeals && teamData.doneDeals.some(t => t.fromClub === selectedTeam))) ||
+          (rumors.length > 0 || (teamData?.rumours && teamData.rumours.length > 0))) && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Done Deals - Only INCOMING transfers (toClub === selectedTeam) */}
+            {(transfersIn.length > 0 || (teamData?.transfers && teamData.transfers.length > 0) || (teamData?.doneDeals && teamData.doneDeals.some(t => t.toClub === selectedTeam))) && (
+              <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4 text-green-400" />
+                      Done Deals ({(() => {
+                        // Only include INCOMING transfers (toClub === selectedTeam)
+                        const allSignings = [
+                          ...transfersIn,
+                          ...(teamData?.transfers?.filter(t => t.status === 'confirmed' && t.toClub === selectedTeam) || [])
+                        ];
+                        // Filter doneDeals to only include incoming transfers
+                        const incomingDoneDeals = (teamData?.doneDeals || []).filter(t => t.toClub === selectedTeam);
+                        const combined = [...allSignings, ...incomingDoneDeals];
+                        // Remove duplicates based on player name and toClub
+                        const unique = combined.filter((transfer, index, self) => 
+                          index === self.findIndex(t => t.playerName === transfer.playerName && t.toClub === transfer.toClub)
+                        );
+                        return unique.length;
+                      })()})
+                    </h3>
+                  </div>
+                  <div className="space-y-2">
+                    {(() => {
+                      // Only include INCOMING transfers (toClub === selectedTeam)
+                      const allSignings = [
+                        ...transfersIn,
+                        ...(teamData?.transfers?.filter(t => t.status === 'confirmed' && t.toClub === selectedTeam) || [])
+                      ];
+                      // Filter doneDeals to only include incoming transfers
+                      const incomingDoneDeals = (teamData?.doneDeals || []).filter(t => t.toClub === selectedTeam);
+                      const combined = [...allSignings, ...incomingDoneDeals];
+                      // Remove duplicates based on player name and toClub
+                      const uniqueDoneDeals = combined.filter((transfer, index, self) => 
+                        index === self.findIndex(t => t.playerName === transfer.playerName && t.toClub === transfer.toClub)
+                      );
+                      const displayDoneDeals = expandedSections.doneDeals ? uniqueDoneDeals : uniqueDoneDeals.slice(0, 5);
+                      return (
+                        <>
+                          {displayDoneDeals.map((transfer) => (
+                            <TransferCard key={transfer.id} transfer={transfer} />
+                          ))}
+                          {uniqueDoneDeals.length > 5 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setExpandedSections(prev => ({ ...prev, doneDeals: !prev.doneDeals }))}
+                              className="w-full text-gray-400 hover:text-white mt-2"
+                            >
+                              {expandedSections.doneDeals ? (
+                                <>
+                                  <ChevronUp className="w-4 h-4 mr-1" />
+                                  Show Less
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="w-4 h-4 mr-1" />
+                                  Show More ({uniqueDoneDeals.length - 5})
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </Card>
+            )}
 
-        {/* Transfers Out */}
-        {(transfersOut.length > 0 || (teamData?.transfers && teamData.transfers.length > 0)) && (
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <TrendingDown className="w-5 h-5 text-red-400" />
-                Recent Departures ({transfersOut.length + (teamData?.transfers?.filter(t => t.status === 'confirmed' && t.fromClub === selectedTeam).length || 0)})
-              </h3>
-              <div className="space-y-3">
-                {transfersOut.map((transfer) => (
-                  <TransferCard key={transfer.id} transfer={transfer} />
-                ))}
-                {teamData?.transfers?.filter(t => t.status === 'confirmed' && t.fromClub === selectedTeam).map((transfer) => (
-                  <TransferCard key={transfer.id} transfer={transfer} />
-                ))}
-              </div>
-            </div>
-          </Card>
-        )}
+            {/* Departures - Only OUTGOING transfers (fromClub === selectedTeam) */}
+            {(transfersOut.length > 0 || (teamData?.transfers && teamData.transfers.length > 0) || (teamData?.doneDeals && teamData.doneDeals.some(t => t.fromClub === selectedTeam))) && (
+              <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                      <TrendingDown className="w-4 h-4 text-red-400" />
+                      Departures ({(() => {
+                        const allDepartures = [
+                          ...transfersOut,
+                          ...(teamData?.transfers?.filter(t => t.status === 'confirmed' && t.fromClub === selectedTeam) || [])
+                        ];
+                        // Filter doneDeals to only include outgoing transfers
+                        const outgoingDoneDeals = (teamData?.doneDeals || []).filter(t => t.fromClub === selectedTeam);
+                        const combined = [...allDepartures, ...outgoingDoneDeals];
+                        // Deduplicate by player name
+                        const unique = combined.filter((transfer, index, self) => 
+                          index === self.findIndex(t => t.playerName === transfer.playerName && t.fromClub === transfer.fromClub)
+                        );
+                        return unique.length;
+                      })()})
+                    </h3>
+                  </div>
+                  <div className="space-y-2">
+                    {(() => {
+                      const allDepartures = [
+                        ...transfersOut,
+                        ...(teamData?.transfers?.filter(t => t.status === 'confirmed' && t.fromClub === selectedTeam) || [])
+                      ];
+                      // Filter doneDeals to only include outgoing transfers
+                      const outgoingDoneDeals = (teamData?.doneDeals || []).filter(t => t.fromClub === selectedTeam);
+                      const combined = [...allDepartures, ...outgoingDoneDeals];
+                      // Remove duplicates based on player name and fromClub
+                      const uniqueDepartures = combined.filter((transfer, index, self) => 
+                        index === self.findIndex(t => t.playerName === transfer.playerName && t.fromClub === transfer.fromClub)
+                      );
+                      const displayDepartures = expandedSections.departures ? uniqueDepartures : uniqueDepartures.slice(0, 5);
+                      return (
+                        <>
+                          {displayDepartures.map((transfer) => (
+                            <TransferCard key={transfer.id} transfer={transfer} />
+                          ))}
+                          {uniqueDepartures.length > 5 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setExpandedSections(prev => ({ ...prev, departures: !prev.departures }))}
+                              className="w-full text-gray-400 hover:text-white mt-2"
+                            >
+                              {expandedSections.departures ? (
+                                <>
+                                  <ChevronUp className="w-4 h-4 mr-1" />
+                                  Show Less
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="w-4 h-4 mr-1" />
+                                  Show More ({uniqueDepartures.length - 5})
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </Card>
+            )}
 
-        {/* Done Deals (live only) */}
-        {(teamData?.doneDeals && teamData.doneDeals.length > 0) && (
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <MessageCircle className="w-5 h-5 text-purple-400" />
-                Done Deals ({teamData?.doneDeals?.length || 0})
-              </h3>
-              <div className="space-y-3">
-                {teamData?.doneDeals?.map((transfer) => (
-                  <TransferCard key={transfer.id} transfer={transfer} />
-                ))}
-              </div>
-            </div>
-          </Card>
-        )}
-
-        {/* Rumours */}
-        {(rumors.length > 0 || (teamData?.rumours && teamData.rumours.length > 0)) && (
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <MessageCircle className="w-5 h-5 text-blue-400" />
-                Transfer Rumours ({rumors.length + (teamData?.rumours?.length || 0)})
-              </h3>
-              <div className="space-y-3">
-                {rumors.map((transfer) => (
-                  <TransferCard key={transfer.id} transfer={transfer} />
-                ))}
-                {teamData?.rumours?.map((transfer) => (
-                  <TransferCard key={transfer.id} transfer={transfer} />
-                ))}
-              </div>
-            </div>
-          </Card>
+            {/* Transfer Rumours */}
+            {(rumors.length > 0 || (teamData?.rumours && teamData.rumours.length > 0)) && (
+              <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4 text-blue-400" />
+                      Transfer Rumours ({(() => {
+                        const allRumours = [
+                          ...rumors,
+                          ...(teamData?.rumours || [])
+                        ];
+                        // Deduplicate by player name and clubs
+                        const unique = allRumours.filter((transfer, index, self) => 
+                          index === self.findIndex(t => 
+                            t.playerName === transfer.playerName && 
+                            t.fromClub === transfer.fromClub && 
+                            t.toClub === transfer.toClub
+                          )
+                        );
+                        return unique.length;
+                      })()})
+                    </h3>
+                  </div>
+                  <div className="space-y-2">
+                    {(() => {
+                      const allRumours = [
+                        ...rumors,
+                        ...(teamData?.rumours || [])
+                      ];
+                      // Remove duplicates based on player name and clubs
+                      const uniqueRumours = allRumours.filter((transfer, index, self) => 
+                        index === self.findIndex(t => 
+                          t.playerName === transfer.playerName && 
+                          t.fromClub === transfer.fromClub && 
+                          t.toClub === transfer.toClub
+                        )
+                      );
+                      const displayRumours = expandedSections.rumours ? uniqueRumours : uniqueRumours.slice(0, 5);
+                      return (
+                        <>
+                          {displayRumours.map((transfer) => (
+                            <TransferCard key={transfer.id} transfer={transfer} />
+                          ))}
+                          {uniqueRumours.length > 5 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setExpandedSections(prev => ({ ...prev, rumours: !prev.rumours }))}
+                              className="w-full text-gray-400 hover:text-white mt-2"
+                            >
+                              {expandedSections.rumours ? (
+                                <>
+                                  <ChevronUp className="w-4 h-4 mr-1" />
+                                  Show Less
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="w-4 h-4 mr-1" />
+                                  Show More ({uniqueRumours.length - 5})
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </Card>
+            )}
+          </div>
         )}
       </div>
     );

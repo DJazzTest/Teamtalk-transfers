@@ -7,10 +7,8 @@ import { TrendingUp } from 'lucide-react';
 import { TransferCard } from './TransferCard';
 import { StaleTransferAlert } from './StaleTransferAlert';
 import { getPlayerImage } from '@/utils/playerImageUtils';
-
-interface WalletWarpingDealsProps {
-  transfers: any[];
-}
+import { PlayerNameLink } from './PlayerNameLink';
+import { findPlayerInSquads } from '@/utils/playerUtils';
 
 // Helper to parse transfer fee to a number (assumes format like '£100m', '€80m', etc.)
 function parseFee(fee: string): number {
@@ -130,13 +128,49 @@ export const WalletWarpingDeals: React.FC<WalletWarpingDealsProps> = ({ transfer
                       {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
                     </AvatarFallback>
                   </Avatar>
-                  <span
-                    className="font-semibold text-purple-700 hover:underline cursor-pointer text-base truncate flex-1"
-                    onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
-                    title={`View ${transfer.toClub} transfers`}
-                  >
-                    {transfer.playerName}
-                  </span>
+                  {(() => {
+                    const playerInfo = findPlayerInSquads(transfer.playerName);
+                    const viewTeamButton = onSelectClub ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-xs text-purple-500 hover:text-purple-700 hover:bg-purple-100/70 px-2 py-1"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectClub(transfer.toClub);
+                        }}
+                      >
+                        View team
+                      </Button>
+                    ) : null;
+
+                    if (playerInfo.found) {
+                      return (
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <PlayerNameLink
+                            playerName={transfer.playerName}
+                            teamName={playerInfo.club}
+                            playerData={playerInfo.player}
+                            className="text-purple-700 font-semibold text-base truncate"
+                          />
+                          {viewTeamButton}
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <span
+                          className="font-semibold text-purple-700 hover:underline cursor-pointer text-base truncate"
+                          onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
+                          title={`View ${transfer.toClub} transfers`}
+                        >
+                          {transfer.playerName}
+                        </span>
+                        {viewTeamButton}
+                      </div>
+                    );
+                  })()}
                 </div>
                 <div className="text-xs text-gray-600">
                   <span>{transfer.fromClub}</span> → <span className="font-semibold text-gray-800">{transfer.toClub}</span>

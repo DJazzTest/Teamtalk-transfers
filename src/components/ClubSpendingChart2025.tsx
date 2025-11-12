@@ -95,89 +95,103 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
           scrollbarWidth: 'thin',
           scrollbarColor: '#9CA3AF #E5E7EB'
         }}>
-          <div className="min-w-[1800px] h-64">
-            <ResponsiveContainer width="100%" height="100%" minWidth={1800}>
-              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                <XAxis 
-                  dataKey="clubShort" 
-                  tick={false}
-                  axisLine={false}
-                />
-                <YAxis 
-                  tick={{ fontSize: 12, fill: '#E5E7EB' }}
-                  label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
-                />
-                <Tooltip 
-                  formatter={(value: number, name: string) => {
-                    const label = name === 'spending' ? 'Spent' : name === 'earnings' ? 'Earned' : 'Net Spend';
-                    return [`£${value.toFixed(1)}M`, label];
-                  }}
-                  labelFormatter={(label: string) => label}
-                  contentStyle={{
-                    backgroundColor: 'rgba(47, 81, 122, 0.95)',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    borderRadius: '8px',
-                    color: '#fff'
-                  }}
-                />
-                <Bar 
-                  dataKey="spending" 
-                  name="spending" 
-                  fill="#DC2626" 
-                  radius={[2, 2, 0, 0]} 
-                  onClick={handleBarClick}
-                  style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
-                />
-                <Bar 
-                  dataKey="earnings" 
-                  name="earnings" 
-                  fill="#10B981" 
-                  radius={[2, 2, 0, 0]} 
-                  onClick={handleBarClick}
-                  style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-          
-          {/* Custom club info below chart - also scrollable */}
-          <div className="min-w-[1800px] flex gap-12 mt-4 px-4 justify-start items-end">
-            {chartData.map((club, index) => (
-              <div 
-                key={club.club} 
-                className="text-center flex-shrink-0 w-16 flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
-                onClick={() => handleBarClick(club)}
-              >
-                {/* Earnings - Green */}
-                <div className="text-xs font-semibold text-green-400 mb-1">
-                  £{club.earnings.toFixed(1)}M
-                </div>
-                {/* Spending - Red */}
-                <div className="text-xs font-semibold text-red-400 mb-2">
-                  £{club.spending.toFixed(1)}M
-                </div>
-                {/* Club Name - Horizontal */}
-                <div className="text-xs font-medium text-white mb-1 leading-tight">
-                  {club.displayName}
-                </div>
-                {/* Current Spend */}
-                <div className="text-xs font-medium text-gray-300 mb-2">
-                  Current Spend £{club.spending.toFixed(1)}M
-                </div>
-                {/* Club Badge */}
-                <div className="flex justify-center">
-                  <img
-                    src={getClubBadge(club.club)}
-                    alt={`${club.club} badge`}
-                    className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
+          <div className="min-w-[1800px]">
+            {/* Chart */}
+            <div className="h-64 mb-6">
+              <ResponsiveContainer width="100%" height="100%" minWidth={1800}>
+                <BarChart 
+                  data={chartData} 
+                  margin={{ top: 20, right: 50, left: 50, bottom: 10 }}
+                  barCategoryGap="8%"
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                  <XAxis 
+                    dataKey="clubShort" 
+                    tick={false}
+                    axisLine={false}
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 12, fill: '#E5E7EB' }}
+                    label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
+                  />
+                  <Tooltip 
+                    formatter={(value: number, name: string) => {
+                      const label = name === 'spending' ? 'Spent' : name === 'earnings' ? 'Earned' : 'Net Spend';
+                      return [`£${value.toFixed(1)}M`, label];
+                    }}
+                    labelFormatter={(label: string) => label}
+                    contentStyle={{
+                      backgroundColor: 'rgba(47, 81, 122, 0.95)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      borderRadius: '8px',
+                      color: '#fff'
                     }}
                   />
-                </div>
-              </div>
-            ))}
+                  <Bar 
+                    dataKey="spending" 
+                    name="spending" 
+                    fill="#DC2626" 
+                    radius={[4, 4, 0, 0]} 
+                    onClick={handleBarClick}
+                    style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
+                  />
+                  <Bar 
+                    dataKey="earnings" 
+                    name="earnings" 
+                    fill="#10B981" 
+                    radius={[4, 4, 0, 0]} 
+                    onClick={handleBarClick}
+                    style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {/* Custom club info below chart - aligned with bars */}
+            <div className="min-w-[1800px] flex items-start" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
+              {chartData.map((club, index) => {
+                // Use equal spacing that matches the chart's barCategoryGap
+                const totalBars = chartData.length;
+                const availableWidth = 1800 - 100; // Total width minus padding
+                const barSpacing = availableWidth / totalBars;
+                
+                return (
+                  <div 
+                    key={club.club} 
+                    className="text-center flex-shrink-0 flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+                    style={{ 
+                      width: `${barSpacing}px`,
+                      flex: '0 0 auto'
+                    }}
+                    onClick={() => handleBarClick(club)}
+                  >
+                    {/* Earnings - Green */}
+                    <div className="text-xs font-semibold text-green-400 mb-1 whitespace-nowrap">
+                      £{club.earnings.toFixed(1)}M
+                    </div>
+                    {/* Spending - Red */}
+                    <div className="text-xs font-semibold text-red-400 mb-2 whitespace-nowrap">
+                      £{club.spending.toFixed(1)}M
+                    </div>
+                    {/* Club Name - Centered with consistent height */}
+                    <div className="text-xs font-medium text-white mb-2 leading-tight h-10 flex items-center justify-center text-center px-1">
+                      <span className="break-words">{club.displayName}</span>
+                    </div>
+                    {/* Club Badge - Centered */}
+                    <div className="flex justify-center items-center w-10 h-10">
+                      <img
+                        src={getClubBadge(club.club)}
+                        alt={`${club.club} badge`}
+                        className="w-10 h-10 rounded-full shadow-lg bg-white object-contain border-2 border-gray-300 p-0.5"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
         

@@ -161,17 +161,54 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
                           console.error('❌ Image failed to load');
                           console.error('  Article:', article.title);
                           console.error('  Image URL:', article.image);
-                          console.error('  Error event:', e);
-                          
-                          // Try to test if the proxy URL is accessible
-                          if (article.image) {
-                            fetch(article.image, { method: 'HEAD', mode: 'no-cors' })
-                              .then(() => console.log('  ✅ Proxy URL is accessible'))
-                              .catch((err) => console.error('  ❌ Proxy URL test failed:', err));
-                          }
                           
                           const target = e.target as HTMLImageElement;
                           const parent = target.parentElement;
+                          
+                          // Try to extract original URL from proxy and try direct load
+                          if (article.image && article.image.includes('images.ps-aws.com')) {
+                            try {
+                              const urlMatch = article.image.match(/url=([^&]+)/);
+                              if (urlMatch) {
+                                const originalUrl = decodeURIComponent(urlMatch[1]);
+                                console.log('  🔄 Trying direct URL:', originalUrl.substring(0, 80));
+                                
+                                // Try alternative proxy
+                                const altProxies = [
+                                  `https://api.allorigins.win/raw?url=${encodeURIComponent(originalUrl)}`,
+                                  `https://corsproxy.io/?${encodeURIComponent(originalUrl)}`,
+                                  originalUrl // Try direct as last resort
+                                ];
+                                
+                                let proxyIndex = 0;
+                                const tryNextProxy = () => {
+                                  if (proxyIndex >= altProxies.length) {
+                                    if (parent) {
+                                      parent.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200"><span class="text-blue-600 text-xs font-medium">Image unavailable</span></div>';
+                                    }
+                                    return;
+                                  }
+                                  
+                                  const testImg = new Image();
+                                  testImg.onload = () => {
+                                    target.src = altProxies[proxyIndex];
+                                    console.log('  ✅ Alternative proxy worked:', altProxies[proxyIndex].substring(0, 80));
+                                  };
+                                  testImg.onerror = () => {
+                                    proxyIndex++;
+                                    tryNextProxy();
+                                  };
+                                  testImg.src = altProxies[proxyIndex];
+                                };
+                                
+                                tryNextProxy();
+                                return;
+                              }
+                            } catch (err) {
+                              console.error('  ❌ Error extracting URL:', err);
+                            }
+                          }
+                          
                           if (parent) {
                             parent.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200"><span class="text-blue-600 text-xs font-medium">Image unavailable</span></div>';
                           }
@@ -184,6 +221,7 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
                           console.log('  Image dimensions:', target.naturalWidth, 'x', target.naturalHeight);
                         }}
                         loading="lazy"
+                        crossOrigin="anonymous"
                       />
                     </div>
                   ) : (
@@ -275,6 +313,51 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
                     console.error('Modal image failed to load:', selectedArticle.image);
                     const target = e.target as HTMLImageElement;
                     const parent = target.parentElement;
+                    
+                    // Try to extract original URL from proxy and try direct load
+                    if (selectedArticle.image && selectedArticle.image.includes('images.ps-aws.com')) {
+                      try {
+                        const urlMatch = selectedArticle.image.match(/url=([^&]+)/);
+                        if (urlMatch) {
+                          const originalUrl = decodeURIComponent(urlMatch[1]);
+                          console.log('  🔄 Trying direct URL for modal:', originalUrl.substring(0, 80));
+                          
+                          // Try alternative proxy
+                          const altProxies = [
+                            `https://api.allorigins.win/raw?url=${encodeURIComponent(originalUrl)}`,
+                            `https://corsproxy.io/?${encodeURIComponent(originalUrl)}`,
+                            originalUrl // Try direct as last resort
+                          ];
+                          
+                          let proxyIndex = 0;
+                          const tryNextProxy = () => {
+                            if (proxyIndex >= altProxies.length) {
+                              if (parent) {
+                                parent.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gray-300"><span class="text-gray-600 text-sm">Image unavailable</span></div>';
+                              }
+                              return;
+                            }
+                            
+                            const testImg = new Image();
+                            testImg.onload = () => {
+                              target.src = altProxies[proxyIndex];
+                              console.log('  ✅ Alternative proxy worked for modal:', altProxies[proxyIndex].substring(0, 80));
+                            };
+                            testImg.onerror = () => {
+                              proxyIndex++;
+                              tryNextProxy();
+                            };
+                            testImg.src = altProxies[proxyIndex];
+                          };
+                          
+                          tryNextProxy();
+                          return;
+                        }
+                      } catch (err) {
+                        console.error('  ❌ Error extracting URL:', err);
+                      }
+                    }
+                    
                     if (parent) {
                       parent.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gray-300"><span class="text-gray-600 text-sm">Image unavailable</span></div>';
                     }
@@ -282,6 +365,7 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
                   onLoad={() => {
                     console.log('✅ Modal image loaded:', selectedArticle.image?.substring(0, 80));
                   }}
+                  crossOrigin="anonymous"
                 />
               </div>
             )}

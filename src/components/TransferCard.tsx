@@ -9,6 +9,8 @@ import { Star, ExternalLink, Newspaper } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { getStatusColor } from '@/utils/statusUtils';
 import { getPlayerImage } from '@/utils/playerImageUtils';
+import { PlayerNameLink } from './PlayerNameLink';
+import { findPlayerInSquads } from '@/utils/playerUtils';
 
 interface TransferCardProps {
   transfer: Transfer;
@@ -99,7 +101,20 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
               </Avatar>
               <div className="flex items-center gap-2 flex-1">
                 <Badge className={`text-xs`} style={{ background: getStatusColor(transfer.status), color: '#fff' }}>{transfer.status.toUpperCase()}</Badge>
-                <h4 className="font-semibold text-white text-sm">{transfer.playerName}</h4>
+                {(() => {
+                  const playerInfo = findPlayerInSquads(transfer.playerName);
+                  if (playerInfo.found) {
+                    return (
+                      <PlayerNameLink
+                        playerName={transfer.playerName}
+                        teamName={playerInfo.club}
+                        playerData={playerInfo.player}
+                        className="text-white text-sm font-semibold hover:text-blue-300"
+                      />
+                    );
+                  }
+                  return <h4 className="font-semibold text-white text-sm">{transfer.playerName}</h4>;
+                })()}
               </div>
             </div>
             
@@ -176,7 +191,20 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 {getStatusIcon(transfer.status)}
-                <h3 className="text-lg font-semibold text-white">{transfer.playerName}</h3>
+                {(() => {
+                  const playerInfo = findPlayerInSquads(transfer.playerName);
+                  if (playerInfo.found) {
+                    return (
+                      <PlayerNameLink
+                        playerName={transfer.playerName}
+                        teamName={playerInfo.club}
+                        playerData={playerInfo.player}
+                        className="text-lg font-semibold text-white hover:text-blue-300"
+                      />
+                    );
+                  }
+                  return <h3 className="text-lg font-semibold text-white">{transfer.playerName}</h3>;
+                })()}
                 <Badge className={`${getStatusColor(transfer.status)} text-white text-xs`}>
                   {transfer.status}
                 </Badge>

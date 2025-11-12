@@ -1,0 +1,156 @@
+{
+  "team": "bournemouth",
+  "count": 25,
+  "images": [
+    {
+      "name": "Djordje Petrovic",
+      "slug": "djordje-petrovic",
+      "image": "/player-images/bournemouth/djordje-petrovic.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/228416-alt.webp&h=120"
+    },
+    {
+      "name": "Will Dennis",
+      "slug": "will-dennis",
+      "image": "/player-images/bournemouth/will-dennis.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/450111.png&h=120"
+    },
+    {
+      "name": "Adrien Truffert",
+      "slug": "adrien-truffert",
+      "image": "/player-images/bournemouth/adrien-truffert.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/459284.png&h=120"
+    },
+    {
+      "name": "Álex Jiménez",
+      "slug": "alex-jimenez",
+      "image": "/player-images/bournemouth/alex-jimenez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/306046478-alt.webp&h=120"
+    },
+    {
+      "name": "Julio Soler",
+      "slug": "julio-soler",
+      "image": "/player-images/bournemouth/julio-soler.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303215754-ss.png&h=120"
+    },
+    {
+      "name": "Marcos Senesi",
+      "slug": "marcos-senesi",
+      "image": "/player-images/bournemouth/marcos-senesi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/176304-ss.png&h=120"
+    },
+    {
+      "name": "Matai Akinmboni",
+      "slug": "matai-akinmboni",
+      "image": "/player-images/bournemouth/matai-akinmboni.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221605565-alt.png&h=120"
+    },
+    {
+      "name": "Veljko Milosavljevic",
+      "slug": "veljko-milosavljevic",
+      "image": "/player-images/bournemouth/veljko-milosavljevic.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/227578966.png&h=120"
+    },
+    {
+      "name": "Bafodé Diakité",
+      "slug": "bafode-diakite",
+      "image": "/player-images/bournemouth/bafode-diakite.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/482906.png&h=120"
+    },
+    {
+      "name": "James Hill",
+      "slug": "james-hill",
+      "image": "/player-images/bournemouth/james-hill.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/334930-ss.png&h=120"
+    },
+    {
+      "name": "Julián Araujo",
+      "slug": "julian-araujo",
+      "image": "/player-images/bournemouth/julian-araujo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/416705.png&h=120"
+    },
+    {
+      "name": "Ryan Christie",
+      "slug": "ryan-christie",
+      "image": "/player-images/bournemouth/ryan-christie.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/70582.png&h=120"
+    },
+    {
+      "name": "Lewis Cook",
+      "slug": "lewis-cook",
+      "image": "/player-images/bournemouth/lewis-cook.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/92860.png&h=120"
+    },
+    {
+      "name": "Justin Kluivert",
+      "slug": "justin-kluivert",
+      "image": "/player-images/bournemouth/justin-kluivert.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/129569.png&h=120"
+    },
+    {
+      "name": "Marcus Tavernier",
+      "slug": "marcus-tavernier",
+      "image": "/player-images/bournemouth/marcus-tavernier.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/165894.png&h=120"
+    },
+    {
+      "name": "Tyler Adams",
+      "slug": "tyler-adams",
+      "image": "/player-images/bournemouth/tyler-adams.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/130538.png&h=120"
+    },
+    {
+      "name": "Alex Scott",
+      "slug": "alex-scott",
+      "image": "/player-images/bournemouth/alex-scott.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/564331-ss.png&h=120"
+    },
+    {
+      "name": "Ben Gannon Doak",
+      "slug": "ben-gannon-doak",
+      "image": "/player-images/bournemouth/ben-gannon-doak.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/178067459-ss.png&h=120"
+    },
+    {
+      "name": "Eli Kroupi",
+      "slug": "eli-kroupi",
+      "image": "/player-images/bournemouth/eli-kroupi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221620688-alt.png&h=120"
+    },
+    {
+      "name": "Enes Ünal",
+      "slug": "enes-unal",
+      "image": "/player-images/bournemouth/enes-unal.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/72775.png&h=120"
+    },
+    {
+      "name": "Evanilson",
+      "slug": "evanilson",
+      "image": "/player-images/bournemouth/evanilson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/198702.png&h=120"
+    },
+    {
+      "name": "Antoine Semenyo",
+      "slug": "antoine-semenyo",
+      "image": "/player-images/bournemouth/antoine-semenyo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/311441-alt.webp&h=120"
+    },
+    {
+      "name": "David Brooks",
+      "slug": "david-brooks",
+      "image": "/player-images/bournemouth/david-brooks.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/117355.png&h=120"
+    },
+    {
+      "name": "Adam Smith",
+      "slug": "adam-smith",
+      "image": "/player-images/bournemouth/adam-smith.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/7408.png&h=120"
+    },
+    {
+      "name": "Amine Adli",
+      "slug": "amine-adli",
+      "image": "/player-images/bournemouth/amine-adli.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/412739.png&h=120"
+    }
+  ]
+}

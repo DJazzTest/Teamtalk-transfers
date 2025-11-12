@@ -1,0 +1,162 @@
+{
+  "team": "leeds-united",
+  "count": 26,
+  "images": [
+    {
+      "name": "Illan Meslier",
+      "slug": "illan-meslier",
+      "image": "/player-images/leeds-united/illan-meslier.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/228573.png&h=120"
+    },
+    {
+      "name": "Karl Darlow",
+      "slug": "karl-darlow",
+      "image": "/player-images/leeds-united/karl-darlow.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/13197.png&h=120"
+    },
+    {
+      "name": "Lucas Perri",
+      "slug": "lucas-perri",
+      "image": "/player-images/leeds-united/lucas-perri.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/123733-alt.webp&h=120"
+    },
+    {
+      "name": "Daniel James",
+      "slug": "daniel-james",
+      "image": "/player-images/leeds-united/daniel-james.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/79857.png&h=120"
+    },
+    {
+      "name": "Alex Cairns",
+      "slug": "alex-cairns",
+      "image": "/player-images/leeds-united/alex-cairns.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/13158.png&h=120"
+    },
+    {
+      "name": "Jayden Bogle",
+      "slug": "jayden-bogle",
+      "image": "/player-images/leeds-united/jayden-bogle.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/208071.png&h=120"
+    },
+    {
+      "name": "James Justin",
+      "slug": "james-justin",
+      "image": "/player-images/leeds-united/james-justin.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/175271.png&h=120"
+    },
+    {
+      "name": "Sam Byram",
+      "slug": "sam-byram",
+      "image": "/player-images/leeds-united/sam-byram.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/71424.png&h=120"
+    },
+    {
+      "name": "Gabriel Gudmundsson",
+      "slug": "gabriel-gudmundsson",
+      "image": "/player-images/leeds-united/gabriel-gudmundsson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/183973.png&h=120"
+    },
+    {
+      "name": "Jaka Bijol",
+      "slug": "jaka-bijol",
+      "image": "/player-images/leeds-united/jaka-bijol.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/115648-alt.webp&h=120"
+    },
+    {
+      "name": "Joe Rodon",
+      "slug": "joe-rodon",
+      "image": "/player-images/leeds-united/joe-rodon.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/175905.png&h=120"
+    },
+    {
+      "name": "Pascal Struijk",
+      "slug": "pascal-struijk",
+      "image": "/player-images/leeds-united/pascal-struijk.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/185696.png&h=120"
+    },
+    {
+      "name": "Sebastiaan Bornauw",
+      "slug": "sebastiaan-bornauw",
+      "image": "/player-images/leeds-united/sebastiaan-bornauw.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/162888.png&h=120"
+    },
+    {
+      "name": "Ao Tanaka",
+      "slug": "ao-tanaka",
+      "image": "/player-images/leeds-united/ao-tanaka.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/253834.png&h=120"
+    },
+    {
+      "name": "Sean Longstaff",
+      "slug": "sean-longstaff",
+      "image": "/player-images/leeds-united/sean-longstaff.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/175228.png&h=120"
+    },
+    {
+      "name": "Ilia Gruev",
+      "slug": "ilia-gruev",
+      "image": "/player-images/leeds-united/ilia-gruev.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/209725.png&h=120"
+    },
+    {
+      "name": "Josuha Guilavogui",
+      "slug": "josuha-guilavogui",
+      "image": "/player-images/leeds-united/josuha-guilavogui.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/3168.png&h=120"
+    },
+    {
+      "name": "Ethan Ampadu",
+      "slug": "ethan-ampadu",
+      "image": "/player-images/leeds-united/ethan-ampadu.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/185391.png&h=120"
+    },
+    {
+      "name": "Brenden Aaronson",
+      "slug": "brenden-aaronson",
+      "image": "/player-images/leeds-united/brenden-aaronson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/324393.png&h=120"
+    },
+    {
+      "name": "Anton Stach",
+      "slug": "anton-stach",
+      "image": "/player-images/leeds-united/anton-stach.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/126067-alt.png&h=120"
+    },
+    {
+      "name": "Noah Okafor",
+      "slug": "noah-okafor",
+      "image": "/player-images/leeds-united/noah-okafor.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221361-alt.webp&h=120"
+    },
+    {
+      "name": "Lukas Nmecha",
+      "slug": "lukas-nmecha",
+      "image": "/player-images/leeds-united/lukas-nmecha.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/116194-alt.webp&h=120"
+    },
+    {
+      "name": "Jack Harrison",
+      "slug": "jack-harrison",
+      "image": "/player-images/leeds-united/jack-harrison.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/113648.png&h=120"
+    },
+    {
+      "name": "Wilfried Gnonto",
+      "slug": "wilfried-gnonto",
+      "image": "/player-images/leeds-united/wilfried-gnonto.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/568953.png&h=120"
+    },
+    {
+      "name": "Joël Piroe",
+      "slug": "joel-piroe",
+      "image": "/player-images/leeds-united/joel-piroe.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/219268.png&h=120"
+    },
+    {
+      "name": "Dominic Calvert-Lewin",
+      "slug": "dominic-calvert-lewin",
+      "image": "/player-images/leeds-united/dominic-calvert-lewin.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/88019.png&h=120"
+    }
+  ]
+}

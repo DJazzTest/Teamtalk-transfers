@@ -1,0 +1,162 @@
+{
+  "team": "man-city",
+  "count": 26,
+  "images": [
+    {
+      "name": "Gianluigi Donnarumma",
+      "slug": "gianluigi-donnarumma",
+      "image": "/player-images/man-city/gianluigi-donnarumma.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/115403.png&h=120"
+    },
+    {
+      "name": "Stefan Ortega",
+      "slug": "stefan-ortega",
+      "image": "/player-images/man-city/stefan-ortega.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/30207-alt.png&h=120"
+    },
+    {
+      "name": "James Trafford",
+      "slug": "james-trafford",
+      "image": "/player-images/man-city/james-trafford.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/387585-alt.webp&h=120"
+    },
+    {
+      "name": "Marcus Bettinelli",
+      "slug": "marcus-bettinelli",
+      "image": "/player-images/man-city/marcus-bettinelli.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/8069.png&h=120"
+    },
+    {
+      "name": "Matheus Nunes",
+      "slug": "matheus-nunes",
+      "image": "/player-images/man-city/matheus-nunes.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/472142-alt.webp&h=120"
+    },
+    {
+      "name": "Nico O'Reilly",
+      "slug": "nico-oreilly",
+      "image": "/player-images/man-city/nico-oreilly.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/25489977-alt.webp&h=120"
+    },
+    {
+      "name": "Rayan Aït-Nouri",
+      "slug": "rayan-ait-nouri",
+      "image": "/player-images/man-city/rayan-ait-nouri.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/442725-alt.png&h=120"
+    },
+    {
+      "name": "Rico Lewis",
+      "slug": "rico-lewis",
+      "image": "/player-images/man-city/rico-lewis.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/608776.png&h=120"
+    },
+    {
+      "name": "Abdukodir Khusanov",
+      "slug": "abdukodir-khusanov",
+      "image": "/player-images/man-city/abdukodir-khusanov.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/577859-alt.png&h=120"
+    },
+    {
+      "name": "John Stones",
+      "slug": "john-stones",
+      "image": "/player-images/man-city/john-stones.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/13034.png&h=120"
+    },
+    {
+      "name": "Josko Gvardiol",
+      "slug": "josko-gvardiol",
+      "image": "/player-images/man-city/josko-gvardiol.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/497238-alt.webp&h=120"
+    },
+    {
+      "name": "Nathan Aké",
+      "slug": "nathan-ake",
+      "image": "/player-images/man-city/nathan-ake.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/6393.png&h=120"
+    },
+    {
+      "name": "Rúben Dias",
+      "slug": "ruben-dias",
+      "image": "/player-images/man-city/ruben-dias.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/70187.png&h=120"
+    },
+    {
+      "name": "Nico González",
+      "slug": "nico-gonzalez",
+      "image": "/player-images/man-city/nico-gonzalez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/490488-alt.png&h=120"
+    },
+    {
+      "name": "Kalvin Phillips",
+      "slug": "kalvin-phillips",
+      "image": "/player-images/man-city/kalvin-phillips.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/123638.png&h=120"
+    },
+    {
+      "name": "Tijjani Reijnders",
+      "slug": "tijjani-reijnders",
+      "image": "/player-images/man-city/tijjani-reijnders.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/361482-alt.webp&h=120"
+    },
+    {
+      "name": "Bernardo Silva",
+      "slug": "bernardo-silva",
+      "image": "/player-images/man-city/bernardo-silva.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/72801.png&h=120"
+    },
+    {
+      "name": "Mateo Kovacic",
+      "slug": "mateo-kovacic",
+      "image": "/player-images/man-city/mateo-kovacic.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/3750.png&h=120"
+    },
+    {
+      "name": "Rodri",
+      "slug": "rodri",
+      "image": "/player-images/man-city/rodri.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/126251.png&h=120"
+    },
+    {
+      "name": "Oscar Bobb",
+      "slug": "oscar-bobb",
+      "image": "/player-images/man-city/oscar-bobb.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/553536-ss.png&h=120"
+    },
+    {
+      "name": "Erling Haaland",
+      "slug": "erling-haaland",
+      "image": "/player-images/man-city/erling-haaland.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/183858-ss.png&h=120"
+    },
+    {
+      "name": "Omar Marmoush",
+      "slug": "omar-marmoush",
+      "image": "/player-images/man-city/omar-marmoush.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/202653-alt.webp&h=120"
+    },
+    {
+      "name": "Phil Foden",
+      "slug": "phil-foden",
+      "image": "/player-images/man-city/phil-foden.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/207687.png&h=120"
+    },
+    {
+      "name": "Jérémy Doku",
+      "slug": "jeremy-doku",
+      "image": "/player-images/man-city/jeremy-doku.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/289362-alt.webp&h=120"
+    },
+    {
+      "name": "Savinho",
+      "slug": "savinho",
+      "image": "/player-images/man-city/savinho.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/572710-alt.webp&h=120"
+    },
+    {
+      "name": "Rayan Cherki",
+      "slug": "rayan-cherki",
+      "image": "/player-images/man-city/rayan-cherki.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/471261-alt.webp&h=120"
+    }
+  ]
+}

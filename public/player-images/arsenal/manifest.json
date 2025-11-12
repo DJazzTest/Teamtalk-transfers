@@ -1,0 +1,162 @@
+{
+  "team": "Arsenal",
+  "count": 26,
+  "images": [
+    {
+      "name": "Tommy Setford",
+      "slug": "tommy-setford",
+      "image": "/player-images/arsenal/tommy-setford.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221334767.png&h=120"
+    },
+    {
+      "name": "David Raya",
+      "slug": "david-raya",
+      "image": "/player-images/arsenal/david-raya.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/97067-alt.webp&h=120"
+    },
+    {
+      "name": "Kepa Arrizabalaga",
+      "slug": "kepa-arrizabalaga",
+      "image": "/player-images/arsenal/kepa-arrizabalaga.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/9086.png&h=120"
+    },
+    {
+      "name": "Ben White",
+      "slug": "ben-white",
+      "image": "/player-images/arsenal/ben-white.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/213018-alt.png&h=120"
+    },
+    {
+      "name": "Myles Lewis-Skelly",
+      "slug": "myles-lewis-skelly",
+      "image": "/player-images/arsenal/myles-lewis-skelly.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/59505836-alt.png&h=120"
+    },
+    {
+      "name": "Cristhian Mosquera",
+      "slug": "cristhian-mosquera",
+      "image": "/player-images/arsenal/cristhian-mosquera.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/305462340-alt.png&h=120"
+    },
+    {
+      "name": "Gabriel Magalhães",
+      "slug": "gabriel-magalhaes",
+      "image": "/player-images/arsenal/gabriel-magalhaes.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/178390.png&h=120"
+    },
+    {
+      "name": "Jurriën Timber",
+      "slug": "jurrien-timber",
+      "image": "/player-images/arsenal/jurrien-timber.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/130149-alt.webp&h=120"
+    },
+    {
+      "name": "Piero Hincapié",
+      "slug": "piero-hincapie",
+      "image": "/player-images/arsenal/piero-hincapie.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/408540-alt.webp&h=120"
+    },
+    {
+      "name": "Riccardo Calafiori",
+      "slug": "riccardo-calafiori",
+      "image": "/player-images/arsenal/riccardo-calafiori.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/394726-alt.webp&h=120"
+    },
+    {
+      "name": "William Saliba",
+      "slug": "william-saliba",
+      "image": "/player-images/arsenal/william-saliba.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/347417.png&h=120"
+    },
+    {
+      "name": "Christian Nørgaard",
+      "slug": "christian-nrgaard",
+      "image": "/player-images/arsenal/christian-nrgaard.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/5497-alt.webp&h=120"
+    },
+    {
+      "name": "Mikel Merino",
+      "slug": "mikel-merino",
+      "image": "/player-images/arsenal/mikel-merino.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/107641.png&h=120"
+    },
+    {
+      "name": "Martín Zubimendi",
+      "slug": "martin-zubimendi",
+      "image": "/player-images/arsenal/martin-zubimendi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/343361-alt.png&h=120"
+    },
+    {
+      "name": "Eberechi Eze",
+      "slug": "eberechi-eze",
+      "image": "/player-images/arsenal/eberechi-eze.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/244534-alt.png&h=120"
+    },
+    {
+      "name": "Ethan Nwaneri",
+      "slug": "ethan-nwaneri",
+      "image": "/player-images/arsenal/ethan-nwaneri.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/59505837-alt.webp&h=120"
+    },
+    {
+      "name": "Martin Ødegaard",
+      "slug": "martin-degaard",
+      "image": "/player-images/arsenal/martin-degaard.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/92589-alt.png&h=120"
+    },
+    {
+      "name": "Declan Rice",
+      "slug": "declan-rice",
+      "image": "/player-images/arsenal/declan-rice.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/130834.png&h=120"
+    },
+    {
+      "name": "Max Dowman",
+      "slug": "max-dowman",
+      "image": "/player-images/arsenal/max-dowman.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303392044-alt.png&h=120"
+    },
+    {
+      "name": "Gabriel Jesus",
+      "slug": "gabriel-jesus",
+      "image": "/player-images/arsenal/gabriel-jesus.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/110069.png&h=120"
+    },
+    {
+      "name": "Kai Havertz",
+      "slug": "kai-havertz",
+      "image": "/player-images/arsenal/kai-havertz.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/116009-alt.webp&h=120"
+    },
+    {
+      "name": "Viktor Gyökeres",
+      "slug": "viktor-gyokeres",
+      "image": "/player-images/arsenal/viktor-gyokeres.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/109820-alt.webp&h=120"
+    },
+    {
+      "name": "Gabriel Martinelli",
+      "slug": "gabriel-martinelli",
+      "image": "/player-images/arsenal/gabriel-martinelli.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/424420-alt.webp&h=120"
+    },
+    {
+      "name": "Noni Madueke",
+      "slug": "noni-madueke",
+      "image": "/player-images/arsenal/noni-madueke.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/397508-alt.webp&h=120"
+    },
+    {
+      "name": "Bukayo Saka",
+      "slug": "bukayo-saka",
+      "image": "/player-images/arsenal/bukayo-saka.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/361578-alt.webp&h=120"
+    },
+    {
+      "name": "Leandro Trossard",
+      "slug": "leandro-trossard",
+      "image": "/player-images/arsenal/leandro-trossard.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/30536-alt.png&h=120"
+    }
+  ]
+}

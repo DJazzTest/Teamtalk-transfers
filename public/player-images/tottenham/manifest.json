@@ -1,0 +1,186 @@
+{
+  "team": "tottenham",
+  "count": 30,
+  "images": [
+    {
+      "name": "Antonín Kinský",
+      "slug": "antonin-kinsky",
+      "image": "/player-images/tottenham/antonin-kinsky.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/267868-ss.png&h=120"
+    },
+    {
+      "name": "Brandon Austin",
+      "slug": "brandon-austin",
+      "image": "/player-images/tottenham/brandon-austin.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/208150.png&h=120"
+    },
+    {
+      "name": "Guglielmo Vicario",
+      "slug": "guglielmo-vicario",
+      "image": "/player-images/tottenham/guglielmo-vicario.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/93669-alt.webp&h=120"
+    },
+    {
+      "name": "Luca Gunter",
+      "slug": "luca-gunter",
+      "image": "/player-images/tottenham/luca-gunter.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/44897791-ss.png&h=120"
+    },
+    {
+      "name": "Pedro Porro",
+      "slug": "pedro-porro",
+      "image": "/player-images/tottenham/pedro-porro.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/267274-alt.webp&h=120"
+    },
+    {
+      "name": "Destiny Udogie",
+      "slug": "destiny-udogie",
+      "image": "/player-images/tottenham/destiny-udogie.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/528378-alt.webp&h=120"
+    },
+    {
+      "name": "Djed Spence",
+      "slug": "djed-spence",
+      "image": "/player-images/tottenham/djed-spence.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/208120-alt.webp&h=120"
+    },
+    {
+      "name": "Ben Davies",
+      "slug": "ben-davies",
+      "image": "/player-images/tottenham/ben-davies.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/8033.png&h=120"
+    },
+    {
+      "name": "Cristian Romero",
+      "slug": "cristian-romero",
+      "image": "/player-images/tottenham/cristian-romero.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/179288-alt.webp&h=120"
+    },
+    {
+      "name": "Kevin Danso",
+      "slug": "kevin-danso",
+      "image": "/player-images/tottenham/kevin-danso.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/126728.png&h=120"
+    },
+    {
+      "name": "Kota Takai",
+      "slug": "kota-takai",
+      "image": "/player-images/tottenham/kota-takai.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/188440941-alt.png&h=120"
+    },
+    {
+      "name": "Micky van de Ven",
+      "slug": "micky-van-de-ven",
+      "image": "/player-images/tottenham/micky-van-de-ven.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/425563-alt.webp&h=120"
+    },
+    {
+      "name": "Radu Drăgușin",
+      "slug": "radu-dragusin",
+      "image": "/player-images/tottenham/radu-dragusin.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/273836.png&h=120"
+    },
+    {
+      "name": "Pape Matar Sarr",
+      "slug": "pape-matar-sarr",
+      "image": "/player-images/tottenham/pape-matar-sarr.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/511318-alt.webp&h=120"
+    },
+    {
+      "name": "Rodrigo Bentancur",
+      "slug": "rodrigo-bentancur",
+      "image": "/player-images/tottenham/rodrigo-bentancur.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/126256-alt.webp&h=120"
+    },
+    {
+      "name": "Yves Bissouma",
+      "slug": "yves-bissouma",
+      "image": "/player-images/tottenham/yves-bissouma.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/173032.png&h=120"
+    },
+    {
+      "name": "Archie Gray",
+      "slug": "archie-gray",
+      "image": "/player-images/tottenham/archie-gray.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/155389015-alt.png&h=120"
+    },
+    {
+      "name": "James Maddison",
+      "slug": "james-maddison",
+      "image": "/player-images/tottenham/james-maddison.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/83540-alt.webp&h=120"
+    },
+    {
+      "name": "Xavi Simons",
+      "slug": "xavi-simons",
+      "image": "/player-images/tottenham/xavi-simons.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/568878-alt.png&h=120"
+    },
+    {
+      "name": "João Palhinha",
+      "slug": "joao-palhinha",
+      "image": "/player-images/tottenham/joao-palhinha.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/85191-alt.webp&h=120"
+    },
+    {
+      "name": "Lucas Bergvall",
+      "slug": "lucas-bergvall",
+      "image": "/player-images/tottenham/lucas-bergvall.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/212871357-alt.webp&h=120"
+    },
+    {
+      "name": "Dejan Kulusevski",
+      "slug": "dejan-kulusevski",
+      "image": "/player-images/tottenham/dejan-kulusevski.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/222255-alt.webp&h=120"
+    },
+    {
+      "name": "Mathys Tel",
+      "slug": "mathys-tel",
+      "image": "/player-images/tottenham/mathys-tel.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/635177-alt.webp&h=120"
+    },
+    {
+      "name": "Randal Kolo Muani",
+      "slug": "randal-kolo-muani",
+      "image": "/player-images/tottenham/randal-kolo-muani.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/203064-alt.png&h=120"
+    },
+    {
+      "name": "Dane Scarlett",
+      "slug": "dane-scarlett",
+      "image": "/player-images/tottenham/dane-scarlett.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303206259-ss.png&h=120"
+    },
+    {
+      "name": "Dominic Solanke",
+      "slug": "dominic-solanke",
+      "image": "/player-images/tottenham/dominic-solanke.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/82341.png&h=120"
+    },
+    {
+      "name": "Mohammed Kudus",
+      "slug": "mohammed-kudus",
+      "image": "/player-images/tottenham/mohammed-kudus.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/400562-alt.webp&h=120"
+    },
+    {
+      "name": "Richarlison",
+      "slug": "richarlison",
+      "image": "/player-images/tottenham/richarlison.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/140625.png&h=120"
+    },
+    {
+      "name": "Wilson Odobert",
+      "slug": "wilson-odobert",
+      "image": "/player-images/tottenham/wilson-odobert.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/173141661-alt.png&h=120"
+    },
+    {
+      "name": "Brennan Johnson",
+      "slug": "brennan-johnson",
+      "image": "/player-images/tottenham/brennan-johnson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/393802-alt.webp&h=120"
+    }
+  ]
+}

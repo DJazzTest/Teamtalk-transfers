@@ -1,0 +1,150 @@
+{
+  "team": "everton",
+  "count": 24,
+  "images": [
+    {
+      "name": "Harry Tyrer",
+      "slug": "harry-tyrer",
+      "image": "/player-images/everton/harry-tyrer.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/449912-ss.png&h=120"
+    },
+    {
+      "name": "Jordan Pickford",
+      "slug": "jordan-pickford",
+      "image": "/player-images/everton/jordan-pickford.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/5503.png&h=120"
+    },
+    {
+      "name": "Mark Travers",
+      "slug": "mark-travers",
+      "image": "/player-images/everton/mark-travers.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/130827.png&h=120"
+    },
+    {
+      "name": "Tom King",
+      "slug": "tom-king",
+      "image": "/player-images/everton/tom-king.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/110999.png&h=120"
+    },
+    {
+      "name": "Adam Aznou",
+      "slug": "adam-aznou",
+      "image": "/player-images/everton/adam-aznou.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/298938662-alt.webp&h=120"
+    },
+    {
+      "name": "Jarrad Branthwaite",
+      "slug": "jarrad-branthwaite",
+      "image": "/player-images/everton/jarrad-branthwaite.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/527410.png&h=120"
+    },
+    {
+      "name": "Vitaliy Mykolenko",
+      "slug": "vitaliy-mykolenko",
+      "image": "/player-images/everton/vitaliy-mykolenko.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/170275.png&h=120"
+    },
+    {
+      "name": "Nathan Patterson",
+      "slug": "nathan-patterson",
+      "image": "/player-images/everton/nathan-patterson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/330247.png&h=120"
+    },
+    {
+      "name": "Jake O'Brien",
+      "slug": "jake-obrien",
+      "image": "/player-images/everton/jake-obrien.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/507895-ss.png&h=120"
+    },
+    {
+      "name": "James Tarkowski",
+      "slug": "james-tarkowski",
+      "image": "/player-images/everton/james-tarkowski.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/33111.png&h=120"
+    },
+    {
+      "name": "Michael Keane",
+      "slug": "michael-keane",
+      "image": "/player-images/everton/michael-keane.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/39563.png&h=120"
+    },
+    {
+      "name": "Séamus Coleman",
+      "slug": "seamus-coleman",
+      "image": "/player-images/everton/seamus-coleman.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/2400.png&h=120"
+    },
+    {
+      "name": "Idrissa Gueye",
+      "slug": "idrissa-gueye",
+      "image": "/player-images/everton/idrissa-gueye.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/3069.png&h=120"
+    },
+    {
+      "name": "James Garner",
+      "slug": "james-garner",
+      "image": "/player-images/everton/james-garner.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/237025.png&h=120"
+    },
+    {
+      "name": "Tim Iroegbunam",
+      "slug": "tim-iroegbunam",
+      "image": "/player-images/everton/tim-iroegbunam.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/549976.png&h=120"
+    },
+    {
+      "name": "Carlos Alcaraz",
+      "slug": "carlos-alcaraz",
+      "image": "/player-images/everton/carlos-alcaraz.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/598953-alt.png&h=120"
+    },
+    {
+      "name": "Kiernan Dewsbury-Hall",
+      "slug": "kiernan-dewsbury-hall",
+      "image": "/player-images/everton/kiernan-dewsbury-hall.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/207787-alt.webp&h=120"
+    },
+    {
+      "name": "Merlin Röhl",
+      "slug": "merlin-rohl",
+      "image": "/player-images/everton/merlin-rohl.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/475304-alt.webp&h=120"
+    },
+    {
+      "name": "Iliman Ndiaye",
+      "slug": "iliman-ndiaye",
+      "image": "/player-images/everton/iliman-ndiaye.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/497365.png&h=120"
+    },
+    {
+      "name": "Tyler Dibling",
+      "slug": "tyler-dibling",
+      "image": "/player-images/everton/tyler-dibling.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/15683112-alt.webp&h=120"
+    },
+    {
+      "name": "Beto",
+      "slug": "beto",
+      "image": "/player-images/everton/beto.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/474280.png&h=120"
+    },
+    {
+      "name": "Thierno Barry",
+      "slug": "thierno-barry",
+      "image": "/player-images/everton/thierno-barry.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/167630545-ss.png&h=120"
+    },
+    {
+      "name": "Dwight McNeil",
+      "slug": "dwight-mcneil",
+      "image": "/player-images/everton/dwight-mcneil.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/245870.png&h=120"
+    },
+    {
+      "name": "Jack Grealish",
+      "slug": "jack-grealish",
+      "image": "/player-images/everton/jack-grealish.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/40577-alt.webp&h=120"
+    }
+  ]
+}

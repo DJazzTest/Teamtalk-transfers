@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useTransferDataStore } from '@/store/transferDataStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +8,10 @@ import { RefreshCw, TrendingUp, TrendingDown, Clock, AlertCircle, ChevronRight, 
 import { TEAM_API_CONFIGS } from '@/types/scoreinside';
 import { Transfer } from '@/types/transfer';
 import { getClubTheme } from '@/data/clubColors';
+import { usePlayerModal } from '@/context/PlayerModalContext';
+import { PlayerNameLink } from './PlayerNameLink';
+import { cn } from '@/lib/utils';
+import type { Player } from '@/data/squadWages';
 
 interface TeamSpecificTransfersProps {
   selectedTeam?: string;
@@ -33,6 +37,7 @@ const TeamSpecificTransfers: React.FC<TeamSpecificTransfersProps> = ({
   const [showAllIn, setShowAllIn] = useState(false);
   const [showAllOut, setShowAllOut] = useState(false);
   const [showAllRumours, setShowAllRumours] = useState(false);
+  const { openPlayerModal } = usePlayerModal();
 
   const teamTransfers = getTeamTransfers(currentTeam);
   
@@ -95,15 +100,28 @@ const TeamSpecificTransfers: React.FC<TeamSpecificTransfersProps> = ({
     return `${Math.floor(diffInHours / 24)}d ago`;
   };
 
+  const getDisplayTeamName = useCallback((slug: string) => getTeamDisplayName(slug) || slug, []);
+
   const handlePlayerClick = (transfer: Transfer) => {
-    // Navigate to the club section - you can customize this based on your routing
     const direction = getTransferDirection(transfer, currentTeam);
-    const clubToNavigate = direction === 'in' ? transfer.fromClub : transfer.toClub;
-    // For now, we'll use the onSelectClub prop if available
-    if (typeof window !== 'undefined') {
-      // You can implement navigation logic here
-      console.log(`Navigate to ${clubToNavigate} section`);
-    }
+    const defaultTeam = direction === 'out'
+      ? getDisplayTeamName(currentTeam)
+      : transfer.toClub || transfer.fromClub;
+
+    const bio = {
+      nationality: transfer.country,
+      dateOfBirth: transfer.dateOfBirth
+    };
+
+    const playerData: Partial<Player> = {
+      age: transfer.age,
+      bio: transfer.country || transfer.dateOfBirth ? bio : undefined
+    };
+
+    openPlayerModal(transfer.playerName, {
+      teamName: defaultTeam,
+      playerData
+    });
   };
 
   const renderTransferCard = (transfer: Transfer) => {
@@ -120,9 +138,25 @@ const TeamSpecificTransfers: React.FC<TeamSpecificTransfersProps> = ({
           <CardContent className={`p-4 ${theme.background} h-full`}>
             <div className="flex flex-col h-full">
               <div className="flex items-center gap-2 mb-3">
-                <h4 className="font-bold text-lg" style={{ color: theme.text }}>
-                  {transfer.playerName}
-                </h4>
+                <PlayerNameLink
+                  playerName={transfer.playerName}
+                  teamName={
+                    getTransferDirection(transfer, currentTeam) === 'out'
+                      ? getDisplayTeamName(currentTeam)
+                      : transfer.toClub
+                  }
+                  playerData={{
+                    age: transfer.age,
+                    bio: transfer.country || transfer.dateOfBirth
+                      ? {
+                          nationality: transfer.country,
+                          dateOfBirth: transfer.dateOfBirth
+                        }
+                      : undefined
+                  }}
+                  className={cn('text-lg', theme.text ? `text-[${theme.text}]` : 'text-white')}
+                  stopPropagation={false}
+                />
                 {direction === 'in' && (
                   <TrendingUp className="w-5 h-5 text-green-300" />
                 )}

@@ -228,7 +228,7 @@ export class TeamDataService {
     }
   }
 
-  private async getSbLiveFeeds(teamName: string): Promise<SbLiveFeedItem[]> {
+  private async getSbLiveFeeds(teamName: string): Promise<(SbLiveFeedItem & { source?: string })[]> {
     try {
       // Get SB Live feeds
       const [feed, banners, pinned] = await Promise.allSettled([
@@ -237,16 +237,16 @@ export class TeamDataService {
         sbLiveApi.getPinned('general')
       ]);
 
-      const allItems: SbLiveFeedItem[] = [];
+      const allItems: (SbLiveFeedItem & { source?: string })[] = [];
       
       if (feed.status === 'fulfilled' && feed.value?.data) {
-        allItems.push(...feed.value.data);
+        allItems.push(...feed.value.data.map((item: SbLiveFeedItem) => ({ ...item, source: 'SB Live' })));
       }
       if (banners.status === 'fulfilled' && banners.value?.data) {
-        allItems.push(...banners.value.data);
+        allItems.push(...banners.value.data.map((item: SbLiveFeedItem) => ({ ...item, source: 'SB Live' })));
       }
       if (pinned.status === 'fulfilled' && pinned.value?.data) {
-        allItems.push(...pinned.value.data);
+        allItems.push(...pinned.value.data.map((item: SbLiveFeedItem) => ({ ...item, source: 'SB Live' })));
       }
 
       // Filter for this team

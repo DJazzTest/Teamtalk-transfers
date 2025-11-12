@@ -24,11 +24,31 @@ export const PlayerStatsHexagon: React.FC<PlayerStatsHexagonProps> = ({
   totalGoals
 }) => {
   // Calculate normalized values for hexagon (0-100 scale)
-  const maxMatches = Math.max(...competitions.map(c => c.matches), totalMatches);
-  const maxMinutes = Math.max(...competitions.map(c => c.minutes), totalMinutes);
-  const maxCleanSheets = isGoalkeeper ? Math.max(...competitions.map(c => c.cleanSheets || 0), totalCleanSheets || 0) : 0;
-  const maxGoalsConceded = isGoalkeeper ? Math.max(...competitions.map(c => c.goalsConceded || 0), totalGoalsConceded || 0) : 0;
-  const maxGoals = !isGoalkeeper ? Math.max(...competitions.map(c => c.goals || 0), totalGoals || 0) : 0;
+  // Handle empty arrays to prevent Math.max errors
+  const matchValues = competitions.length > 0 
+    ? [...competitions.map(c => c.matches), totalMatches]
+    : [totalMatches];
+  const maxMatches = Math.max(...matchValues, 0);
+  
+  const minuteValues = competitions.length > 0
+    ? [...competitions.map(c => c.minutes), totalMinutes]
+    : [totalMinutes];
+  const maxMinutes = Math.max(...minuteValues, 0);
+  
+  const cleanSheetValues = isGoalkeeper && competitions.length > 0
+    ? [...competitions.map(c => c.cleanSheets || 0), totalCleanSheets || 0]
+    : [totalCleanSheets || 0];
+  const maxCleanSheets = isGoalkeeper ? Math.max(...cleanSheetValues, 0) : 0;
+  
+  const goalsConcededValues = isGoalkeeper && competitions.length > 0
+    ? [...competitions.map(c => c.goalsConceded || 0), totalGoalsConceded || 0]
+    : [totalGoalsConceded || 0];
+  const maxGoalsConceded = isGoalkeeper ? Math.max(...goalsConcededValues, 0) : 0;
+  
+  const goalValues = !isGoalkeeper && competitions.length > 0
+    ? [...competitions.map(c => c.goals || 0), totalGoals || 0]
+    : [totalGoals || 0];
+  const maxGoals = !isGoalkeeper ? Math.max(...goalValues, 0) : 0;
 
   // Normalize to 0-100 for hexagon display
   const normalize = (value: number, max: number) => max > 0 ? Math.min(100, (value / max) * 100) : 0;

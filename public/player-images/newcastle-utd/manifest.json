@@ -1,0 +1,174 @@
+{
+  "team": "newcastle-utd",
+  "count": 28,
+  "images": [
+    {
+      "name": "Nick Pope",
+      "slug": "nick-pope",
+      "image": "/player-images/newcastle-utd/nick-pope.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/42431-alt.webp&h=120"
+    },
+    {
+      "name": "Aaron Ramsdale",
+      "slug": "aaron-ramsdale",
+      "image": "/player-images/newcastle-utd/aaron-ramsdale.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/177808.png&h=120"
+    },
+    {
+      "name": "John Ruddy",
+      "slug": "john-ruddy",
+      "image": "/player-images/newcastle-utd/john-ruddy.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/8007.png&h=120"
+    },
+    {
+      "name": "Mark Gillespie",
+      "slug": "mark-gillespie",
+      "image": "/player-images/newcastle-utd/mark-gillespie.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/26933.png&h=120"
+    },
+    {
+      "name": "Alex Murphy",
+      "slug": "alex-murphy",
+      "image": "/player-images/newcastle-utd/alex-murphy.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/138652803-ss.png&h=120"
+    },
+    {
+      "name": "Kieran Trippier",
+      "slug": "kieran-trippier",
+      "image": "/player-images/newcastle-utd/kieran-trippier.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/13063.png&h=120"
+    },
+    {
+      "name": "Lewis Hall",
+      "slug": "lewis-hall",
+      "image": "/player-images/newcastle-utd/lewis-hall.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/589621-alt.webp&h=120"
+    },
+    {
+      "name": "Sven Botman",
+      "slug": "sven-botman",
+      "image": "/player-images/newcastle-utd/sven-botman.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/130120-alt.webp&h=120"
+    },
+    {
+      "name": "Tino Livramento",
+      "slug": "tino-livramento",
+      "image": "/player-images/newcastle-utd/tino-livramento.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/412456-alt.png&h=120"
+    },
+    {
+      "name": "Fabian Schär",
+      "slug": "fabian-schar",
+      "image": "/player-images/newcastle-utd/fabian-schar.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/24882-alt.png&h=120"
+    },
+    {
+      "name": "Jamaal Lascelles",
+      "slug": "jamaal-lascelles",
+      "image": "/player-images/newcastle-utd/jamaal-lascelles.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/13198.png&h=120"
+    },
+    {
+      "name": "Dan Burn",
+      "slug": "dan-burn",
+      "image": "/player-images/newcastle-utd/dan-burn.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/24963.png&h=120"
+    },
+    {
+      "name": "Harrison Ashby",
+      "slug": "harrison-ashby",
+      "image": "/player-images/newcastle-utd/harrison-ashby.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/414085.png&h=120"
+    },
+    {
+      "name": "Malick Thiaw",
+      "slug": "malick-thiaw",
+      "image": "/player-images/newcastle-utd/malick-thiaw.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/361749-alt.webp&h=120"
+    },
+    {
+      "name": "Emil Krafth",
+      "slug": "emil-krafth",
+      "image": "/player-images/newcastle-utd/emil-krafth.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/35028.png&h=120"
+    },
+    {
+      "name": "Lewis Miley",
+      "slug": "lewis-miley",
+      "image": "/player-images/newcastle-utd/lewis-miley.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/154637228-alt.png&h=120"
+    },
+    {
+      "name": "Jacob Ramsey",
+      "slug": "jacob-ramsey",
+      "image": "/player-images/newcastle-utd/jacob-ramsey.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/219229-alt.webp&h=120"
+    },
+    {
+      "name": "Joe Willock",
+      "slug": "joe-willock",
+      "image": "/player-images/newcastle-utd/joe-willock.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/117340-alt.png&h=120"
+    },
+    {
+      "name": "Sandro Tonali",
+      "slug": "sandro-tonali",
+      "image": "/player-images/newcastle-utd/sandro-tonali.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/268320-alt.png&h=120"
+    },
+    {
+      "name": "Bruno Guimarães",
+      "slug": "bruno-guimaraes",
+      "image": "/player-images/newcastle-utd/bruno-guimaraes.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/131980-alt.png&h=120"
+    },
+    {
+      "name": "Joelinton",
+      "slug": "joelinton",
+      "image": "/player-images/newcastle-utd/joelinton.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/92106-alt.webp&h=120"
+    },
+    {
+      "name": "William Osula",
+      "slug": "william-osula",
+      "image": "/player-images/newcastle-utd/william-osula.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/673270-ss.png&h=120"
+    },
+    {
+      "name": "Nick Woltemade",
+      "slug": "nick-woltemade",
+      "image": "/player-images/newcastle-utd/nick-woltemade.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/370799-alt.webp?t=1760519598&h=120"
+    },
+    {
+      "name": "Anthony Elanga",
+      "slug": "anthony-elanga",
+      "image": "/player-images/newcastle-utd/anthony-elanga.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/448420-alt.webp&h=120"
+    },
+    {
+      "name": "Harvey Barnes",
+      "slug": "harvey-barnes",
+      "image": "/player-images/newcastle-utd/harvey-barnes.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/201331-alt.webp&h=120"
+    },
+    {
+      "name": "Anthony Gordon",
+      "slug": "anthony-gordon",
+      "image": "/player-images/newcastle-utd/anthony-gordon.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/230091.png&h=120"
+    },
+    {
+      "name": "Jacob Murphy",
+      "slug": "jacob-murphy",
+      "image": "/player-images/newcastle-utd/jacob-murphy.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/77010-alt.webp&h=120"
+    },
+    {
+      "name": "Yoane Wissa",
+      "slug": "yoane-wissa",
+      "image": "/player-images/newcastle-utd/yoane-wissa.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/83747-alt.webp&h=120"
+    }
+  ]
+}

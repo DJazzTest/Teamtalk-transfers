@@ -9,6 +9,7 @@ import { HomeRecentRumours } from '@/components/HomeRecentRumours';
 import { HomeRecentConfirmed } from '@/components/HomeRecentConfirmed';
 import { HomeTodaysConfirmed } from '@/components/HomeTodaysConfirmed';
 import { AppHeader } from '@/components/AppHeader';
+import { PlayerModalProvider } from '@/context/PlayerModalContext';
 
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -21,9 +22,12 @@ import { useLeagueData } from '@/hooks/useLeagueData';
 import { TeamCarousel } from '@/components/TeamCarousel';
 import { NewsCarousel } from '@/components/NewsCarousel';
 import { getPlayerImage } from '@/utils/playerImageUtils';
+import { PlayerNameLink } from '@/components/PlayerNameLink';
+import { findPlayerInSquads } from '@/utils/playerUtils';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const WebsiteContent = () => {
-  const { allTransfers, lastUpdated, refreshAllData } = useTransferDataStore();
+  const { allTransfers, lastUpdated, refreshAllData, feedErrors } = useTransferDataStore();
   const { refreshCounter } = useRefreshControl();
   const [selectedClub, setSelectedClub] = useState<string | null>(null);
   const [countdownTarget] = useState('2025-12-31T23:00:00');
@@ -98,6 +102,17 @@ const WebsiteContent = () => {
       <AppHeader lastUpdated={lastUpdated || new Date()} />
 
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-full">
+        {feedErrors.length > 0 && (
+          <div className="mb-4 space-y-3">
+            {feedErrors.map((message, idx) => (
+              <Alert key={`feed-error-${idx}`} variant="destructive" className="bg-red-900/30 border-red-500/40 text-red-100">
+                <AlertTitle>Feed Issue</AlertTitle>
+                <AlertDescription>{message}</AlertDescription>
+              </Alert>
+            ))}
+          </div>
+        )}
+
         {/* Transfer Window Countdown */}
         <Card className="mb-4 sm:mb-8 bg-white/95 backdrop-blur-md border-gray-200/50 shadow-lg">
           <div className="p-3 sm:p-6">
@@ -154,13 +169,48 @@ const WebsiteContent = () => {
                             </Avatar>
                             <div className="flex items-center gap-2 flex-1 min-w-0">
                               <div className="w-3 h-3 bg-blue-500 rounded-full flex-shrink-0"></div>
-                              <span
-                                className="font-semibold text-blue-600 hover:underline cursor-pointer text-base truncate"
-                                onClick={() => handleSelectClub(transfer.toClub)}
-                                title={`View ${transfer.toClub} transfers`}
-                              >
-                                {transfer.playerName}
-                              </span>
+                              {(() => {
+                                const playerInfo = findPlayerInSquads(transfer.playerName);
+                                const viewTeamButton = (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-xs text-blue-500 hover:text-blue-700 hover:bg-blue-100/70 px-2 py-1"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleSelectClub(transfer.toClub);
+                                    }}
+                                  >
+                                    View team
+                                  </Button>
+                                );
+
+                                if (playerInfo.found) {
+                                  return (
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <PlayerNameLink
+                                        playerName={transfer.playerName}
+                                        teamName={playerInfo.club}
+                                        playerData={playerInfo.player}
+                                        className="text-blue-600 text-base font-semibold truncate"
+                                      />
+                                      {viewTeamButton}
+                                    </div>
+                                  );
+                                }
+                                return (
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span
+                                      className="font-semibold text-blue-600 hover:underline cursor-pointer text-base truncate"
+                                      onClick={() => handleSelectClub(transfer.toClub)}
+                                      title={`View ${transfer.toClub} transfers`}
+                                    >
+                                      {transfer.playerName}
+                                    </span>
+                                    {viewTeamButton}
+                                  </div>
+                                );
+                              })()}
                             </div>
                           </div>
                           <div className="text-xs text-blue-600 flex items-center gap-1">
@@ -231,7 +281,9 @@ const WebsiteContent = () => {
 
 const Website = () => (
   <TransferDataProvider>
-    <WebsiteContent />
+    <PlayerModalProvider>
+      <WebsiteContent />
+    </PlayerModalProvider>
   </TransferDataProvider>
 );
 

@@ -1,0 +1,192 @@
+{
+  "team": "chelsea",
+  "count": 31,
+  "images": [
+    {
+      "name": "Robert Sánchez",
+      "slug": "robert-sanchez",
+      "image": "/player-images/chelsea/robert-sanchez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/210492.png&h=120"
+    },
+    {
+      "name": "Gabriel Slonina",
+      "slug": "gabriel-slonina",
+      "image": "/player-images/chelsea/gabriel-slonina.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/271554.png&h=120"
+    },
+    {
+      "name": "Axel Disasi",
+      "slug": "axel-disasi",
+      "image": "/player-images/chelsea/axel-disasi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/144484-alt.webp&h=120"
+    },
+    {
+      "name": "Josh Acheampong",
+      "slug": "josh-acheampong",
+      "image": "/player-images/chelsea/josh-acheampong.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303389018-alt.webp&h=120"
+    },
+    {
+      "name": "Malo Gusto",
+      "slug": "malo-gusto",
+      "image": "/player-images/chelsea/malo-gusto.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/568963-alt.webp&h=120"
+    },
+    {
+      "name": "Marc Cucurella",
+      "slug": "marc-cucurella",
+      "image": "/player-images/chelsea/marc-cucurella.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/110413-alt.png&h=120"
+    },
+    {
+      "name": "Reece James",
+      "slug": "reece-james",
+      "image": "/player-images/chelsea/reece-james.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/207777-alt.webp&h=120"
+    },
+    {
+      "name": "Tosin Adarabioyo",
+      "slug": "tosin-adarabioyo",
+      "image": "/player-images/chelsea/tosin-adarabioyo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/80025-alt.webp&h=120"
+    },
+    {
+      "name": "Benoît Badiashile",
+      "slug": "benoit-badiashile",
+      "image": "/player-images/chelsea/benoit-badiashile.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/258641.png&h=120"
+    },
+    {
+      "name": "Jorrel Hato",
+      "slug": "jorrel-hato",
+      "image": "/player-images/chelsea/jorrel-hato.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221613365-alt.webp&h=120"
+    },
+    {
+      "name": "Levi Colwill",
+      "slug": "levi-colwill",
+      "image": "/player-images/chelsea/levi-colwill.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/549974-alt.webp&h=120"
+    },
+    {
+      "name": "Trevoh Chalobah",
+      "slug": "trevoh-chalobah",
+      "image": "/player-images/chelsea/trevoh-chalobah.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/119188-alt.webp&h=120"
+    },
+    {
+      "name": "Wesley Fofana",
+      "slug": "wesley-fofana",
+      "image": "/player-images/chelsea/wesley-fofana.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/347415-alt.webp&h=120"
+    },
+    {
+      "name": "Andrey Santos",
+      "slug": "andrey-santos",
+      "image": "/player-images/chelsea/andrey-santos.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/572718-alt.webp&h=120"
+    },
+    {
+      "name": "Cole Palmer",
+      "slug": "cole-palmer",
+      "image": "/player-images/chelsea/cole-palmer.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/342028-alt.webp&h=120"
+    },
+    {
+      "name": "Roméo Lavia",
+      "slug": "romeo-lavia",
+      "image": "/player-images/chelsea/romeo-lavia.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/645797-alt.webp&h=120"
+    },
+    {
+      "name": "Facundo Buonanotte",
+      "slug": "facundo-buonanotte",
+      "image": "/player-images/chelsea/facundo-buonanotte.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/49977703-alt.webp&h=120"
+    },
+    {
+      "name": "Filip Jørgensen",
+      "slug": "filip-jrgensen",
+      "image": "/player-images/chelsea/filip-jrgensen.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/465383-alt.webp&h=120"
+    },
+    {
+      "name": "Dário Essugo",
+      "slug": "dario-essugo",
+      "image": "/player-images/chelsea/dario-essugo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/548096.png&h=120"
+    },
+    {
+      "name": "Enzo Fernández",
+      "slug": "enzo-fernandez",
+      "image": "/player-images/chelsea/enzo-fernandez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/490853-alt.webp&h=120"
+    },
+    {
+      "name": "Moisés Caicedo",
+      "slug": "moises-caicedo",
+      "image": "/player-images/chelsea/moises-caicedo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/540515-alt.png&h=120"
+    },
+    {
+      "name": "Alejandro Garnacho",
+      "slug": "alejandro-garnacho",
+      "image": "/player-images/chelsea/alejandro-garnacho.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/183330-alt.webp&h=120"
+    },
+    {
+      "name": "Estêvão Willian",
+      "slug": "estevao-willian",
+      "image": "/player-images/chelsea/estevao-willian.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303452288-alt.webp&h=120"
+    },
+    {
+      "name": "Marc Guiu",
+      "slug": "marc-guiu",
+      "image": "/player-images/chelsea/marc-guiu.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303394300-alt.webp&h=120"
+    },
+    {
+      "name": "Tyrique George",
+      "slug": "tyrique-george",
+      "image": "/player-images/chelsea/tyrique-george.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/173450835-alt.webp&h=120"
+    },
+    {
+      "name": "Jamie Gittens",
+      "slug": "jamie-gittens",
+      "image": "/player-images/chelsea/jamie-gittens.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/568019-alt.webp&h=120"
+    },
+    {
+      "name": "Mykhaylo Mudryk",
+      "slug": "mykhaylo-mudryk",
+      "image": "/player-images/chelsea/mykhaylo-mudryk.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/397492-alt.webp&h=120"
+    },
+    {
+      "name": "Raheem Sterling",
+      "slug": "raheem-sterling",
+      "image": "/player-images/chelsea/raheem-sterling.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/5515-alt.webp&h=120"
+    },
+    {
+      "name": "Pedro Neto",
+      "slug": "pedro-neto",
+      "image": "/player-images/chelsea/pedro-neto.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/269315-alt.webp&h=120"
+    },
+    {
+      "name": "João Pedro",
+      "slug": "joao-pedro",
+      "image": "/player-images/chelsea/joao-pedro.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/515577-alt.webp?t=1760519315&h=120"
+    },
+    {
+      "name": "Liam Delap",
+      "slug": "liam-delap",
+      "image": "/player-images/chelsea/liam-delap.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/480556-alt.webp&h=120"
+    }
+  ]
+}
