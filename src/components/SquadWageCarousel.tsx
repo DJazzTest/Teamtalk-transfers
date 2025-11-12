@@ -44,7 +44,18 @@ export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) =>
     return () => window.removeEventListener('playerDataUpdated', handlePlayerUpdate);
   }, [club]);
 
-  const slugify = (name: string): string => name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  // Use the same sanitization as squadWages.ts to ensure paths match
+  const sanitizePlayerImageName = (name: string): string => {
+    return name
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  };
   
   const totalWeeklyWage = useMemo(() => {
     return squad.reduce((sum, player) => sum + player.weeklyWage, 0);
@@ -133,21 +144,31 @@ export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) =>
                       <div className="relative">
                         <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full opacity-0 group-hover:opacity-100 blur transition-all duration-300 group-hover:duration-200"></div>
                         <Avatar className="w-16 h-16 border-2 border-slate-600 group-hover:border-blue-500/50 relative transition-all duration-300">
-                          {(
-                            player.imageUrl || `/player-images/${clubSlug}/${slugify(player.name)}.png`
-                          ) ? (
-                            <img 
-                              src={player.imageUrl || `/player-images/${clubSlug}/${slugify(player.name)}.png`} 
-                              alt={player.name}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                const target = e.currentTarget as HTMLImageElement;
-                                target.style.display = 'none';
-                                const fallback = target.nextElementSibling as HTMLElement;
-                                if (fallback) fallback.classList.remove('hidden');
-                              }}
-                            />
-                          ) : null}
+                          {(() => {
+                            const imageUrl = player.imageUrl || `/player-images/${clubSlug}/${sanitizePlayerImageName(player.name)}.png`;
+                            return imageUrl ? (
+                              <img 
+                                src={imageUrl} 
+                                alt={player.name}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  console.error(`Failed to load image: ${imageUrl}`, e);
+                                  const target = e.currentTarget as HTMLImageElement;
+                                  target.style.display = 'none';
+                                  const fallback = target.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.classList.remove('hidden');
+                                }}
+                                onLoad={() => {
+                                  // Hide fallback when image loads successfully
+                                  const img = document.querySelector(`img[src="${imageUrl}"]`);
+                                  if (img) {
+                                    const fallback = img.nextElementSibling as HTMLElement;
+                                    if (fallback) fallback.classList.add('hidden');
+                                  }
+                                }}
+                              />
+                            ) : null;
+                          })()}
                           <AvatarFallback className={cn(
                             player.imageUrl ? 'hidden' : '',
                             'bg-slate-700/80 text-white text-lg font-medium group-hover:bg-slate-600/80 transition-colors duration-300',

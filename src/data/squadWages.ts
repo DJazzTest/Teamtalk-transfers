@@ -4226,7 +4226,7 @@ export const clubSquads: Record<string, Player[]> = {
     }
   ].map(player => ({
     ...player,
-    imageUrl: `/player-images/arsenal/${sanitizePlayerImageName(player.name)}.png`
+    imageUrl: player.imageUrl || `/player-images/arsenal/${sanitizePlayerImageName(player.name)}.png`
   })),
   'Aston Villa': [
     { name: 'Boubacar Kamara', position: 'Midfielder', weeklyWage: 150000, yearlyWage: 7.8 },
