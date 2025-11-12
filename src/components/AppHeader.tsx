@@ -19,17 +19,16 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
   };
 
   return (
-    <header className="bg-white/70 backdrop-blur-lg border-b border-gray-200/30 sticky top-0 z-50 shadow-lg">
+    <header className="bg-white border-b border-gray-300 sticky top-0 z-50 shadow-md">
       <div className="container mx-auto px-2 sm:px-4 py-3 sm:py-4">
         <div className="flex items-center justify-between">
           <div className="flex-1 text-center">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent drop-shadow-lg"
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight"
                 style={{
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.3), 0px 0px 8px rgba(59,130,246,0.5)',
-                  transform: 'perspective(200px) rotateX(5deg)',
-                  letterSpacing: '1px'
+                  letterSpacing: '0.5px',
+                  fontWeight: 700
                 }}>
-              Teamtalk-Transfers
+              <span className="text-[#1a1a1a]">TEAM</span><span className="text-[#d32f2f]">talk</span><span className="text-[#1a1a1a]">-Transfers</span>
             </h1>
           </div>
           <div className="flex items-center gap-4 ml-2">
@@ -37,7 +36,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
             {isAdminSection ? (
               <button
                 onClick={handleMainClick}
-                className="inline-block px-4 py-2 rounded bg-blue-700 text-white font-semibold shadow hover:bg-blue-800 transition-colors text-xs sm:text-sm"
+                className="inline-block px-4 py-2 rounded bg-[#d32f2f] text-white font-semibold shadow hover:bg-[#b71c1c] transition-colors text-xs sm:text-sm"
               >
                 Main
               </button>
@@ -47,7 +46,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
                   localStorage.removeItem('parsed_transfers');
                   window.location.reload();
                 }}
-                className="inline-block px-3 py-2 rounded bg-gray-200 text-gray-700 font-semibold shadow hover:bg-gray-300 transition-colors text-xs sm:text-sm"
+                className="inline-block px-3 py-2 rounded bg-gray-100 text-gray-800 font-semibold shadow hover:bg-gray-200 transition-colors text-xs sm:text-sm border border-gray-300"
                 title="Refresh transfer data"
               >
                 Refresh
