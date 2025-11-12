@@ -9372,12 +9372,23 @@ export const getSquad = (club: string): Player[] => {
       ? { ...player.bio, ...edit.bio }
       : player.bio;
     
+    // Determine image URL with proper priority:
+    // 1. localStorage playerImages (if valid and not empty)
+    // 2. localStorage playerEdits imageUrl (if valid and not empty)
+    // 3. Base player imageUrl from squadWages.ts (file system path)
+    let finalImageUrl = player.imageUrl; // Default to file system path
+    if (image && image.trim() && image !== 'null' && image !== 'undefined') {
+      finalImageUrl = image; // Use localStorage image if valid
+    } else if (edit?.imageUrl && edit.imageUrl.trim() && edit.imageUrl !== 'null' && edit.imageUrl !== 'undefined') {
+      finalImageUrl = edit.imageUrl; // Use edit imageUrl if valid
+    }
+    
     return {
       ...player,
       position: edit?.position || player.position,
       age: edit?.age || player.age,
       shirtNumber: edit?.shirtNumber !== undefined ? edit.shirtNumber : player.shirtNumber,
-      imageUrl: image || edit?.imageUrl || player.imageUrl,
+      imageUrl: finalImageUrl,
       // Prefer base player seasonStats if it exists and has content, otherwise use edit data
       seasonStats: (player.seasonStats && player.seasonStats.competitions && player.seasonStats.competitions.length > 0)
         ? player.seasonStats
