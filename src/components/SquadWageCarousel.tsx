@@ -146,13 +146,17 @@ export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) =>
                         <Avatar className="w-16 h-16 border-2 border-slate-600 group-hover:border-blue-500/50 relative transition-all duration-300">
                           {(() => {
                             const imageUrl = player.imageUrl || `/player-images/${clubSlug}/${sanitizePlayerImageName(player.name)}.png`;
+                            // Log for debugging in production
+                            if (process.env.NODE_ENV === 'production' && !player.imageUrl) {
+                              console.log(`[SquadWageCarousel] Player ${player.name} using fallback image: ${imageUrl}`);
+                            }
                             return imageUrl ? (
                               <img 
                                 src={imageUrl} 
                                 alt={player.name}
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
-                                  console.error(`Failed to load image: ${imageUrl}`, e);
+                                  console.error(`[SquadWageCarousel] Failed to load image for ${player.name}: ${imageUrl}`, e);
                                   const target = e.currentTarget as HTMLImageElement;
                                   target.style.display = 'none';
                                   const fallback = target.nextElementSibling as HTMLElement;
