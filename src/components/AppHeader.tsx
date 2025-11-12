@@ -28,7 +28,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
                   letterSpacing: '0.5px',
                   fontWeight: 700
                 }}>
-              <span className="text-[#1a1a1a]">TEAM</span><span className="text-[#d32f2f]">talk</span><span className="text-[#1a1a1a]">-Transfers</span>
+              <span className="text-[#4dff4d]">TEAM</span><span className="text-[#d32f2f]">talk</span><span className="text-[#4dff4d]">-Transfers</span>
             </h1>
           </div>
           <div className="flex items-center gap-4 ml-2">
