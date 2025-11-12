@@ -1,0 +1,198 @@
+{
+  "team": "burnley",
+  "count": 32,
+  "images": [
+    {
+      "name": "Max Weiß",
+      "slug": "max-wei",
+      "image": "/player-images/burnley/max-wei.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/646243-ss.png&h=120"
+    },
+    {
+      "name": "Martin Dúbravka",
+      "slug": "martin-dubravka",
+      "image": "/player-images/burnley/martin-dubravka.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/3547.png&h=120"
+    },
+    {
+      "name": "Václav Hladký",
+      "slug": "vaclav-hladky",
+      "image": "/player-images/burnley/vaclav-hladky.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/35528.png&h=120"
+    },
+    {
+      "name": "Hannes Delcroix",
+      "slug": "hannes-delcroix",
+      "image": "/player-images/burnley/hannes-delcroix.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/131485.png&h=120"
+    },
+    {
+      "name": "Kyle Walker",
+      "slug": "kyle-walker",
+      "image": "/player-images/burnley/kyle-walker.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/2340-alt.webp&h=120"
+    },
+    {
+      "name": "Maxime Estève",
+      "slug": "maxime-esteve",
+      "image": "/player-images/burnley/maxime-esteve.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/496162-ss.png&h=120"
+    },
+    {
+      "name": "Oliver Sonne",
+      "slug": "oliver-sonne",
+      "image": "/player-images/burnley/oliver-sonne.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/438047-ss.png&h=120"
+    },
+    {
+      "name": "Quilindschy Hartman",
+      "slug": "quilindschy-hartman",
+      "image": "/player-images/burnley/quilindschy-hartman.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/130139-alt.png&h=120"
+    },
+    {
+      "name": "Connor Roberts",
+      "slug": "connor-roberts",
+      "image": "/player-images/burnley/connor-roberts.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/144290.png&h=120"
+    },
+    {
+      "name": "Lucas Pires",
+      "slug": "lucas-pires",
+      "image": "/player-images/burnley/lucas-pires.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/198657-ss.png&h=120"
+    },
+    {
+      "name": "Axel Tuanzebe",
+      "slug": "axel-tuanzebe",
+      "image": "/player-images/burnley/axel-tuanzebe.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/81007.png&h=120"
+    },
+    {
+      "name": "Bashir Humphreys",
+      "slug": "bashir-humphreys",
+      "image": "/player-images/burnley/bashir-humphreys.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/480560-alt.png&h=120"
+    },
+    {
+      "name": "Hjalmar Ekdal",
+      "slug": "hjalmar-ekdal",
+      "image": "/player-images/burnley/hjalmar-ekdal.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/109818.png&h=120"
+    },
+    {
+      "name": "Joe Worrall",
+      "slug": "joe-worrall",
+      "image": "/player-images/burnley/joe-worrall.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/131199.png&h=120"
+    },
+    {
+      "name": "Jordan Beyer",
+      "slug": "jordan-beyer",
+      "image": "/player-images/burnley/jordan-beyer.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/209922.png&h=120"
+    },
+    {
+      "name": "Josh Laurent",
+      "slug": "josh-laurent",
+      "image": "/player-images/burnley/josh-laurent.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/90132.png&h=120"
+    },
+    {
+      "name": "Lesley Ugochukwu",
+      "slug": "lesley-ugochukwu",
+      "image": "/player-images/burnley/lesley-ugochukwu.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/581198-alt.png&h=120"
+    },
+    {
+      "name": "Hannibal",
+      "slug": "hannibal",
+      "image": "/player-images/burnley/hannibal.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303533499-ss.png&h=120"
+    },
+    {
+      "name": "Mike Tresor",
+      "slug": "mike-tresor",
+      "image": "/player-images/burnley/mike-tresor.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/162873.png&h=120"
+    },
+    {
+      "name": "Florentino",
+      "slug": "florentino",
+      "image": "/player-images/burnley/florentino.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/164372.png&h=120"
+    },
+    {
+      "name": "Josh Cullen",
+      "slug": "josh-cullen",
+      "image": "/player-images/burnley/josh-cullen.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/94036.png&h=120"
+    },
+    {
+      "name": "Zeki Amdouni",
+      "slug": "zeki-amdouni",
+      "image": "/player-images/burnley/zeki-amdouni.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/429350.png&h=120"
+    },
+    {
+      "name": "Zian Flemming",
+      "slug": "zian-flemming",
+      "image": "/player-images/burnley/zian-flemming.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/130121.png&h=120"
+    },
+    {
+      "name": "Jacob Bruun Larsen",
+      "slug": "jacob-bruun-larsen",
+      "image": "/player-images/burnley/jacob-bruun-larsen.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/113155.png&h=120"
+    },
+    {
+      "name": "Jaidon Anthony",
+      "slug": "jaidon-anthony",
+      "image": "/player-images/burnley/jaidon-anthony.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/419314-ss.png&h=120"
+    },
+    {
+      "name": "Marcus Edwards",
+      "slug": "marcus-edwards",
+      "image": "/player-images/burnley/marcus-edwards.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/116192.png&h=120"
+    },
+    {
+      "name": "Enock Agyei",
+      "slug": "enock-agyei",
+      "image": "/player-images/burnley/enock-agyei.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/608578-ss.png&h=120"
+    },
+    {
+      "name": "Jaydon Banel",
+      "slug": "jaydon-banel",
+      "image": "/player-images/burnley/jaydon-banel.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/173755894-ss.png&h=120"
+    },
+    {
+      "name": "Loum Tchaouna",
+      "slug": "loum-tchaouna",
+      "image": "/player-images/burnley/loum-tchaouna.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/581199-alt.webp&h=120"
+    },
+    {
+      "name": "Lyle Foster",
+      "slug": "lyle-foster",
+      "image": "/player-images/burnley/lyle-foster.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/261106-ss.png&h=120"
+    },
+    {
+      "name": "Armando Broja",
+      "slug": "armando-broja",
+      "image": "/player-images/burnley/armando-broja.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/392379-alt.webp&h=120"
+    },
+    {
+      "name": "Ashley Barnes",
+      "slug": "ashley-barnes",
+      "image": "/player-images/burnley/ashley-barnes.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/8252.png&h=120"
+    }
+  ]
+}

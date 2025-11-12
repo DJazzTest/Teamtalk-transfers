@@ -1,0 +1,174 @@
+{
+  "team": "crystal-palace",
+  "count": 28,
+  "images": [
+    {
+      "name": "Remi Matthews",
+      "slug": "remi-matthews",
+      "image": "/player-images/crystal-palace/remi-matthews.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/77006-alt.webp&h=120"
+    },
+    {
+      "name": "Dean Henderson",
+      "slug": "dean-henderson",
+      "image": "/player-images/crystal-palace/dean-henderson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/80019-alt.webp&h=120"
+    },
+    {
+      "name": "Walter Benítez",
+      "slug": "walter-benitez",
+      "image": "/player-images/crystal-palace/walter-benitez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/39711.png&h=120"
+    },
+    {
+      "name": "Borna Sosa",
+      "slug": "borna-sosa",
+      "image": "/player-images/crystal-palace/borna-sosa.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/81425-alt.webp&h=120"
+    },
+    {
+      "name": "Caleb Kporha",
+      "slug": "caleb-kporha",
+      "image": "/player-images/crystal-palace/caleb-kporha.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/288576522-alt.webp&h=120"
+    },
+    {
+      "name": "Jaydee Canvot",
+      "slug": "jaydee-canvot",
+      "image": "/player-images/crystal-palace/jaydee-canvot.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/fr.png"
+    },
+    {
+      "name": "Marc Guéhi",
+      "slug": "marc-guehi",
+      "image": "/player-images/crystal-palace/marc-guehi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/163537-alt.webp&h=120"
+    },
+    {
+      "name": "Daniel Muñoz",
+      "slug": "daniel-munoz",
+      "image": "/player-images/crystal-palace/daniel-munoz.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/151278-alt.webp&h=120"
+    },
+    {
+      "name": "Chadi Riad",
+      "slug": "chadi-riad",
+      "image": "/player-images/crystal-palace/chadi-riad.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/640057-alt.webp&h=120"
+    },
+    {
+      "name": "Joel Ward",
+      "slug": "joel-ward",
+      "image": "/player-images/crystal-palace/joel-ward.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/8228.png&h=120"
+    },
+    {
+      "name": "Nathaniel Clyne",
+      "slug": "nathaniel-clyne",
+      "image": "/player-images/crystal-palace/nathaniel-clyne.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/13100-alt.webp&h=120"
+    },
+    {
+      "name": "Tyrick Mitchell",
+      "slug": "tyrick-mitchell",
+      "image": "/player-images/crystal-palace/tyrick-mitchell.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/394123-alt.webp&h=120"
+    },
+    {
+      "name": "Chris Richards",
+      "slug": "chris-richards",
+      "image": "/player-images/crystal-palace/chris-richards.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/163735-alt.webp&h=120"
+    },
+    {
+      "name": "Maxence Lacroix",
+      "slug": "maxence-lacroix",
+      "image": "/player-images/crystal-palace/maxence-lacroix.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/343308-alt.webp&h=120"
+    },
+    {
+      "name": "Cheick Doucouré",
+      "slug": "cheick-doucoure",
+      "image": "/player-images/crystal-palace/cheick-doucoure.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/345530-alt.webp&h=120"
+    },
+    {
+      "name": "Rio Cardines",
+      "slug": "rio-cardines",
+      "image": "/player-images/crystal-palace/rio-cardines.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/uk.png"
+    },
+    {
+      "name": "Adam Wharton",
+      "slug": "adam-wharton",
+      "image": "/player-images/crystal-palace/adam-wharton.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/582717-alt.webp&h=120"
+    },
+    {
+      "name": "Jefferson Lerma",
+      "slug": "jefferson-lerma",
+      "image": "/player-images/crystal-palace/jefferson-lerma.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/69544-alt.png&h=120"
+    },
+    {
+      "name": "Will Hughes",
+      "slug": "will-hughes",
+      "image": "/player-images/crystal-palace/will-hughes.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/41521-alt.webp&h=120"
+    },
+    {
+      "name": "Justin Devenny",
+      "slug": "justin-devenny",
+      "image": "/player-images/crystal-palace/justin-devenny.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/564070-alt.webp&h=120"
+    },
+    {
+      "name": "Daichi Kamada",
+      "slug": "daichi-kamada",
+      "image": "/player-images/crystal-palace/daichi-kamada.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/128427-alt.webp&h=120"
+    },
+    {
+      "name": "Naouirou Ahamada",
+      "slug": "naouirou-ahamada",
+      "image": "/player-images/crystal-palace/naouirou-ahamada.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/491711-alt.webp&h=120"
+    },
+    {
+      "name": "Christantus Uche",
+      "slug": "christantus-uche",
+      "image": "/player-images/crystal-palace/christantus-uche.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303374684-alt.webp&h=120"
+    },
+    {
+      "name": "Romain Esse",
+      "slug": "romain-esse",
+      "image": "/player-images/crystal-palace/romain-esse.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/305470993-alt.webp&h=120"
+    },
+    {
+      "name": "Eddie Nketiah",
+      "slug": "eddie-nketiah",
+      "image": "/player-images/crystal-palace/eddie-nketiah.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/117339-alt.webp&h=120"
+    },
+    {
+      "name": "Jean-Philippe Mateta",
+      "slug": "jean-philippe-mateta",
+      "image": "/player-images/crystal-palace/jean-philippe-mateta.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/131596-alt.webp&h=120"
+    },
+    {
+      "name": "Yéremy Pino",
+      "slug": "yeremy-pino",
+      "image": "/player-images/crystal-palace/yeremy-pino.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/500986-alt.webp&h=120"
+    },
+    {
+      "name": "Ismaïla Sarr",
+      "slug": "ismaila-sarr",
+      "image": "/player-images/crystal-palace/ismaila-sarr.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/173084-alt.webp&h=120"
+    }
+  ]
+}

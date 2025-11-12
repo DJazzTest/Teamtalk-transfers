@@ -1,0 +1,174 @@
+{
+  "team": "nottingham",
+  "count": 28,
+  "images": [
+    {
+      "name": "Angus Gunn",
+      "slug": "angus-gunn",
+      "image": "/player-images/nottingham/angus-gunn.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/46693.png&h=120"
+    },
+    {
+      "name": "Matz Sels",
+      "slug": "matz-sels",
+      "image": "/player-images/nottingham/matz-sels.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/12019.png&h=120"
+    },
+    {
+      "name": "John Victor",
+      "slug": "john-victor",
+      "image": "/player-images/nottingham/john-victor.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/82980-alt.webp&h=120"
+    },
+    {
+      "name": "Jair Cunha",
+      "slug": "jair-cunha",
+      "image": "/player-images/nottingham/jair-cunha.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303418409-alt.webp&h=120"
+    },
+    {
+      "name": "Murillo",
+      "slug": "murillo",
+      "image": "/player-images/nottingham/murillo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/564610-alt.webp&h=120"
+    },
+    {
+      "name": "Neco Williams",
+      "slug": "neco-williams",
+      "image": "/player-images/nottingham/neco-williams.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/219265.png&h=120"
+    },
+    {
+      "name": "Ola Aina",
+      "slug": "ola-aina",
+      "image": "/player-images/nottingham/ola-aina.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/71268.png&h=120"
+    },
+    {
+      "name": "Morato",
+      "slug": "morato",
+      "image": "/player-images/nottingham/morato.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/510894.png&h=120"
+    },
+    {
+      "name": "Nicolò Savona",
+      "slug": "nicolo-savona",
+      "image": "/player-images/nottingham/nicolo-savona.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/2515046-alt.webp&h=120"
+    },
+    {
+      "name": "Willy Boly",
+      "slug": "willy-boly",
+      "image": "/player-images/nottingham/willy-boly.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/5270.png&h=120"
+    },
+    {
+      "name": "Nikola Milenković",
+      "slug": "nikola-milenkovic",
+      "image": "/player-images/nottingham/nikola-milenkovic.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/185877-alt.webp&h=120"
+    },
+    {
+      "name": "Zach Abbott",
+      "slug": "zach-abbott",
+      "image": "/player-images/nottingham/zach-abbott.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/156461168.png&h=120"
+    },
+    {
+      "name": "Oleksandr Zinchenko",
+      "slug": "oleksandr-zinchenko",
+      "image": "/player-images/nottingham/oleksandr-zinchenko.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/64983.png&h=120"
+    },
+    {
+      "name": "Ryan Yates",
+      "slug": "ryan-yates",
+      "image": "/player-images/nottingham/ryan-yates.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/144064.png&h=120"
+    },
+    {
+      "name": "James McAtee",
+      "slug": "james-mcatee",
+      "image": "/player-images/nottingham/james-mcatee.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/299330-alt.webp&h=120"
+    },
+    {
+      "name": "Douglas Luiz",
+      "slug": "douglas-luiz",
+      "image": "/player-images/nottingham/douglas-luiz.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/202659-alt.webp&h=120"
+    },
+    {
+      "name": "Elliot Anderson",
+      "slug": "elliot-anderson",
+      "image": "/player-images/nottingham/elliot-anderson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/169576-alt.webp&h=120"
+    },
+    {
+      "name": "Omari Hutchinson",
+      "slug": "omari-hutchinson",
+      "image": "/player-images/nottingham/omari-hutchinson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/605873-ss.png&h=120"
+    },
+    {
+      "name": "Nicolás Domínguez",
+      "slug": "nicolas-dominguez",
+      "image": "/player-images/nottingham/nicolas-dominguez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/257495.png&h=120"
+    },
+    {
+      "name": "Morgan Gibbs-White",
+      "slug": "morgan-gibbs-white",
+      "image": "/player-images/nottingham/morgan-gibbs-white.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/210482.png&h=120"
+    },
+    {
+      "name": "Igor Jesus",
+      "slug": "igor-jesus",
+      "image": "/player-images/nottingham/igor-jesus.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/371012-alt.webp&h=120"
+    },
+    {
+      "name": "Taiwo Awoniyi",
+      "slug": "taiwo-awoniyi",
+      "image": "/player-images/nottingham/taiwo-awoniyi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/79532.png&h=120"
+    },
+    {
+      "name": "Arnaud Kalimuendo",
+      "slug": "arnaud-kalimuendo",
+      "image": "/player-images/nottingham/arnaud-kalimuendo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/490481-alt.webp&h=120"
+    },
+    {
+      "name": "Callum Hudson-Odoi",
+      "slug": "callum-hudson-odoi",
+      "image": "/player-images/nottingham/callum-hudson-odoi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/210509.png&h=120"
+    },
+    {
+      "name": "Dan Ndoye",
+      "slug": "dan-ndoye",
+      "image": "/player-images/nottingham/dan-ndoye.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/211640-alt.webp&h=120"
+    },
+    {
+      "name": "Dilane Bakwa",
+      "slug": "dilane-bakwa",
+      "image": "/player-images/nottingham/dilane-bakwa.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/397105.png&h=120"
+    },
+    {
+      "name": "Ibrahima Sangaré",
+      "slug": "ibrahima-sangare",
+      "image": "/player-images/nottingham/ibrahima-sangare.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/134998.png&h=120"
+    },
+    {
+      "name": "Chris Wood",
+      "slug": "chris-wood",
+      "image": "/player-images/nottingham/chris-wood.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/294699-ss.png&h=120"
+    }
+  ]
+}

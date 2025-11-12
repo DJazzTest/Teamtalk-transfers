@@ -1,0 +1,216 @@
+{
+  "team": "sunderland",
+  "count": 35,
+  "images": [
+    {
+      "name": "Robin Roefs",
+      "slug": "robin-roefs",
+      "image": "/player-images/sunderland/robin-roefs.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/564856-ss.png&h=120"
+    },
+    {
+      "name": "Simon Moore",
+      "slug": "simon-moore",
+      "image": "/player-images/sunderland/simon-moore.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/22853.png&h=120"
+    },
+    {
+      "name": "Anthony Patterson",
+      "slug": "anthony-patterson",
+      "image": "/player-images/sunderland/anthony-patterson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/208109.png&h=120"
+    },
+    {
+      "name": "Blondy Nna Noukeu",
+      "slug": "blondy-nna-noukeu",
+      "image": "/player-images/sunderland/blondy-nna-noukeu.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/551476-ss.png&h=120"
+    },
+    {
+      "name": "Arthur Masuaku",
+      "slug": "arthur-masuaku",
+      "image": "/player-images/sunderland/arthur-masuaku.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/38088.png&h=120"
+    },
+    {
+      "name": "Joe Anderson",
+      "slug": "joe-anderson",
+      "image": "/player-images/sunderland/joe-anderson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/230090-ss.png&h=120"
+    },
+    {
+      "name": "Nordi Mukiele",
+      "slug": "nordi-mukiele",
+      "image": "/player-images/sunderland/nordi-mukiele.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/119560.png&h=120"
+    },
+    {
+      "name": "Timothée Pembélé",
+      "slug": "timothee-pembele",
+      "image": "/player-images/sunderland/timothee-pembele.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/417590.png&h=120"
+    },
+    {
+      "name": "Lutsharel Geertruida",
+      "slug": "lutsharel-geertruida",
+      "image": "/player-images/sunderland/lutsharel-geertruida.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/228935-ss.png&h=120"
+    },
+    {
+      "name": "Trai Hume",
+      "slug": "trai-hume",
+      "image": "/player-images/sunderland/trai-hume.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/475985-ss.png&h=120"
+    },
+    {
+      "name": "Aji Alese",
+      "slug": "aji-alese",
+      "image": "/player-images/sunderland/aji-alese.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/237023.png&h=120"
+    },
+    {
+      "name": "Dennis Cirkin",
+      "slug": "dennis-cirkin",
+      "image": "/player-images/sunderland/dennis-cirkin.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/437749.png&h=120"
+    },
+    {
+      "name": "Leo Fuhr Hjelde",
+      "slug": "leo-fuhr-hjelde",
+      "image": "/player-images/sunderland/leo-fuhr-hjelde.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/579284-ss.png&h=120"
+    },
+    {
+      "name": "Omar Alderete",
+      "slug": "omar-alderete",
+      "image": "/player-images/sunderland/omar-alderete.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/70410.png&h=120"
+    },
+    {
+      "name": "Daniel George Ballard",
+      "slug": "daniel-george-ballard",
+      "image": "/player-images/sunderland/daniel-george-ballard.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/207742.png&h=120"
+    },
+    {
+      "name": "Luke O'Nien",
+      "slug": "luke-onien",
+      "image": "/player-images/sunderland/luke-onien.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/75489.png&h=120"
+    },
+    {
+      "name": "Reinildo Mandava",
+      "slug": "reinildo-mandava",
+      "image": "/player-images/sunderland/reinildo-mandava.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/98732-alt.png&h=120"
+    },
+    {
+      "name": "Chris Rigg",
+      "slug": "chris-rigg",
+      "image": "/player-images/sunderland/chris-rigg.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221345893.png&h=120"
+    },
+    {
+      "name": "Noah Sadiki",
+      "slug": "noah-sadiki",
+      "image": "/player-images/sunderland/noah-sadiki.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221679291-ss.png&h=120"
+    },
+    {
+      "name": "Granit Xhaka",
+      "slug": "granit-xhaka",
+      "image": "/player-images/sunderland/granit-xhaka.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/3355-alt.webp&h=120"
+    },
+    {
+      "name": "Habib Diarra",
+      "slug": "habib-diarra",
+      "image": "/player-images/sunderland/habib-diarra.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/115474045-alt.png&h=120"
+    },
+    {
+      "name": "Harrison Jones",
+      "slug": "harrison-jones",
+      "image": "/player-images/sunderland/harrison-jones.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221642343.png&h=120"
+    },
+    {
+      "name": "Abdoullah Ba",
+      "slug": "abdoullah-ba",
+      "image": "/player-images/sunderland/abdoullah-ba.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/581984-ss.png&h=120"
+    },
+    {
+      "name": "Dan Neil",
+      "slug": "dan-neil",
+      "image": "/player-images/sunderland/dan-neil.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/357258-ss.png&h=120"
+    },
+    {
+      "name": "Enzo Le Fée",
+      "slug": "enzo-le-fee",
+      "image": "/player-images/sunderland/enzo-le-fee.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/423028.png&h=120"
+    },
+    {
+      "name": "Jay Matete",
+      "slug": "jay-matete",
+      "image": "/player-images/sunderland/jay-matete.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/398986-ss.png&h=120"
+    },
+    {
+      "name": "Ahmed Abdullahi",
+      "slug": "ahmed-abdullahi",
+      "image": "/player-images/sunderland/ahmed-abdullahi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/300123978.png&h=120"
+    },
+    {
+      "name": "Eliezer Mayenda",
+      "slug": "eliezer-mayenda",
+      "image": "/player-images/sunderland/eliezer-mayenda.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303217745-ss.png&h=120"
+    },
+    {
+      "name": "Romaine Mundle",
+      "slug": "romaine-mundle",
+      "image": "/player-images/sunderland/romaine-mundle.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/480569.png&h=120"
+    },
+    {
+      "name": "Simon Adingra",
+      "slug": "simon-adingra",
+      "image": "/player-images/sunderland/simon-adingra.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/5448142.png&h=120"
+    },
+    {
+      "name": "Wilson Isidor",
+      "slug": "wilson-isidor",
+      "image": "/player-images/sunderland/wilson-isidor.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/259221.png&h=120"
+    },
+    {
+      "name": "Brian Brobbey",
+      "slug": "brian-brobbey",
+      "image": "/player-images/sunderland/brian-brobbey.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/406476.png&h=120"
+    },
+    {
+      "name": "Chemsdine Talbi",
+      "slug": "chemsdine-talbi",
+      "image": "/player-images/sunderland/chemsdine-talbi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/173450702-ss.png&h=120"
+    },
+    {
+      "name": "Bertrand Traoré",
+      "slug": "bertrand-traore",
+      "image": "/player-images/sunderland/bertrand-traore.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/24492.png&h=120"
+    },
+    {
+      "name": "Ian Poveda",
+      "slug": "ian-poveda",
+      "image": "/player-images/sunderland/ian-poveda.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/207681.png&h=120"
+    }
+  ]
+}

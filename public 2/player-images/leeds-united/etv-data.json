@@ -1,0 +1,188 @@
+{
+  "team": "Leeds United",
+  "conversionRate": 0.85,
+  "players": {
+    "Illan Meslier": {
+      "etvEuro": 14200000,
+      "etvEuroFormatted": "€14.2M",
+      "etvGbp": 12070000,
+      "etvGbpFormatted": "£12.07M",
+      "position": "d"
+    },
+    "Karl Darlow": {
+      "etvEuro": 400000,
+      "etvEuroFormatted": "€0.4M",
+      "etvGbp": 340000,
+      "etvGbpFormatted": "£0.34M",
+      "position": "d"
+    },
+    "Lucas Perri": {
+      "etvEuro": 19100000,
+      "etvEuroFormatted": "€19.1M",
+      "etvGbp": 16235000,
+      "etvGbpFormatted": "£16.23M",
+      "position": "d"
+    },
+    "Daniel James": {
+      "etvEuro": 14400000,
+      "etvEuroFormatted": "€14.4M",
+      "etvGbp": 12240000,
+      "etvGbpFormatted": "£12.24M",
+      "position": "d"
+    },
+    "Alex Cairns": {
+      "etvEuro": 600000,
+      "etvEuroFormatted": "€0.6M",
+      "etvGbp": 510000,
+      "etvGbpFormatted": "£0.51M",
+      "position": "d"
+    },
+    "Jayden Bogle": {
+      "etvEuro": 14400000,
+      "etvEuroFormatted": "€14.4M",
+      "etvGbp": 12240000,
+      "etvGbpFormatted": "£12.24M",
+      "position": "d"
+    },
+    "James Justin": {
+      "etvEuro": 16800000,
+      "etvEuroFormatted": "€16.8M",
+      "etvGbp": 14280000,
+      "etvGbpFormatted": "£14.28M",
+      "position": "d"
+    },
+    "Sam Byram": {
+      "etvEuro": 700000,
+      "etvEuroFormatted": "€0.7M",
+      "etvGbp": 595000,
+      "etvGbpFormatted": "£0.59M",
+      "position": "d"
+    },
+    "Gabriel Gudmundsson": {
+      "etvEuro": 15700000,
+      "etvEuroFormatted": "€15.7M",
+      "etvGbp": 13345000,
+      "etvGbpFormatted": "£13.35M",
+      "position": "d"
+    },
+    "Jaka Bijol": {
+      "etvEuro": 21300000,
+      "etvEuroFormatted": "€21.3M",
+      "etvGbp": 18105000,
+      "etvGbpFormatted": "£18.11M",
+      "position": "d"
+    },
+    "Joe Rodon": {
+      "etvEuro": 11900000,
+      "etvEuroFormatted": "€11.9M",
+      "etvGbp": 10115000,
+      "etvGbpFormatted": "£10.12M",
+      "position": "d"
+    },
+    "Pascal Struijk": {
+      "etvEuro": 20700000,
+      "etvEuroFormatted": "€20.7M",
+      "etvGbp": 17595000,
+      "etvGbpFormatted": "£17.59M",
+      "position": "d"
+    },
+    "Sebastiaan Bornauw": {
+      "etvEuro": 7200000,
+      "etvEuroFormatted": "€7.2M",
+      "etvGbp": 6120000,
+      "etvGbpFormatted": "£6.12M",
+      "position": "d"
+    },
+    "Ao Tanaka": {
+      "etvEuro": 13400000,
+      "etvEuroFormatted": "€13.4M",
+      "etvGbp": 11390000,
+      "etvGbpFormatted": "£11.39M",
+      "position": "d"
+    },
+    "Sean Longstaff": {
+      "etvEuro": 18300000,
+      "etvEuroFormatted": "€18.3M",
+      "etvGbp": 15555000,
+      "etvGbpFormatted": "£15.55M",
+      "position": "d"
+    },
+    "Ilia Gruev": {
+      "etvEuro": 10900000,
+      "etvEuroFormatted": "€10.9M",
+      "etvGbp": 9265000,
+      "etvGbpFormatted": "£9.27M",
+      "position": "d"
+    },
+    "Josuha Guilavogui": {
+      "etvEuro": 100000,
+      "etvEuroFormatted": "€0.1M",
+      "etvGbp": 85000,
+      "etvGbpFormatted": "£0.09M",
+      "position": "d"
+    },
+    "Ethan Ampadu": {
+      "etvEuro": 21700000,
+      "etvEuroFormatted": "€21.7M",
+      "etvGbp": 18445000,
+      "etvGbpFormatted": "£18.45M",
+      "position": "d"
+    },
+    "Brenden Aaronson": {
+      "etvEuro": 17400000,
+      "etvEuroFormatted": "€17.4M",
+      "etvGbp": 14790000,
+      "etvGbpFormatted": "£14.79M",
+      "position": "d"
+    },
+    "Anton Stach": {
+      "etvEuro": 18200000,
+      "etvEuroFormatted": "€18.2M",
+      "etvGbp": 15470000,
+      "etvGbpFormatted": "£15.47M",
+      "position": "d"
+    },
+    "Noah Okafor": {
+      "etvEuro": 17400000,
+      "etvEuroFormatted": "€17.4M",
+      "etvGbp": 14790000,
+      "etvGbpFormatted": "£14.79M",
+      "position": "d"
+    },
+    "Lukas Nmecha": {
+      "etvEuro": 6000000,
+      "etvEuroFormatted": "€6M",
+      "etvGbp": 5100000,
+      "etvGbpFormatted": "£5.10M",
+      "position": "d"
+    },
+    "Jack Harrison": {
+      "etvEuro": 16100000.000000002,
+      "etvEuroFormatted": "€16.1M",
+      "etvGbp": 13685000.000000002,
+      "etvGbpFormatted": "£13.69M",
+      "position": "d"
+    },
+    "Wilfried Gnonto": {
+      "etvEuro": 26400000,
+      "etvEuroFormatted": "€26.4M",
+      "etvGbp": 22440000,
+      "etvGbpFormatted": "£22.44M",
+      "position": "d"
+    },
+    "Joël Piroe": {
+      "etvEuro": 18500000,
+      "etvEuroFormatted": "€18.5M",
+      "etvGbp": 15725000,
+      "etvGbpFormatted": "£15.72M",
+      "position": "d"
+    },
+    "Dominic Calvert-Lewin": {
+      "etvEuro": 17500000,
+      "etvEuroFormatted": "€17.5M",
+      "etvGbp": 14875000,
+      "etvGbpFormatted": "£14.88M",
+      "position": "d"
+    }
+  }
+}

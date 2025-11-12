@@ -1,0 +1,174 @@
+{
+  "team": "liverpool",
+  "count": 28,
+  "images": [
+    {
+      "name": "Ármin Pécsi",
+      "slug": "armin-pecsi",
+      "image": "/player-images/liverpool/armin-pecsi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221618224-alt.webp&h=120"
+    },
+    {
+      "name": "Kornel Misciur",
+      "slug": "kornel-misciur",
+      "image": "/player-images/liverpool/kornel-misciur.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/uk.png"
+    },
+    {
+      "name": "Giorgi Mamardashvili",
+      "slug": "giorgi-mamardashvili",
+      "image": "/player-images/liverpool/giorgi-mamardashvili.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/226871-alt.webp&h=120"
+    },
+    {
+      "name": "Alisson",
+      "slug": "alisson",
+      "image": "/player-images/liverpool/alisson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/53413.png&h=120"
+    },
+    {
+      "name": "Freddie Woodman",
+      "slug": "freddie-woodman",
+      "image": "/player-images/liverpool/freddie-woodman.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/64799.png&h=120"
+    },
+    {
+      "name": "Andrew Robertson",
+      "slug": "andrew-robertson",
+      "image": "/player-images/liverpool/andrew-robertson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/58181.png&h=120"
+    },
+    {
+      "name": "Giovanni Leoni",
+      "slug": "giovanni-leoni",
+      "image": "/player-images/liverpool/giovanni-leoni.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/305504329-alt.webp&h=120"
+    },
+    {
+      "name": "Jeremie Frimpong",
+      "slug": "jeremie-frimpong",
+      "image": "/player-images/liverpool/jeremie-frimpong.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/207675-alt.png&h=120"
+    },
+    {
+      "name": "Joe Gomez",
+      "slug": "joe-gomez",
+      "image": "/player-images/liverpool/joe-gomez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/70129.png&h=120"
+    },
+    {
+      "name": "Milos Kerkez",
+      "slug": "milos-kerkez",
+      "image": "/player-images/liverpool/milos-kerkez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/557151-alt.png&h=120"
+    },
+    {
+      "name": "Ibrahima Konaté",
+      "slug": "ibrahima-konate",
+      "image": "/player-images/liverpool/ibrahima-konate.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/124071.png&h=120"
+    },
+    {
+      "name": "Rhys Williams",
+      "slug": "rhys-williams",
+      "image": "/player-images/liverpool/rhys-williams.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/188389-alt.webp&h=120"
+    },
+    {
+      "name": "Virgil van Dijk",
+      "slug": "virgil-van-dijk",
+      "image": "/player-images/liverpool/virgil-van-dijk.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/5685.png&h=120"
+    },
+    {
+      "name": "Conor Bradley",
+      "slug": "conor-bradley",
+      "image": "/player-images/liverpool/conor-bradley.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/568017-alt.webp&h=120"
+    },
+    {
+      "name": "Curtis Jones",
+      "slug": "curtis-jones",
+      "image": "/player-images/liverpool/curtis-jones.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/219260-alt.png&h=120"
+    },
+    {
+      "name": "Stefan Bajcetic",
+      "slug": "stefan-bajcetic",
+      "image": "/player-images/liverpool/stefan-bajcetic.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/42763820-alt.webp&h=120"
+    },
+    {
+      "name": "Trey Nyoni",
+      "slug": "trey-nyoni",
+      "image": "/player-images/liverpool/trey-nyoni.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/uk.png"
+    },
+    {
+      "name": "Wataru Endo",
+      "slug": "wataru-endo",
+      "image": "/player-images/liverpool/wataru-endo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/66100-alt.webp&h=120"
+    },
+    {
+      "name": "Dominik Szoboszlai",
+      "slug": "dominik-szoboszlai",
+      "image": "/player-images/liverpool/dominik-szoboszlai.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/127147-alt.webp&h=120"
+    },
+    {
+      "name": "Ryan Gravenberch",
+      "slug": "ryan-gravenberch",
+      "image": "/player-images/liverpool/ryan-gravenberch.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/130164-alt.webp&h=120"
+    },
+    {
+      "name": "Alexis Mac Allister",
+      "slug": "alexis-mac-allister",
+      "image": "/player-images/liverpool/alexis-mac-allister.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/234739.png&h=120"
+    },
+    {
+      "name": "Florian Wirtz",
+      "slug": "florian-wirtz",
+      "image": "/player-images/liverpool/florian-wirtz.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/468138-alt.webp&h=120"
+    },
+    {
+      "name": "Hugo Ekitiké",
+      "slug": "hugo-ekitike",
+      "image": "/player-images/liverpool/hugo-ekitike.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/566884-alt.webp&h=120"
+    },
+    {
+      "name": "Rio Ngumoha",
+      "slug": "rio-ngumoha",
+      "image": "/player-images/liverpool/rio-ngumoha.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/305525248-alt.png&h=120"
+    },
+    {
+      "name": "Alexander Isak",
+      "slug": "alexander-isak",
+      "image": "/player-images/liverpool/alexander-isak.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/166571-alt.webp&h=120"
+    },
+    {
+      "name": "Mohamed Salah",
+      "slug": "mohamed-salah",
+      "image": "/player-images/liverpool/mohamed-salah.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/7780-alt.webp&h=120"
+    },
+    {
+      "name": "Cody Gakpo",
+      "slug": "cody-gakpo",
+      "image": "/player-images/liverpool/cody-gakpo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/133404-alt.webp&h=120"
+    },
+    {
+      "name": "Federico Chiesa",
+      "slug": "federico-chiesa",
+      "image": "/player-images/liverpool/federico-chiesa.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/176988-alt.webp&h=120"
+    }
+  ]
+}

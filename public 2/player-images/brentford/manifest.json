@@ -1,0 +1,198 @@
+{
+  "team": "brentford",
+  "count": 32,
+  "images": [
+    {
+      "name": "Caoimhín Kelleher",
+      "slug": "caoimhin-kelleher",
+      "image": "/player-images/brentford/caoimhin-kelleher.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/112261-alt.webp&h=120"
+    },
+    {
+      "name": "Julian Eyestone",
+      "slug": "julian-eyestone",
+      "image": "/player-images/brentford/julian-eyestone.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/us.png"
+    },
+    {
+      "name": "Ellery Balcombe",
+      "slug": "ellery-balcombe",
+      "image": "/player-images/brentford/ellery-balcombe.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/236815.png&h=120"
+    },
+    {
+      "name": "Hákon Valdimarsson",
+      "slug": "hakon-valdimarsson",
+      "image": "/player-images/brentford/hakon-valdimarsson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/345801-ss.png&h=120"
+    },
+    {
+      "name": "Matthew Cox",
+      "slug": "matthew-cox",
+      "image": "/player-images/brentford/matthew-cox.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/594108-ss.png&h=120"
+    },
+    {
+      "name": "Benjamin Arthur",
+      "slug": "benjamin-arthur",
+      "image": "/player-images/brentford/benjamin-arthur.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/uk.png"
+    },
+    {
+      "name": "Michael Kayode",
+      "slug": "michael-kayode",
+      "image": "/player-images/brentford/michael-kayode.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/672015-alt.webp&h=120"
+    },
+    {
+      "name": "Nathan Collins",
+      "slug": "nathan-collins",
+      "image": "/player-images/brentford/nathan-collins.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/231247.png&h=120"
+    },
+    {
+      "name": "Rico Henry",
+      "slug": "rico-henry",
+      "image": "/player-images/brentford/rico-henry.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/104597.png&h=120"
+    },
+    {
+      "name": "Aaron Hickey",
+      "slug": "aaron-hickey",
+      "image": "/player-images/brentford/aaron-hickey.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/511305.png&h=120"
+    },
+    {
+      "name": "Ethan Pinnock",
+      "slug": "ethan-pinnock",
+      "image": "/player-images/brentford/ethan-pinnock.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/174270.png&h=120"
+    },
+    {
+      "name": "Sepp van den Berg",
+      "slug": "sepp-van-den-berg",
+      "image": "/player-images/brentford/sepp-van-den-berg.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/423308.png&h=120"
+    },
+    {
+      "name": "Kristoffer Ajer",
+      "slug": "kristoffer-ajer",
+      "image": "/player-images/brentford/kristoffer-ajer.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/105614.png&h=120"
+    },
+    {
+      "name": "Antoni Milambo",
+      "slug": "antoni-milambo",
+      "image": "/player-images/brentford/antoni-milambo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/604713-alt.webp&h=120"
+    },
+    {
+      "name": "Mikkel Damsgaard",
+      "slug": "mikkel-damsgaard",
+      "image": "/player-images/brentford/mikkel-damsgaard.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/411630.png&h=120"
+    },
+    {
+      "name": "Nikolaj Kirk",
+      "slug": "nikolaj-kirk",
+      "image": "/player-images/brentford/nikolaj-kirk.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/737399.png&h=120"
+    },
+    {
+      "name": "Paris Maghoma",
+      "slug": "paris-maghoma",
+      "image": "/player-images/brentford/paris-maghoma.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/220977.png&h=120"
+    },
+    {
+      "name": "Vitaly Janelt",
+      "slug": "vitaly-janelt",
+      "image": "/player-images/brentford/vitaly-janelt.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/115769.png&h=120"
+    },
+    {
+      "name": "Yegor Yarmolyuk",
+      "slug": "yegor-yarmolyuk",
+      "image": "/player-images/brentford/yegor-yarmolyuk.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303206335-alt.webp&h=120"
+    },
+    {
+      "name": "Yunus Konak",
+      "slug": "yunus-konak",
+      "image": "/player-images/brentford/yunus-konak.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/tr.png"
+    },
+    {
+      "name": "Frank Onyeka",
+      "slug": "frank-onyeka",
+      "image": "/player-images/brentford/frank-onyeka.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/179686.png&h=120"
+    },
+    {
+      "name": "Joshua Dasilva",
+      "slug": "joshua-dasilva",
+      "image": "/player-images/brentford/joshua-dasilva.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/117334.png&h=120"
+    },
+    {
+      "name": "Myles Peart-Harris",
+      "slug": "myles-peart-harris",
+      "image": "/player-images/brentford/myles-peart-harris.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/453054-ss.png&h=120"
+    },
+    {
+      "name": "Fábio Carvalho",
+      "slug": "fabio-carvalho",
+      "image": "/player-images/brentford/fabio-carvalho.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/412457-alt.webp&h=120"
+    },
+    {
+      "name": "Keane Lewis-Potter",
+      "slug": "keane-lewis-potter",
+      "image": "/player-images/brentford/keane-lewis-potter.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/419320.png&h=120"
+    },
+    {
+      "name": "Jordan Henderson",
+      "slug": "jordan-henderson",
+      "image": "/player-images/brentford/jordan-henderson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/2419.png&h=120"
+    },
+    {
+      "name": "Gustavo Nunes",
+      "slug": "gustavo-nunes",
+      "image": "/player-images/brentford/gustavo-nunes.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/flags/w40/br.png"
+    },
+    {
+      "name": "Romelle Donovan",
+      "slug": "romelle-donovan",
+      "image": "/player-images/brentford/romelle-donovan.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/291518359.png&h=120"
+    },
+    {
+      "name": "Igor Thiago",
+      "slug": "igor-thiago",
+      "image": "/player-images/brentford/igor-thiago.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/531714-ss.png&h=120"
+    },
+    {
+      "name": "Dango Ouattara",
+      "slug": "dango-ouattara",
+      "image": "/player-images/brentford/dango-ouattara.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/661024.png&h=120"
+    },
+    {
+      "name": "Reiss Nelson",
+      "slug": "reiss-nelson",
+      "image": "/player-images/brentford/reiss-nelson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/118906-alt.webp&h=120"
+    },
+    {
+      "name": "Kevin Schade",
+      "slug": "kevin-schade",
+      "image": "/player-images/brentford/kevin-schade.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/362044-ss.png&h=120"
+    }
+  ]
+}

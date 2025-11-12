@@ -1,0 +1,156 @@
+{
+  "team": "man-utd",
+  "count": 25,
+  "images": [
+    {
+      "name": "Altay Bayındır",
+      "slug": "altay-bayndr",
+      "image": "/player-images/man-utd/altay-bayndr.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/128040.png&h=120"
+    },
+    {
+      "name": "Senne Lammens",
+      "slug": "senne-lammens",
+      "image": "/player-images/man-utd/senne-lammens.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/289355-alt.webp&h=120"
+    },
+    {
+      "name": "Tom Heaton",
+      "slug": "tom-heaton",
+      "image": "/player-images/man-utd/tom-heaton.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/291.png&h=120"
+    },
+    {
+      "name": "Diogo Dalot",
+      "slug": "diogo-dalot",
+      "image": "/player-images/man-utd/diogo-dalot.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/129709.png&h=120"
+    },
+    {
+      "name": "Leny Yoro",
+      "slug": "leny-yoro",
+      "image": "/player-images/man-utd/leny-yoro.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/173450773-alt.webp&h=120"
+    },
+    {
+      "name": "Luke Shaw",
+      "slug": "luke-shaw",
+      "image": "/player-images/man-utd/luke-shaw.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/39599.png&h=120"
+    },
+    {
+      "name": "Noussair Mazraoui",
+      "slug": "noussair-mazraoui",
+      "image": "/player-images/man-utd/noussair-mazraoui.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/117365-alt.png&h=120"
+    },
+    {
+      "name": "Tyler Fredricson",
+      "slug": "tyler-fredricson",
+      "image": "/player-images/man-utd/tyler-fredricson.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/154374916-alt.webp&h=120"
+    },
+    {
+      "name": "Patrick Dorgu",
+      "slug": "patrick-dorgu",
+      "image": "/player-images/man-utd/patrick-dorgu.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/222585365-alt.png&h=120"
+    },
+    {
+      "name": "Tyrell Malacia",
+      "slug": "tyrell-malacia",
+      "image": "/player-images/man-utd/tyrell-malacia.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/129563-alt.png&h=120"
+    },
+    {
+      "name": "Ayden Heaven",
+      "slug": "ayden-heaven",
+      "image": "/player-images/man-utd/ayden-heaven.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303219047-alt.png&h=120"
+    },
+    {
+      "name": "Harry Maguire",
+      "slug": "harry-maguire",
+      "image": "/player-images/man-utd/harry-maguire.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/34535.png&h=120"
+    },
+    {
+      "name": "Lisandro Martínez",
+      "slug": "lisandro-martinez",
+      "image": "/player-images/man-utd/lisandro-martinez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/248001-alt.webp&h=120"
+    },
+    {
+      "name": "Matthijs de Ligt",
+      "slug": "matthijs-de-ligt",
+      "image": "/player-images/man-utd/matthijs-de-ligt.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/129718-alt.webp&h=120"
+    },
+    {
+      "name": "Kobbie Mainoo",
+      "slug": "kobbie-mainoo",
+      "image": "/player-images/man-utd/kobbie-mainoo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/651721-alt.webp&h=120"
+    },
+    {
+      "name": "Manuel Ugarte",
+      "slug": "manuel-ugarte",
+      "image": "/player-images/man-utd/manuel-ugarte.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/213461-alt.webp&h=120"
+    },
+    {
+      "name": "Mason Mount",
+      "slug": "mason-mount",
+      "image": "/player-images/man-utd/mason-mount.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/118911-alt.webp&h=120"
+    },
+    {
+      "name": "Casemiro",
+      "slug": "casemiro",
+      "image": "/player-images/man-utd/casemiro.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/3997-alt.webp&h=120"
+    },
+    {
+      "name": "Bruno Fernandes",
+      "slug": "bruno-fernandes",
+      "image": "/player-images/man-utd/bruno-fernandes.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/65379-alt.webp&h=120"
+    },
+    {
+      "name": "Chido Obi",
+      "slug": "chido-obi",
+      "image": "/player-images/man-utd/chido-obi.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303271780-alt.png&h=120"
+    },
+    {
+      "name": "Benjamin Sesko",
+      "slug": "benjamin-sesko",
+      "image": "/player-images/man-utd/benjamin-sesko.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/451208-alt.png&h=120"
+    },
+    {
+      "name": "Amad Diallo",
+      "slug": "amad-diallo",
+      "image": "/player-images/man-utd/amad-diallo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/432159.png&h=120"
+    },
+    {
+      "name": "Bryan Mbeumo",
+      "slug": "bryan-mbeumo",
+      "image": "/player-images/man-utd/bryan-mbeumo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/215080-alt.webp&h=120"
+    },
+    {
+      "name": "Joshua Zirkzee",
+      "slug": "joshua-zirkzee",
+      "image": "/player-images/man-utd/joshua-zirkzee.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/332019-alt.webp&h=120"
+    },
+    {
+      "name": "Matheus Cunha",
+      "slug": "matheus-cunha",
+      "image": "/player-images/man-utd/matheus-cunha.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/200268-alt.webp&h=120"
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "team": "west-ham",
+  "count": 25,
+  "images": [
+    {
+      "name": "Alphonse Areola",
+      "slug": "alphonse-areola",
+      "image": "/player-images/west-ham/alphonse-areola.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/3166.png&h=120"
+    },
+    {
+      "name": "Łukasz Fabiański",
+      "slug": "ukasz-fabianski",
+      "image": "/player-images/west-ham/ukasz-fabianski.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/359.png&h=120"
+    },
+    {
+      "name": "Mads Hermansen",
+      "slug": "mads-hermansen",
+      "image": "/player-images/west-ham/mads-hermansen.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/228925.png&h=120"
+    },
+    {
+      "name": "El Hadji Malick Diouf",
+      "slug": "el-hadji-malick-diouf",
+      "image": "/player-images/west-ham/el-hadji-malick-diouf.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/303223072-alt.png&h=120"
+    },
+    {
+      "name": "Konstantinos Mavropanos",
+      "slug": "konstantinos-mavropanos",
+      "image": "/player-images/west-ham/konstantinos-mavropanos.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/177043.png&h=120"
+    },
+    {
+      "name": "Kyle Walker-Peters",
+      "slug": "kyle-walker-peters",
+      "image": "/player-images/west-ham/kyle-walker-peters.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/126732.png&h=120"
+    },
+    {
+      "name": "Oliver Scarles",
+      "slug": "oliver-scarles",
+      "image": "/player-images/west-ham/oliver-scarles.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/44897793-ss.png&h=120"
+    },
+    {
+      "name": "Aaron Wan-Bissaka",
+      "slug": "aaron-wan-bissaka",
+      "image": "/player-images/west-ham/aaron-wan-bissaka.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/243040.png&h=120"
+    },
+    {
+      "name": "Igor Julio",
+      "slug": "igor-julio",
+      "image": "/player-images/west-ham/igor-julio.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/178849.png&h=120"
+    },
+    {
+      "name": "Jean-Clair Todibo",
+      "slug": "jean-clair-todibo",
+      "image": "/player-images/west-ham/jean-clair-todibo.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/260754-alt.webp&h=120"
+    },
+    {
+      "name": "Maximilian Kilman",
+      "slug": "maximilian-kilman",
+      "image": "/player-images/west-ham/maximilian-kilman.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/260559.png&h=120"
+    },
+    {
+      "name": "Freddie Potts",
+      "slug": "freddie-potts",
+      "image": "/player-images/west-ham/freddie-potts.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/551124-ss.png&h=120"
+    },
+    {
+      "name": "Guido Rodríguez",
+      "slug": "guido-rodriguez",
+      "image": "/player-images/west-ham/guido-rodriguez.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/107918.png&h=120"
+    },
+    {
+      "name": "Soungoutou Magassa",
+      "slug": "soungoutou-magassa",
+      "image": "/player-images/west-ham/soungoutou-magassa.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/147080866-ss.png&h=120"
+    },
+    {
+      "name": "Tomas Soucek",
+      "slug": "tomas-soucek",
+      "image": "/player-images/west-ham/tomas-soucek.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/82477.png&h=120"
+    },
+    {
+      "name": "Lucas Paquetá",
+      "slug": "lucas-paqueta",
+      "image": "/player-images/west-ham/lucas-paqueta.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/102148-alt.webp&h=120"
+    },
+    {
+      "name": "George Earthy",
+      "slug": "george-earthy",
+      "image": "/player-images/west-ham/george-earthy.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/666453-ss.png&h=120"
+    },
+    {
+      "name": "Andrew Irving",
+      "slug": "andrew-irving",
+      "image": "/player-images/west-ham/andrew-irving.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/205870.png&h=120"
+    },
+    {
+      "name": "James Ward-Prowse",
+      "slug": "james-ward-prowse",
+      "image": "/player-images/west-ham/james-ward-prowse.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/13231.png&h=120"
+    },
+    {
+      "name": "Mateus Fernandes",
+      "slug": "mateus-fernandes",
+      "image": "/player-images/west-ham/mateus-fernandes.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/174376034-alt.png&h=120"
+    },
+    {
+      "name": "Callum Marshall",
+      "slug": "callum-marshall",
+      "image": "/player-images/west-ham/callum-marshall.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/221620519.png&h=120"
+    },
+    {
+      "name": "Luis Guilherme",
+      "slug": "luis-guilherme",
+      "image": "/player-images/west-ham/luis-guilherme.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/667190.png&h=120"
+    },
+    {
+      "name": "Crysencio Summerville",
+      "slug": "crysencio-summerville",
+      "image": "/player-images/west-ham/crysencio-summerville.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/130142-alt.png&h=120"
+    },
+    {
+      "name": "Jarrod Bowen",
+      "slug": "jarrod-bowen",
+      "image": "/player-images/west-ham/jarrod-bowen.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/90133.png&h=120"
+    },
+    {
+      "name": "Niclas Füllkrug",
+      "slug": "niclas-fullkrug",
+      "image": "/player-images/west-ham/niclas-fullkrug.png",
+      "source": "https://images.footballtransfers.com/?url=https://static.footballtransfers.com/resources/players/32572.png&h=120"
+    }
+  ]
+}
