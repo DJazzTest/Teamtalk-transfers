@@ -161,59 +161,88 @@ const WebsiteContent = () => {
           <div style={{ width: '456px', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md flex flex-col h-full">
               <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: '1' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '2px solid', borderColor: 'rgb(209 213 219)', paddingBottom: '8px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', borderBottom: '2px solid', borderColor: 'rgb(209 213 219)', paddingBottom: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '24px', justifyContent: 'center', width: '100%' }}>
                     <button
                       onClick={() => setNewsView('news')}
                       className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
                         newsView === 'news'
-                          ? 'text-gray-900 dark:text-white border-b-2 border-blue-600 dark:border-blue-400 pb-1'
-                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                          ? 'border-b-2 border-blue-600 dark:border-blue-400 pb-1'
+                          : ''
                       }`}
+                      style={newsView === 'news' ? { color: '#6b8e6b', borderBottom: '2px solid #6b8e6b' } : { color: '#6b8e6b' }}
                     >
-                      <Newspaper className="w-4 h-4" />
+                      <Newspaper className="w-4 h-4" style={{ color: '#6b8e6b' }} />
                       News
                     </button>
                     <button
                       onClick={() => setNewsView('chatter')}
                       className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
                         newsView === 'chatter'
-                          ? 'text-gray-900 dark:text-white border-b-2 border-blue-600 dark:border-blue-400 pb-1'
-                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                          ? 'border-b-2 border-blue-600 dark:border-blue-400 pb-1'
+                          : ''
                       }`}
+                      style={newsView === 'chatter' ? { color: '#6b8e6b', borderBottom: '2px solid #6b8e6b' } : { color: '#6b8e6b' }}
                     >
-                      <MessageSquare className="w-4 h-4" />
-                      Live hub
+                      <MessageSquare className="w-4 h-4" style={{ color: '#6b8e6b' }} />
+                      <span>Live hub</span>
+                      <span 
+                        className="live-dot w-2.5 h-2.5 rounded-full bg-green-500"
+                      />
                     </button>
                       <button
                         onClick={() => setNewsView('top10')}
                         className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
                           newsView === 'top10'
                             ? 'pb-1'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                            : ''
                         }`}
                         style={newsView === 'top10' ? { 
-                          color: '#05DF72',
-                          borderBottom: '3px solid #05DF72',
+                          color: '#6b8e6b',
+                          borderBottom: '3px solid #6b8e6b',
                           fontWeight: 'bold'
-                        } : {}}
+                        } : { color: '#6b8e6b' }}
                       >
-                        <TrendingUp className="w-4 h-4" style={newsView === 'top10' ? { color: '#05DF72' } : {}} />
+                        <TrendingUp className="w-4 h-4" style={{ color: '#6b8e6b' }} />
                         Top 10
                       </button>
                       <button
                         onClick={() => setNewsView('video')}
                         className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
                           newsView === 'video'
-                            ? 'text-gray-900 dark:text-white border-b-2 border-blue-600 dark:border-blue-400 pb-1'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                            ? 'border-b-2 border-blue-600 dark:border-blue-400 pb-1'
+                            : ''
                         }`}
+                        style={newsView === 'video' ? { color: '#6b8e6b', borderBottom: '2px solid #6b8e6b' } : { color: '#6b8e6b' }}
                       >
-                        <Video className="w-4 h-4" />
-                        Videos
+                        <Video className="w-4 h-4" style={{ color: '#6b8e6b' }} />
+                        Video
                       </button>
                   </div>
                 </div>
+                <style>{`
+                  .live-dot {
+                    animation: livePulse 1.5s ease-in-out infinite;
+                    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+                  }
+                  @keyframes livePulse {
+                    0% {
+                      opacity: 1;
+                      transform: scale(1);
+                      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+                    }
+                    50% {
+                      opacity: 0.8;
+                      transform: scale(1.1);
+                      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);
+                    }
+                    100% {
+                      opacity: 1;
+                      transform: scale(1);
+                      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+                    }
+                  }
+                `}</style>
                 <div className="flex-1 overflow-y-auto pr-2" style={{
                   scrollbarWidth: 'thin',
                   scrollbarColor: '#9CA3AF #E5E7EB',
