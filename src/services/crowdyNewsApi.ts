@@ -8,6 +8,10 @@ export interface CrowdyNewsItem {
   url?: string;
   publishedAt?: string;
   source?: string;
+  media?: Array<{
+    type: string;
+    url: string;
+  }>;
 }
 
 async function safeJson<T>(res: Response): Promise<T> {
@@ -32,7 +36,8 @@ export const crowdyNewsApi = {
           image: item.media?.[0]?.url || item.image || item.thumbnail || item.photo,
           url: item.postedUrls?.[0] || item.url || item.link || item.permalink,
           publishedAt: item.date || item.publishedAt || item.created_at || new Date().toISOString(),
-          source: 'Crowdy News'
+          source: 'Crowdy News',
+          media: item.media || []
         }));
       }
       

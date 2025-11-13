@@ -30,16 +30,16 @@ export const Top10ExpensiveVertical: React.FC<Top10ExpensiveVerticalProps> = ({ 
 
   // Top 10 Most Expensive UK Premier League Transfers season (2025–26)
   const top10ExpensiveTransfers = [
-    { playerName: 'Florian Wirtz', fromClub: 'Bayer Leverkusen', toClub: 'Liverpool', fee: '£106m', feeValue: 106 },
-    { playerName: 'Hugo Ekitike', fromClub: 'Eintracht Frankfurt', toClub: 'Liverpool', fee: '£88m', feeValue: 88 },
-    { playerName: 'Bryan Mbeumo', fromClub: 'Brentford', toClub: 'Manchester United', fee: '£74m', feeValue: 74 },
-    { playerName: 'Matheus Cunha', fromClub: 'Wolverhampton Wanderers', toClub: 'Manchester United', fee: '£63m', feeValue: 63 },
-    { playerName: 'Eberechi Eze', fromClub: 'Crystal Palace', toClub: 'Arsenal', fee: '£60m', feeValue: 60 },
-    { playerName: 'Martin Zubimendi', fromClub: 'Real Sociedad', toClub: 'Arsenal', fee: '£59m', feeValue: 59 },
-    { playerName: 'Viktor Gyökeres', fromClub: 'Sporting CP', toClub: 'Arsenal', fee: '£57.5m', feeValue: 57.5 },
-    { playerName: 'Jamie Gittens', fromClub: 'Borussia Dortmund', toClub: 'Chelsea', fee: '£55m', feeValue: 55 },
-    { playerName: 'Mohammed Kudus', fromClub: 'West Ham United', toClub: 'Tottenham Hotspur', fee: '£54m', feeValue: 54 },
-    { playerName: 'Joao Pedro', fromClub: 'Brighton & Hove Albion', toClub: 'Chelsea', fee: '£54m', feeValue: 54 }
+    { playerName: 'Florian Wirtz', fromClub: 'Bayer Leverkusen', toClub: 'Liverpool', fee: '£126m', feeValue: 126 },
+    { playerName: 'Alexander Isak', fromClub: 'Newcastle United', toClub: 'Liverpool', fee: '£125m', feeValue: 125 },
+    { playerName: 'Hugo Ekitike', fromClub: 'Eintracht Frankfurt', toClub: 'Liverpool', fee: '£95m', feeValue: 95 },
+    { playerName: 'Benjamin Sesko', fromClub: 'RB Leipzig', toClub: 'Manchester United', fee: '£73.7m', feeValue: 73.7 },
+    { playerName: 'Eberechi Eze', fromClub: 'Crystal Palace', toClub: 'Arsenal', fee: '£67.5m', feeValue: 67.5 },
+    { playerName: 'Jeremie Frimpong', fromClub: 'Bayer Leverkusen', toClub: 'Liverpool', fee: '£55m', feeValue: 55 },
+    { playerName: 'Bryan Mbeumo', fromClub: 'Brentford', toClub: 'Manchester United', fee: '£71m', feeValue: 71 },
+    { playerName: 'Milos Kerkez', fromClub: 'Bournemouth', toClub: 'Liverpool', fee: '£40m', feeValue: 40 },
+    { playerName: 'Matheus Cunha', fromClub: 'Wolverhampton Wanderers', toClub: 'Manchester United', fee: '£38m', feeValue: 38 },
+    { playerName: 'Marc Guehi', fromClub: 'Crystal Palace', toClub: 'Manchester City', fee: '£35m', feeValue: 35 }
   ];
 
   // Create transfer objects with proper structure
@@ -49,17 +49,20 @@ export const Top10ExpensiveVertical: React.FC<Top10ExpensiveVerticalProps> = ({ 
       transfer.playerName.toLowerCase().includes(t.playerName?.toLowerCase() || '')
     );
 
+    // Preserve the hardcoded fee and feeValue, but use other data from matchingTransfer if available
+    const { fee: _, feeValue: __, ...matchingTransferRest } = matchingTransfer || {};
+
     return {
       id: `top10-${index}`,
       playerName: transfer.playerName,
       fromClub: transfer.fromClub,
       toClub: transfer.toClub,
-      fee: transfer.fee,
-      feeValue: transfer.feeValue,
+      fee: transfer.fee, // Always use the hardcoded fee
+      feeValue: transfer.feeValue, // Always use the hardcoded feeValue
       status: 'confirmed',
       date: matchingTransfer?.date || '2025-08-26',
       source: matchingTransfer?.source || 'Official Transfer',
-      ...matchingTransfer
+      ...matchingTransferRest // Spread other properties but not fee/feeValue
     };
   });
 

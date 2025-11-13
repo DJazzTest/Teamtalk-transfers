@@ -23,7 +23,34 @@ export const ClubTransfersList: React.FC<ClubTransfersListProps> = ({
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
 
   const normalizeClubName = (name: string) => {
-    return name.toLowerCase().replace(/[^a-z0-9]/g, '').trim();
+    if (!name) return '';
+    // Normalize common variations
+    let normalized = name.toLowerCase().trim();
+    
+    // Handle common club name variations
+    normalized = normalized
+      .replace(/^afc\s+/i, '')
+      .replace(/^fc\s+/i, '')
+      .replace(/\s+fc$/i, '')
+      .replace(/\s+united$/i, ' united')
+      .replace(/tottenham hotspur/i, 'tottenham hotspur')
+      .replace(/west ham united/i, 'west ham united')
+      .replace(/wolverhampton wanderers/i, 'wolverhampton wanderers')
+      .replace(/brighton & hove albion/i, 'brighton & hove albion')
+      .replace(/brighton and hove albion/i, 'brighton & hove albion')
+      .replace(/manchester city/i, 'manchester city')
+      .replace(/manchester united/i, 'manchester united')
+      .replace(/newcastle united/i, 'newcastle united')
+      .replace(/nottingham forest/i, 'nottingham forest')
+      .replace(/crystal palace/i, 'crystal palace');
+    
+    // Remove all non-alphanumeric characters except spaces and &
+    normalized = normalized.replace(/[^a-z0-9\s&]/g, '').trim();
+    
+    // Normalize multiple spaces to single space
+    normalized = normalized.replace(/\s+/g, ' ');
+    
+    return normalized;
   };
 
   const getClubTransfers = (club: string) => {
@@ -69,8 +96,6 @@ export const ClubTransfersList: React.FC<ClubTransfersListProps> = ({
         const showExpandButton = clubTransfers.length > 3;
         const displayedTransfers = isExpanded ? clubTransfers : clubTransfers.slice(0, 3);
         
-        if (clubTransfers.length === 0) return null;
-        
         return (
           <div key={club} className="border-b border-gray-200 dark:border-slate-600 pb-4 last:border-b-0">
             {/* Club Header */}
@@ -86,53 +111,61 @@ export const ClubTransfersList: React.FC<ClubTransfersListProps> = ({
             
             {/* Transfers List */}
             <div className="space-y-1 ml-8">
-              {displayedTransfers.map((transfer) => {
-                const playerInfo = findPlayerInSquads(transfer.playerName);
-                const feeDisplay = transfer.fee || 'undisc.';
-                const targetClub = type === 'in' ? transfer.toClub : transfer.fromClub;
-                
-                return (
-                      <div 
-                        key={transfer.id} 
-                        className="text-sm text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
-                      >
-                        <PlayerNameLink
-                          playerName={transfer.playerName}
-                          teamName={targetClub}
-                          playerData={playerInfo.player}
-                          className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-300 transition-colors"
-                          stopPropagation={true}
-                          navigateToClub={false}
-                          showTransferDetails={true}
-                          onShowTransferDetails={() => {
-                            setSelectedTransfer(transfer);
-                            setIsTransferModalOpen(true);
-                          }}
-                        />
-                        {' '}
-                        <span className="text-gray-500 dark:text-gray-400 text-sm">({feeDisplay})</span>
-                      </div>
-                );
-              })}
-              
+              {clubTransfers.length === 0 ? (
+                <div className="text-sm text-gray-400 dark:text-gray-500 italic">
+                  No transfers
+                </div>
+              ) : (
+                <>
+                  {displayedTransfers.map((transfer) => {
+                    const playerInfo = findPlayerInSquads(transfer.playerName);
+                    const feeDisplay = transfer.fee || 'undisc.';
+                    const targetClub = type === 'in' ? transfer.toClub : transfer.fromClub;
+                    
+                    return (
+                          <div 
+                            key={transfer.id} 
+                            className="text-sm text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
+                          >
+                            <PlayerNameLink
+                              playerName={transfer.playerName}
+                              teamName={targetClub}
+                              playerData={playerInfo.player}
+                              className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-300 transition-colors"
+                              stopPropagation={true}
+                              navigateToClub={false}
+                              showTransferDetails={true}
+                              onShowTransferDetails={() => {
+                                setSelectedTransfer(transfer);
+                                setIsTransferModalOpen(true);
+                              }}
+                            />
+                            {' '}
+                            <span className="text-gray-500 dark:text-gray-400 text-sm">({feeDisplay})</span>
+                          </div>
+                    );
+                  })}
+                  
                   {/* Expand/Collapse Button */}
                   {showExpandButton && (
                     <button
                       onClick={(e) => toggleExpand(club, e)}
                       className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white mt-2 transition-colors"
                     >
-                  {isExpanded ? (
-                    <>
-                      <ChevronUp className="w-4 h-4" />
-                      Show Less
-                    </>
-                  ) : (
-                    <>
-                      <ChevronDown className="w-4 h-4" />
-                      Show {clubTransfers.length - 3} More
-                    </>
+                      {isExpanded ? (
+                        <>
+                          <ChevronUp className="w-4 h-4" />
+                          Show Less
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown className="w-4 h-4" />
+                          Show {clubTransfers.length - 3} More
+                        </>
+                      )}
+                    </button>
                   )}
-                </button>
+                </>
               )}
             </div>
           </div>

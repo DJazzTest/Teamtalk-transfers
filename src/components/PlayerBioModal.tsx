@@ -1,8 +1,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { X, User, Calendar, MapPin, Globe, Footprints, Ruler } from 'lucide-react';
+import { User, Calendar, MapPin, Globe, Footprints, Ruler } from 'lucide-react';
 
 interface PlayerBio {
   height?: string;
@@ -31,20 +30,10 @@ export const PlayerBioModal: React.FC<PlayerBioModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-slate-800 border-slate-700">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-bold text-white flex items-center gap-2">
-              <User className="w-6 h-6" />
-              {playerName} - Bio
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="text-gray-400 hover:text-white"
-            >
-              <X className="w-5 h-5" />
-            </Button>
-          </div>
+          <DialogTitle className="text-2xl font-bold text-white flex items-center gap-2">
+            <User className="w-6 h-6" />
+            {playerName} - Bio
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 mt-4">

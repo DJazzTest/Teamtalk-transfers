@@ -29,6 +29,9 @@ export interface Transfer {
   playerImage?: string;
   // Player-specific news articles
   relatedNews?: PlayerNewsArticle[];
+  // Rumours and transfer metadata
+  category?: string; // e.g., 'Rumours', 'Done Deal', etc.
+  description?: string; // Additional description for rumours
 }
 
 export interface PlayerNewsArticle {

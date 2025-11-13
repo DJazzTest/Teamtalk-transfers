@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Transfer } from '@/types/transfer';
-import { X, TrendingUp, TrendingDown, Calendar, DollarSign, Building2 } from 'lucide-react';
+import { TrendingUp, TrendingDown, Calendar, DollarSign, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface TransferDetailsModalProps {
@@ -62,19 +62,9 @@ export const TransferDetailsModal: React.FC<TransferDetailsModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md bg-slate-800 border-slate-700 text-white">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-bold text-white">
-              Transfer Details
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="text-gray-400 hover:text-white"
-            >
-              <X className="w-5 h-5" />
-            </Button>
-          </div>
+          <DialogTitle className="text-xl font-bold text-white">
+            Transfer Details
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 mt-4">

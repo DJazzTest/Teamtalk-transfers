@@ -3,6 +3,32 @@ import { scoreInsideApi } from './scoreinsideApi';
 import { teamTalkApi } from './teamtalkApi';
 import { TransferIntegrationService } from '@/utils/transferIntegration';
 import { ttStagingApi } from './ttStagingApi';
+import { TEAMS_RUMOURS_DATA, RumourEntry } from '@/data/teamRumours';
+import { normalizeTeamName } from '@/utils/teamMapping';
+
+// Team ID mapping for staging API
+const TEAM_IDS: Record<string, string> = {
+  'Arsenal': '1205',
+  'Aston Villa': '1215',
+  'Bournemouth': '1124',
+  'Brentford': '1276',
+  'Brighton & Hove Albion': '1125',
+  'Burnley': '1126',
+  'Chelsea': '1317',
+  'Crystal Palace': '1367',
+  'Everton': '1408',
+  'Fulham': '1431',
+  'Leeds United': '1132',
+  'Liverpool': '1548',
+  'Manchester City': '1571',
+  'Manchester United': '1143',
+  'Newcastle United': '1599',
+  'Nottingham Forest': '1136',
+  'Sunderland': '1748',
+  'Tottenham Hotspur': '1779',
+  'West Ham United': '1811',
+  'Wolverhampton Wanderers': '1837'
+};
 
 export class LiveDataService {
   private static instance: LiveDataService;
@@ -127,55 +153,141 @@ export class LiveDataService {
       const allTransfers: Transfer[] = [];
       
       // Get rumours from all teams
-      const rumourTeams = await ttStagingApi.getRumourTeams();
-      if (rumourTeams?.result?.rumour_teams?.data) {
-        for (const team of rumourTeams.result.rumour_teams.data) {
+      const rumourTeams = await ttStagingApi.getRumourTeams('2025/26', 'Summer', '72602');
+      if (rumourTeams?.result?.rumour_teams?.data || rumourTeams?.result?.teams) {
+        const teams = rumourTeams.result.rumour_teams?.data || rumourTeams.result.teams || [];
+        for (const team of teams) {
           try {
-            const rumours = await ttStagingApi.getRumoursByTeam(team.id);
-            if (rumours?.result?.rumours?.data) {
-              const teamTransfers = rumours.result.rumours.data.map(rumour => ({
-                id: `staging-rumour-${rumour.id}`,
-                playerName: rumour.player?.nm || 'Unknown Player',
-                fromClub: rumour.team_from?.nm || 'Unknown Club',
-                toClub: rumour.team_to?.nm || 'Unknown Club',
-                fee: rumour.fee ? `£${rumour.fee}` : undefined,
+            const teamId = team.id || team.team_id;
+            const rumours = await ttStagingApi.getRumoursByTeam('2025/26', 'Summer', teamId, 1, '72602');
+            // Handle both structures: result.rumours.data (object with data array) or result.rumours (direct array)
+            const rumoursArray = rumours?.result?.rumours?.data || 
+                                (Array.isArray(rumours?.result?.rumours) ? rumours.result.rumours : []);
+            
+            if (rumoursArray && rumoursArray.length > 0) {
+              const teamTransfers = rumoursArray.map((rumour: any) => {
+                const toClub = (rumour.team?.nm || rumour.team_to?.nm || 'Unknown Club').trim();
+                const fromClub = (rumour.team_from?.nm || 'Unknown Club').trim();
+                const playerName = (rumour.player?.nm || 'Unknown Player').trim();
+                
+                // Skip if player name is missing or invalid
+                if (!playerName || playerName === 'Unknown Player') {
+                  return null;
+                }
+                
+                return {
+                  id: `staging-rumour-${rumour.aid || rumour.pid || rumour.id || Date.now()}`,
+                  playerName: playerName,
+                  fromClub: fromClub || 'Unknown Club',
+                  toClub: toClub || 'Unknown Club',
+                  fee: rumour.prc ? rumour.prc.replace('€', '£').replace('Million', 'm') : undefined,
+                  status: 'rumored' as const,
+                  date: rumour.article?.sdt || rumour.created_at || rumour.date || new Date().toISOString(),
+                  source: 'Staging API (Rumours)',
+                  category: 'Rumours'
+                };
+              }).filter((t: any) => t !== null); // Remove null entries
+              
+              allTransfers.push(...teamTransfers);
+              console.log(`✓ Fetched ${teamTransfers.length} rumours for ${teamId}`);
+            }
+          } catch (error) {
+            console.warn(`Failed to fetch rumours for team ${team.id || team.team_id}:`, error);
+          }
+        }
+      }
+      
+      // Also fetch rumours directly from all team IDs to ensure we get everything
+      const allTeamIds = Object.values(TEAM_IDS);
+      for (const teamId of allTeamIds) {
+        try {
+          const rumours = await ttStagingApi.getRumoursByTeam('2025/26', 'Summer', teamId, 1, '72602');
+          const rumoursArray = rumours?.result?.rumours?.data || 
+                              (Array.isArray(rumours?.result?.rumours) ? rumours.result.rumours : []);
+          
+          if (rumoursArray && rumoursArray.length > 0) {
+            const teamTransfers = rumoursArray.map((rumour: any) => {
+              const toClub = (rumour.team?.nm || rumour.team_to?.nm || 'Unknown Club').trim();
+              const fromClub = (rumour.team_from?.nm || 'Unknown Club').trim();
+              const playerName = (rumour.player?.nm || 'Unknown Player').trim();
+              
+              if (!playerName || playerName === 'Unknown Player') {
+                return null;
+              }
+              
+              return {
+                id: `staging-rumour-${rumour.aid || rumour.pid || rumour.id || Date.now()}`,
+                playerName: playerName,
+                fromClub: fromClub || 'Unknown Club',
+                toClub: toClub || 'Unknown Club',
+                fee: rumour.prc ? rumour.prc.replace('€', '£').replace('Million', 'm') : undefined,
                 status: 'rumored' as const,
-                date: rumour.created_at || new Date().toISOString(),
+                date: rumour.article?.sdt || rumour.created_at || rumour.date || new Date().toISOString(),
                 source: 'Staging API (Rumours)',
                 category: 'Rumours'
-              }));
+              };
+            }).filter((t: any) => t !== null);
+            
+            // Only add if not already present (deduplication)
+            const existingIds = new Set(allTransfers.map(t => t.id));
+            const newTransfers = teamTransfers.filter((t: any) => !existingIds.has(t.id));
+            allTransfers.push(...newTransfers);
+          }
+        } catch (error) {
+          console.warn(`Failed to fetch rumours for team ${teamId}:`, error);
+        }
+        await new Promise(resolve => setTimeout(resolve, 200)); // Rate limiting
+      }
+
+      // Get done deals from all teams
+      const doneDealTeams = await ttStagingApi.getDoneDealTeams('2025/26', 'Summer', '72602');
+      if (doneDealTeams?.result?.done_deal_teams?.data || doneDealTeams?.result?.teams) {
+        const teams = doneDealTeams.result.done_deal_teams?.data || doneDealTeams.result.teams || [];
+        for (const team of teams) {
+          try {
+            const doneDeals = await ttStagingApi.getDoneDealsByTeam('2025/26', 'Summer', team.id || team.team_id);
+            if (doneDeals?.result?.done_deals && Array.isArray(doneDeals.result.done_deals)) {
+              const teamTransfers = doneDeals.result.done_deals.map((deal: any) => {
+                // Handle both structures: team/team_from and team_to/team_from
+                const toClub = (deal.team?.nm || deal.team_to?.nm || 'Unknown Club').trim();
+                const fromClub = (deal.team_from?.nm || 'Unknown Club').trim();
+                const fee = deal.prc ? deal.prc.replace('€', '£').replace('Million', 'm') : undefined;
+                
+                return {
+                  id: `staging-done-${deal.pid || deal.id}`,
+                  playerName: (deal.player?.nm || 'Unknown Player').trim(),
+                  fromClub: fromClub,
+                  toClub: toClub,
+                  fee: fee,
+                  status: 'confirmed' as const,
+                  date: deal.created_at || deal.date || new Date().toISOString(),
+                  source: 'Staging API (Done Deals)',
+                  category: deal.scat || 'Done Deal'
+                };
+              });
               allTransfers.push(...teamTransfers);
             }
           } catch (error) {
-            console.warn(`Failed to fetch rumours for team ${team.id}:`, error);
+            console.warn(`Failed to fetch done deals for team ${team.id || team.team_id}:`, error);
           }
         }
       }
 
-      // Get done deals from all teams
-      const doneDealTeams = await ttStagingApi.getDoneDealTeams();
-      if (doneDealTeams?.result?.donedeal_teams?.data) {
-        for (const team of doneDealTeams.result.donedeal_teams.data) {
-          try {
-            const doneDeals = await ttStagingApi.getDoneDealsByTeam(team.id);
-            if (doneDeals?.result?.donedeals?.data) {
-              const teamTransfers = doneDeals.result.donedeals.data.map(deal => ({
-                id: `staging-done-${deal.id}`,
-                playerName: deal.player?.nm || 'Unknown Player',
-                fromClub: deal.team_from?.nm || 'Unknown Club',
-                toClub: deal.team_to?.nm || 'Unknown Club',
-                fee: deal.fee ? `£${deal.fee}` : undefined,
-                status: 'confirmed' as const,
-                date: deal.created_at || new Date().toISOString(),
-                source: 'Staging API (Done Deals)',
-                category: 'Done Deal'
-              }));
-              allTransfers.push(...teamTransfers);
-            }
-          } catch (error) {
-            console.warn(`Failed to fetch done deals for team ${team.id}:`, error);
-          }
-        }
+      // Add manual rumours from teamRumours data
+      for (const [teamName, rumours] of Object.entries(TEAMS_RUMOURS_DATA)) {
+        const manualRumoursTransfers = rumours.map((rumour: RumourEntry) => ({
+          id: `manual-rumour-${teamName.toLowerCase().replace(/\s+/g, '-')}-${rumour.player.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`,
+          playerName: rumour.player,
+          fromClub: rumour.fromClub,
+          toClub: rumour.toClub,
+          fee: rumour.fee || undefined,
+          status: 'rumored' as const,
+          date: new Date().toISOString(),
+          source: 'Manual Rumours Data',
+          category: 'Rumours',
+          description: rumour.description
+        }));
+        allTransfers.push(...manualRumoursTransfers);
       }
 
       return allTransfers;

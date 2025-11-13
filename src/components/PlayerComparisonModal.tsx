@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { X, Users, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Users, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, LineChart, Line, Cell, AreaChart, Area } from 'recharts';
 import { getSquad } from '@/data/squadWages';
 import { TeamResultsFixturesService } from '@/services/teamResultsFixturesService';
@@ -364,20 +364,10 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-slate-800 border-slate-700">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-bold text-white flex items-center gap-2">
-              <Users className="w-6 h-6" />
-              Head-to-Head Comparison
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="text-gray-400 hover:text-white"
-            >
-              <X className="w-5 h-5" />
-            </Button>
-          </div>
+          <DialogTitle className="text-2xl font-bold text-white flex items-center gap-2">
+            <Users className="w-6 h-6" />
+            Head-to-Head Comparison
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 mt-4">

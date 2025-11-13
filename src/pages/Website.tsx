@@ -16,7 +16,8 @@ import { useRefreshControl } from '@/hooks/useRefreshControl';
 import { NewsCarousel } from '@/components/NewsCarousel';
 import { ChatterBoxDisplay } from '@/components/ChatterBoxDisplay';
 import { Top10ExpensiveVertical } from '@/components/Top10ExpensiveVertical';
-import { MessageSquare, Newspaper, TrendingUp } from 'lucide-react';
+import { VideoTab } from '@/components/VideoTab';
+import { MessageSquare, Newspaper, TrendingUp, Video } from 'lucide-react';
 import { ClubTransfersList } from '@/components/ClubTransfersList';
 
 const WebsiteContent = () => {
@@ -24,7 +25,7 @@ const WebsiteContent = () => {
   const { refreshCounter } = useRefreshControl();
   const [selectedClub, setSelectedClub] = useState<string | null>(null);
   const [countdownTarget] = useState('2025-12-31T23:00:00');
-  const [newsView, setNewsView] = useState<'news' | 'chatter' | 'top10'>('news');
+  const [newsView, setNewsView] = useState<'news' | 'chatter' | 'top10' | 'video'>('news');
   // All transfer data is now sourced from useTransferDataStore()
 
   // Favourites state for badge
@@ -80,7 +81,7 @@ const WebsiteContent = () => {
   const premierLeagueClubs = [
     'Arsenal',
     'Aston Villa',
-    'AFC Bournemouth',
+    'Bournemouth',
     'Brentford',
     'Brighton & Hove Albion',
     'Burnley',
@@ -171,7 +172,7 @@ const WebsiteContent = () => {
                       }`}
                     >
                       <Newspaper className="w-4 h-4" />
-                      Transfer News
+                      News
                     </button>
                     <button
                       onClick={() => setNewsView('chatter')}
@@ -182,24 +183,35 @@ const WebsiteContent = () => {
                       }`}
                     >
                       <MessageSquare className="w-4 h-4" />
-                      Transfers Chatter Box
+                      Live hub
                     </button>
-                    <button
-                      onClick={() => setNewsView('top10')}
-                      className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
-                        newsView === 'top10'
-                          ? 'pb-1'
-                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                      }`}
-                      style={newsView === 'top10' ? { 
-                        color: '#05DF72',
-                        borderBottom: '3px solid #05DF72',
-                        fontWeight: 'bold'
-                      } : {}}
-                    >
-                      <TrendingUp className="w-4 h-4" style={newsView === 'top10' ? { color: '#05DF72' } : {}} />
-                      Top 10 Most Expensive
-                    </button>
+                      <button
+                        onClick={() => setNewsView('top10')}
+                        className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
+                          newsView === 'top10'
+                            ? 'pb-1'
+                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        }`}
+                        style={newsView === 'top10' ? { 
+                          color: '#05DF72',
+                          borderBottom: '3px solid #05DF72',
+                          fontWeight: 'bold'
+                        } : {}}
+                      >
+                        <TrendingUp className="w-4 h-4" style={newsView === 'top10' ? { color: '#05DF72' } : {}} />
+                        Top 10
+                      </button>
+                      <button
+                        onClick={() => setNewsView('video')}
+                        className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
+                          newsView === 'video'
+                            ? 'text-gray-900 dark:text-white border-b-2 border-blue-600 dark:border-blue-400 pb-1'
+                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        }`}
+                      >
+                        <Video className="w-4 h-4" />
+                        Videos
+                      </button>
                   </div>
                 </div>
                 <div className="flex-1 overflow-y-auto pr-2" style={{
@@ -211,6 +223,8 @@ const WebsiteContent = () => {
                     <NewsCarousel maxItems={5} />
                   ) : newsView === 'chatter' ? (
                     <ChatterBoxDisplay />
+                  ) : newsView === 'video' ? (
+                    <VideoTab />
                   ) : (
                     <Top10ExpensiveVertical transfers={allTransfers} onSelectClub={handleSelectClub} />
                   )}

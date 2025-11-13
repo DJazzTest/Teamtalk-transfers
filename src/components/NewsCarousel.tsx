@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Clock, ExternalLink, X } from 'lucide-react';
+import { Clock, ExternalLink } from 'lucide-react';
 import { newsApi } from '@/services/newsApi';
 
 // Premier League clubs filter
@@ -36,6 +36,8 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [articleContent, setArticleContent] = useState<string | null>(null);
+  const [loadingArticle, setLoadingArticle] = useState(false);
 
   const showPlaceholder = React.useCallback((img: HTMLImageElement) => {
     const parent = img.parentElement;
@@ -182,6 +184,75 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
     return `${diffInDays} days ago`;
   };
 
+  const fetchArticleContent = async (url: string) => {
+    try {
+      // Try multiple CORS proxies
+      const proxies = [
+        `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+        `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+      ];
+
+      for (const proxyUrl of proxies) {
+        try {
+          const response = await fetch(proxyUrl, {
+            method: 'GET',
+            headers: {
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+            }
+          });
+
+          if (response.ok) {
+            let html = '';
+            if (proxyUrl.includes('allorigins.win')) {
+              const data = await response.json();
+              html = data.contents;
+            } else {
+              html = await response.text();
+            }
+
+            if (html && html.length > 100) {
+              // Extract main content from HTML
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              
+              // Remove scripts, styles, and other unwanted elements
+              const unwanted = doc.querySelectorAll('script, style, nav, header, footer, aside, .ad, .advertisement, [class*="ad-"], [id*="ad-"], .social-share, .comments, .related-posts, .newsletter');
+              unwanted.forEach(el => el.remove());
+              
+              // Try to find main content
+              const mainContent = doc.querySelector('main, article, [role="main"], .content, .post-content, .article-content, .entry-content, .article-body, .story-body, .post-body') || doc.body;
+              
+              // Clean up the content - remove more unwanted elements
+              const cleanElements = mainContent.querySelectorAll('nav, header, footer, aside, .ad, .advertisement, .social-share, .comments, .related-posts, .newsletter, .author-box, .tags, .share-buttons');
+              cleanElements.forEach(el => el.remove());
+              
+              // Get text content and preserve some basic formatting
+              const content = mainContent.innerHTML
+                .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+                .replace(/<noscript\b[^<]*(?:(?!<\/noscript>)<[^<]*)*<\/noscript>/gi, '');
+              
+              if (content && content.length > 200) {
+                setArticleContent(content);
+                return;
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Proxy failed:', proxyUrl, err);
+          continue;
+        }
+      }
+      
+      // If all proxies fail, show a message
+      setArticleContent('<p class="text-gray-500 dark:text-gray-400">Unable to load article content. Please use the "Read Full Article" button to view on the original site.</p>');
+    } catch (error) {
+      console.error('Error fetching article content:', error);
+      setArticleContent('<p class="text-red-500 dark:text-red-400">Error loading article content. Please use the "Read Full Article" button.</p>');
+    }
+  };
+
   const displayNews = showAll ? newsArticles : newsArticles.slice(0, maxItems);
 
   return (
@@ -212,6 +283,16 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
                   onClick={() => {
                     setSelectedArticle(article);
                     setIsModalOpen(true);
+                    setArticleContent(null);
+                    setLoadingArticle(false);
+                    
+                    // Auto-load article content if URL is available
+                    if (article.url) {
+                      setLoadingArticle(true);
+                      fetchArticleContent(article.url).finally(() => {
+                        setLoadingArticle(false);
+                      });
+                    }
                   }}
                 >
                   <div className="flex gap-4">
@@ -285,26 +366,26 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
       </div>
 
     {/* News Detail Modal */}
-    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white">
+    <Dialog open={isModalOpen} onOpenChange={(open) => {
+      setIsModalOpen(open);
+      if (!open) {
+        setArticleContent(null);
+        setLoadingArticle(false);
+      }
+    }}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col bg-white dark:bg-slate-800">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-bold text-blue-800 pr-8">
-              {selectedArticle?.title}
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsModalOpen(false)}
-              className="absolute right-4 top-4"
-            >
-              <X className="w-5 h-5" />
-            </Button>
-          </div>
+          <DialogTitle className="text-2xl font-bold text-blue-800 dark:text-blue-200 pr-8">
+            {selectedArticle?.title}
+          </DialogTitle>
         </DialogHeader>
 
         {selectedArticle && (
-          <div className="space-y-4 mt-4">
+          <div className="space-y-4 mt-4 overflow-y-auto flex-1 pr-2" style={{
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#9CA3AF #E5E7EB',
+            maxHeight: 'calc(90vh - 100px)'
+          }}>
             {/* Image */}
             {selectedArticle.image && (
               <div className="w-full h-64 rounded-lg overflow-hidden bg-gray-200 relative">
@@ -392,18 +473,59 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
             {/* Summary */}
             {selectedArticle.summary && (
               <div className="prose max-w-none">
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
                   {selectedArticle.summary}
                 </p>
               </div>
             )}
 
+            {/* Article Content */}
+            {loadingArticle && (
+              <div className="flex items-center justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span className="ml-3 text-sm text-gray-600 dark:text-gray-400">Loading article content...</span>
+              </div>
+            )}
+            
+            {articleContent && !loadingArticle && (
+              <div className="mt-4 border-t border-gray-200 dark:border-slate-600 pt-4">
+                <div 
+                  className="prose prose-sm dark:prose-invert max-w-none text-gray-800 dark:text-gray-200"
+                  style={{
+                    maxHeight: '400px',
+                    overflowY: 'auto',
+                    paddingRight: '8px'
+                  }}
+                  dangerouslySetInnerHTML={{ __html: articleContent }}
+                />
+              </div>
+            )}
+
             {/* External Link Button */}
             {selectedArticle.url && (
-              <div className="pt-4 border-t border-gray-200">
+              <div className="pt-4 border-t border-gray-200 dark:border-slate-600 flex items-center gap-4">
+                {!articleContent && !loadingArticle && (
+                  <Button
+                    onClick={async () => {
+                      setLoadingArticle(true);
+                      try {
+                        await fetchArticleContent(selectedArticle.url!);
+                      } catch (error) {
+                        console.error('Error loading article:', error);
+                      } finally {
+                        setLoadingArticle(false);
+                      }
+                    }}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Load article content
+                  </Button>
+                )}
                 <Button
                   onClick={() => window.open(selectedArticle.url, '_blank', 'noopener,noreferrer')}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Read Full Article

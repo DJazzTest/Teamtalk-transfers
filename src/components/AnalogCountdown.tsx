@@ -50,65 +50,73 @@ export const AnalogCountdown: React.FC<AnalogCountdownProps> = ({ targetDate, on
 
   return (
     <div className="space-y-3">
-      <div className="text-center bg-blue-50 dark:bg-[#1d3b5f] rounded-lg p-4 transition-colors border border-blue-100 dark:border-[#335b8c] shadow">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <h2 className="text-lg font-bold text-blue-600 dark:text-blue-400">Transfer Window Opens</h2>
+      <div className="text-center bg-gradient-to-br from-blue-50 to-blue-100 dark:from-[#1a2f4a] dark:to-[#1d3b5f] rounded-xl p-6 transition-colors border-2 border-blue-200 dark:border-[#335b8c] shadow-lg">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <h2 className="text-xl font-bold text-blue-700 dark:text-blue-300">Transfer Window Opens</h2>
         </div>
         
         {isExpired ? (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-2 sm:p-4 max-w-md mx-auto shadow-inner">
-            <p className="text-green-600 dark:text-green-400 text-sm sm:text-base font-bold">Transfer Window is Now Open!</p>
-            <p className="text-gray-600 dark:text-gray-300 text-xs mt-1">The winter transfer window has begun</p>
+          <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-900/20 border-2 border-green-300 dark:border-green-700 rounded-xl p-6 max-w-md mx-auto shadow-inner">
+            <p className="text-green-700 dark:text-green-400 text-lg font-bold">Transfer Window is Now Open!</p>
+            <p className="text-gray-700 dark:text-gray-300 text-sm mt-2">The winter transfer window has begun</p>
           </div>
         ) : (
           <div className="w-full">
             {/* Digital Countdown Display */}
-            <div className="flex flex-wrap justify-center items-center gap-1 sm:gap-2 max-w-4xl mx-auto">
+            <div className="flex justify-center items-baseline gap-3 max-w-4xl mx-auto">
               {/* Days */}
               <div className="flex flex-col items-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-extrabold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[2.5rem] sm:min-w-[3rem] md:min-w-[3.5rem]">
-                  {timeLeft.days}
+                <div className="bg-white dark:bg-slate-800 rounded-lg px-4 py-3 shadow-md border-2 border-blue-200 dark:border-blue-600 min-w-[80px]">
+                  <div className="text-4xl font-mono font-extrabold text-blue-700 dark:text-blue-300 leading-none tabular-nums text-center">
+                    {formatNumber(timeLeft.days, 2)}
+                  </div>
                 </div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 font-semibold">Days</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400 mt-2 font-semibold uppercase tracking-wide">Days</div>
               </div>
 
               {/* Separator */}
-              <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[1rem] sm:min-w-[1.5rem] md:min-w-[2rem] translate-y-[2px]">
+              <div className="text-3xl font-mono font-bold text-blue-600 dark:text-blue-400 pb-8">
                 :
               </div>
 
               {/* Hours */}
               <div className="flex flex-col items-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[2.5rem] sm:min-w-[3rem] md:min-w-[3.5rem]">
-                  {formatNumber(timeLeft.hours, 2)}
+                <div className="bg-white dark:bg-slate-800 rounded-lg px-4 py-3 shadow-md border-2 border-blue-200 dark:border-blue-600 min-w-[80px]">
+                  <div className="text-4xl font-mono font-extrabold text-blue-700 dark:text-blue-300 leading-none tabular-nums text-center">
+                    {formatNumber(timeLeft.hours, 2)}
+                  </div>
                 </div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 font-semibold">Hours</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400 mt-2 font-semibold uppercase tracking-wide">Hours</div>
               </div>
 
               {/* Separator */}
-              <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[1rem] sm:min-w-[1.5rem] md:min-w-[2rem] translate-y-[2px]">
+              <div className="text-3xl font-mono font-bold text-blue-600 dark:text-blue-400 pb-8">
                 :
               </div>
 
               {/* Minutes */}
               <div className="flex flex-col items-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[2.5rem] sm:min-w-[3rem] md:min-w-[3.5rem]">
-                  {formatNumber(timeLeft.minutes, 2)}
+                <div className="bg-white dark:bg-slate-800 rounded-lg px-4 py-3 shadow-md border-2 border-blue-200 dark:border-blue-600 min-w-[80px]">
+                  <div className="text-4xl font-mono font-extrabold text-blue-700 dark:text-blue-300 leading-none tabular-nums text-center">
+                    {formatNumber(timeLeft.minutes, 2)}
+                  </div>
                 </div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 font-semibold">Minutes</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400 mt-2 font-semibold uppercase tracking-wide">Minutes</div>
               </div>
 
               {/* Separator */}
-              <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[1rem] sm:min-w-[1.5rem] md:min-w-[2rem] translate-y-[2px]">
+              <div className="text-3xl font-mono font-bold text-blue-600 dark:text-blue-400 pb-8">
                 :
               </div>
 
               {/* Seconds */}
               <div className="flex flex-col items-center">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[2.5rem] sm:min-w-[3rem] md:min-w-[3.5rem]">
-                  {formatNumber(timeLeft.seconds, 2)}
+                <div className="bg-white dark:bg-slate-800 rounded-lg px-4 py-3 shadow-md border-2 border-blue-200 dark:border-blue-600 min-w-[80px]">
+                  <div className="text-4xl font-mono font-extrabold text-blue-700 dark:text-blue-300 leading-none tabular-nums text-center">
+                    {formatNumber(timeLeft.seconds, 2)}
+                  </div>
                 </div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 font-semibold">Seconds</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400 mt-2 font-semibold uppercase tracking-wide">Seconds</div>
               </div>
             </div>
           </div>

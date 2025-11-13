@@ -10,6 +10,8 @@ export const ChatterBoxDisplay: React.FC = () => {
   const [entries, setEntries] = useState<ChatterBoxEntry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<ChatterBoxEntry | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [articleContent, setArticleContent] = useState<string | null>(null);
+  const [loadingArticle, setLoadingArticle] = useState(false);
 
   useEffect(() => {
     // Delay initial load slightly to ensure localStorage is ready (especially on mobile)
@@ -116,6 +118,88 @@ export const ChatterBoxDisplay: React.FC = () => {
   const handleEntryClick = (entry: ChatterBoxEntry) => {
     setSelectedEntry(entry);
     setIsModalOpen(true);
+    setArticleContent(null); // Reset article content when opening modal
+    setLoadingArticle(false);
+    
+    // Auto-load article content if it's an article
+    if (entry.linkPreview?.type === 'article' || entry.articleUrl) {
+      const articleUrl = entry.articleUrl || entry.linkPreview?.url;
+      if (articleUrl) {
+        setLoadingArticle(true);
+        fetchArticleContent(articleUrl).finally(() => {
+          setLoadingArticle(false);
+        });
+      }
+    }
+  };
+
+  const fetchArticleContent = async (url: string) => {
+    try {
+      // Try multiple CORS proxies
+      const proxies = [
+        `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+        `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+      ];
+
+      for (const proxyUrl of proxies) {
+        try {
+          const response = await fetch(proxyUrl, {
+            method: 'GET',
+            headers: {
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+            }
+          });
+
+          if (response.ok) {
+            let html = '';
+            if (proxyUrl.includes('allorigins.win')) {
+              const data = await response.json();
+              html = data.contents;
+            } else {
+              html = await response.text();
+            }
+
+            if (html && html.length > 100) {
+              // Extract main content from HTML
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              
+              // Remove scripts, styles, and other unwanted elements
+              const unwanted = doc.querySelectorAll('script, style, nav, header, footer, aside, .ad, .advertisement, [class*="ad-"], [id*="ad-"], .social-share, .comments, .related-posts, .newsletter');
+              unwanted.forEach(el => el.remove());
+              
+              // Try to find main content
+              const mainContent = doc.querySelector('main, article, [role="main"], .content, .post-content, .article-content, .entry-content, .article-body, .story-body, .post-body') || doc.body;
+              
+              // Clean up the content - remove more unwanted elements
+              const cleanElements = mainContent.querySelectorAll('nav, header, footer, aside, .ad, .advertisement, .social-share, .comments, .related-posts, .newsletter, .author-box, .tags, .share-buttons');
+              cleanElements.forEach(el => el.remove());
+              
+              // Get text content and preserve some basic formatting
+              const content = mainContent.innerHTML
+                .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+                .replace(/<noscript\b[^<]*(?:(?!<\/noscript>)<[^<]*)*<\/noscript>/gi, '');
+              
+              if (content && content.length > 200) {
+                setArticleContent(content);
+                return;
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Proxy failed:', proxyUrl, err);
+          continue;
+        }
+      }
+      
+      // If all proxies fail, show a message
+      setArticleContent('<p class="text-gray-500 dark:text-gray-400">Unable to load article content. Please use the "Read full article" link to view on the original site.</p>');
+    } catch (error) {
+      console.error('Error fetching article content:', error);
+      setArticleContent('<p class="text-red-500 dark:text-red-400">Error loading article content. Please use the "Read full article" link.</p>');
+    }
   };
 
   const isYouTubeUrl = (url: string) => {
@@ -232,7 +316,7 @@ export const ChatterBoxDisplay: React.FC = () => {
                           }}
                         />
                         {isYouTubeVideo && (
-                          <div className="absolute top-1 right-1 bg-black/50 backdrop-blur-sm rounded-full p-1">
+                          <div className="absolute top-1 right-1 bg-black/50 backdrop-blur-sm rounded-full p-1" title="Video">
                             <Video className="w-3 h-3 text-white" />
                           </div>
                         )}
@@ -366,10 +450,14 @@ export const ChatterBoxDisplay: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     {entry.articleUrl && (
-                      <LinkIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" title="Article" />
+                      <span title="Article">
+                        <LinkIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      </span>
                     )}
                     {entry.socialMediaUrl && (
-                      <LinkIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" title="Social Media" />
+                      <span title="Social Media">
+                        <LinkIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      </span>
                     )}
                   </div>
                   <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
@@ -384,10 +472,20 @@ export const ChatterBoxDisplay: React.FC = () => {
       </div>
 
       {/* Modal for full entry view */}
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-2xl bg-white dark:bg-slate-800 text-gray-900 dark:text-white max-h-[90vh] overflow-y-auto">
+      <Dialog open={isModalOpen} onOpenChange={(open) => {
+        setIsModalOpen(open);
+        if (!open) {
+          setArticleContent(null);
+          setLoadingArticle(false);
+        }
+      }}>
+        <DialogContent className="max-w-3xl bg-white dark:bg-slate-800 text-gray-900 dark:text-white max-h-[90vh] overflow-hidden flex flex-col">
           {selectedEntry && (
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-y-auto flex-1 pr-2" style={{
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#9CA3AF #E5E7EB',
+              maxHeight: 'calc(90vh - 100px)'
+            }}>
               <div className="flex items-start">
                 <h3 className="text-xl font-bold flex items-center gap-2">
                   <MessageSquare className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -417,7 +515,7 @@ export const ChatterBoxDisplay: React.FC = () => {
                 )}
               </div>
 
-              {(selectedEntry.imageDataUrl || selectedEntry.imageUrl) && (
+              {selectedEntry.imageDataUrl && (
                 <div>
                   <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
                     <ImageIcon className="w-4 h-4" />
@@ -425,7 +523,7 @@ export const ChatterBoxDisplay: React.FC = () => {
                   </h4>
                   <div className="relative">
                     <img
-                      src={selectedEntry.imageDataUrl || selectedEntry.imageUrl}
+                      src={selectedEntry.imageDataUrl}
                       alt="Chatter box"
                       className="w-full rounded-lg border border-gray-200 dark:border-slate-600"
                       onError={(e) => {
@@ -488,15 +586,61 @@ export const ChatterBoxDisplay: React.FC = () => {
                           }}
                         />
                       )}
-                      <a
-                        href={selectedEntry.linkPreview.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
-                      >
-                        Read full article
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
+                      
+                      {/* Article Content */}
+                      {loadingArticle && (
+                        <div className="flex items-center justify-center py-8">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                          <span className="ml-3 text-sm text-gray-600 dark:text-gray-400">Loading article content...</span>
+                        </div>
+                      )}
+                      
+                      {articleContent && !loadingArticle && (
+                        <div className="mt-4 border-t border-gray-200 dark:border-slate-600 pt-4">
+                          <div 
+                            className="prose prose-sm dark:prose-invert max-w-none text-gray-800 dark:text-gray-200"
+                            style={{
+                              maxHeight: '400px',
+                              overflowY: 'auto',
+                              paddingRight: '8px'
+                            }}
+                            dangerouslySetInnerHTML={{ __html: articleContent }}
+                          />
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-200 dark:border-slate-600">
+                        {!articleContent && !loadingArticle && (
+                          <button
+                            onClick={async () => {
+                              const articleUrl = selectedEntry.articleUrl || selectedEntry.socialMediaUrl || selectedEntry.linkPreview?.url;
+                              if (!articleUrl) return;
+                              
+                              setLoadingArticle(true);
+                              try {
+                                await fetchArticleContent(articleUrl);
+                              } catch (error) {
+                                console.error('Error loading article:', error);
+                              } finally {
+                                setLoadingArticle(false);
+                              }
+                            }}
+                            className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
+                          >
+                            <LinkIcon className="w-4 h-4" />
+                            Load article content
+                          </button>
+                        )}
+                        <a
+                          href={selectedEntry.linkPreview.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
+                        >
+                          Read full article
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
                     </div>
                   )}
 
@@ -520,61 +664,6 @@ export const ChatterBoxDisplay: React.FC = () => {
                 </div>
               )}
 
-              {/* Fallback to old videoUrl if no linkPreview */}
-              {!selectedEntry.linkPreview && selectedEntry.videoUrl && (
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
-                    <Video className="w-4 h-4" />
-                    Video
-                  </h4>
-                  {isYouTubeUrl(selectedEntry.videoUrl) ? (
-                    <div className="aspect-video">
-                      <iframe
-                        src={getYouTubeEmbedUrl(selectedEntry.videoUrl) || selectedEntry.videoUrl}
-                        title="Video"
-                        className="w-full h-full rounded-lg"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    </div>
-                  ) : (
-                    <video
-                      src={selectedEntry.videoUrl}
-                      controls
-                      className="w-full rounded-lg border border-gray-200 dark:border-slate-600"
-                    />
-                  )}
-                </div>
-              )}
-
-              {(selectedEntry.tweetUrl || selectedEntry.facebookUrl) && (
-                <div className="space-y-2">
-                  {selectedEntry.tweetUrl && (
-                    <a
-                      href={selectedEntry.tweetUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      <LinkIcon className="w-4 h-4" />
-                      View Tweet
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                  {selectedEntry.facebookUrl && (
-                    <a
-                      href={selectedEntry.facebookUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      <LinkIcon className="w-4 h-4" />
-                      View Facebook Post
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
-              )}
             </div>
           )}
         </DialogContent>
