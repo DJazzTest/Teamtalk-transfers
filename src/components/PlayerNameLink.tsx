@@ -10,6 +10,14 @@ interface PlayerNameLinkProps {
   playerData?: Partial<Player>;
   className?: string;
   stopPropagation?: boolean;
+  /** If true, navigates to club squad instead of opening player modal */
+  navigateToClub?: boolean;
+  /** Callback when navigating to club */
+  onNavigateToClub?: (club: string) => void;
+  /** If true, shows transfer details modal instead of player modal */
+  showTransferDetails?: boolean;
+  /** Callback when showing transfer details */
+  onShowTransferDetails?: () => void;
 }
 
 export const PlayerNameLink: React.FC<PlayerNameLinkProps> = ({
@@ -18,6 +26,10 @@ export const PlayerNameLink: React.FC<PlayerNameLinkProps> = ({
   playerData,
   className,
   stopPropagation = true,
+  navigateToClub = false,
+  onNavigateToClub,
+  showTransferDetails = false,
+  onShowTransferDetails,
 }) => {
   const { openPlayerModal } = usePlayerModal();
 
@@ -25,6 +37,17 @@ export const PlayerNameLink: React.FC<PlayerNameLinkProps> = ({
     if (stopPropagation) {
       event.stopPropagation();
     }
+    
+    if (showTransferDetails && onShowTransferDetails) {
+      onShowTransferDetails();
+      return;
+    }
+    
+    if (navigateToClub && teamName && onNavigateToClub) {
+      onNavigateToClub(teamName);
+      return;
+    }
+    
     openPlayerModal(playerName, { teamName, playerData });
   };
 
@@ -36,7 +59,7 @@ export const PlayerNameLink: React.FC<PlayerNameLinkProps> = ({
         'inline-flex items-center gap-1 text-sm font-semibold text-blue-300 hover:text-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400/60 focus:ring-offset-2 focus:ring-offset-slate-800 transition-colors',
         className
       )}
-      title={`View ${playerName} details`}
+      title={navigateToClub ? `View ${teamName} squad` : `View ${playerName} details`}
     >
       <span className="truncate">{playerName}</span>
       <ArrowUpRight className="w-3 h-3" aria-hidden="true" />

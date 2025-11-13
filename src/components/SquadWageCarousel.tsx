@@ -2,7 +2,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { User, PoundSterling, Calendar, Shield } from 'lucide-react';
+import { User, PoundSterling, Calendar, Shield, ChevronDown, ChevronUp } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { getSquad } from '@/data/squadWages';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
@@ -31,6 +31,7 @@ const formatWage = (amount: number, isYearly: boolean = false): string => {
 
 export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) => {
   const [squad, setSquad] = useState(() => getSquad(club));
+  const [expandedPlayers, setExpandedPlayers] = useState<Set<string>>(new Set());
   const clubSlug = useMemo(() => getTeamSlug(club) || club.toLowerCase().replace(/[^a-z0-9]+/g, '-'), [club]);
   const { openPlayerModal } = usePlayerModal();
 
@@ -191,7 +192,7 @@ export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) =>
                         </Avatar>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           {player.shirtNumber !== undefined && (
                             <ShirtNumberIcon 
                               number={player.shirtNumber} 
@@ -252,6 +253,58 @@ export const SquadWageCarousel: React.FC<SquadWageCarouselProps> = ({ club }) =>
                         <span>{Math.round((player.weeklyWage / totalWeeklyWage) * 100)}%</span>
                       </div>
                     </div>
+
+                    {(() => {
+                      const description = (player as any).bio?.description || (player as any).description;
+                      if (!description) return null;
+                      
+                      const isExpanded = expandedPlayers.has(player.name);
+                      // Rough estimate: ~80-100 chars per line for text-xs in a 256px wide card
+                      const estimatedLines = Math.ceil(description.length / 90);
+                      const needsExpansion = estimatedLines > 3;
+                      
+                      return (
+                        <div className="mt-3 pt-3 border-t border-slate-700">
+                          <p 
+                            className={cn(
+                              "text-xs text-slate-300 leading-relaxed",
+                              !isExpanded && needsExpansion && "line-clamp-3"
+                            )}
+                          >
+                            {description}
+                          </p>
+                          {needsExpansion && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setExpandedPlayers(prev => {
+                                  const newSet = new Set(prev);
+                                  if (isExpanded) {
+                                    newSet.delete(player.name);
+                                  } else {
+                                    newSet.add(player.name);
+                                  }
+                                  return newSet;
+                                });
+                              }}
+                              className="mt-2 flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                            >
+                              {isExpanded ? (
+                                <>
+                                  <span>Show less</span>
+                                  <ChevronUp className="w-3 h-3" />
+                                </>
+                              ) : (
+                                <>
+                                  <span>Show more</span>
+                                  <ChevronDown className="w-3 h-3" />
+                                </>
+                              )}
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                 </Card>
               ))}

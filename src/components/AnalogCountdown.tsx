@@ -43,169 +43,72 @@ export const AnalogCountdown: React.FC<AnalogCountdownProps> = ({ targetDate, on
   const target = new Date(targetDate);
   const isExpired = target.getTime() < new Date().getTime();
 
-  // Calculate rotation angles for analog display
-  const secondsAngle = (timeLeft.seconds / 60) * 360;
-  const minutesAngle = (timeLeft.minutes / 60) * 360;
-  const hoursAngle = ((timeLeft.hours % 12) / 12) * 360;
-  const daysAngle = (timeLeft.days / 365) * 360; // Assuming max 365 days
-
-  const AnalogClock = ({ value, maxValue, label, color, angle }: {
-    value: number;
-    maxValue: number;
-    label: string;
-    color: string;
-    angle: number;
-  }) => (
-    <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 flex-shrink-0">
-      {/* 3D Base */}
-      <div 
-        className="absolute inset-0 rounded-full shadow-2xl"
-        style={{
-          background: `linear-gradient(145deg, #f0f0f0, #d0d0d0)`,
-          transform: 'perspective(100px) rotateX(10deg)',
-        }}
-      />
-      
-      {/* Clock Face */}
-      <div 
-        className="absolute inset-2 rounded-full border-4 flex items-center justify-center"
-        style={{
-          background: `radial-gradient(circle, white, #f8f9fa)`,
-          borderColor: color,
-          boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1)',
-        }}
-      >
-        {/* Hour markers */}
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-0.5 h-3 bg-gray-400"
-            style={{
-              top: '8px',
-              left: '50%',
-              transformOrigin: '50% 32px',
-              transform: `translateX(-50%) rotate(${i * 30}deg)`,
-            }}
-          />
-        ))}
-        
-        {/* Hand */}
-        <div
-          className="absolute w-1 bg-red-500 rounded-full shadow-lg transition-transform duration-1000 ease-in-out"
-          style={{
-            height: '28px',
-            top: '50%',
-            left: '50%',
-            transformOrigin: '50% 100%',
-            transform: `translateX(-50%) translateY(-100%) rotate(${angle}deg)`,
-            background: `linear-gradient(to top, ${color}, #ff6b6b)`,
-          }}
-        />
-        
-        {/* Center dot */}
-        <div 
-          className="absolute w-2 h-2 rounded-full"
-          style={{ background: color }}
-        />
-      </div>
-      
-      {/* Digital display with label beside - responsive sizing */}
-      <div 
-        className="absolute -bottom-6 sm:-bottom-8 left-1/2 transform -translate-x-1/2 px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-sm sm:text-lg font-bold text-white shadow-lg flex items-center gap-1 sm:gap-2"
-        style={{ backgroundColor: color }}
-      >
-        <span className="text-lg sm:text-2xl">{value}</span>
-        <span className="text-xs sm:text-sm font-semibold">{label}</span>
-      </div>
-    </div>
-  );
+  // Format numbers with leading zeros
+  const formatNumber = (num: number, digits: number = 2) => {
+    return String(num).padStart(digits, '0');
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center" style={{ backgroundColor: '#2F517A', borderRadius: '0.5rem', padding: '1rem sm:2rem' }}>
-        <div className="flex items-center justify-center gap-4 mb-4">
-          <h2 className="text-lg sm:text-2xl font-bold text-blue-400">Transfer Window Opens</h2>
+    <div className="space-y-3">
+      <div className="text-center bg-blue-50 dark:bg-[#1d3b5f] rounded-lg p-4 transition-colors border border-blue-100 dark:border-[#335b8c] shadow">
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <h2 className="text-lg font-bold text-blue-600 dark:text-blue-400">Transfer Window Opens</h2>
         </div>
         
         {isExpired ? (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 sm:p-8 max-w-md mx-auto">
-            <p className="text-green-600 text-lg sm:text-xl font-bold">Transfer Window is Now Open!</p>
-            <p className="text-gray-600 text-xs sm:text-sm mt-2">The winter transfer window has begun</p>
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-2 sm:p-4 max-w-md mx-auto shadow-inner">
+            <p className="text-green-600 dark:text-green-400 text-sm sm:text-base font-bold">Transfer Window is Now Open!</p>
+            <p className="text-gray-600 dark:text-gray-300 text-xs mt-1">The winter transfer window has begun</p>
           </div>
         ) : (
           <div className="w-full">
-            {/* Mobile: Horizontal Carousel, Desktop: Centered Layout */}
-            <div className="block sm:hidden">
-              {/* Mobile Carousel */}
-              <div className="overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                <div className="flex gap-4 min-w-max px-4" style={{ paddingBottom: '40px' }}>
-                  <AnalogClock
-                    value={timeLeft.days}
-                    maxValue={365}
-                    label="Days"
-                    color="#3b82f6"
-                    angle={daysAngle}
-                  />
-                  <AnalogClock
-                    value={timeLeft.hours}
-                    maxValue={24}
-                    label="Hours"
-                    color="#10b981"
-                    angle={hoursAngle}
-                  />
-                  <AnalogClock
-                    value={timeLeft.minutes}
-                    maxValue={60}
-                    label="Minutes"
-                    color="#f59e0b"
-                    angle={minutesAngle}
-                  />
-                  <AnalogClock
-                    value={timeLeft.seconds}
-                    maxValue={60}
-                    label="Seconds"
-                    color="#ef4444"
-                    angle={secondsAngle}
-                  />
+            {/* Digital Countdown Display */}
+            <div className="flex flex-wrap justify-center items-center gap-1 sm:gap-2 max-w-4xl mx-auto">
+              {/* Days */}
+              <div className="flex flex-col items-center">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-extrabold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[2.5rem] sm:min-w-[3rem] md:min-w-[3.5rem]">
+                  {timeLeft.days}
                 </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 font-semibold">Days</div>
               </div>
-              {/* Mobile Instructions */}
-              <div className="text-center text-blue-200 mb-4">
-                <p className="text-xs">← Swipe to view all timers →</p>
+
+              {/* Separator */}
+              <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[1rem] sm:min-w-[1.5rem] md:min-w-[2rem] translate-y-[2px]">
+                :
               </div>
-            </div>
-            
-            {/* Desktop: Original Layout */}
-            <div className="hidden sm:block">
-              <div className="flex flex-wrap justify-center gap-8 sm:gap-12 max-w-4xl mx-auto pb-16">
-                <AnalogClock
-                  value={timeLeft.days}
-                  maxValue={365}
-                  label="Days"
-                  color="#3b82f6"
-                  angle={daysAngle}
-                />
-                <AnalogClock
-                  value={timeLeft.hours}
-                  maxValue={24}
-                  label="Hours"
-                  color="#10b981"
-                  angle={hoursAngle}
-                />
-                <AnalogClock
-                  value={timeLeft.minutes}
-                  maxValue={60}
-                  label="Minutes"
-                  color="#f59e0b"
-                  angle={minutesAngle}
-                />
-                <AnalogClock
-                  value={timeLeft.seconds}
-                  maxValue={60}
-                  label="Seconds"
-                  color="#ef4444"
-                  angle={secondsAngle}
-                />
+
+              {/* Hours */}
+              <div className="flex flex-col items-center">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[2.5rem] sm:min-w-[3rem] md:min-w-[3.5rem]">
+                  {formatNumber(timeLeft.hours, 2)}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 font-semibold">Hours</div>
+              </div>
+
+              {/* Separator */}
+              <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[1rem] sm:min-w-[1.5rem] md:min-w-[2rem] translate-y-[2px]">
+                :
+              </div>
+
+              {/* Minutes */}
+              <div className="flex flex-col items-center">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[2.5rem] sm:min-w-[3rem] md:min-w-[3.5rem]">
+                  {formatNumber(timeLeft.minutes, 2)}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 font-semibold">Minutes</div>
+              </div>
+
+              {/* Separator */}
+              <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[1rem] sm:min-w-[1.5rem] md:min-w-[2rem] translate-y-[2px]">
+                :
+              </div>
+
+              {/* Seconds */}
+              <div className="flex flex-col items-center">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-bold leading-none h-8 sm:h-10 md:h-12 flex items-center justify-center text-green-600 dark:text-[#4dff4d] min-w-[2.5rem] sm:min-w-[3rem] md:min-w-[3.5rem]">
+                  {formatNumber(timeLeft.seconds, 2)}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 font-semibold">Seconds</div>
               </div>
             </div>
           </div>

@@ -7,18 +7,18 @@ interface ClubSpendingChart2025Props {
   onSelectClub?: (club: string) => void;
 }
 
-// Official 2025/26 Summer Window Data
+// Official 2025/26 Summer Window Data - Ordered by spending (descending)
 const clubFinancialData = [
-  { club: 'Arsenal', spending: 263.0, earnings: 9.0, displayName: 'Arsenal' },
-  { club: 'Manchester United', spending: 210.5, earnings: 0.0, displayName: 'Man U' },
   { club: 'Liverpool', spending: 317.0, earnings: 207.0, displayName: 'Liverpool' },
+  { club: 'Arsenal', spending: 263.0, earnings: 9.0, displayName: 'Arsenal' },
   { club: 'Chelsea', spending: 236.1, earnings: 207.8, displayName: 'Chelsea' },
-  { club: 'Manchester City', spending: 147.5, earnings: 81.2, displayName: 'Man City' },
-  { club: 'Nottingham Forest', spending: 147.7, earnings: 105.4, displayName: 'Notts Forest' },
+  { club: 'Manchester United', spending: 210.5, earnings: 0.0, displayName: 'Man Utd' },
   { club: 'Sunderland', spending: 147.9, earnings: 37.0, displayName: 'Sunderland' },
+  { club: 'Nottingham Forest', spending: 147.7, earnings: 105.4, displayName: 'Notts Forest' },
+  { club: 'Manchester City', spending: 147.5, earnings: 81.2, displayName: 'Man City' },
   { club: 'Newcastle United', spending: 128.6, earnings: 32.0, displayName: 'Newcastle' },
-  { club: 'Tottenham Hotspur', spending: 122.5, earnings: 36.5, displayName: 'Tottenham' },
-  { club: 'Bournemouth', spending: 121.0, earnings: 191.3, displayName: 'Bournemouth' },
+  { club: 'Tottenham Hotspur', spending: 122.5, earnings: 36.5, displayName: 'Tott' },
+  { club: 'Bournemouth', spending: 121.0, earnings: 191.3, displayName: 'Bourn' },
   { club: 'Leeds United', spending: 90.1, earnings: 5.2, displayName: 'Leeds' },
   { club: 'Burnley', spending: 87.4, earnings: 29.6, displayName: 'Burnley' },
   { club: 'Brentford', spending: 84.5, earnings: 88.4, displayName: 'Brentford' },
@@ -26,47 +26,54 @@ const clubFinancialData = [
   { club: 'Wolverhampton Wanderers', spending: 77.8, earnings: 97.0, displayName: 'Wolves' },
   { club: 'West Ham United', spending: 72.8, earnings: 54.5, displayName: 'West Ham' },
   { club: 'Brighton & Hove Albion', spending: 67.75, earnings: 110.0, displayName: 'Brighton' },
-  { club: 'Aston Villa', spending: 34.5, earnings: 42.5, displayName: 'Aston Villa' },
-  { club: 'Crystal Palace', spending: 3.0, earnings: 68.5, displayName: 'Crystal Palace' },
+  { club: 'Aston Villa', spending: 34.5, earnings: 42.5, displayName: 'A Villa' },
+  { club: 'Crystal Palace', spending: 3.0, earnings: 68.5, displayName: 'Palace' },
   { club: 'Fulham', spending: 0.43, earnings: 0.0, displayName: 'Fulham' }
 ];
 
-// Club badge mapping
-const getClubBadge = (club: string): string => {
-  const badgeMap: Record<string, string> = {
-    'Arsenal': '/badges/arsenal-real.png',
-    'Aston Villa': '/badges/astonvilla.png',
-    'Bournemouth': '/badges/bournemouth-real.png',
-    'Brentford': '/badges/brentford.png',
-    'Brighton & Hove Albion': '/badges/brightonhovealbion.png',
-    'Burnley': '/badges/burnley.png', 
-    'Chelsea': '/badges/chelsea-real.png',
-    'Crystal Palace': '/badges/crystalpalace.png',
-    'Everton': '/badges/everton.png',
-    'Fulham': '/badges/fulham.png',
-    'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png',
-    'Liverpool': '/badges/liverpool-real.png',
-    'Manchester City': '/badges/manchestercity-real.png',
-    'Manchester United': '/badges/manchesterunited-real.png',
-    'Newcastle United': '/badges/newcastleunited.png',
-    'Nottingham Forest': '/badges/nottinghamforest.png',
-    'Sunderland': '/badges/sunderland.png',
-    'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
-    'West Ham United': '/badges/westhamunited.png',
-    'Wolverhampton Wanderers': '/badges/wolverhamptonwanderers.png'
-  };
-  return badgeMap[club] || '';
+const clubNameVariants: Record<string, { medium: string; short: string; veryShort: string; single: string }> = {
+  'Arsenal': { medium: 'Arsenal', short: 'Ars', veryShort: 'Ar..', single: 'A.' },
+  'Manchester United': { medium: 'Man Utd', short: 'Man U', veryShort: 'Man..', single: 'M.' },
+  'Liverpool': { medium: 'Liverpool', short: 'Liver', veryShort: 'Liv..', single: 'L.' },
+  'Chelsea': { medium: 'Chelsea', short: 'Chel', veryShort: 'Ch..', single: 'C.' },
+  'Manchester City': { medium: 'Man City', short: 'Man C', veryShort: 'Ma..', single: 'M.' },
+  'Nottingham Forest': { medium: 'Notts Forest', short: 'Notts', veryShort: 'No..', single: 'N.' },
+  'Sunderland': { medium: 'Sunderland', short: 'Sund', veryShort: 'Su..', single: 'S.' },
+  'Newcastle United': { medium: 'Newcastle', short: 'Newc', veryShort: 'Ne..', single: 'N.' },
+  'Tottenham Hotspur': { medium: 'Tott', short: 'Tott', veryShort: 'To..', single: 'T.' },
+  'Bournemouth': { medium: 'Bourn', short: 'Bour', veryShort: 'Bo..', single: 'B.' },
+  'Leeds United': { medium: 'Leeds', short: 'Leeds', veryShort: 'Le..', single: 'L.' },
+  'Burnley': { medium: 'Burnley', short: 'Burn', veryShort: 'Bu..', single: 'B.' },
+  'Brentford': { medium: 'Brentford', short: 'Bren', veryShort: 'Br..', single: 'B.' },
+  'Everton': { medium: 'Everton', short: 'Ever', veryShort: 'Ev..', single: 'E.' },
+  'Wolverhampton Wanderers': { medium: 'Wolves', short: 'Wolv', veryShort: 'Wo..', single: 'W.' },
+  'West Ham United': { medium: 'West Ham', short: 'W Ham', veryShort: 'W..', single: 'W.' },
+  'Brighton & Hove Albion': { medium: 'Brighton', short: 'Brigh', veryShort: 'Br..', single: 'B.' },
+  'Aston Villa': { medium: 'Aston Villa', short: 'A Villa', veryShort: 'A..', single: 'A.' },
+  'Crystal Palace': { medium: 'Palace', short: 'Pal', veryShort: 'Pa..', single: 'P.' },
+  'Fulham': { medium: 'Fulham', short: 'Ful', veryShort: 'Fu..', single: 'F.' }
 };
 
 export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ onSelectClub }) => {
+  const getResponsiveName = React.useCallback((club: string, defaultName: string) => {
+    // Always use display name for fixed-width layout
+    return defaultName;
+  }, []);
+
   // Calculate net spend and sort by total spending
-  const chartData = clubFinancialData
-    .map(club => ({
-      ...club,
-      netSpend: club.spending - club.earnings,
-      clubShort: club.club.length > 12 ? club.club.substring(0, 12) + '...' : club.club
-    }))
-    .sort((a, b) => b.spending - a.spending);
+  const chartData = React.useMemo(() => {
+    return clubFinancialData
+      .map(club => {
+        const responsiveName = getResponsiveName(club.club, club.displayName);
+        return {
+          ...club,
+          netSpend: club.spending - club.earnings,
+          clubShort: responsiveName,
+          responsiveName
+        };
+      })
+      .sort((a, b) => b.spending - a.spending);
+  }, [getResponsiveName]);
 
   const handleBarClick = (data: any) => {
     if (onSelectClub) {
@@ -79,148 +86,111 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
   const totalNetSpend = totalSpending - totalEarnings;
 
   return (
-    <Card className="border-gray-200/50 shadow-lg mb-6" style={{ backgroundColor: '#2F517A' }}>
-      <div className="p-3 sm:p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-blue-100 p-2 rounded-lg">
-            <TrendingUp className="w-5 h-5 text-blue-600" />
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-blue-400">Club Spending 2025/26 Summer Window</h3>
-          </div>
-        </div>
-        
-        {/* Scrollable chart container */}
-        <div className="overflow-x-auto pb-4" style={{
-          scrollbarWidth: 'thin',
-          scrollbarColor: '#9CA3AF #E5E7EB'
-        }}>
-          <div className="min-w-[1800px]">
-            {/* Chart */}
-            <div className="h-64 mb-6">
-              <ResponsiveContainer width="100%" height="100%" minWidth={1800}>
-                <BarChart 
-                  data={chartData} 
-                  margin={{ top: 20, right: 50, left: 50, bottom: 10 }}
-                  barCategoryGap="8%"
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis 
-                    dataKey="clubShort" 
-                    tick={false}
-                    axisLine={false}
-                  />
-                  <YAxis 
-                    tick={{ fontSize: 12, fill: '#E5E7EB' }}
-                    label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#E5E7EB' } }}
-                  />
-                  <Tooltip 
-                    formatter={(value: number, name: string) => {
-                      const label = name === 'spending' ? 'Spent' : name === 'earnings' ? 'Earned' : 'Net Spend';
-                      return [`£${value.toFixed(1)}M`, label];
-                    }}
-                    labelFormatter={(label: string) => label}
-                    contentStyle={{
-                      backgroundColor: 'rgba(47, 81, 122, 0.95)',
-                      border: '1px solid rgba(255,255,255,0.2)',
-                      borderRadius: '8px',
-                      color: '#fff'
-                    }}
-                  />
-                  <Bar 
-                    dataKey="spending" 
-                    name="spending" 
-                    fill="#DC2626" 
-                    radius={[4, 4, 0, 0]} 
-                    onClick={handleBarClick}
-                    style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
-                  />
-                  <Bar 
-                    dataKey="earnings" 
-                    name="earnings" 
-                    fill="#10B981" 
-                    radius={[4, 4, 0, 0]} 
-                    onClick={handleBarClick}
-                    style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+    <Card className="border border-gray-200 dark:border-slate-700 shadow-lg mb-6 bg-white dark:bg-slate-800/70 transition-colors" style={{ width: '960px' }}>
+      <div style={{ padding: '16px' }}>
+            <div className="flex items-center gap-2">
+              <div className="bg-blue-100 dark:bg-blue-900/40 p-1.5 rounded-lg">
+                <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-300" />
+              </div>
+              <h3 className="text-lg font-bold text-blue-700 dark:text-blue-200">
+                Club Spending 2025/26 Summer Window
+              </h3>
             </div>
             
-            {/* Custom club info below chart - aligned with bars */}
-            <div className="min-w-[1800px] flex items-start" style={{ paddingLeft: '50px', paddingRight: '50px' }}>
-              {chartData.map((club, index) => {
-                // Use equal spacing that matches the chart's barCategoryGap
-                const totalBars = chartData.length;
-                const availableWidth = 1800 - 100; // Total width minus padding
-                const barSpacing = availableWidth / totalBars;
-                
-                return (
-                  <div 
-                    key={club.club} 
-                    className="text-center flex-shrink-0 flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
-                    style={{ 
-                      width: `${barSpacing}px`,
-                      flex: '0 0 auto'
-                    }}
-                    onClick={() => handleBarClick(club)}
-                  >
-                    {/* Earnings - Green */}
-                    <div className="text-xs font-semibold text-green-400 mb-1 whitespace-nowrap">
-                      £{club.earnings.toFixed(1)}M
-                    </div>
-                    {/* Spending - Red */}
-                    <div className="text-xs font-semibold text-red-400 mb-2 whitespace-nowrap">
-                      £{club.spending.toFixed(1)}M
-                    </div>
-                    {/* Club Name - Centered with consistent height */}
-                    <div className="text-xs font-medium text-white mb-2 leading-tight h-10 flex items-center justify-center text-center px-1">
-                      <span className="break-words">{club.displayName}</span>
-                    </div>
-                    {/* Club Badge - Centered */}
-                    <div className="flex justify-center items-center w-10 h-10">
-                      <img
-                        src={getClubBadge(club.club)}
-                        alt={`${club.club} badge`}
-                        className="w-10 h-10 rounded-full shadow-lg bg-white object-contain border-2 border-gray-300 p-0.5"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            {/* Chart */}
+            <div className="w-full text-slate-600 dark:text-slate-200">
+              <div style={{ width: '100%', height: '224px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart 
+                data={chartData} 
+                margin={{ 
+                  top: 20, 
+                  right: 24, 
+                  left: 16, 
+                  bottom: 32 
+                }}
+                barCategoryGap={chartData.length > 15 ? '30%' : chartData.length > 10 ? '20%' : '10%'}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.3)" />
+                <XAxis 
+                  dataKey="clubShort" 
+                  tick={{ fontSize: 10, fill: 'currentColor' }}
+                  tickLine={false}
+                  axisLine={false}
+                  interval={0}
+                  height={60}
+                  tickFormatter={(value) => value}
+                  tickMargin={8}
+                  angle={0}
+                  textAnchor="middle"
+                />
+                <YAxis 
+                  tick={{ fontSize: 12, fill: 'currentColor' }}
+                  width={60}
+                  label={{ value: 'Amount (£M)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: 'currentColor', fontSize: '12px' } }}
+                />
+                <Tooltip 
+                  formatter={(value: number, name: string) => {
+                    const label = name === 'spending' ? 'Spent' : name === 'earnings' ? 'Earned' : 'Net Spend';
+                    return [`£${value.toFixed(1)}M`, label];
+                  }}
+                  labelFormatter={(label: string) => label}
+                  contentStyle={{
+                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                    border: '1px solid rgba(148,163,184,0.4)',
+                    borderRadius: '8px',
+                    color: '#fff'
+                  }}
+                />
+                <Bar 
+                  dataKey="spending" 
+                  name="spending" 
+                  fill="#DC2626" 
+                  radius={[4, 4, 0, 0]} 
+                  onClick={handleBarClick}
+                  style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
+                  barSize={chartData.length > 15 ? 18 : chartData.length > 10 ? 22 : 28}
+                />
+                <Bar 
+                  dataKey="earnings" 
+                  name="earnings" 
+                  fill="#10B981" 
+                  radius={[4, 4, 0, 0]} 
+                  onClick={handleBarClick}
+                  style={{ cursor: onSelectClub ? 'pointer' : 'default' }}
+                  barSize={chartData.length > 15 ? 18 : chartData.length > 10 ? 22 : 28}
+                />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
         
-        {/* Summary Statistics */}
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-          <div className="bg-red-500/20 p-3 rounded-lg">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <TrendingUp className="w-4 h-4 text-red-400" />
-              <span className="text-sm font-medium text-red-400">Total Spent</span>
+            {/* Summary Statistics */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', textAlign: 'center' }}>
+              <div className="bg-red-100 dark:bg-red-500/20 p-2 rounded-lg border border-red-200 dark:border-red-500/40">
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <TrendingUp className="w-3 h-3 text-red-500 dark:text-red-300" />
+                  <span className="text-xs font-medium text-red-700 dark:text-red-200">Total Spent</span>
+                </div>
+                <p className="text-sm font-bold text-red-700 dark:text-red-200">£{totalSpending.toFixed(1)}M</p>
+              </div>
+              
+              <div className="bg-green-100 dark:bg-green-500/20 p-2 rounded-lg border border-green-200 dark:border-green-500/40">
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <TrendingDown className="w-3 h-3 text-green-600 dark:text-green-300" />
+                  <span className="text-xs font-medium text-green-700 dark:text-green-200">Total Earned</span>
+                </div>
+                <p className="text-sm font-bold text-green-700 dark:text-green-200">£{totalEarnings.toFixed(1)}M</p>
+              </div>
+              
+              <div className="bg-blue-100 dark:bg-blue-500/20 p-2 rounded-lg border border-blue-200 dark:border-blue-500/40">
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <TrendingUp className="w-3 h-3 text-blue-600 dark:text-blue-300" />
+                  <span className="text-xs font-medium text-blue-700 dark:text-blue-200">Net Spend</span>
+                </div>
+                <p className="text-sm font-bold text-blue-700 dark:text-blue-200">£{totalNetSpend.toFixed(1)}M</p>
+              </div>
             </div>
-            <p className="text-lg font-bold text-white">£{totalSpending.toFixed(1)}M</p>
-          </div>
-          
-          <div className="bg-green-500/20 p-3 rounded-lg">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <TrendingDown className="w-4 h-4 text-green-400" />
-              <span className="text-sm font-medium text-green-400">Total Earned</span>
-            </div>
-            <p className="text-lg font-bold text-white">£{totalEarnings.toFixed(1)}M</p>
-          </div>
-          
-          <div className="bg-blue-500/20 p-3 rounded-lg">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <TrendingUp className="w-4 h-4 text-blue-400" />
-              <span className="text-sm font-medium text-blue-400">Net Spend</span>
-            </div>
-            <p className="text-lg font-bold text-white">£{totalNetSpend.toFixed(1)}M</p>
-          </div>
-        </div>
       </div>
     </Card>
   );

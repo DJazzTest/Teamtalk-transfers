@@ -569,16 +569,32 @@ export class NewsApiService {
     
     // If URL doesn't start with http, it might be a relative path
     if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
-      // Assume it's a TeamTalk relative path
-      if (cleanUrl.startsWith('/')) {
+      if (cleanUrl.startsWith('//')) {
+        cleanUrl = `https:${cleanUrl}`;
+      } else if (cleanUrl.startsWith('/wp-content')) {
+        cleanUrl = `https://www.teamtalk.com${cleanUrl}`;
+      } else if (cleanUrl.startsWith('/')) {
         cleanUrl = `https://images.teamtalk.com${cleanUrl}`;
       } else {
         cleanUrl = `https://images.teamtalk.com/content/uploads/${cleanUrl}`;
       }
     }
     
+    // Some TeamTalk images come from the main wordpress uploads path
+    if (cleanUrl.includes('/wp-content/uploads/')) {
+      cleanUrl = cleanUrl.replace('www.teamtalk.com/wp-content/uploads/', 'images.teamtalk.com/content/uploads/');
+    }
+
+    // Remove any accidental double slashes after protocol
+    cleanUrl = cleanUrl.replace(/(^https?:\/\/)(\/+)/, '$1');
+
+    // Last sanity check: ensure we have https schema
+    if (!cleanUrl.startsWith('http')) {
+      // Assume it's a TeamTalk relative path
+      cleanUrl = `https://images.teamtalk.com/content/uploads/${cleanUrl.replace(/^\/+/, '')}`;
+    }
+    
     const proxiedUrl = `https://images.ps-aws.com/c?url=${encodeURIComponent(cleanUrl)}`;
-    console.log('🔄 Wrapping image URL:', cleanUrl.substring(0, 80), '→', proxiedUrl.substring(0, 100));
     return proxiedUrl;
   }
 }

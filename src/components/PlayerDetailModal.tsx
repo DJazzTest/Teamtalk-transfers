@@ -545,92 +545,143 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
         </DialogHeader>
 
         <div className="space-y-6 mt-4">
-          {/* Basic Info - Floating Bubble Design */}
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {teamName && (
-              <Card className="p-2.5 bg-blue-500/20 backdrop-blur-sm border border-blue-400/30 rounded-full hover:border-blue-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(59,130,246,0.3)] hover:shadow-[0_12px_40px_rgb(59,130,246,0.5)] hover:scale-105">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-blue-300 mb-1 text-center">Club</p>
-                <p className="text-white font-semibold text-sm text-center">{teamName}</p>
-              </Card>
-            )}
-            {player.shirtNumber && (
-              <Card className="p-2.5 bg-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-full hover:border-purple-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(168,85,247,0.3)] hover:shadow-[0_12px_40px_rgb(168,85,247,0.5)] hover:scale-105 flex flex-col items-center justify-center">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-purple-300 mb-1">Shirt</p>
-                <div className="flex items-center justify-center">
-                  <ShirtNumberIcon 
-                    number={player.shirtNumber} 
-                    size="md"
-                    className="text-purple-200 drop-shadow-[0_0_4px_rgba(196,181,253,0.8)]"
-                  />
-                </div>
-              </Card>
-            )}
-            {player.position && (
-              <Card className="p-2.5 bg-emerald-500/20 backdrop-blur-sm border border-emerald-400/30 rounded-full hover:border-emerald-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(16,185,129,0.3)] hover:shadow-[0_12px_40px_rgb(16,185,129,0.5)] hover:scale-105">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-emerald-300 mb-1 text-center">Position</p>
-                <Badge className="bg-emerald-500/40 text-white font-semibold px-2 py-0.5 rounded-full text-xs mx-auto block w-fit">{player.position}</Badge>
-              </Card>
-            )}
-            {player.age && (
-              <Card className="p-2.5 bg-orange-500/20 backdrop-blur-sm border border-orange-400/30 rounded-full hover:border-orange-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(249,115,22,0.3)] hover:shadow-[0_12px_40px_rgb(249,115,22,0.5)] hover:scale-105">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-orange-300 mb-1 text-center flex items-center justify-center gap-1">
-                  <Calendar className="w-2.5 h-2.5" />
-                  Age
-                </p>
-                <p className="text-white font-bold text-sm text-center">{player.age}</p>
-              </Card>
-            )}
-            {player.bio?.contractUntil && (
-              <Card className="p-2.5 bg-cyan-500/20 backdrop-blur-sm border border-cyan-400/30 rounded-full hover:border-cyan-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(6,182,212,0.3)] hover:shadow-[0_12px_40px_rgb(6,182,212,0.5)] hover:scale-105">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-cyan-300 mb-1 text-center">Contract</p>
-                <p className="text-white font-semibold text-xs text-center">{player.bio.contractUntil}</p>
-              </Card>
-            )}
-            {player.bio?.height && (
-              <Card className="p-2.5 bg-pink-500/20 backdrop-blur-sm border border-pink-400/30 rounded-full hover:border-pink-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(236,72,153,0.3)] hover:shadow-[0_12px_40px_rgb(236,72,153,0.5)] hover:scale-105">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-pink-300 mb-1 text-center">Height</p>
-                <p className="text-white font-semibold text-sm text-center">{player.bio.height}</p>
-              </Card>
-            )}
-            {player.bio?.dateOfBirth && (
-              <Card className="p-2.5 bg-yellow-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-full hover:border-yellow-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(234,179,8,0.3)] hover:shadow-[0_12px_40px_rgb(234,179,8,0.5)] hover:scale-105">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-yellow-300 mb-1 text-center">D.O.B</p>
-                <p className="text-white font-semibold text-xs text-center">
-                  {formatDate(player.bio.dateOfBirth)}
-                </p>
-              </Card>
-            )}
-            {player.bio?.preferredFoot && (
-              <Card className="p-2.5 bg-indigo-500/20 backdrop-blur-sm border border-indigo-400/30 rounded-full hover:border-indigo-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(99,102,241,0.3)] hover:shadow-[0_12px_40px_rgb(99,102,241,0.5)] hover:scale-105">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-indigo-300 mb-1 text-center flex items-center justify-center gap-1">
-                  <Footprints className="w-2.5 h-2.5" />
-                  Foot
-                </p>
-                <p className="text-white font-semibold text-sm text-center">{player.bio.preferredFoot}</p>
-              </Card>
-            )}
+          {/* Basic Info - Single Line Format */}
+          <div className="flex flex-wrap items-center gap-1.5 text-sm text-gray-300 font-medium">
+            {/* Nationality Code - Nationality */}
             {player.bio?.nationality && (
-              <Card className="p-2.5 bg-red-500/20 backdrop-blur-sm border border-red-400/30 rounded-full hover:border-red-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(239,68,68,0.3)] hover:shadow-[0_12px_40px_rgb(239,68,68,0.5)] hover:scale-105">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-red-300 mb-1 text-center flex items-center justify-center gap-1">
-                  <Globe className="w-2.5 h-2.5" />
-                  Nation
-                </p>
-                <p className="text-white font-semibold text-sm text-center">{player.bio.nationality}</p>
-              </Card>
+              <>
+                <span className="text-white font-semibold">
+                  {(() => {
+                    // Get country code from nationality
+                    const countryCodes: Record<string, string> = {
+                      'Spain': 'ES', 'France': 'FR', 'England': 'EN', 'Brazil': 'BR', 'Argentina': 'AR',
+                      'Portugal': 'PT', 'Germany': 'DE', 'Italy': 'IT', 'Netherlands': 'NL', 'Belgium': 'BE',
+                      'Croatia': 'HR', 'Denmark': 'DK', 'Sweden': 'SE', 'Norway': 'NO', 'Poland': 'PL',
+                      'Czech Republic': 'CZ', 'Austria': 'AT', 'Switzerland': 'CH', 'Greece': 'GR', 'Turkey': 'TR',
+                      'Ukraine': 'UA', 'Russia': 'RU', 'Serbia': 'RS', 'Slovakia': 'SK', 'Slovenia': 'SI',
+                      'Romania': 'RO', 'Bulgaria': 'BG', 'Hungary': 'HU', 'Finland': 'FI', 'Ireland': 'IE',
+                      'Wales': 'WAL', 'Scotland': 'SCO', 'Northern Ireland': 'NIR', 'Iceland': 'IS', 'Estonia': 'EE',
+                      'Latvia': 'LV', 'Lithuania': 'LT', 'Luxembourg': 'LU', 'Malta': 'MT', 'Cyprus': 'CY',
+                      'Albania': 'AL', 'Bosnia and Herzegovina': 'BA', 'Macedonia': 'MK', 'Montenegro': 'ME',
+                      'Kosovo': 'XK', 'Moldova': 'MD', 'Georgia': 'GE', 'Armenia': 'AM', 'Azerbaijan': 'AZ',
+                      'Kazakhstan': 'KZ', 'Uzbekistan': 'UZ', 'Israel': 'IL', 'Saudi Arabia': 'SA', 'UAE': 'AE',
+                      'Qatar': 'QA', 'Kuwait': 'KW', 'Oman': 'OM', 'Bahrain': 'BH', 'Jordan': 'JO', 'Lebanon': 'LB',
+                      'Syria': 'SY', 'Iraq': 'IQ', 'Iran': 'IR', 'Egypt': 'EG', 'Morocco': 'MA', 'Algeria': 'DZ',
+                      'Tunisia': 'TN', 'Senegal': 'SN', 'Ghana': 'GH', 'Nigeria': 'NG', 'Cameroon': 'CM', 'Ivory Coast': 'CI',
+                      'Mali': 'ML', 'Burkina Faso': 'BF', 'Guinea': 'GN', 'DR Congo': 'CD', 'Congo': 'CG', 'Gabon': 'GA',
+                      'Togo': 'TG', 'Benin': 'BJ', 'Niger': 'NE', 'Chad': 'TD', 'Central African Republic': 'CF',
+                      'Equatorial Guinea': 'GQ', 'São Tomé and Príncipe': 'ST', 'Cape Verde': 'CV', 'Gambia': 'GM',
+                      'Guinea-Bissau': 'GW', 'Sierra Leone': 'SL', 'Liberia': 'LR', 'Mauritania': 'MR', 'Mauritius': 'MU',
+                      'Madagascar': 'MG', 'Comoros': 'KM', 'Seychelles': 'SC', 'Djibouti': 'DJ', 'Eritrea': 'ER',
+                      'Ethiopia': 'ET', 'Somalia': 'SO', 'Kenya': 'KE', 'Uganda': 'UG', 'Tanzania': 'TZ', 'Rwanda': 'RW',
+                      'Burundi': 'BI', 'South Sudan': 'SS', 'Sudan': 'SD', 'Libya': 'LY', 'Mozambique': 'MZ', 'Malawi': 'MW',
+                      'Zambia': 'ZM', 'Zimbabwe': 'ZW', 'Botswana': 'BW', 'Namibia': 'NA', 'Angola': 'AO', 'South Africa': 'ZA',
+                      'Lesotho': 'LS', 'Eswatini': 'SZ', 'Maldives': 'MV', 'Sri Lanka': 'LK', 'Bangladesh': 'BD', 'India': 'IN',
+                      'Pakistan': 'PK', 'Afghanistan': 'AF', 'Nepal': 'NP', 'Bhutan': 'BT', 'Myanmar': 'MM', 'Thailand': 'TH',
+                      'Laos': 'LA', 'Cambodia': 'KH', 'Vietnam': 'VN', 'Malaysia': 'MY', 'Singapore': 'SG', 'Brunei': 'BN',
+                      'Indonesia': 'ID', 'Philippines': 'PH', 'East Timor': 'TL', 'Papua New Guinea': 'PG', 'Fiji': 'FJ',
+                      'Samoa': 'WS', 'Tonga': 'TO', 'Vanuatu': 'VU', 'Solomon Islands': 'SB', 'New Caledonia': 'NC', 'Tahiti': 'PF',
+                      'New Zealand': 'NZ', 'Australia': 'AU', 'Japan': 'JP', 'South Korea': 'KR', 'North Korea': 'KP',
+                      'China': 'CN', 'Taiwan': 'TW', 'Hong Kong': 'HK', 'Macau': 'MO', 'Mongolia': 'MN', 'Kyrgyzstan': 'KG',
+                      'Tajikistan': 'TJ', 'Turkmenistan': 'TM', 'Canada': 'CA', 'United States': 'US', 'Mexico': 'MX',
+                      'Guatemala': 'GT', 'Belize': 'BZ', 'El Salvador': 'SV', 'Honduras': 'HN', 'Nicaragua': 'NI',
+                      'Costa Rica': 'CR', 'Panama': 'PA', 'Cuba': 'CU', 'Jamaica': 'JM', 'Haiti': 'HT', 'Dominican Republic': 'DO',
+                      'Puerto Rico': 'PR', 'Trinidad and Tobago': 'TT', 'Barbados': 'BB', 'Bahamas': 'BS', 'Guyana': 'GY',
+                      'Suriname': 'SR', 'French Guiana': 'GF', 'Venezuela': 'VE', 'Colombia': 'CO', 'Ecuador': 'EC',
+                      'Peru': 'PE', 'Bolivia': 'BO', 'Paraguay': 'PY', 'Uruguay': 'UY', 'Chile': 'CL'
+                    };
+                    return countryCodes[player.bio.nationality] || player.bio.nationality.substring(0, 2).toUpperCase();
+                  })()}
+                </span>
+                <span className="text-gray-400">-</span>
+                <span className="text-white">{player.bio.nationality}</span>
+                <span className="text-gray-400">-</span>
+              </>
             )}
-            {player.bio?.nationalTeam && (
-              <Card className="p-2.5 bg-violet-500/20 backdrop-blur-sm border border-violet-400/30 rounded-full hover:border-violet-400/60 transition-all duration-300 shadow-[0_8px_30px_rgb(139,92,246,0.3)] hover:shadow-[0_12px_40px_rgb(139,92,246,0.5)] hover:scale-105">
-                <p className="text-[9px] uppercase tracking-widest font-bold text-violet-300 mb-1 text-center">N.Team</p>
-                <p className="text-white font-semibold text-xs text-center">
-                  {player.bio.nationalTeam}
-                  {player.bio.nationalTeamAppearances !== undefined && (
-                    <span className="block text-[10px] text-gray-300 mt-0.5 font-normal">
-                      {player.bio.nationalTeamAppearances} apps
-                      {player.bio.nationalTeamGoals !== undefined ? `, ${player.bio.nationalTeamGoals} g` : ''}
-                    </span>
-                  )}
-                </p>
-              </Card>
+            
+            {/* Date of Birth with Age */}
+            {player.bio?.dateOfBirth && (
+              <>
+                <span className="text-white">
+                  {(() => {
+                    const dob = player.bio.dateOfBirth;
+                    // Try to parse date - handle formats like "15 Sept 1995" or "1995-09-15"
+                    let day = '', month = '', year = '';
+                    const age = player.age || 0;
+                    
+                    // Try ISO format first
+                    if (dob.includes('-')) {
+                      const parts = dob.split('-');
+                      if (parts.length >= 3) {
+                        year = parts[0];
+                        month = parts[1];
+                        day = parts[2].split(' ')[0];
+                      }
+                    } else {
+                      // Try "DD MMM YYYY" format
+                      const match = dob.match(/(\d{1,2})\s+(\w+)\s+(\d{4})/);
+                      if (match) {
+                        const months: Record<string, string> = {
+                          'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'Jun': '06',
+                          'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12',
+                          'January': '01', 'February': '02', 'March': '03', 'April': '04', 'June': '06',
+                          'July': '07', 'August': '08', 'September': '09', 'October': '10', 'November': '11', 'December': '12',
+                          'May': '05' // Add May after to avoid duplicate key
+                        };
+                        day = match[1].padStart(2, '0');
+                        month = months[match[2]] || '01';
+                        year = match[3];
+                      } else {
+                        // Try to parse as Date object
+                        const date = new Date(dob);
+                        if (!isNaN(date.getTime())) {
+                          day = String(date.getDate()).padStart(2, '0');
+                          month = String(date.getMonth() + 1).padStart(2, '0');
+                          year = String(date.getFullYear());
+                        }
+                      }
+                    }
+                    
+                    if (day && month && year) {
+                      return `${day}/${month}/${year}(${age})`;
+                    }
+                    return `${dob}(${age})`;
+                  })()}
+                </span>
+                <span className="text-gray-400">-</span>
+              </>
+            )}
+            
+            {/* Position */}
+            {player.position && (
+              <>
+                <span className="text-white font-semibold">{player.position}</span>
+                <span className="text-gray-400">-</span>
+              </>
+            )}
+            
+            {/* Height */}
+            {player.bio?.height && (
+              <>
+                <span className="text-white">{player.bio.height}</span>
+                <span className="text-gray-400">-</span>
+              </>
+            )}
+            
+            {/* Preferred Foot with Boot Icon */}
+            {player.bio?.preferredFoot && (
+              <>
+                <span className="text-white inline-flex items-center gap-1">
+                  <Footprints className="w-3.5 h-3.5" />
+                  {player.bio.preferredFoot}
+                </span>
+                <span className="text-gray-400">-</span>
+              </>
+            )}
+            
+            {/* Shirt Number */}
+            {player.shirtNumber && (
+              <span className="text-white font-semibold">No {player.shirtNumber}</span>
             )}
           </div>
 

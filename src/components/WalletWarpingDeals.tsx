@@ -144,26 +144,12 @@ export const WalletWarpingDeals: React.FC<WalletWarpingDealsProps> = ({ transfer
                       </Button>
                     ) : null;
 
-                    if (playerInfo.found) {
-                      return (
-                        <div className="flex items-center gap-2 flex-1 min-w-0">
-                          <PlayerNameLink
-                            playerName={transfer.playerName}
-                            teamName={playerInfo.club}
-                            playerData={playerInfo.player}
-                            className="text-purple-700 font-semibold text-base truncate"
-                          />
-                          {viewTeamButton}
-                        </div>
-                      );
-                    }
-
                     return (
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <span
                           className="font-semibold text-purple-700 hover:underline cursor-pointer text-base truncate"
                           onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
-                          title={`View ${transfer.toClub} transfers`}
+                          title={`View ${transfer.toClub} squad`}
                         >
                           {transfer.playerName}
                         </span>

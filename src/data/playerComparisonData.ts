@@ -1108,7 +1108,15 @@ export const getPlayerComparisonData = (playerName: string, playerData: any): De
   // First check fallback data
   const fallback = playerComparisonFallback[playerName];
   if (fallback) {
-    return fallback;
+    // Merge with actual player data if available to get latest stats
+    const merged = { ...fallback };
+    if (playerData?.seasonStats?.competitions) {
+      const primaryComp = playerData.seasonStats.competitions[0];
+      if (primaryComp?.averageRating) {
+        merged.sofascoreRating = primaryComp.averageRating;
+      }
+    }
+    return merged;
   }
   
   // Otherwise, try to extract from playerData
@@ -1118,18 +1126,72 @@ export const getPlayerComparisonData = (playerName: string, playerData: any): De
   if (playerData?.bio?.height) stats.height = playerData.bio.height;
   
   // Extract from seasonStats if available
-  if (playerData?.seasonStats?.competitions) {
+  if (playerData?.seasonStats?.competitions && playerData.seasonStats.competitions.length > 0) {
     const competitions = playerData.seasonStats.competitions;
+    const primaryComp = competitions[0]; // Use primary competition for detailed stats
+    
+    // Basic match stats
     stats.matchesPlayed = competitions.reduce((sum: number, c: any) => sum + (c.matches || 0), 0);
     stats.totalMinutes = competitions.reduce((sum: number, c: any) => sum + (c.minutes || 0), 0);
-    stats.minutesPerGame = stats.matchesPlayed > 0 ? Math.round(stats.totalMinutes / stats.matchesPlayed) : 0;
+    stats.minutesPerGame = primaryComp?.minutesPerGame || (stats.matchesPlayed > 0 ? Math.round(stats.totalMinutes / stats.matchesPlayed) : 0);
     
-    if (playerData.position?.toLowerCase().includes('goalkeeper')) {
-      stats.goalsConceded = competitions.reduce((sum: number, c: any) => sum + (c.goalsConceded || 0), 0);
-      stats.cleanSheets = competitions.reduce((sum: number, c: any) => sum + (c.cleanSheets || 0), 0);
+    // Average rating
+    if (primaryComp?.averageRating) {
+      stats.sofascoreRating = typeof primaryComp.averageRating === 'number' 
+        ? primaryComp.averageRating 
+        : parseFloat(primaryComp.averageRating) || undefined;
+    }
+    
+    const isGoalkeeper = playerData.position?.toLowerCase().includes('goalkeeper');
+    
+    if (isGoalkeeper) {
+      // Goalkeeping stats
+      stats.goalsConceded = primaryComp?.goalsConceded ?? competitions.reduce((sum: number, c: any) => sum + (c.goalsConceded || 0), 0);
+      stats.cleanSheets = primaryComp?.cleanSheets ?? competitions.reduce((sum: number, c: any) => sum + (c.cleanSheets || 0), 0);
+      stats.saves = primaryComp?.saves;
+      stats.goalsPrevented = primaryComp?.goalsPrevented;
+      stats.accuratePasses = primaryComp?.accuratePasses;
+      stats.accurateLongBalls = primaryComp?.accurateLongBalls;
     } else {
-      stats.goals = competitions.reduce((sum: number, c: any) => sum + (c.goals || 0), 0);
-      stats.goalsPerGame = stats.matchesPlayed > 0 ? parseFloat((stats.goals / stats.matchesPlayed).toFixed(1)) : 0;
+      // Attacking stats
+      stats.goals = primaryComp?.goals ?? competitions.reduce((sum: number, c: any) => sum + (c.goals || 0), 0);
+      stats.goalsPerGame = primaryComp?.goalsPerGame ?? (stats.matchesPlayed > 0 ? parseFloat((stats.goals / stats.matchesPlayed).toFixed(1)) : 0);
+      stats.shotsOffTarget = primaryComp?.shotsOffTarget;
+      stats.shotsOnTarget = primaryComp?.shotsOnTarget;
+      stats.bigChancesMissed = primaryComp?.bigChancesMissed;
+      
+      // Passing stats
+      stats.assists = primaryComp?.assists ?? competitions.reduce((sum: number, c: any) => sum + (c.assists || 0), 0);
+      stats.assistsPerGame = primaryComp?.assistsPerGame ?? (stats.matchesPlayed > 0 ? parseFloat((stats.assists / stats.matchesPlayed).toFixed(1)) : 0);
+      stats.expectedAssists = primaryComp?.expectedAssists;
+      stats.bigChancesCreated = primaryComp?.bigChancesCreated;
+      stats.longBalls = primaryComp?.longBalls;
+      stats.longBallsPercentage = primaryComp?.longBallsPercentage;
+      stats.crosses = primaryComp?.crosses;
+      stats.crossesPercentage = primaryComp?.crossesPercentage;
+      
+      // Defending stats
+      stats.interceptions = primaryComp?.interceptions;
+      stats.tackles = primaryComp?.tackles;
+      stats.dribbledPast = primaryComp?.dribbledPast;
+      stats.clearances = primaryComp?.clearances;
+      stats.blockedShots = primaryComp?.blockedShots;
+      
+      // Other stats
+      stats.successfulDribbles = primaryComp?.successfulDribbles;
+      stats.successfulDribblesPercentage = primaryComp?.successfulDribblesPercentage;
+      stats.groundDuelsWon = primaryComp?.groundDuelsWon;
+      stats.groundDuelsWonPercentage = primaryComp?.groundDuelsWonPercentage;
+      stats.aerialDuelsWon = primaryComp?.aerialDuelsWon;
+      stats.aerialDuelsWonPercentage = primaryComp?.aerialDuelsWonPercentage;
+      stats.possessionLost = primaryComp?.possessionLost;
+      stats.fouls = primaryComp?.fouls;
+      stats.wasFouled = primaryComp?.wasFouled;
+      
+      // Cards
+      stats.yellowCards = primaryComp?.yellowCards ?? competitions.reduce((sum: number, c: any) => sum + (c.yellowCards || 0), 0);
+      stats.yellowRedCards = primaryComp?.yellowRedCards;
+      stats.redCards = primaryComp?.redCards ?? competitions.reduce((sum: number, c: any) => sum + (c.redCards || 0), 0);
     }
   }
   
