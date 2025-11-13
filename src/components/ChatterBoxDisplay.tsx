@@ -12,7 +12,10 @@ export const ChatterBoxDisplay: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    loadEntries();
+    // Delay initial load slightly to ensure localStorage is ready (especially on mobile)
+    const loadTimer = setTimeout(() => {
+      loadEntries();
+    }, 100);
     
     // Listen for storage changes (when CMS updates entries in another tab/window)
     const handleStorageChange = (e: StorageEvent) => {
@@ -26,28 +29,87 @@ export const ChatterBoxDisplay: React.FC = () => {
       loadEntries();
     };
     
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('chatterBoxUpdated', handleCustomUpdate);
+    // Also listen for focus events (when user returns to tab/window on mobile)
+    const handleFocus = () => {
+      loadEntries();
+    };
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', handleStorageChange);
+      window.addEventListener('chatterBoxUpdated', handleCustomUpdate);
+      window.addEventListener('focus', handleFocus);
+    }
     
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('chatterBoxUpdated', handleCustomUpdate);
+      clearTimeout(loadTimer);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('storage', handleStorageChange);
+        window.removeEventListener('chatterBoxUpdated', handleCustomUpdate);
+        window.removeEventListener('focus', handleFocus);
+      }
     };
   }, []);
 
   const loadEntries = () => {
     try {
+      // Check if localStorage is available (some mobile browsers in private mode block it)
+      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+        console.warn('localStorage is not available - may be in private browsing mode');
+        setEntries([]);
+        return;
+      }
+
+      // Test localStorage access (some mobile browsers throw errors on access)
+      try {
+        localStorage.setItem('__test__', 'test');
+        localStorage.removeItem('__test__');
+      } catch (testError) {
+        console.warn('localStorage access test failed:', testError);
+        setEntries([]);
+        return;
+      }
+
       const stored = localStorage.getItem(STORAGE_KEY);
+      console.log('ChatterBox: Checking localStorage for key:', STORAGE_KEY, 'Found:', !!stored);
+      
       if (stored) {
         const parsed = JSON.parse(stored);
+        console.log('ChatterBox: Parsed data type:', typeof parsed, 'Is array:', Array.isArray(parsed));
+        
+        // Ensure it's an array
+        if (!Array.isArray(parsed)) {
+          console.warn('Chatter box entries is not an array:', parsed);
+          setEntries([]);
+          return;
+        }
+        
         // Sort by date, newest first
-        const sorted = parsed.sort((a: ChatterBoxEntry, b: ChatterBoxEntry) => 
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+        const sorted = parsed.sort((a: ChatterBoxEntry, b: ChatterBoxEntry) => {
+          try {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          } catch {
+            return 0;
+          }
+        });
+        console.log(`ChatterBox: Loaded ${sorted.length} entries successfully`);
         setEntries(sorted);
+      } else {
+        console.log('ChatterBox: No entries found in localStorage. Current domain:', window.location.hostname);
+        console.log('ChatterBox: Note - localStorage is domain-specific. Entries created on localhost won\'t appear on production domain.');
+        setEntries([]);
       }
     } catch (error) {
-      console.error('Error loading chatter box entries:', error);
+      console.error('ChatterBox: Error loading entries:', error);
+      // Try to recover by checking if localStorage has the key but corrupted data
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem(STORAGE_KEY);
+          console.log('ChatterBox: Cleared corrupted entries');
+        }
+      } catch {
+        // Ignore errors when trying to clear
+      }
+      setEntries([]);
     }
   };
 
@@ -102,13 +164,39 @@ export const ChatterBoxDisplay: React.FC = () => {
     }
   };
 
+  // Check if localStorage is available for debugging
+  const isLocalStorageAvailable = typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+  const currentDomain = typeof window !== 'undefined' ? window.location.hostname : 'unknown';
+  
   if (entries.length === 0) {
     return (
       <div className="text-center py-8">
         <MessageSquare className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
-        <p className="text-gray-500 dark:text-gray-400 text-sm">
+        <p className="text-gray-500 dark:text-gray-400 text-sm mb-2">
           No chatter box entries yet. Check back soon!
         </p>
+        {!isLocalStorageAvailable && (
+          <p className="text-xs text-red-500 dark:text-red-400 mt-2">
+            Note: localStorage is not available. This may be due to private browsing mode.
+          </p>
+        )}
+        {isLocalStorageAvailable && currentDomain !== 'localhost' && !currentDomain.includes('127.0.0.1') && (
+          <p className="text-xs text-amber-500 dark:text-amber-400 mt-2 px-4">
+            Note: Chatter Box entries are stored locally. Entries created on localhost won't appear here. 
+            To see entries on production, they need to be created on this domain.
+          </p>
+        )}
+        {isLocalStorageAvailable && (
+          <button
+            onClick={() => {
+              console.log('Manual refresh triggered from button');
+              loadEntries();
+            }}
+            className="mt-2 text-xs text-blue-600 dark:text-blue-400 hover:underline px-4 py-2 rounded border border-blue-600 dark:border-blue-400"
+          >
+            Refresh
+          </button>
+        )}
       </div>
     );
   }
