@@ -76,33 +76,88 @@ export const FlashBannerManagement: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    try {
-      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
-        return;
-      }
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
+    // Load banner data from API (for cross-device sync) with localStorage fallback
+    const loadBannerData = async () => {
+      try {
+        // First try to load from API for cross-device sync
         try {
-          const parsed = JSON.parse(stored);
-          setBannerData({ ...DEFAULT_BANNER, ...parsed });
-        } catch (parseError) {
-          console.error('Error parsing flash banner data:', parseError);
+          const apiUrl = '/.netlify/functions/flash-banner';
+          const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            const apiData = await response.json();
+            if (apiData && apiData.enabled !== undefined) {
+              setBannerData({ ...DEFAULT_BANNER, ...apiData });
+              // Also sync to localStorage as backup
+              if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                try {
+                  localStorage.setItem(STORAGE_KEY, JSON.stringify(apiData));
+                } catch (e) {
+                  // Ignore localStorage errors
+                }
+              }
+              return;
+            }
+          }
+        } catch (apiError) {
+          console.warn('Failed to load from API, trying localStorage:', apiError);
         }
+
+        // Fallback to localStorage if API fails
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) {
+            try {
+              const parsed = JSON.parse(stored);
+              setBannerData({ ...DEFAULT_BANNER, ...parsed });
+            } catch (parseError) {
+              console.error('Error parsing flash banner data:', parseError);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error loading flash banner data:', error);
       }
-    } catch (error) {
-      console.error('Error loading flash banner data:', error);
-    }
+    };
+
+    loadBannerData();
   }, []);
 
-  const saveBannerData = () => {
+  const saveBannerData = async () => {
     try {
-      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
-        toast.error('localStorage is not available');
-        return;
+      // Save to API first for cross-device sync
+      try {
+        const apiUrl = '/.netlify/functions/flash-banner';
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(bannerData)
+        });
+
+        if (!response.ok) {
+          throw new Error('API save failed');
+        }
+      } catch (apiError) {
+        console.warn('Failed to save to API, using localStorage only:', apiError);
+        // Continue to save to localStorage as fallback
       }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(bannerData));
+
+      // Also save to localStorage as backup
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(bannerData));
+      }
+
       // Dispatch event to notify frontend of update
-      window.dispatchEvent(new Event('flashBannerUpdated'));
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('flashBannerUpdated'));
+      }
       toast.success('Flash banner saved successfully');
     } catch (error) {
       console.error('Error saving flash banner data:', error);

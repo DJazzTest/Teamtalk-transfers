@@ -48,27 +48,63 @@ export const FlashBanner: React.FC = () => {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    // Load banner data from localStorage
-    const loadBannerData = () => {
+    // Load banner data from API (for cross-device sync) with localStorage fallback
+    const loadBannerData = async () => {
       try {
-        if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
-          return;
+        // First try to load from API for cross-device sync
+        try {
+          const apiUrl = '/.netlify/functions/flash-banner';
+          const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            const apiData = await response.json();
+            if (apiData && apiData.enabled !== undefined) {
+              setBannerData({ 
+                ...DEFAULT_BANNER, 
+                ...apiData,
+                url: (typeof apiData.url === 'string' ? apiData.url : '') || '',
+                text: (typeof apiData.text === 'string' ? apiData.text : '') || '',
+                imageDataUrl: (typeof apiData.imageDataUrl === 'string' ? apiData.imageDataUrl : '') || '',
+                labelType: (apiData.labelType && typeof apiData.labelType === 'string' ? apiData.labelType : '') as BannerLabelType
+              });
+              // Also sync to localStorage as backup
+              if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                try {
+                  localStorage.setItem(STORAGE_KEY, JSON.stringify(apiData));
+                } catch (e) {
+                  // Ignore localStorage errors
+                }
+              }
+              return;
+            }
+          }
+        } catch (apiError) {
+          console.warn('Failed to load from API, trying localStorage:', apiError);
         }
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          try {
-            const parsed = JSON.parse(stored);
-            setBannerData({ 
-              ...DEFAULT_BANNER, 
-              ...parsed,
-              url: (typeof parsed.url === 'string' ? parsed.url : '') || '',
-              text: (typeof parsed.text === 'string' ? parsed.text : '') || '',
-              imageDataUrl: (typeof parsed.imageDataUrl === 'string' ? parsed.imageDataUrl : '') || '',
-              labelType: (parsed.labelType && typeof parsed.labelType === 'string' ? parsed.labelType : '') as BannerLabelType
-            });
-          } catch (parseError) {
-            console.error('Error parsing flash banner data:', parseError);
-            setBannerData(DEFAULT_BANNER);
+
+        // Fallback to localStorage if API fails
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) {
+            try {
+              const parsed = JSON.parse(stored);
+              setBannerData({ 
+                ...DEFAULT_BANNER, 
+                ...parsed,
+                url: (typeof parsed.url === 'string' ? parsed.url : '') || '',
+                text: (typeof parsed.text === 'string' ? parsed.text : '') || '',
+                imageDataUrl: (typeof parsed.imageDataUrl === 'string' ? parsed.imageDataUrl : '') || '',
+                labelType: (parsed.labelType && typeof parsed.labelType === 'string' ? parsed.labelType : '') as BannerLabelType
+              });
+            } catch (parseError) {
+              console.error('Error parsing flash banner data:', parseError);
+              setBannerData(DEFAULT_BANNER);
+            }
           }
         }
       } catch (error) {
