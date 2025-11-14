@@ -82,7 +82,7 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
 
   if (isCompact) {
     return (
-      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200">
+      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200 overflow-hidden">
         <div className="p-4">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
@@ -99,22 +99,24 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
                   {getPlayerInitials(transfer.playerName)}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex items-center gap-2 flex-1">
-                <Badge className={`text-xs`} style={{ background: getStatusColor(transfer.status), color: '#fff' }}>{transfer.status.toUpperCase()}</Badge>
-                {(() => {
-                  const playerInfo = findPlayerInSquads(transfer.playerName);
-                  if (playerInfo.found) {
-                    return (
-                      <PlayerNameLink
-                        playerName={transfer.playerName}
-                        teamName={playerInfo.club}
-                        playerData={playerInfo.player}
-                        className="text-white text-sm font-semibold hover:text-blue-300"
-                      />
-                    );
-                  }
-                  return <h4 className="font-semibold text-white text-sm">{transfer.playerName}</h4>;
-                })()}
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <Badge className={`text-xs flex-shrink-0 whitespace-nowrap`} style={{ background: getStatusColor(transfer.status), color: '#fff' }}>{transfer.status.toUpperCase()}</Badge>
+                <div className="flex-1 min-w-0">
+                  {(() => {
+                    const playerInfo = findPlayerInSquads(transfer.playerName);
+                    if (playerInfo.found) {
+                      return (
+                        <PlayerNameLink
+                          playerName={transfer.playerName}
+                          teamName={playerInfo.club}
+                          playerData={playerInfo.player}
+                          className="text-white text-sm font-semibold hover:text-blue-300 truncate block"
+                        />
+                      );
+                    }
+                    return <h4 className="font-semibold text-white text-sm truncate">{transfer.playerName}</h4>;
+                  })()}
+                </div>
               </div>
             </div>
             
@@ -171,10 +173,10 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
   }
 
   return (
-    <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200">
+    <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200 overflow-hidden">
       <div className="p-4">
         <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex-1 flex items-center gap-4">
+          <div className="flex-1 flex items-center gap-4 min-w-0">
             <Avatar className="w-12 h-12">
               <AvatarImage 
                 src={transfer.playerImage || getPlayerImage(transfer.playerName, transfer.toClub)} 
@@ -188,24 +190,26 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
                 {getPlayerInitials(transfer.playerName)}
               </AvatarFallback>
             </Avatar>
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
                 {getStatusIcon(transfer.status)}
-                {(() => {
-                  const playerInfo = findPlayerInSquads(transfer.playerName);
-                  if (playerInfo.found) {
-                    return (
-                      <PlayerNameLink
-                        playerName={transfer.playerName}
-                        teamName={playerInfo.club}
-                        playerData={playerInfo.player}
-                        className="text-lg font-semibold text-white hover:text-blue-300"
-                      />
-                    );
-                  }
-                  return <h3 className="text-lg font-semibold text-white">{transfer.playerName}</h3>;
-                })()}
-                <Badge className={`${getStatusColor(transfer.status)} text-white text-xs`}>
+                <div className="flex-1 min-w-0">
+                  {(() => {
+                    const playerInfo = findPlayerInSquads(transfer.playerName);
+                    if (playerInfo.found) {
+                      return (
+                        <PlayerNameLink
+                          playerName={transfer.playerName}
+                          teamName={playerInfo.club}
+                          playerData={playerInfo.player}
+                          className="text-lg font-semibold text-white hover:text-blue-300 truncate block"
+                        />
+                      );
+                    }
+                    return <h3 className="text-lg font-semibold text-white truncate">{transfer.playerName}</h3>;
+                  })()}
+                </div>
+                <Badge className={`${getStatusColor(transfer.status)} text-white text-xs flex-shrink-0 whitespace-nowrap`}>
                   {transfer.status}
                 </Badge>
               </div>
