@@ -142,9 +142,9 @@ const WebsiteContent = () => {
                   Summer Ins
                 </h3>
                 <div 
-                  className="flex-1 overflow-y-auto pr-2 summer-scrollbar" 
+                  className="flex-1 overflow-y-scroll pr-2 summer-scrollbar" 
                   style={{
-                    scrollbarWidth: 'thin',
+                    scrollbarWidth: 'auto',
                     scrollbarColor: '#6b8e6b #E5E7EB',
                     maxHeight: 'calc(100vh - 400px)'
                   }}
@@ -246,15 +246,17 @@ const WebsiteContent = () => {
                     }
                   }
                   .summer-scrollbar::-webkit-scrollbar {
-                    width: 8px;
+                    width: 12px;
+                    display: block;
                   }
                   .summer-scrollbar::-webkit-scrollbar-track {
                     background: #E5E7EB;
-                    border-radius: 4px;
+                    border-radius: 6px;
                   }
                   .summer-scrollbar::-webkit-scrollbar-thumb {
                     background: #6b8e6b;
-                    border-radius: 4px;
+                    border-radius: 6px;
+                    border: 2px solid #E5E7EB;
                   }
                   .summer-scrollbar::-webkit-scrollbar-thumb:hover {
                     background: #5a7a5a;
@@ -287,9 +289,9 @@ const WebsiteContent = () => {
                   Summer Outs
                 </h3>
                 <div 
-                  className="flex-1 overflow-y-auto pr-2 summer-scrollbar" 
+                  className="flex-1 overflow-y-scroll pr-2 summer-scrollbar" 
                   style={{
-                    scrollbarWidth: 'thin',
+                    scrollbarWidth: 'auto',
                     scrollbarColor: '#6b8e6b #E5E7EB',
                     maxHeight: 'calc(100vh - 400px)'
                   }}
