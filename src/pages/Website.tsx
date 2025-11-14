@@ -19,9 +19,12 @@ import { Top10ExpensiveVertical } from '@/components/Top10ExpensiveVertical';
 import { VideoTab } from '@/components/VideoTab';
 import { MessageSquare, Newspaper, TrendingUp, Video } from 'lucide-react';
 import { ClubTransfersList } from '@/components/ClubTransfersList';
+import { FlashBanner } from '@/components/FlashBanner';
 
 const WebsiteContent = () => {
+  console.log('WebsiteContent: Component rendering');
   const { allTransfers, lastUpdated, refreshAllData } = useTransferDataStore();
+  console.log('WebsiteContent: Store initialized', { transfersCount: allTransfers.length });
   const { refreshCounter } = useRefreshControl();
   const [selectedClub, setSelectedClub] = useState<string | null>(null);
   const [countdownTarget] = useState('2025-12-31T23:00:00');
@@ -126,6 +129,9 @@ const WebsiteContent = () => {
             <TransferCountdown targetDate={countdownTarget} />
           </div>
         </Card>
+
+        {/* Flash Banner */}
+        <FlashBanner />
 
         {/* Club Spending Chart 2025 */}
         <div className="mb-8" style={{ width: '960px' }}>
