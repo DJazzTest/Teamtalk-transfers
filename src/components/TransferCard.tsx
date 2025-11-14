@@ -100,8 +100,8 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
                 </AvatarFallback>
               </Avatar>
               <div className="flex items-center gap-2 flex-1 min-w-0">
-                <Badge className={`text-xs flex-shrink-0 whitespace-nowrap`} style={{ background: getStatusColor(transfer.status), color: '#fff' }}>{transfer.status.toUpperCase()}</Badge>
-                <div className="flex-1 min-w-0">
+                <Badge className={`text-[10px] px-1.5 py-0.5 flex-shrink-0 whitespace-nowrap leading-tight`} style={{ background: getStatusColor(transfer.status), color: '#fff' }}>{transfer.status.toUpperCase()}</Badge>
+                <div className="flex-1 min-w-0 pr-2">
                   {(() => {
                     const playerInfo = findPlayerInSquads(transfer.playerName);
                     if (playerInfo.found) {
@@ -110,11 +110,11 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
                           playerName={transfer.playerName}
                           teamName={playerInfo.club}
                           playerData={playerInfo.player}
-                          className="text-white text-sm font-semibold hover:text-blue-300 truncate block"
+                          className="text-white text-sm font-semibold hover:text-blue-300 break-words"
                         />
                       );
                     }
-                    return <h4 className="font-semibold text-white text-sm truncate">{transfer.playerName}</h4>;
+                    return <h4 className="font-semibold text-white text-sm break-words">{transfer.playerName}</h4>;
                   })()}
                 </div>
               </div>
@@ -191,7 +191,7 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-2 flex-wrap">
+              <div className="flex items-start gap-2 mb-2">
                 {getStatusIcon(transfer.status)}
                 <div className="flex-1 min-w-0">
                   {(() => {
@@ -202,14 +202,14 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
                           playerName={transfer.playerName}
                           teamName={playerInfo.club}
                           playerData={playerInfo.player}
-                          className="text-lg font-semibold text-white hover:text-blue-300 truncate block"
+                          className="text-base font-semibold text-white hover:text-blue-300 leading-tight"
                         />
                       );
                     }
-                    return <h3 className="text-lg font-semibold text-white truncate">{transfer.playerName}</h3>;
+                    return <h3 className="text-base font-semibold text-white leading-tight">{transfer.playerName}</h3>;
                   })()}
                 </div>
-                <Badge className={`${getStatusColor(transfer.status)} text-white text-xs flex-shrink-0 whitespace-nowrap`}>
+                <Badge className={`${getStatusColor(transfer.status)} text-white text-[10px] px-1.5 py-0.5 flex-shrink-0 whitespace-nowrap leading-tight mt-0.5`}>
                   {transfer.status}
                 </Badge>
               </div>
