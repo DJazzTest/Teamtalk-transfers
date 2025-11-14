@@ -150,16 +150,21 @@ export const ClubTransfersList: React.FC<ClubTransfersListProps> = ({
                   {showExpandButton && (
                     <button
                       onClick={(e) => toggleExpand(club, e)}
-                      className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white mt-2 transition-colors"
+                      className="flex items-center gap-1 text-sm font-semibold mt-3 transition-colors px-2 py-1 rounded hover:opacity-80"
+                      style={{ 
+                        color: '#6b8e6b',
+                        backgroundColor: 'rgba(107, 142, 107, 0.1)',
+                        border: '1px solid rgba(107, 142, 107, 0.3)'
+                      }}
                     >
                       {isExpanded ? (
                         <>
-                          <ChevronUp className="w-4 h-4" />
+                          <ChevronUp className="w-4 h-4" style={{ color: '#6b8e6b' }} />
                           Show Less
                         </>
                       ) : (
                         <>
-                          <ChevronDown className="w-4 h-4" />
+                          <ChevronDown className="w-4 h-4" style={{ color: '#6b8e6b' }} />
                           Show {clubTransfers.length - 3} More
                         </>
                       )}

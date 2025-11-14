@@ -137,11 +137,11 @@ const WebsiteContent = () => {
           {/* Left Column: Transfers In */}
           <div style={{ width: '240px', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md flex flex-col h-full">
-              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: '1' }}>
+              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: '1', position: 'relative' }}>
                 <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-4 border-b-2 border-blue-600 dark:border-blue-400 pb-2">
                   Summer Ins
                 </h3>
-                <div className="flex-1 overflow-y-auto pr-2" style={{
+                <div className="flex-1 overflow-y-auto pr-2 relative" style={{
                   scrollbarWidth: 'thin',
                   scrollbarColor: '#9CA3AF #E5E7EB',
                   maxHeight: 'calc(100vh - 400px)'
@@ -152,6 +152,28 @@ const WebsiteContent = () => {
                     type="in"
                     onSelectClub={handleSelectClub}
                   />
+                  {/* Scroll indicator gradient */}
+                  <div 
+                    className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none"
+                    style={{
+                      background: 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0.95) 100%)',
+                      display: 'flex',
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      paddingBottom: '6px'
+                    }}
+                  >
+                    <div 
+                      className="text-xs font-medium" 
+                      style={{ 
+                        fontStyle: 'italic',
+                        color: '#6b8e6b',
+                        textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)'
+                      }}
+                    >
+                      ↓ Scroll for more
+                    </div>
+                  </div>
                 </div>
               </div>
             </Card>
@@ -265,11 +287,11 @@ const WebsiteContent = () => {
           {/* Right Column: Transfers Out */}
           <div style={{ width: '240px', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md flex flex-col h-full">
-              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: '1' }}>
+              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: '1', position: 'relative' }}>
                 <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-4 border-b-2 border-red-600 dark:border-red-400 pb-2">
                   Summer Outs
                 </h3>
-                <div className="flex-1 overflow-y-auto pr-2" style={{
+                <div className="flex-1 overflow-y-auto pr-2 relative" style={{
                   scrollbarWidth: 'thin',
                   scrollbarColor: '#9CA3AF #E5E7EB',
                   maxHeight: 'calc(100vh - 400px)'
@@ -280,6 +302,28 @@ const WebsiteContent = () => {
                     type="out"
                     onSelectClub={handleSelectClub}
                   />
+                  {/* Scroll indicator gradient */}
+                  <div 
+                    className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none"
+                    style={{
+                      background: 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0.95) 100%)',
+                      display: 'flex',
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      paddingBottom: '6px'
+                    }}
+                  >
+                    <div 
+                      className="text-xs font-medium" 
+                      style={{ 
+                        fontStyle: 'italic',
+                        color: '#6b8e6b',
+                        textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)'
+                      }}
+                    >
+                      ↓ Scroll for more
+                    </div>
+                  </div>
                 </div>
               </div>
             </Card>
