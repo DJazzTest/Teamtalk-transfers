@@ -175,25 +175,25 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
   return (
     <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200 overflow-hidden">
       <div className="p-4">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex-1 flex items-center gap-4 min-w-0">
-            <Avatar className="w-12 h-12">
-              <AvatarImage 
-                src={transfer.playerImage || getPlayerImage(transfer.playerName, transfer.toClub)} 
-                alt={transfer.playerName}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }}
-              />
-              <AvatarFallback className="bg-slate-600 text-white">
-                {getPlayerInitials(transfer.playerName)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start gap-2 mb-2">
-                {getStatusIcon(transfer.status)}
-                <div className="flex-1 min-w-0">
+        <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#475569 #1e293b' }}>
+          <div className="flex items-center justify-between gap-4" style={{ minWidth: 'min-content' }}>
+            <div className="flex items-center gap-4 flex-shrink-0">
+              <Avatar className="w-12 h-12 flex-shrink-0">
+                <AvatarImage 
+                  src={transfer.playerImage || getPlayerImage(transfer.playerName, transfer.toClub)} 
+                  alt={transfer.playerName}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
+                <AvatarFallback className="bg-slate-600 text-white">
+                  {getPlayerInitials(transfer.playerName)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-shrink-0" style={{ minWidth: 'min-content' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  {getStatusIcon(transfer.status)}
                   {(() => {
                     const playerInfo = findPlayerInSquads(transfer.playerName);
                     if (playerInfo.found) {
@@ -202,58 +202,58 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
                           playerName={transfer.playerName}
                           teamName={playerInfo.club}
                           playerData={playerInfo.player}
-                          className="text-base font-semibold text-white hover:text-blue-300 leading-tight"
+                          className="text-base font-semibold text-white hover:text-blue-300 whitespace-nowrap"
                         />
                       );
                     }
-                    return <h3 className="text-base font-semibold text-white leading-tight">{transfer.playerName}</h3>;
+                    return <h3 className="text-base font-semibold text-white whitespace-nowrap">{transfer.playerName}</h3>;
                   })()}
+                  <Badge className={`${getStatusColor(transfer.status)} text-white text-[10px] px-1.5 py-0.5 flex-shrink-0 whitespace-nowrap leading-tight`}>
+                    {transfer.status}
+                  </Badge>
                 </div>
-                <Badge className={`${getStatusColor(transfer.status)} text-white text-[10px] px-1.5 py-0.5 flex-shrink-0 whitespace-nowrap leading-tight mt-0.5`}>
-                  {transfer.status}
-                </Badge>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <span>{transfer.fromClub}</span>
-                <span>→</span>
-                <span className="font-semibold text-white flex items-center gap-1">
-                  {transfer.toClub}
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={e => {
-                            e.currentTarget.classList.add('scale-110');
-                            setTimeout(() => e.currentTarget.classList.remove('scale-110'), 150);
-                            handleStarClub(transfer.toClub);
-                          }}
-                          className={`ml-1 p-1 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50 transition-transform duration-150 ${isStarred ? 'bg-yellow-400/20' : ''}`}
-                          aria-label={isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
-                        >
-                          <Star className={`w-4 h-4 ${isStarred ? 'fill-yellow-400 text-yellow-400' : 'text-yellow-400'}`} />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom">
-                        {isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </span>
-              </div>
-              {transfer.rejectionReason && (
-                <div className="mt-2 bg-red-500/10 border border-red-500/20 rounded p-2">
-                  <p className="text-red-400 text-sm">{transfer.rejectionReason}</p>
+                <div className="flex items-center gap-2 text-sm text-gray-300 whitespace-nowrap">
+                  <span>{transfer.fromClub}</span>
+                  <span>→</span>
+                  <span className="font-semibold text-white flex items-center gap-1">
+                    {transfer.toClub}
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={e => {
+                              e.currentTarget.classList.add('scale-110');
+                              setTimeout(() => e.currentTarget.classList.remove('scale-110'), 150);
+                              handleStarClub(transfer.toClub);
+                            }}
+                            className={`ml-1 p-1 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/20 border border-yellow-400/30 hover:border-yellow-300/50 transition-transform duration-150 ${isStarred ? 'bg-yellow-400/20' : ''}`}
+                            aria-label={isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
+                          >
+                            <Star className={`w-4 h-4 ${isStarred ? 'fill-yellow-400 text-yellow-400' : 'text-yellow-400'}`} />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom">
+                          {isStarred ? 'Remove from Favourites' : 'Add to Favourites'}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </span>
                 </div>
-              )}
+                {transfer.rejectionReason && (
+                  <div className="mt-2 bg-red-500/10 border border-red-500/20 rounded p-2">
+                    <p className="text-red-400 text-sm">{transfer.rejectionReason}</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          
-            <div className="text-right">
-            <p className="text-lg font-bold text-green-400">{transfer.fee || 'No fee listed'}</p>
-            <p className="text-xs text-gray-300">{transfer.source}</p>
-            <p className="text-xs text-gray-400">{new Date(transfer.date).toLocaleDateString()}</p>
+            
+            <div className="text-right flex-shrink-0" style={{ minWidth: 'min-content' }}>
+              <p className="text-lg font-bold text-green-400 whitespace-nowrap">{transfer.fee || 'No fee listed'}</p>
+              <p className="text-xs text-gray-300 whitespace-nowrap">{transfer.source}</p>
+              <p className="text-xs text-gray-400 whitespace-nowrap">{new Date(transfer.date).toLocaleDateString()}</p>
+            </div>
           </div>
         </div>
         

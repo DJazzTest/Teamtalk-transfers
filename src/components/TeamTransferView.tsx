@@ -821,55 +821,49 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       })()})
                     </h3>
                   </div>
-                  <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#475569 #1e293b' }}>
-                    <div className="flex gap-3" style={{ minWidth: 'min-content' }}>
-                      {(() => {
-                        // Only include INCOMING transfers (toClub === selectedTeam)
-                        const allSignings = [
-                          ...transfersIn,
-                          ...(teamData?.transfers?.filter(t => t.status === 'confirmed' && t.toClub === selectedTeam) || [])
-                        ];
-                        // Filter doneDeals to only include incoming transfers
-                        const incomingDoneDeals = (teamData?.doneDeals || []).filter(t => t.toClub === selectedTeam);
-                        const combined = [...allSignings, ...incomingDoneDeals];
-                        // Remove duplicates based on player name and toClub
-                        const uniqueDoneDeals = combined.filter((transfer, index, self) => 
-                          index === self.findIndex(t => t.playerName === transfer.playerName && t.toClub === transfer.toClub)
-                        );
-                        const displayDoneDeals = expandedSections.doneDeals ? uniqueDoneDeals : uniqueDoneDeals.slice(0, 5);
-                        return (
-                          <>
-                            {displayDoneDeals.map((transfer) => (
-                              <div key={transfer.id} style={{ minWidth: '280px', maxWidth: '280px', flexShrink: 0 }}>
-                                <TransferCard transfer={transfer} />
-                              </div>
-                            ))}
-                            {uniqueDoneDeals.length > 5 && (
-                              <div style={{ minWidth: '120px', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => setExpandedSections(prev => ({ ...prev, doneDeals: !prev.doneDeals }))}
-                                  className="text-gray-400 hover:text-white"
-                                >
-                                  {expandedSections.doneDeals ? (
-                                    <>
-                                      <ChevronUp className="w-4 h-4 mr-1" />
-                                      Show Less
-                                    </>
-                                  ) : (
-                                    <>
-                                      <ChevronDown className="w-4 h-4 mr-1" />
-                                      Show More ({uniqueDoneDeals.length - 5})
-                                    </>
-                                  )}
-                                </Button>
-                              </div>
-                            )}
-                          </>
-                        );
-                      })()}
-                    </div>
+                  <div className="space-y-2">
+                    {(() => {
+                      // Only include INCOMING transfers (toClub === selectedTeam)
+                      const allSignings = [
+                        ...transfersIn,
+                        ...(teamData?.transfers?.filter(t => t.status === 'confirmed' && t.toClub === selectedTeam) || [])
+                      ];
+                      // Filter doneDeals to only include incoming transfers
+                      const incomingDoneDeals = (teamData?.doneDeals || []).filter(t => t.toClub === selectedTeam);
+                      const combined = [...allSignings, ...incomingDoneDeals];
+                      // Remove duplicates based on player name and toClub
+                      const uniqueDoneDeals = combined.filter((transfer, index, self) => 
+                        index === self.findIndex(t => t.playerName === transfer.playerName && t.toClub === transfer.toClub)
+                      );
+                      const displayDoneDeals = expandedSections.doneDeals ? uniqueDoneDeals : uniqueDoneDeals.slice(0, 5);
+                      return (
+                        <>
+                          {displayDoneDeals.map((transfer) => (
+                            <TransferCard key={transfer.id} transfer={transfer} />
+                          ))}
+                          {uniqueDoneDeals.length > 5 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setExpandedSections(prev => ({ ...prev, doneDeals: !prev.doneDeals }))}
+                              className="w-full text-gray-400 hover:text-white mt-2"
+                            >
+                              {expandedSections.doneDeals ? (
+                                <>
+                                  <ChevronUp className="w-4 h-4 mr-1" />
+                                  Show Less
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="w-4 h-4 mr-1" />
+                                  Show More ({uniqueDoneDeals.length - 5})
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </>
+                      );
+                    })()}
                   </div>
                 </div>
               </Card>
@@ -898,54 +892,48 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       })()})
                     </h3>
                   </div>
-                  <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#475569 #1e293b' }}>
-                    <div className="flex gap-3" style={{ minWidth: 'min-content' }}>
-                      {(() => {
-                        const allDepartures = [
-                          ...transfersOut,
-                          ...(teamData?.transfers?.filter(t => t.status === 'confirmed' && t.fromClub === selectedTeam) || [])
-                        ];
-                        // Filter doneDeals to only include outgoing transfers
-                        const outgoingDoneDeals = (teamData?.doneDeals || []).filter(t => t.fromClub === selectedTeam);
-                        const combined = [...allDepartures, ...outgoingDoneDeals];
-                        // Remove duplicates based on player name and fromClub
-                        const uniqueDepartures = combined.filter((transfer, index, self) => 
-                          index === self.findIndex(t => t.playerName === transfer.playerName && t.fromClub === transfer.fromClub)
-                        );
-                        const displayDepartures = expandedSections.departures ? uniqueDepartures : uniqueDepartures.slice(0, 5);
-                        return (
-                          <>
-                            {displayDepartures.map((transfer) => (
-                              <div key={transfer.id} style={{ minWidth: '280px', maxWidth: '280px', flexShrink: 0 }}>
-                                <TransferCard transfer={transfer} />
-                              </div>
-                            ))}
-                            {uniqueDepartures.length > 5 && (
-                              <div style={{ minWidth: '120px', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => setExpandedSections(prev => ({ ...prev, departures: !prev.departures }))}
-                                  className="text-gray-400 hover:text-white"
-                                >
-                                  {expandedSections.departures ? (
-                                    <>
-                                      <ChevronUp className="w-4 h-4 mr-1" />
-                                      Show Less
-                                    </>
-                                  ) : (
-                                    <>
-                                      <ChevronDown className="w-4 h-4 mr-1" />
-                                      Show More ({uniqueDepartures.length - 5})
-                                    </>
-                                  )}
-                                </Button>
-                              </div>
-                            )}
-                          </>
-                        );
-                      })()}
-                    </div>
+                  <div className="space-y-2">
+                    {(() => {
+                      const allDepartures = [
+                        ...transfersOut,
+                        ...(teamData?.transfers?.filter(t => t.status === 'confirmed' && t.fromClub === selectedTeam) || [])
+                      ];
+                      // Filter doneDeals to only include outgoing transfers
+                      const outgoingDoneDeals = (teamData?.doneDeals || []).filter(t => t.fromClub === selectedTeam);
+                      const combined = [...allDepartures, ...outgoingDoneDeals];
+                      // Remove duplicates based on player name and fromClub
+                      const uniqueDepartures = combined.filter((transfer, index, self) => 
+                        index === self.findIndex(t => t.playerName === transfer.playerName && t.fromClub === transfer.fromClub)
+                      );
+                      const displayDepartures = expandedSections.departures ? uniqueDepartures : uniqueDepartures.slice(0, 5);
+                      return (
+                        <>
+                          {displayDepartures.map((transfer) => (
+                            <TransferCard key={transfer.id} transfer={transfer} />
+                          ))}
+                          {uniqueDepartures.length > 5 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setExpandedSections(prev => ({ ...prev, departures: !prev.departures }))}
+                              className="w-full text-gray-400 hover:text-white mt-2"
+                            >
+                              {expandedSections.departures ? (
+                                <>
+                                  <ChevronUp className="w-4 h-4 mr-1" />
+                                  Show Less
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="w-4 h-4 mr-1" />
+                                  Show More ({uniqueDepartures.length - 5})
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </>
+                      );
+                    })()}
                   </div>
                 </div>
               </Card>
@@ -975,55 +963,49 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       })()})
                     </h3>
                   </div>
-                  <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#475569 #1e293b' }}>
-                    <div className="flex gap-3" style={{ minWidth: 'min-content' }}>
-                      {(() => {
-                        const allRumours = [
-                          ...rumors,
-                          ...(teamData?.rumours || [])
-                        ];
-                        // Remove duplicates based on player name and clubs
-                        const uniqueRumours = allRumours.filter((transfer, index, self) => 
-                          index === self.findIndex(t => 
-                            t.playerName === transfer.playerName && 
-                            t.fromClub === transfer.fromClub && 
-                            t.toClub === transfer.toClub
-                          )
-                        );
-                        const displayRumours = expandedSections.rumours ? uniqueRumours : uniqueRumours.slice(0, 5);
-                        return (
-                          <>
-                            {displayRumours.map((transfer) => (
-                              <div key={transfer.id} style={{ minWidth: '280px', maxWidth: '280px', flexShrink: 0 }}>
-                                <TransferCard transfer={transfer} />
-                              </div>
-                            ))}
-                            {uniqueRumours.length > 5 && (
-                              <div style={{ minWidth: '120px', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => setExpandedSections(prev => ({ ...prev, rumours: !prev.rumours }))}
-                                  className="text-gray-400 hover:text-white"
-                                >
-                                  {expandedSections.rumours ? (
-                                    <>
-                                      <ChevronUp className="w-4 h-4 mr-1" />
-                                      Show Less
-                                    </>
-                                  ) : (
-                                    <>
-                                      <ChevronDown className="w-4 h-4 mr-1" />
-                                      Show More ({uniqueRumours.length - 5})
-                                    </>
-                                  )}
-                                </Button>
-                              </div>
-                            )}
-                          </>
-                        );
-                      })()}
-                    </div>
+                  <div className="space-y-2">
+                    {(() => {
+                      const allRumours = [
+                        ...rumors,
+                        ...(teamData?.rumours || [])
+                      ];
+                      // Remove duplicates based on player name and clubs
+                      const uniqueRumours = allRumours.filter((transfer, index, self) => 
+                        index === self.findIndex(t => 
+                          t.playerName === transfer.playerName && 
+                          t.fromClub === transfer.fromClub && 
+                          t.toClub === transfer.toClub
+                        )
+                      );
+                      const displayRumours = expandedSections.rumours ? uniqueRumours : uniqueRumours.slice(0, 5);
+                      return (
+                        <>
+                          {displayRumours.map((transfer) => (
+                            <TransferCard key={transfer.id} transfer={transfer} />
+                          ))}
+                          {uniqueRumours.length > 5 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setExpandedSections(prev => ({ ...prev, rumours: !prev.rumours }))}
+                              className="w-full text-gray-400 hover:text-white mt-2"
+                            >
+                              {expandedSections.rumours ? (
+                                <>
+                                  <ChevronUp className="w-4 h-4 mr-1" />
+                                  Show Less
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="w-4 h-4 mr-1" />
+                                  Show More ({uniqueRumours.length - 5})
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </>
+                      );
+                    })()}
                   </div>
                 </div>
               </Card>
