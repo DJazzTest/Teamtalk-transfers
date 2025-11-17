@@ -20,6 +20,7 @@ import { VideoTab } from '@/components/VideoTab';
 import { MessageSquare, Newspaper, TrendingUp, Video } from 'lucide-react';
 import { ClubTransfersList } from '@/components/ClubTransfersList';
 import { FlashBanner } from '@/components/FlashBanner';
+import { normalizeClubName } from '@/utils/clubNormalizer';
 
 const WebsiteContent = () => {
   console.log('WebsiteContent: Component rendering');
@@ -77,9 +78,6 @@ const WebsiteContent = () => {
   }, [refreshCounter, refreshAllData]);
 
   // Handler for club selection
-  const handleSelectClub = (club: string) => setSelectedClub(club);
-  const handleBackToDashboard = () => setSelectedClub(null);
-
   // Premier League clubs in the specified order
   const premierLeagueClubs = [
     'Arsenal',
@@ -103,6 +101,27 @@ const WebsiteContent = () => {
     'West Ham United',
     'Wolverhampton Wanderers'
   ];
+  const premierLeagueClubSet = new Set(
+    premierLeagueClubs.map((club) => normalizeClubName(club).toLowerCase())
+  );
+
+  const handleSelectClub = (club: string) => {
+    const normalizedClub = normalizeClubName(club);
+    const normalizedKey = normalizedClub.toLowerCase();
+    if (!premierLeagueClubSet.has(normalizedKey)) {
+      console.warn(`Club ${club} is outside the Premier League list and cannot be selected.`);
+      return;
+    }
+
+    // Ensure we use the canonical name from our Premier League list for consistency
+    const canonicalClub =
+      premierLeagueClubs.find(
+        (plClub) => normalizeClubName(plClub).toLowerCase() === normalizedKey
+      ) || normalizedClub;
+
+    setSelectedClub(canonicalClub);
+  };
+  const handleBackToDashboard = () => setSelectedClub(null);
 
   if (selectedClub) {
     // Show club card view
