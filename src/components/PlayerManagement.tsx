@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,6 +32,51 @@ interface PlayerData {
   };
 }
 
+type PlayerRosterStatus = 'active' | 'unassigned' | 'retired' | 'deleted';
+
+interface PlayerRosterChange {
+  currentTeam?: string;
+  status?: PlayerRosterStatus;
+}
+
+interface PlayerTransferRecord {
+  currentTeam: string;
+  sourceTeam: string;
+  updatedAt: string;
+  playerData: PlayerData;
+}
+
+const ROSTER_CHANGES_KEY = 'playerRosterChanges';
+const PLAYER_TRANSFERS_KEY = 'playerTransferRecords';
+
+const loadRosterChanges = (): Record<string, PlayerRosterChange> => {
+  if (typeof window === 'undefined') return {};
+  try {
+    return JSON.parse(localStorage.getItem(ROSTER_CHANGES_KEY) || '{}');
+  } catch {
+    return {};
+  }
+};
+
+const saveRosterChanges = (changes: Record<string, PlayerRosterChange>) => {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(ROSTER_CHANGES_KEY, JSON.stringify(changes));
+};
+
+const loadTransferRecords = (): Record<string, PlayerTransferRecord> => {
+  if (typeof window === 'undefined') return {};
+  try {
+    return JSON.parse(localStorage.getItem(PLAYER_TRANSFERS_KEY) || '{}');
+  } catch {
+    return {};
+  }
+};
+
+const saveTransferRecords = (records: Record<string, PlayerTransferRecord>) => {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(PLAYER_TRANSFERS_KEY, JSON.stringify(records));
+};
+
 export const PlayerManagement: React.FC = () => {
   const { toast } = useToast();
   const [selectedTeam, setSelectedTeam] = useState<string>('');
@@ -39,31 +84,63 @@ export const PlayerManagement: React.FC = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<PlayerData | null>(null);
   const [editedPlayer, setEditedPlayer] = useState<PlayerData | null>(null);
   const [playerImageFile, setPlayerImageFile] = useState<File | null>(null);
+  const [rosterVersion, setRosterVersion] = useState(0);
+  const [transferTargetTeam, setTransferTargetTeam] = useState('');
 
   // Get all teams
   const teams = useMemo(() => Object.keys(clubSquads), []);
 
+  const rosterChanges = useMemo(() => loadRosterChanges(), [rosterVersion]);
+  const transferRecords = useMemo(() => loadTransferRecords(), [rosterVersion]);
+
   // Get players for selected team
   const teamPlayers = useMemo(() => {
     if (!selectedTeam) return [];
-    const squad = getSquad(selectedTeam);
-    return squad.map(p => ({
-      name: p.name,
-      position: p.position || '',
-      age: (p as any).age,
-      shirtNumber: (p as any).shirtNumber,
-      imageUrl: p.imageUrl,
-      weeklyWage: p.weeklyWage,
-      yearlyWage: p.yearlyWage,
-      bio: (p as any).bio
-    }));
-  }, [selectedTeam]);
+    const squad = getSquad(selectedTeam) || [];
+    const basePlayers = squad
+      .filter((p) => {
+        const change = rosterChanges[p.name];
+        if (!change) return true;
+        if (change.status && change.status !== 'active') {
+          return false;
+        }
+        if (change.currentTeam && change.currentTeam !== selectedTeam) {
+          return false;
+        }
+        return true;
+      })
+      .map(p => ({
+        name: p.name,
+        position: p.position || '',
+        age: (p as any).age,
+        shirtNumber: (p as any).shirtNumber,
+        imageUrl: p.imageUrl,
+        weeklyWage: p.weeklyWage,
+        yearlyWage: p.yearlyWage,
+        bio: (p as any).bio
+      }));
+
+    const transferredPlayers = Object.entries(transferRecords)
+      .filter(([, record]) => record.currentTeam === selectedTeam)
+      .map(([, record]) => ({
+        ...record.playerData,
+        position: record.playerData.position || '',
+        weeklyWage: record.playerData.weeklyWage ?? 0,
+        yearlyWage: record.playerData.yearlyWage ?? 0,
+      }));
+
+    return [...basePlayers, ...transferredPlayers];
+  }, [selectedTeam, rosterChanges, transferRecords]);
 
   // Get player names for selected team
   const teamPlayerNames = useMemo(() => {
     if (!selectedTeam) return [];
     return teamPlayers.map(p => p.name);
   }, [selectedTeam, teamPlayers]);
+
+  const availableTransferTeams = useMemo(() => {
+    return teams.filter(team => team !== selectedTeam);
+  }, [teams, selectedTeam]);
 
   // Get player positions map
   const playerPositions = useMemo(() => {
@@ -82,6 +159,10 @@ export const PlayerManagement: React.FC = () => {
     progress: statsProgress,
     fetchAllStats 
   } = useTeamPlayerStats(selectedTeam, teamPlayerNames, { enabled: !!selectedTeam, playerPositions });
+
+  useEffect(() => {
+    setTransferTargetTeam('');
+  }, [selectedTeam]);
 
   // Filter players by search query
   const filteredPlayers = useMemo(() => {
@@ -278,6 +359,181 @@ export const PlayerManagement: React.FC = () => {
         variant: 'destructive',
       });
     }
+  };
+
+  const handleRosterStatusChange = (status: PlayerRosterStatus) => {
+    if (!selectedTeam || !editedPlayer) {
+      toast({
+        title: 'No player selected',
+        description: 'Select a team and player first.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const confirmationMessages: Record<PlayerRosterStatus, string> = {
+      active: `Reset ${editedPlayer.name} to active?`,
+      unassigned: `Mark ${editedPlayer.name} as unassigned?`,
+      retired: `Mark ${editedPlayer.name} as retired?`,
+      deleted: `Delete ${editedPlayer.name} from ${selectedTeam}? This removes their saved data.`,
+    };
+
+    if (status !== 'active' && typeof window !== 'undefined') {
+      const confirmed = window.confirm(confirmationMessages[status]);
+      if (!confirmed) return;
+    }
+
+    const roster = loadRosterChanges();
+    const nextChange: PlayerRosterChange = {
+      ...(roster[editedPlayer.name] || {}),
+      status,
+    };
+
+    if (status === 'unassigned') {
+      nextChange.currentTeam = 'Unassigned';
+    } else if (status === 'active') {
+      nextChange.currentTeam = selectedTeam;
+    } else {
+      delete nextChange.currentTeam;
+    }
+
+    roster[editedPlayer.name] = nextChange;
+    saveRosterChanges(roster);
+
+    if (status !== 'active') {
+      const transfers = loadTransferRecords();
+      if (transfers[editedPlayer.name]) {
+        delete transfers[editedPlayer.name];
+        saveTransferRecords(transfers);
+      }
+    }
+
+    if (status === 'deleted') {
+      try {
+        const savedPlayers = JSON.parse(localStorage.getItem('playerEdits') || '{}');
+        Object.keys(savedPlayers).forEach((team) => {
+          if (savedPlayers[team]?.[editedPlayer.name]) {
+            delete savedPlayers[team][editedPlayer.name];
+          }
+        });
+        localStorage.setItem('playerEdits', JSON.stringify(savedPlayers));
+
+        const imageData = JSON.parse(localStorage.getItem('playerImages') || '{}');
+        Object.keys(imageData).forEach((team) => {
+          if (imageData[team]?.[editedPlayer.name]) {
+            delete imageData[team][editedPlayer.name];
+          }
+        });
+        localStorage.setItem('playerImages', JSON.stringify(imageData));
+      } catch (error) {
+        console.warn('Failed to clear saved data for player', error);
+      }
+    }
+
+    setRosterVersion((prev) => prev + 1);
+    setSelectedPlayer(null);
+    setEditedPlayer(null);
+    setPlayerImageFile(null);
+
+    toast({
+      title: 'Roster updated',
+      description:
+        status === 'deleted'
+          ? `${editedPlayer.name} was deleted from ${selectedTeam}`
+          : `${editedPlayer.name} marked as ${status}`,
+    });
+  };
+
+  const handleTransferPlayer = () => {
+    if (!selectedTeam || !editedPlayer) {
+      toast({
+        title: 'No player selected',
+        description: 'Select a team and player first.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    if (!transferTargetTeam) {
+      toast({
+        title: 'No club selected',
+        description: 'Choose a destination club.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    if (transferTargetTeam === selectedTeam) {
+      toast({
+        title: 'Already in club',
+        description: `${editedPlayer.name} is already in ${selectedTeam}.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (typeof window !== 'undefined') {
+      const confirmed = window.confirm(
+        `Move ${editedPlayer.name} from ${selectedTeam} to ${transferTargetTeam}?`
+      );
+      if (!confirmed) return;
+    }
+
+    const roster = loadRosterChanges();
+    roster[editedPlayer.name] = {
+      ...(roster[editedPlayer.name] || {}),
+      currentTeam: transferTargetTeam,
+      status: 'active',
+    };
+    saveRosterChanges(roster);
+
+    const transferRecords = loadTransferRecords();
+    transferRecords[editedPlayer.name] = {
+      currentTeam: transferTargetTeam,
+      sourceTeam: selectedTeam,
+      updatedAt: new Date().toISOString(),
+      playerData: {
+        ...editedPlayer,
+        weeklyWage: editedPlayer.weeklyWage ?? 0,
+        yearlyWage: editedPlayer.yearlyWage ?? 0,
+      },
+    };
+    saveTransferRecords(transferRecords);
+
+    try {
+      const savedPlayers = JSON.parse(localStorage.getItem('playerEdits') || '{}');
+      if (!savedPlayers[transferTargetTeam]) savedPlayers[transferTargetTeam] = {};
+      savedPlayers[transferTargetTeam][editedPlayer.name] = {
+        position: editedPlayer.position,
+        age: editedPlayer.age,
+        shirtNumber: editedPlayer.shirtNumber,
+        imageUrl: editedPlayer.imageUrl,
+        bio: editedPlayer.bio,
+      };
+      if (savedPlayers[selectedTeam]?.[editedPlayer.name]) {
+        delete savedPlayers[selectedTeam][editedPlayer.name];
+      }
+      localStorage.setItem('playerEdits', JSON.stringify(savedPlayers));
+
+      const imageData = JSON.parse(localStorage.getItem('playerImages') || '{}');
+      if (imageData[selectedTeam]?.[editedPlayer.name]) {
+        imageData[transferTargetTeam] = imageData[transferTargetTeam] || {};
+        imageData[transferTargetTeam][editedPlayer.name] = imageData[selectedTeam][editedPlayer.name];
+        delete imageData[selectedTeam][editedPlayer.name];
+        localStorage.setItem('playerImages', JSON.stringify(imageData));
+      }
+    } catch (error) {
+      console.warn('Failed to move saved player assets', error);
+    }
+
+    setRosterVersion((prev) => prev + 1);
+    setSelectedPlayer(null);
+    setEditedPlayer(null);
+    setPlayerImageFile(null);
+    setTransferTargetTeam('');
+
+    toast({
+      title: 'Player transferred',
+      description: `${editedPlayer.name} moved to ${transferTargetTeam}.`,
+    });
   };
 
   // Import comprehensive player data from SofaScore URL
@@ -609,6 +865,12 @@ export const PlayerManagement: React.FC = () => {
       });
     }
   };
+
+  const currentRosterStatus: PlayerRosterStatus = editedPlayer
+    ? rosterChanges[editedPlayer.name]?.status || 'active'
+    : 'active';
+  const rosterStatusLabel =
+    currentRosterStatus.charAt(0).toUpperCase() + currentRosterStatus.slice(1);
 
   // Get saved player data
   const getSavedPlayerData = (playerName: string) => {
@@ -1101,6 +1363,68 @@ export const PlayerManagement: React.FC = () => {
                   >
                     Quick Fill Age & Position
                   </Button>
+                </div>
+
+                <div className="border-t border-slate-600 pt-4 mt-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-white font-semibold">Roster Actions</Label>
+                    <span className="text-xs text-gray-400">Status: {rosterStatusLabel}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleRosterStatusChange('deleted')}
+                    >
+                      Delete Player
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-amber-500 text-amber-200 hover:bg-amber-500/20"
+                      onClick={() => handleRosterStatusChange('unassigned')}
+                    >
+                      Mark Unassigned
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-purple-500 text-purple-200 hover:bg-purple-500/20"
+                      onClick={() => handleRosterStatusChange('retired')}
+                    >
+                      Mark Retired
+                    </Button>
+                  </div>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+                    <div className="flex-1">
+                      <Label className="text-white mb-1 block text-sm">Move to club</Label>
+                      <Select
+                        value={transferTargetTeam}
+                        onValueChange={(value) => setTransferTargetTeam(value)}
+                      >
+                        <SelectTrigger className="bg-slate-600 border-slate-500 text-white">
+                          <SelectValue placeholder="Select club..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableTransferTeams.map((team) => (
+                            <SelectItem key={team} value={team}>
+                              {team}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button
+                      className="bg-orange-600 hover:bg-orange-700"
+                      disabled={!transferTargetTeam || transferTargetTeam === selectedTeam}
+                      onClick={handleTransferPlayer}
+                    >
+                      Move Player
+                    </Button>
+                  </div>
+                  <p className="text-xs text-gray-400">
+                    Transfers move the player and their saved data to the selected club.
+                  </p>
                 </div>
 
                 <div className="flex gap-2">

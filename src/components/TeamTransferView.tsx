@@ -8,6 +8,8 @@ import { Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, C
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { SquadWageCarousel } from './SquadWageCarousel';
+import { TeamComparisonPanel } from './TeamComparisonPanel';
+import { TeamPhaseCharts } from './TeamPhaseCharts';
 import { getPremierLeagueClubs } from '@/utils/teamMapping';
 import { clubBadgeMap } from './ClubsView';
 import { topSpendingClubs } from '@/data/topSpendingClubs';
@@ -20,6 +22,9 @@ import { youtubeApi, YouTubeVideo } from '@/services/youtubeApi';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button as UIButton } from '@/components/ui/button';
 import { getTeamConfig } from '@/data/teamApiConfig';
+import { teamComparisonData } from '@/data/teamComparisonStats';
+import { DEFAULT_TEAM_BIOS, TeamBioEntry, TeamBioMap, sanitizeTeamBioMap } from '@/data/teamBios';
+import { cn } from '@/lib/utils';
 
 // Build a map of club -> spend from the topSpendingClubs data
 const clubSpendMap: Record<string, number> = Object.fromEntries(
@@ -50,6 +55,10 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
     departures: false,
     rumours: false,
   });
+  const [teamViewTab, setTeamViewTab] = useState<'overview' | 'compare'>('overview');
+  const [comparisonTeam, setComparisonTeam] = useState<string>('');
+  const [isBioExpanded, setIsBioExpanded] = useState(false);
+  const [teamBiosData, setTeamBiosData] = useState<TeamBioMap>(DEFAULT_TEAM_BIOS);
 
   // Fetch comprehensive team data when team is selected
   useEffect(() => {
@@ -115,6 +124,54 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
     }
   }, [externalSelectedTeam]);
 
+  useEffect(() => {
+    let isMounted = true;
+    const loadTeamBios = async () => {
+      try {
+        const response = await fetch('/.netlify/functions/team-bios', {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        if (!response.ok) return;
+        const payload = await response.json();
+        if (!isMounted) return;
+        const sanitized = sanitizeTeamBioMap(payload);
+        if (Object.keys(sanitized).length > 0) {
+          setTeamBiosData({ ...DEFAULT_TEAM_BIOS, ...sanitized });
+        }
+      } catch (error) {
+        console.warn('Failed to load team bios data:', error);
+      }
+    };
+
+    loadTeamBios();
+    const handleUpdate = () => loadTeamBios();
+    if (typeof window !== 'undefined') {
+      window.addEventListener('teamBiosUpdated', handleUpdate);
+    }
+    return () => {
+      isMounted = false;
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('teamBiosUpdated', handleUpdate);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!selectedTeam) {
+      setComparisonTeam('');
+      return;
+    }
+    setTeamViewTab('overview');
+    const fallback = Object.keys(teamComparisonData).find(team => team !== selectedTeam) || '';
+    setComparisonTeam(prev => {
+      if (prev && prev !== selectedTeam && teamComparisonData[prev]) {
+        return prev;
+      }
+      return fallback;
+    });
+    setIsBioExpanded(false);
+  }, [selectedTeam]);
+
   // Filter logic for team selection page
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredClubs, setFilteredClubs] = useState<string[]>(getPremierLeagueClubs());
@@ -152,51 +209,190 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
     return { transfersIn, transfersOut, rumors, totalActivity: teamTransfers.length };
   };
 
+  const comparisonDatasetSize = Object.keys(teamComparisonData).length;
+  const canCompareTeams = Boolean(
+    selectedTeam && teamComparisonData[selectedTeam] && comparisonDatasetSize > 1
+  );
+  const tabButtonClass = (tab: 'overview' | 'compare') =>
+    cn(
+      'px-4 py-1 text-sm font-semibold rounded-full transition-colors',
+      teamViewTab === tab
+        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25'
+        : 'text-gray-300 hover:text-white',
+      tab === 'compare' && !canCompareTeams ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'
+    );
+
   if (selectedTeam) {
     const { transfersIn, transfersOut, rumors } = getTeamStats(selectedTeam);
+    const currentBio: TeamBioEntry | undefined = teamBiosData[selectedTeam];
+
+    const teamHeader = (
+      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+        <div className="p-6 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setSelectedTeam(null);
+                onBack?.();
+              }}
+              className="text-blue-300 hover:text-blue-200 border-gray-600 hover:border-gray-500"
+            >
+              <Home className="w-4 h-4 mr-2" />
+              Home
+            </Button>
+          </div>
+        </div>
+
+        <div className="px-6 pb-6 space-y-4">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <h2 className="text-2xl font-bold text-white">{selectedTeam}</h2>
+            <div className="flex items-center rounded-full bg-slate-900/60 border border-slate-700 p-1">
+              <button
+                type="button"
+                onClick={() => setTeamViewTab('overview')}
+                className={tabButtonClass('overview')}
+              >
+                Overview
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (canCompareTeams) {
+                    setTeamViewTab('compare');
+                  }
+                }}
+                disabled={!canCompareTeams}
+                className={tabButtonClass('compare')}
+              >
+                Compare
+              </button>
+            </div>
+            <img
+              src={clubBadgeMap[selectedTeam] || `/badges/${selectedTeam.toLowerCase().replace(/[^a-z]/g, '')}.png`}
+              alt={`${selectedTeam} badge`}
+              className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200"
+              onError={e => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+          </div>
+          {/* Show current spend for this club */}
+          <div className="mt-2 flex items-center gap-2">
+            <span className="text-green-400 font-bold text-lg">
+              £{(clubSpendMap[selectedTeam] || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+            </span>
+            <span className="text-gray-400 text-sm">Current Spend</span>
+          </div>
+          {currentBio && (
+            <div className="rounded-lg border border-slate-700/80 bg-slate-900/60 p-4 space-y-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <p className="text-xs uppercase tracking-wide text-blue-300">About</p>
+                {(currentBio.website || currentBio.twitter) && (
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-blue-200">
+                    {currentBio.website && (
+                      <a
+                        href={currentBio.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-white underline-offset-4 hover:underline"
+                      >
+                        Official site
+                      </a>
+                    )}
+                    {currentBio.twitter && (
+                      <a
+                        href={currentBio.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-white underline-offset-4 hover:underline"
+                      >
+                        Twitter / X
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+              {currentBio.facts && currentBio.facts.length > 0 && (
+                <div className="grid gap-2 text-sm text-gray-200 sm:grid-cols-2">
+                  {currentBio.facts.map((fact) => (
+                    <div key={`${fact.label}-${fact.value}`} className="flex items-center gap-2">
+                      <span className="text-blue-400 font-semibold whitespace-nowrap">{fact.label}:</span>
+                      <span className="text-white">{fact.value}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="relative">
+                <div
+                  className="space-y-3 text-sm text-gray-200 leading-relaxed transition-all duration-300"
+                  style={
+                    !isBioExpanded
+                      ? {
+                          maxHeight: '4.5rem',
+                          overflow: 'hidden',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: 'vertical',
+                        }
+                      : undefined
+                  }
+                >
+                  <p>{currentBio.intro}</p>
+                  {currentBio.honours && currentBio.honours.length > 0 && (
+                    <div>
+                      <p className="font-semibold text-blue-400 mb-1">
+                        {currentBio.honoursHeading || 'Major honours'}
+                      </p>
+                      <ul className="list-disc list-inside space-y-0.5 text-gray-300">
+                        {currentBio.honours.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  <p>{currentBio.history}</p>
+                </div>
+                {!isBioExpanded && (
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent" />
+                )}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsBioExpanded((prev) => !prev)}
+                className="border-blue-400 text-blue-200 hover:bg-blue-500/20 hover:text-white w-max"
+              >
+                {isBioExpanded ? 'Show less' : 'Show more'}
+              </Button>
+            </div>
+          )}
+        </div>
+      </Card>
+    );
+
+    if (teamViewTab === 'compare') {
+      return (
+        <div className="space-y-6">
+          {teamHeader}
+          <TeamComparisonPanel
+            primaryTeam={selectedTeam}
+            comparisonTeam={comparisonTeam}
+            onComparisonTeamChange={(team) => setComparisonTeam(team)}
+          />
+        </div>
+      );
+    }
 
     return (
       <div className="space-y-6">
-        {/* Team Header */}
-        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
-          <div className="p-6 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => {
-                  setSelectedTeam(null);
-                  onBack?.();
-                }}
-                className="text-blue-300 hover:text-blue-200 border-gray-600 hover:border-gray-500"
-              >
-                <Home className="w-4 h-4 mr-2" />
-                Home
-              </Button>
-            </div>
-          </div>
-          
-          <div className="px-6 pb-6">
-            <h2 className="text-2xl font-bold text-white flex items-center gap-3 mb-2">
-              {selectedTeam}
-              <img
-                src={clubBadgeMap[selectedTeam] || `/badges/${selectedTeam.toLowerCase().replace(/[^a-z]/g, '')}.png`}
-                alt={`${selectedTeam} badge`}
-                className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200"
-                onError={e => {
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-            </h2>
-            {/* Show current spend for this club */}
-            <div className="mt-2 flex items-center gap-2">
-              <span className="text-green-400 font-bold text-lg">
-                £{(clubSpendMap[selectedTeam] || 0).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}
-              </span>
-              <span className="text-gray-400 text-sm">Current Spend</span>
-            </div>
-          </div>
-        </Card>
+        {teamHeader}
+
+        {/* Phase visualizations */}
+        {teamComparisonData[selectedTeam] && (
+          <TeamPhaseCharts teamName={selectedTeam} />
+        )}
 
         {/* Squad Wage Carousel */}
         <SquadWageCarousel club={selectedTeam} />
