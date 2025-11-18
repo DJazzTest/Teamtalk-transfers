@@ -143,19 +143,25 @@ function transpileAndLoadSquads() {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2018 }
   }).outputText;
 
-  const sandbox = {
-    module: { exports: {} },
-    exports: {},
-    require: (specifier) => {
-      throw new Error(`Dynamic require not supported: ${specifier}`);
-    }
+  const moduleShim = { exports: {} };
+  const exportsShim = moduleShim.exports;
+  const requireShim = (specifier) => {
+    throw new Error(`Dynamic require not supported: ${specifier}`);
   };
+  const fn = new Function(
+    'exports',
+    'require',
+    'module',
+    '__filename',
+    '__dirname',
+    transpiled
+  );
+  fn(exportsShim, requireShim, moduleShim, SQUAD_WAGES_PATH, path.dirname(SQUAD_WAGES_PATH));
 
-  vm.runInNewContext(transpiled, sandbox, { filename: SQUAD_WAGES_PATH });
-  if (!sandbox.module.exports?.clubSquads) {
+  if (!moduleShim.exports?.clubSquads) {
     throw new Error('Unable to load clubSquads from squadWages.ts');
   }
-  return sandbox.module.exports.clubSquads;
+  return moduleShim.exports.clubSquads;
 }
 
 function hasSeasonStats(player) {
