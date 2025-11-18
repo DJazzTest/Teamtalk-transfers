@@ -59,6 +59,8 @@ interface ScoreInsideNewsResponse {
   };
 }
 
+const TEAMTALK_FEED_URL = 'https://www.teamtalk.com/mobile-app-feed';
+
 interface TeamTalkFeedResponse {
   status: string;
   items: Array<{
@@ -70,6 +72,17 @@ interface TeamTalkFeedResponse {
     image?: string;
     link?: string;
   }>;
+}
+
+interface ProxyNewsItem {
+  id: string;
+  title: string;
+  summary?: string;
+  source?: string;
+  publishedAt?: string;
+  category?: string;
+  image?: string;
+  url?: string;
 }
 
 export class NewsApiService {
@@ -100,13 +113,14 @@ export class NewsApiService {
     try {
       const articles: NewsArticle[] = [];
 
-      // Try multiple news sources in parallel
-      await Promise.allSettled([
-        this.tryTeamTalkFeed(articles),
-        this.fetchScoreInsideNews(articles),
-        this.fetchComprehensiveNews(articles),
-        this.fetchScoreInsideTransferNews(articles)
-      ]);
+      // Prefer Netlify proxy (server-side fetch to avoid CORS issues)
+      const proxySuccess = await this.fetchProxyNews(articles);
+
+      // If proxy isn't available (e.g. local dev without Netlify functions), fall back to client-side CORS proxy
+      if (!proxySuccess) {
+        const fallback = await this.tryFetchTeamTalkFeedWithCorsProxy();
+        fallback.forEach((article) => articles.push(article));
+      }
 
       // If we got real articles, update last successful fetch time
       if (articles.length > 0) {
@@ -377,47 +391,51 @@ export class NewsApiService {
       }
 
       // Also try the mobile feed as backup
-      try {
-        const response = await fetch('https://www.teamtalk.com/mobile-app-feed', {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-          }
-        });
+      const fallbackArticles = await this.tryFetchTeamTalkFeedWithCorsProxy();
+      if (fallbackArticles.length > 0) {
+        fallbackArticles.forEach(article => articles.push(article));
+      } else {
+        try {
+          const response = await fetch(TEAMTALK_FEED_URL, {
+            headers: {
+              'Accept': 'application/json',
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+          });
 
-        if (response.ok) {
-          const data: TeamTalkFeedResponse = await response.json();
-          
-          if (data.items && Array.isArray(data.items)) {
-            data.items.forEach(item => {
-              // Filter for transfer-related content
-              const isTransferNews = item.category.some(cat => 
-                cat.toLowerCase().includes('transfer') || 
-                cat.toLowerCase().includes('rumor') ||
-                cat.toLowerCase().includes('deal')
-              );
+          if (response.ok) {
+            const data: TeamTalkFeedResponse = await response.json();
+            if (data.items && Array.isArray(data.items)) {
+              data.items.forEach(item => {
+                // Filter for transfer-related content
+                const isTransferNews = item.category.some(cat => 
+                  cat.toLowerCase().includes('transfer') || 
+                  cat.toLowerCase().includes('rumor') ||
+                  cat.toLowerCase().includes('deal')
+                );
 
-              if (isTransferNews) {
-                // Check if we already have this article
-                const existing = articles.find(a => a.title === item.headline);
-                if (!existing) {
-                  articles.push({
-                    id: item.id,
-                    title: item.headline,
-                    summary: item.excerpt,
-                    source: 'TeamTalk',
-                    time: this.formatTime(item.pub_date),
-                    category: item.category[0] || 'Transfer News',
-                    image: item.image ? this.wrapImageUrlWithProxy(item.image) : undefined,
-                    url: item.link
-                  });
+                if (isTransferNews) {
+                  // Check if we already have this article
+                  const existing = articles.find(a => a.title === item.headline);
+                  if (!existing) {
+                    articles.push({
+                      id: item.id,
+                      title: item.headline,
+                      summary: item.excerpt,
+                      source: 'TeamTalk',
+                      time: this.formatTime(item.pub_date),
+                      category: item.category[0] || 'Transfer News',
+                      image: item.image ? this.wrapImageUrlWithProxy(item.image) : undefined,
+                      url: item.link
+                    });
+                  }
                 }
-              }
-            });
+              });
+            }
           }
+        } catch (feedError) {
+          console.error('TeamTalk feed failed:', feedError);
         }
-      } catch (feedError) {
-        console.error('TeamTalk feed failed:', feedError);
       }
     } catch (error) {
       console.error('TeamTalk feed failed:', error);
@@ -529,6 +547,84 @@ export class NewsApiService {
     } catch (error) {
       console.error('ScoreInside transfer news failed:', error);
     }
+  }
+
+  private async fetchProxyNews(articles: NewsArticle[]): Promise<boolean> {
+    try {
+      const response = await fetch('/.netlify/functions/news-feed', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Proxy responded with ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (!data?.items || !Array.isArray(data.items)) {
+        return false;
+      }
+
+      (data.items as ProxyNewsItem[]).forEach((item) => {
+        articles.push({
+          id: item.id,
+          title: item.title,
+          summary: item.summary || '',
+          source: item.source || 'TeamTalk',
+          time: this.formatTime(item.publishedAt || new Date().toISOString()),
+          category: item.category || 'Transfer News',
+          image: item.image ? this.wrapImageUrlWithProxy(item.image) : undefined,
+          url: item.url,
+        });
+      });
+      return articles.length > 0;
+    } catch (error) {
+      console.error('News proxy fetch failed:', error);
+      return false;
+    }
+  }
+
+  private async tryFetchTeamTalkFeedWithCorsProxy(): Promise<NewsArticle[]> {
+    const proxies = [
+      `https://api.allorigins.win/get?url=${encodeURIComponent(TEAMTALK_FEED_URL)}`,
+      `https://corsproxy.io/?${encodeURIComponent(TEAMTALK_FEED_URL)}`
+    ];
+
+    for (const proxyUrl of proxies) {
+      try {
+        const response = await fetch(proxyUrl);
+        if (!response.ok) continue;
+
+        let payload: any;
+        if (proxyUrl.includes('allorigins.win')) {
+          const wrapper = await response.json();
+          payload = JSON.parse(wrapper.contents);
+        } else {
+          const text = await response.text();
+          payload = JSON.parse(text);
+        }
+
+        if (!payload?.items || !Array.isArray(payload.items)) continue;
+
+        return payload.items.map((item: any) => ({
+          id: `teamtalk-proxy-${item.id}`,
+          title: item.headline,
+          summary: item.excerpt || '',
+          source: 'TeamTalk',
+          time: this.formatTime(item.pub_date || new Date().toISOString()),
+          category: Array.isArray(item.category) && item.category.length > 0 ? item.category[0] : 'Transfer News',
+          image: item.image ? this.wrapImageUrlWithProxy(item.image) : undefined,
+          url: item.link,
+        }));
+      } catch (error) {
+        console.warn('Fallback proxy failed:', proxyUrl, error);
+        continue;
+      }
+    }
+
+    return [];
   }
 
   private formatTime(dateString: string): string {
