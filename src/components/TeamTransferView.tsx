@@ -609,7 +609,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
         {/* Match Details Modal (goal scorers, cards, etc.) */}
         {matchModal.open && (
           <Dialog open={matchModal.open} onOpenChange={(open) => setMatchModal((prev) => ({ open, matchId: open ? prev.matchId : undefined, details: open ? prev.details : undefined }))}>
-            <DialogContent className="max-w-3xl p-0 overflow-hidden">
+            <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-lg md:max-w-2xl lg:max-w-3xl p-0 overflow-hidden">
               <div className="px-4 py-3 bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-white border-b border-gray-300 dark:border-slate-700 flex items-center justify-between">
                 <div className="font-semibold">Match Details</div>
                 <UIButton
@@ -822,7 +822,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
         {/* Global YouTube Modal Webview with Back */}
         {youtubeModal.open && youtubeModal.video && (
           <Dialog open={youtubeModal.open} onOpenChange={(open) => setYoutubeModal((prev) => ({ open, video: open ? prev.video : undefined }))}>
-            <DialogContent className="max-w-5xl h-[85vh] p-0 overflow-hidden">
+            <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl h-[85vh] sm:h-[90vh] p-0 overflow-hidden">
               <div className="flex items-center justify-between px-4 py-2 bg-slate-900 text-white border-b border-slate-700">
                 <div className="font-semibold truncate pr-2">{youtubeModal.video.title}</div>
                 <div className="flex items-center gap-2">
@@ -853,7 +853,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
         {/* Media Hub Modal */}
         {mediaHubModal.open && mediaHubModal.item && (
           <Dialog open={mediaHubModal.open} onOpenChange={(open) => setMediaHubModal((prev) => ({ open, item: open ? prev.item : undefined }))}>
-            <DialogContent className="max-w-5xl h-[85vh] p-0 overflow-hidden">
+            <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl h-[85vh] sm:h-[90vh] p-0 overflow-hidden">
               <div className="flex items-center justify-between px-4 py-2 bg-slate-900 text-white border-b border-slate-700">
                 <div className="font-semibold truncate pr-2">{mediaHubModal.item.title || 'Media Item'}</div>
                 <div className="flex items-center gap-2">

@@ -114,7 +114,7 @@ export const TeamComparisonPanel: React.FC<TeamComparisonPanelProps> = ({
                   value={undefined}
                   onValueChange={(value) => onComparisonTeamChange?.(value)}
                 >
-                  <SelectTrigger className="w-56 bg-slate-900/60 border-slate-700 text-white">
+                  <SelectTrigger className="w-full sm:w-56 bg-slate-900/60 border-slate-700 text-white">
                     <SelectValue placeholder="Select Team" />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-900 border-slate-700">

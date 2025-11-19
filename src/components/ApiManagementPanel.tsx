@@ -1034,7 +1034,7 @@ export const ApiManagementPanel: React.FC = () => {
 
       {/* Response Viewer Dialog */}
       <Dialog open={!!viewingResponse} onOpenChange={(open) => !open && setViewingResponse(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+        <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-lg md:max-w-2xl lg:max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-4 sm:p-6">
           <DialogHeader>
             <DialogTitle>API Response Data - {viewingResponse?.name}</DialogTitle>
           </DialogHeader>

@@ -191,7 +191,7 @@ export const TeamHonoursComparison: React.FC<TeamHonoursComparisonProps> = ({
                 value={comparisonTeam || undefined}
                 onValueChange={(value) => onComparisonTeamChange?.(value)}
               >
-                <SelectTrigger className="w-56 bg-slate-900/60 border-slate-700 text-white">
+                <SelectTrigger className="w-full sm:w-56 bg-slate-900/60 border-slate-700 text-white">
                   <SelectValue placeholder="Select Team to Compare" />
                 </SelectTrigger>
                 <SelectContent>

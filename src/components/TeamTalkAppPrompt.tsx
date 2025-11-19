@@ -66,7 +66,7 @@ export const TeamTalkAppPrompt: React.FC<TeamTalkAppPromptProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700">
+      <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-md bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 p-4 sm:p-6">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">

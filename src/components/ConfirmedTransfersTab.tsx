@@ -118,7 +118,7 @@ export const ConfirmedTransfersTab: React.FC<ConfirmedTransfersTabProps> = ({
           </span>
         </div>
         <Select value={selectedClub} onValueChange={setSelectedClub}>
-          <SelectTrigger className="w-64">
+          <SelectTrigger className="w-full sm:w-64">
             <SelectValue placeholder="Filter by club" />
           </SelectTrigger>
           <SelectContent>
