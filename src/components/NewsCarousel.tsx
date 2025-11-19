@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Clock, ExternalLink } from 'lucide-react';
 import { newsApi } from '@/services/newsApi';
+import { TeamTalkAppPrompt, isTeamTalkUrl } from '@/components/TeamTalkAppPrompt';
 
 // Premier League clubs filter
 const premierLeagueClubs = [
@@ -33,6 +34,8 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
   const [newsArticles, setNewsArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [showAppPrompt, setShowAppPrompt] = useState(false);
+  const [selectedArticleUrl, setSelectedArticleUrl] = useState<string | undefined>();
 
   const showPlaceholder = React.useCallback((img: HTMLImageElement) => {
     const parent = img.parentElement;
@@ -208,9 +211,18 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
                   key={article.id}
                   className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-slate-700/70 transition-all duration-200 cursor-pointer border border-gray-200 dark:border-slate-600"
                   onClick={() => {
-                    // Open article in new tab instead of modal
                     if (article.url) {
-                      window.open(article.url, '_blank', 'noopener,noreferrer');
+                      // Check if it's a TeamTalk article and if user hasn't dismissed the prompt
+                      const isTeamTalk = isTeamTalkUrl(article.url);
+                      const hasDismissed = localStorage.getItem('teamtalk-app-prompt-dismissed') === 'true';
+                      
+                      if (isTeamTalk && !hasDismissed) {
+                        setSelectedArticleUrl(article.url);
+                        setShowAppPrompt(true);
+                      } else {
+                        // Open article directly
+                        window.open(article.url, '_blank', 'noopener,noreferrer');
+                      }
                     }
                   }}
                 >
@@ -283,6 +295,17 @@ export const NewsCarousel: React.FC<NewsCarouselProps> = ({ maxItems = 5 }) => {
           </>
         )}
       </div>
+      
+      {/* TeamTalk App Prompt */}
+      <TeamTalkAppPrompt
+        isOpen={showAppPrompt}
+        onClose={() => setShowAppPrompt(false)}
+        onDismiss={() => {
+          localStorage.setItem('teamtalk-app-prompt-dismissed', 'true');
+          setShowAppPrompt(false);
+        }}
+        articleUrl={selectedArticleUrl}
+      />
     </>
   );
 };

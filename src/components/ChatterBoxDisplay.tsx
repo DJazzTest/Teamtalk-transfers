@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { MessageSquare, Image as ImageIcon, Link as LinkIcon, Video, ExternalLink, X, Clock } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { ChatterBoxEntry } from './ChatterBoxManagement';
+import { TeamTalkAppPrompt, isTeamTalkUrl } from '@/components/TeamTalkAppPrompt';
 
 const STORAGE_KEY = 'chatterBoxEntries';
 const API_URL = '/.netlify/functions/live-hub';
@@ -47,6 +48,8 @@ export const ChatterBoxDisplay: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [articleContent, setArticleContent] = useState<string | null>(null);
   const [loadingArticle, setLoadingArticle] = useState(false);
+  const [showAppPrompt, setShowAppPrompt] = useState(false);
+  const [selectedArticleUrl, setSelectedArticleUrl] = useState<string | undefined>();
 
   const fetchRemoteEntries = async (): Promise<ChatterBoxEntry[]> => {
     const response = await fetch(API_URL, {
@@ -133,8 +136,18 @@ export const ChatterBoxDisplay: React.FC = () => {
     if (entry.linkPreview?.type === 'article' || entry.articleUrl || entry.socialMediaUrl) {
       const articleUrl = entry.articleUrl || entry.socialMediaUrl || entry.linkPreview?.url;
       if (articleUrl) {
-        window.open(articleUrl, '_blank', 'noopener,noreferrer');
-        return;
+        // Check if it's a TeamTalk article and if user hasn't dismissed the prompt
+        const isTeamTalk = isTeamTalkUrl(articleUrl);
+        const hasDismissed = localStorage.getItem('teamtalk-app-prompt-dismissed') === 'true';
+        
+        if (isTeamTalk && !hasDismissed) {
+          setSelectedArticleUrl(articleUrl);
+          setShowAppPrompt(true);
+          return;
+        } else {
+          window.open(articleUrl, '_blank', 'noopener,noreferrer');
+          return;
+        }
       }
     }
     
@@ -686,6 +699,17 @@ export const ChatterBoxDisplay: React.FC = () => {
           )}
         </DialogContent>
       </Dialog>
+      
+      {/* TeamTalk App Prompt */}
+      <TeamTalkAppPrompt
+        isOpen={showAppPrompt}
+        onClose={() => setShowAppPrompt(false)}
+        onDismiss={() => {
+          localStorage.setItem('teamtalk-app-prompt-dismissed', 'true');
+          setShowAppPrompt(false);
+        }}
+        articleUrl={selectedArticleUrl}
+      />
     </>
   );
 };

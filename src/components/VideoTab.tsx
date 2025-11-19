@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Video, Clock, ExternalLink, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { crowdyNewsApi, CrowdyNewsItem } from '@/services/crowdyNewsApi';
+import { TeamTalkAppPrompt, isTeamTalkUrl } from '@/components/TeamTalkAppPrompt';
 
 interface VideoItem extends CrowdyNewsItem {
   isVideo?: boolean;
@@ -45,6 +46,8 @@ export const VideoTab: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [showAppPrompt, setShowAppPrompt] = useState(false);
+  const [selectedArticleUrl, setSelectedArticleUrl] = useState<string | undefined>();
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -206,7 +209,16 @@ export const VideoTab: React.FC = () => {
                 setSelectedVideo(video);
                 setIsVideoModalOpen(true);
               } else if (video.url) {
-                window.open(video.url, '_blank', 'noopener,noreferrer');
+                // Check if it's a TeamTalk article and if user hasn't dismissed the prompt
+                const isTeamTalk = isTeamTalkUrl(video.url);
+                const hasDismissed = localStorage.getItem('teamtalk-app-prompt-dismissed') === 'true';
+                
+                if (isTeamTalk && !hasDismissed) {
+                  setSelectedArticleUrl(video.url);
+                  setShowAppPrompt(true);
+                } else {
+                  window.open(video.url, '_blank', 'noopener,noreferrer');
+                }
               }
             }}
           >
@@ -365,6 +377,17 @@ export const VideoTab: React.FC = () => {
           })()}
         </DialogContent>
       </Dialog>
+      
+      {/* TeamTalk App Prompt */}
+      <TeamTalkAppPrompt
+        isOpen={showAppPrompt}
+        onClose={() => setShowAppPrompt(false)}
+        onDismiss={() => {
+          localStorage.setItem('teamtalk-app-prompt-dismissed', 'true');
+          setShowAppPrompt(false);
+        }}
+        articleUrl={selectedArticleUrl}
+      />
     </div>
   );
 };
