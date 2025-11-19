@@ -13,11 +13,7 @@ interface PlayerNameLinkProps {
   /** If true, navigates to club squad instead of opening player modal */
   navigateToClub?: boolean;
   /** Callback when navigating to club */
-  onNavigateToClub?: (club: string) => void;
-  /** If true, shows transfer details modal instead of player modal */
-  showTransferDetails?: boolean;
-  /** Callback when showing transfer details */
-  onShowTransferDetails?: () => void;
+  onNavigateToClub?: (club: string, playerName?: string) => void;
 }
 
 export const PlayerNameLink: React.FC<PlayerNameLinkProps> = ({
@@ -28,8 +24,6 @@ export const PlayerNameLink: React.FC<PlayerNameLinkProps> = ({
   stopPropagation = true,
   navigateToClub = false,
   onNavigateToClub,
-  showTransferDetails = false,
-  onShowTransferDetails,
 }) => {
   const { openPlayerModal } = usePlayerModal();
 
@@ -38,13 +32,8 @@ export const PlayerNameLink: React.FC<PlayerNameLinkProps> = ({
       event.stopPropagation();
     }
     
-    if (showTransferDetails && onShowTransferDetails) {
-      onShowTransferDetails();
-      return;
-    }
-    
     if (navigateToClub && teamName && onNavigateToClub) {
-      onNavigateToClub(teamName);
+      onNavigateToClub(teamName, playerName);
       return;
     }
     

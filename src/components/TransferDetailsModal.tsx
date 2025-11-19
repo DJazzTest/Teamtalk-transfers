@@ -8,7 +8,7 @@ interface TransferDetailsModalProps {
   transfer: Transfer | null;
   isOpen: boolean;
   onClose: () => void;
-  onNavigateToClub?: (club: string) => void;
+  onNavigateToClub?: (club: string, playerName?: string) => void;
 }
 
 export const TransferDetailsModal: React.FC<TransferDetailsModalProps> = ({
@@ -141,7 +141,7 @@ export const TransferDetailsModal: React.FC<TransferDetailsModalProps> = ({
               <>
                 <Button
                   onClick={() => {
-                    onNavigateToClub(transfer.fromClub);
+                    onNavigateToClub(transfer.fromClub, transfer.playerName);
                     onClose();
                   }}
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
@@ -150,7 +150,7 @@ export const TransferDetailsModal: React.FC<TransferDetailsModalProps> = ({
                 </Button>
                 <Button
                   onClick={() => {
-                    onNavigateToClub(transfer.toClub);
+                    onNavigateToClub(transfer.toClub, transfer.playerName);
                     onClose();
                   }}
                   className="flex-1 bg-green-600 hover:bg-green-700 text-white"

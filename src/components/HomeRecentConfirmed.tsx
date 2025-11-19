@@ -9,7 +9,7 @@ import { getPlayerImage } from '@/utils/playerImageUtils';
 
 interface HomeRecentConfirmedProps {
   transfers: Transfer[];
-  onSelectClub?: (club: string) => void;
+  onSelectClub?: (club: string, playerName?: string) => void;
 }
 
 export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transfers, onSelectClub }) => {
@@ -55,11 +55,11 @@ export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transf
                       {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
                     </AvatarFallback>
                   </Avatar>
-                  <span
-                    className="font-semibold text-green-700 hover:underline cursor-pointer text-base truncate flex-1"
-                    onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
-                    title={`View ${transfer.toClub} squad`}
-                  >
+                <span
+                  className="font-semibold text-green-700 hover:underline cursor-pointer text-base truncate flex-1"
+                  onClick={() => onSelectClub && onSelectClub(transfer.toClub, transfer.playerName)}
+                  title={`View ${transfer.toClub} squad`}
+                >
                     {transfer.playerName}
                   </span>
                 </div>

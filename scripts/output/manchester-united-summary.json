@@ -1,0 +1,24 @@
+{
+  "teamStatistics": {
+    "totalPlayers": 0,
+    "averageAge": null,
+    "foreignPlayers": null,
+    "nationalTeamPlayers": null,
+    "name": "Manchester United",
+    "slug": "manchester-united",
+    "country": "England",
+    "venue": "Old Trafford",
+    "venueCapacity": 74879
+  },
+  "transferSummary": {
+    "arrivals": 0,
+    "departures": 0,
+    "arrivalsList": [],
+    "departuresList": []
+  },
+  "playersSummary": {
+    "total": 28,
+    "withImages": 0,
+    "missingImages": 28
+  }
+}

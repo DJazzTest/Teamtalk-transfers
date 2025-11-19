@@ -115,6 +115,10 @@ export const FlashBanner: React.FC = () => {
 
     loadBannerData();
 
+    const intervalId = setInterval(() => {
+      loadBannerData();
+    }, 60 * 1000);
+
     // Listen for updates from CMS
     const handleBannerUpdate = () => {
       loadBannerData();
@@ -125,6 +129,7 @@ export const FlashBanner: React.FC = () => {
     }
 
     return () => {
+      clearInterval(intervalId);
       if (typeof window !== 'undefined') {
         window.removeEventListener('flashBannerUpdated', handleBannerUpdate);
       }
@@ -237,47 +242,61 @@ export const FlashBanner: React.FC = () => {
       </div>
 
       {/* Fixed "Click here" and Logo on Right */}
-      {bannerData.url && typeof bannerData.url === 'string' && bannerData.url.trim() && (
-        <div
-          className="flash-banner-right"
-          style={{
-            flexShrink: 0,
-            paddingLeft: '16px',
-            marginLeft: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            zIndex: 2
-          }}
-        >
-          <a
-            href={bannerData.url}
-            target="_blank"
-            rel="noopener noreferrer"
+      {bannerData.url && typeof bannerData.url === 'string' && bannerData.url.trim() && (() => {
+        // Ensure URL is properly formatted
+        let url = bannerData.url.trim();
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          url = `https://${url}`;
+        }
+        return (
+          <div
+            className="flash-banner-right"
             style={{
-              padding: '4px 12px',
-              backgroundColor: 'rgba(0, 0, 0, 0.2)',
-              borderRadius: '4px',
-              color: 'inherit',
-              textDecoration: 'none',
-              cursor: 'pointer',
-              fontWeight: '700',
-              whiteSpace: 'nowrap',
-              display: 'inline-block'
+              flexShrink: 0,
+              paddingLeft: '16px',
+              marginLeft: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              zIndex: 2
             }}
           >
-            Click here
-          </a>
-          <img
-            src="https://www.teamtalk.com/content/themes/teamtalk2/img/png/logo/teamtalk-mobile.png"
-            alt="TEAMtalk"
-            width="30"
-            height="27"
-            style={{ height: '32px', width: 'auto', flexShrink: 0 }}
-            loading="lazy"
-          />
-        </div>
-      )}
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: '4px 12px',
+                backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                borderRadius: '4px',
+                color: 'inherit',
+                textDecoration: 'none',
+                cursor: 'pointer',
+                fontWeight: '700',
+                whiteSpace: 'nowrap',
+                display: 'inline-block'
+              }}
+              onClick={(e) => {
+                // Ensure link opens properly
+                if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+                  e.preventDefault();
+                  console.error('Invalid URL in flash banner:', url);
+                }
+              }}
+            >
+              Click here
+            </a>
+            <img
+              src="https://www.teamtalk.com/content/themes/teamtalk2/img/png/logo/teamtalk-mobile.png"
+              alt="TEAMtalk"
+              width="30"
+              height="27"
+              style={{ height: '32px', width: 'auto', flexShrink: 0 }}
+              loading="lazy"
+            />
+          </div>
+        );
+      })()}
 
       {/* Fixed Logo on Right (when no URL) */}
       {(!bannerData.url || !bannerData.url.trim()) && (

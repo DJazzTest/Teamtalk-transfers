@@ -74,22 +74,11 @@ export const PollingStatusIndicator: React.FC<PollingStatusIndicatorProps> = ({
 
   if (compact) {
     return (
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-1">
-          <div className={`w-2 h-2 rounded-full ${getStatusColor()}`} />
-          <span className="text-xs text-gray-600">
-            {formatLastUpdated(lastUpdated)}
-          </span>
-        </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleManualRefresh}
-          disabled={isLoading}
-          className="h-6 w-6 p-0"
-        >
-          <RefreshCw className={`w-3 h-3 ${isLoading ? 'animate-spin' : ''}`} />
-        </Button>
+      <div className="flex items-center gap-1">
+        <div className={`w-2 h-2 rounded-full ${getStatusColor()}`} />
+        <span className="text-xs text-gray-600 dark:text-gray-400">
+          {formatLastUpdated(lastUpdated)}
+        </span>
       </div>
     );
   }

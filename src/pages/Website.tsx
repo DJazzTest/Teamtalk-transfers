@@ -17,10 +17,12 @@ import { NewsCarousel } from '@/components/NewsCarousel';
 import { ChatterBoxDisplay } from '@/components/ChatterBoxDisplay';
 import { Top10ExpensiveVertical } from '@/components/Top10ExpensiveVertical';
 import { VideoTab } from '@/components/VideoTab';
-import { MessageSquare, Newspaper, TrendingUp, Video } from 'lucide-react';
+import { CheckCircle, MessageSquare, Newspaper, TrendingUp, Video } from 'lucide-react';
 import { ClubTransfersList } from '@/components/ClubTransfersList';
 import { FlashBanner } from '@/components/FlashBanner';
 import { normalizeClubName } from '@/utils/clubNormalizer';
+import { ConfirmedTransfersTab } from '@/components/ConfirmedTransfersTab';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const WebsiteContent = () => {
   console.log('WebsiteContent: Component rendering');
@@ -28,8 +30,15 @@ const WebsiteContent = () => {
   console.log('WebsiteContent: Store initialized', { transfersCount: allTransfers.length });
   const { refreshCounter } = useRefreshControl();
   const [selectedClub, setSelectedClub] = useState<string | null>(null);
+  const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
   const [countdownTarget] = useState('2025-12-31T23:00:00');
-  const [newsView, setNewsView] = useState<'news' | 'chatter' | 'top10' | 'video'>('news');
+  const [newsView, setNewsView] = useState<'confirmed' | 'news' | 'chatter' | 'top10' | 'video'>('confirmed');
+  // Available seasons - can be extended as needed
+  const availableSeasons = ['2025/26', '2024/25', '2023/24'];
+  
+  const [transferSelectionIns, setTransferSelectionIns] = useState<string | undefined>(undefined);
+  const [transferSelectionOuts, setTransferSelectionOuts] = useState<string | undefined>(undefined);
+  
   // All transfer data is now sourced from useTransferDataStore()
 
   // Favourites state for badge
@@ -78,25 +87,25 @@ const WebsiteContent = () => {
   }, [refreshCounter, refreshAllData]);
 
   // Handler for club selection
-  // Premier League clubs in the specified order
+  // Premier League clubs in the specified order (2024/25 Season)
   const premierLeagueClubs = [
     'Arsenal',
     'Aston Villa',
-    'Bournemouth',
+    'AFC Bournemouth',
     'Brentford',
     'Brighton & Hove Albion',
-    'Burnley',
     'Chelsea',
     'Crystal Palace',
     'Everton',
     'Fulham',
-    'Leeds United',
+    'Ipswich Town',
+    'Leicester City',
     'Liverpool',
     'Manchester City',
     'Manchester United',
     'Newcastle United',
     'Nottingham Forest',
-    'Sunderland',
+    'Southampton',
     'Tottenham Hotspur',
     'West Ham United',
     'Wolverhampton Wanderers'
@@ -105,7 +114,7 @@ const WebsiteContent = () => {
     premierLeagueClubs.map((club) => normalizeClubName(club).toLowerCase())
   );
 
-  const handleSelectClub = (club: string) => {
+  const handleSelectClub = (club: string, playerName?: string) => {
     const normalizedClub = normalizeClubName(club);
     const normalizedKey = normalizedClub.toLowerCase();
     if (!premierLeagueClubSet.has(normalizedKey)) {
@@ -120,8 +129,12 @@ const WebsiteContent = () => {
       ) || normalizedClub;
 
     setSelectedClub(canonicalClub);
+    setSelectedPlayer(playerName || null);
   };
-  const handleBackToDashboard = () => setSelectedClub(null);
+  const handleBackToDashboard = () => {
+    setSelectedClub(null);
+    setSelectedPlayer(null);
+  };
 
   if (selectedClub) {
     // Show club card view
@@ -129,8 +142,13 @@ const WebsiteContent = () => {
       <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
 
         <AppHeader lastUpdated={lastUpdated || new Date()} />
-        <div style={{ width: '960px', margin: '0 auto', padding: '16px' }}>
-          <TeamTransferView transfers={allTransfers} selectedTeam={selectedClub} onBack={handleBackToDashboard} />
+        <div style={{ width: '1200px', margin: '0 auto', padding: '16px' }}>
+          <TeamTransferView
+            transfers={allTransfers}
+            selectedTeam={selectedClub}
+            focusPlayerName={selectedPlayer}
+            onBack={handleBackToDashboard}
+          />
         </div>
       </div>
     );
@@ -141,10 +159,10 @@ const WebsiteContent = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-[#2F517A] transition-colors">
       <AppHeader lastUpdated={lastUpdated || new Date()} />
 
-      <div style={{ width: '960px', margin: '0 auto', padding: '16px' }}>
+      <div style={{ width: '1200px', margin: '0 auto', padding: '8px' }}>
         {/* Transfer Window Countdown */}
-        <Card className="mb-4 bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700 shadow-lg">
-          <div style={{ padding: '12px' }}>
+        <Card className="mb-2 bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700 shadow-lg">
+          <div style={{ padding: '8px' }}>
             <TransferCountdown targetDate={countdownTarget} />
           </div>
         </Card>
@@ -152,20 +170,31 @@ const WebsiteContent = () => {
         {/* Flash Banner */}
         <FlashBanner />
 
-        {/* Club Spending Chart 2025 */}
-        <div className="mb-8" style={{ width: '960px' }}>
-          <ClubSpendingChart2025 onSelectClub={handleSelectClub} />
-        </div>
-
         {/* Three Column Layout: Transfers In | News | Transfers Out */}
-        <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr 240px', gap: '24px', marginBottom: '0', alignItems: 'end' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr 260px', gap: '16px', marginBottom: '0', alignItems: 'end' }}>
+          {/* Club Spending Chart 2025 - Spans all three columns */}
+          <div style={{ gridColumn: '1 / -1', marginBottom: '16px' }}>
+            <ClubSpendingChart2025 onSelectClub={handleSelectClub} />
+          </div>
           {/* Left Column: Transfers In */}
-          <div style={{ width: '240px', display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <div style={{ width: '260px', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md flex flex-col h-full">
-              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: '1' }}>
-                <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-4 border-b-2 border-blue-600 dark:border-blue-400 pb-2">
-                  Summer Ins
-                </h3>
+              <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', flex: '1' }}>
+                <div className="mb-3">
+                  <Select value={transferSelectionIns} onValueChange={setTransferSelectionIns}>
+                    <SelectTrigger className="w-64">
+                      <SelectValue placeholder="Select Transfer season" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableSeasons.map((season) => (
+                        <SelectItem key={`ins-${season}`} value={`ins-${season}`}>
+                          Summer Ins {season}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="border-b-2 border-blue-600 dark:border-blue-400 mb-3"></div>
                 <div 
                   className="flex-1 overflow-y-scroll pr-2 summer-scrollbar" 
                   style={{
@@ -178,6 +207,7 @@ const WebsiteContent = () => {
                     transfers={allTransfers}
                     clubs={premierLeagueClubs}
                     type="in"
+                    window="summer"
                     onSelectClub={handleSelectClub}
                   />
                 </div>
@@ -186,11 +216,23 @@ const WebsiteContent = () => {
           </div>
 
           {/* Middle Column: News */}
-          <div style={{ width: '456px', display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0 }}>
             <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md flex flex-col h-full">
-              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: '1' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', borderBottom: '2px solid', borderColor: 'rgb(209 213 219)', paddingBottom: '8px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '24px', justifyContent: 'center', width: '100%' }}>
+              <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', flex: '1' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', borderBottom: '2px solid', borderColor: 'rgb(209 213 219)', paddingBottom: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'center', width: '100%', flexWrap: 'wrap' }}>
+                    <button
+                      onClick={() => setNewsView('confirmed')}
+                      className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
+                        newsView === 'confirmed'
+                          ? 'border-b-2 border-blue-600 dark:border-blue-400 pb-1'
+                          : ''
+                      }`}
+                      style={newsView === 'confirmed' ? { color: '#6b8e6b', borderBottom: '2px solid #6b8e6b' } : { color: '#6b8e6b' }}
+                    >
+                      <CheckCircle className="w-4 h-4" style={{ color: '#6b8e6b' }} />
+                      Confirmed
+                    </button>
                     <button
                       onClick={() => setNewsView('news')}
                       className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
@@ -292,7 +334,9 @@ const WebsiteContent = () => {
                   scrollbarColor: '#9CA3AF #E5E7EB',
                   maxHeight: 'calc(100vh - 400px)'
                 }}>
-                  {newsView === 'news' ? (
+                  {newsView === 'confirmed' ? (
+                    <ConfirmedTransfersTab transfers={allTransfers} onSelectClub={handleSelectClub} />
+                  ) : newsView === 'news' ? (
                     <NewsCarousel maxItems={5} />
                   ) : newsView === 'chatter' ? (
                     <ChatterBoxDisplay />
@@ -307,12 +351,24 @@ const WebsiteContent = () => {
           </div>
 
           {/* Right Column: Transfers Out */}
-          <div style={{ width: '240px', display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <div style={{ width: '260px', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md flex flex-col h-full">
-              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: '1' }}>
-                <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-4 border-b-2 border-red-600 dark:border-red-400 pb-2">
-                  Summer Outs
-                </h3>
+              <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', flex: '1' }}>
+                <div className="mb-3">
+                  <Select value={transferSelectionOuts} onValueChange={setTransferSelectionOuts}>
+                    <SelectTrigger className="w-64">
+                      <SelectValue placeholder="Select Transfer season" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableSeasons.map((season) => (
+                        <SelectItem key={`outs-${season}`} value={`outs-${season}`}>
+                          Summer Outs {season}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="border-b-2 border-red-600 dark:border-red-400 mb-3"></div>
                 <div 
                   className="flex-1 overflow-y-scroll pr-2 summer-scrollbar" 
                   style={{
@@ -325,6 +381,7 @@ const WebsiteContent = () => {
                     transfers={allTransfers}
                     clubs={premierLeagueClubs}
                     type="out"
+                    window="summer"
                     onSelectClub={handleSelectClub}
                   />
                 </div>
@@ -334,7 +391,7 @@ const WebsiteContent = () => {
         </div>
 
         {/* Blue Divider Bar */}
-        <div className="w-full h-1 bg-blue-600 dark:bg-blue-500 mt-4 mb-0"></div>
+        <div className="w-full h-1 bg-blue-600 dark:bg-blue-500 mt-2 mb-0"></div>
 
         {/* Planet Sport Network Footer */}
         <div className="mt-0">

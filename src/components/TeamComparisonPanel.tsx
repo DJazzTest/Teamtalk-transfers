@@ -7,6 +7,7 @@ import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, Tool
 import { AlertCircle, BarChart3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { TeamPhaseComparisonCharts } from './TeamPhaseComparisonCharts';
+import { TeamHonoursComparison } from './TeamHonoursComparison';
 
 interface TeamComparisonPanelProps {
   primaryTeam: string;
@@ -110,11 +111,11 @@ export const TeamComparisonPanel: React.FC<TeamComparisonPanelProps> = ({
               <div className="flex items-center gap-3">
                 <span className="text-sm text-gray-300">Compare against</span>
                 <Select
-                  value={resolvedComparisonTeam}
+                  value={undefined}
                   onValueChange={(value) => onComparisonTeamChange?.(value)}
                 >
                   <SelectTrigger className="w-56 bg-slate-900/60 border-slate-700 text-white">
-                    <SelectValue placeholder="Select club" />
+                    <SelectValue placeholder="Select Team" />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-900 border-slate-700">
                     {getAvailableComparisonTeams().map((team) => (
@@ -193,6 +194,13 @@ export const TeamComparisonPanel: React.FC<TeamComparisonPanelProps> = ({
       </Card>
 
       <TeamPhaseComparisonCharts primaryTeam={primaryTeam} comparisonTeam={resolvedComparisonTeam} />
+
+      {/* Major Honours Comparison */}
+      <TeamHonoursComparison
+        primaryTeam={primaryTeam}
+        comparisonTeam={resolvedComparisonTeam}
+        onComparisonTeamChange={onComparisonTeamChange}
+      />
     </div>
   );
 };

@@ -24,7 +24,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
       return (
         <header className="sticky top-0 z-50 shadow-lg bg-white dark:bg-[#0f1115] border-b border-gray-200 dark:border-black/60">
       <div className="bg-gray-50 dark:bg-[#1a1d24] border-b border-gray-200 dark:border-black/30">
-        <div style={{ width: '960px', margin: '0 auto', padding: '4px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '12px', color: 'rgb(75 85 99)', letterSpacing: '0.25em', textTransform: 'uppercase' }}>
+        <div style={{ width: '1200px', margin: '0 auto', padding: '4px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '12px', color: 'rgb(75 85 99)', letterSpacing: '0.25em', textTransform: 'uppercase' }}>
           <img
             src="https://www.teamtalk.com/content/themes/teamtalk2/img/png/logo/planet-sport-brand.png"
             alt="PlanetSport"
@@ -35,7 +35,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
         </div>
       </div>
       <div className="bg-white dark:bg-[#0f1115] border-b border-gray-200 dark:border-black/60">
-        <div style={{ width: '960px', margin: '0 auto', padding: '16px' }}>
+        <div style={{ width: '1200px', margin: '0 auto', padding: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
             <div style={{ flex: '1', textAlign: 'left' }}>
               <Link to="/" className="inline-block">
@@ -79,23 +79,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated }) => {
                   <Moon className="w-5 h-5 text-blue-300" />
                 )}
               </button>
-              {isAdminSection ? (
+              {isAdminSection && (
                 <button
                   onClick={handleMainClick}
                   className="inline-block px-4 py-2 rounded bg-[#d32f2f] text-white font-semibold shadow hover:bg-[#b71c1c] transition-colors text-sm"
                 >
                   Main
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    localStorage.removeItem('parsed_transfers');
-                    window.location.reload();
-                  }}
-                  className="inline-block px-3 py-2 rounded bg-slate-700 dark:bg-slate-800 text-gray-200 font-semibold shadow hover:bg-slate-600 dark:hover:bg-slate-700 transition-colors text-sm border border-slate-600 dark:border-slate-700"
-                  title="Refresh transfer data"
-                >
-                  Refresh
                 </button>
               )}
             </div>

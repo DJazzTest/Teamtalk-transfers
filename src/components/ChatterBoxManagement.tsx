@@ -23,6 +23,40 @@ export interface ChatterBoxEntry {
 }
 
 const STORAGE_KEY = 'chatterBoxEntries';
+const API_URL = '/.netlify/functions/live-hub';
+
+const sortEntries = (data: ChatterBoxEntry[]) =>
+  data
+    .slice()
+    .sort((a, b) => {
+      try {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      } catch {
+        return 0;
+      }
+    });
+
+const persistLocally = (data: ChatterBoxEntry[]) => {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.warn('Live Hub: failed to persist entries locally', error);
+  }
+};
+
+const loadFromLocal = (): ChatterBoxEntry[] | null => {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return null;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (error) {
+    console.warn('Live Hub: failed to parse local entries', error);
+  }
+  return null;
+};
 
 export const ChatterBoxManagement: React.FC = () => {
   const [entries, setEntries] = useState<ChatterBoxEntry[]>([]);
@@ -37,34 +71,67 @@ export const ChatterBoxManagement: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
+  const fetchRemoteEntries = async (): Promise<ChatterBoxEntry[]> => {
+    const response = await fetch(API_URL, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Live Hub API responded with ${response.status}`);
+    }
+
+    const payload = await response.json();
+    if (Array.isArray(payload)) {
+      return payload;
+    }
+    if (payload && Array.isArray(payload.entries)) {
+      return payload.entries;
+    }
+    return [];
+  };
+
+  const loadEntries = async () => {
+    try {
+      const remoteEntries = await fetchRemoteEntries();
+      const sorted = sortEntries(remoteEntries);
+      setEntries(sorted);
+      persistLocally(sorted);
+      return;
+    } catch (error) {
+      console.warn('Live Hub: remote fetch failed, falling back to local data', error);
+    }
+
+    const localEntries = loadFromLocal();
+    setEntries(localEntries ? sortEntries(localEntries) : []);
+  };
+
+  const saveEntries = async (newEntries: ChatterBoxEntry[], successMessage?: string) => {
+    const sorted = sortEntries(newEntries);
+    setEntries(sorted);
+    persistLocally(sorted);
+
+    try {
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sorted)
+      });
+    } catch (error) {
+      console.warn('Live Hub: failed to sync entries to cloud', error);
+      toast.error('Saved locally but failed to sync Live Hub to the cloud');
+    }
+
+    // Dispatch custom event to notify frontend of update
+    window.dispatchEvent(new Event('chatterBoxUpdated'));
+    if (successMessage) {
+      toast.success(successMessage);
+    }
+  };
+
   useEffect(() => {
     loadEntries();
   }, []);
-
-  const loadEntries = () => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setEntries(JSON.parse(stored));
-      }
-    } catch (error) {
-      console.error('Error loading chatter box entries:', error);
-      toast.error('Failed to load entries');
-    }
-  };
-
-  const saveEntries = (newEntries: ChatterBoxEntry[]) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newEntries));
-      setEntries(newEntries);
-      // Dispatch custom event to notify frontend of update
-      window.dispatchEvent(new Event('chatterBoxUpdated'));
-      toast.success('Entry saved successfully');
-    } catch (error) {
-      console.error('Error saving chatter box entries:', error);
-      toast.error('Failed to save entry');
-    }
-  };
 
   const handleImageUpload = (file: File) => {
     if (!file.type.startsWith('image/')) {
@@ -194,8 +261,7 @@ export const ChatterBoxManagement: React.FC = () => {
         }
         return entry;
       });
-      saveEntries(updatedEntries);
-      toast.success('Entry updated successfully');
+      await saveEntries(updatedEntries, 'Entry updated successfully');
       setEditingId(null);
     } else {
       // Create new entry
@@ -211,7 +277,7 @@ export const ChatterBoxManagement: React.FC = () => {
       };
 
       const updatedEntries = [newEntry, ...entries];
-      saveEntries(updatedEntries);
+      await saveEntries(updatedEntries, 'Entry added successfully');
     }
     
     // Reset form
@@ -249,10 +315,9 @@ export const ChatterBoxManagement: React.FC = () => {
     setLinkPreview(null);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     const updatedEntries = entries.filter(entry => entry.id !== id);
-    saveEntries(updatedEntries);
-    toast.success('Entry deleted');
+    await saveEntries(updatedEntries, 'Entry deleted');
   };
 
   const formatDate = (dateString: string) => {

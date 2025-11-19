@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -34,10 +34,11 @@ const clubSpendMap: Record<string, number> = Object.fromEntries(
 interface TeamTransferViewProps {
   transfers: Transfer[];
   selectedTeam?: string | null;
+  focusPlayerName?: string | null;
   onBack?: () => void;
 }
 
-export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, selectedTeam: externalSelectedTeam, onBack }) => {
+export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, selectedTeam: externalSelectedTeam, focusPlayerName, onBack }) => {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(externalSelectedTeam || null);
   const [teamData, setTeamData] = useState<TeamData | null>(null);
   const [youtubeVideos, setYoutubeVideos] = useState<YouTubeVideo[]>([]);
@@ -59,6 +60,19 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
   const [comparisonTeam, setComparisonTeam] = useState<string>('');
   const [isBioExpanded, setIsBioExpanded] = useState(false);
   const [teamBiosData, setTeamBiosData] = useState<TeamBioMap>(DEFAULT_TEAM_BIOS);
+  const [highlightedPlayer, setHighlightedPlayer] = useState<string | null>(null);
+  const playerCardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const registerPlayerRef = (playerName?: string) => (el: HTMLDivElement | null) => {
+    if (!playerName) return;
+    const key = playerName.toLowerCase();
+    if (el) {
+      if (!playerCardRefs.current[key]) {
+        playerCardRefs.current[key] = el;
+      }
+    } else {
+      delete playerCardRefs.current[key];
+    }
+  };
 
   // Fetch comprehensive team data when team is selected
   useEffect(() => {
@@ -123,6 +137,14 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
       setSelectedTeam(externalSelectedTeam || null);
     }
   }, [externalSelectedTeam]);
+
+  useEffect(() => {
+    setHighlightedPlayer(focusPlayerName || null);
+  }, [focusPlayerName, selectedTeam]);
+
+  useEffect(() => {
+    playerCardRefs.current = {};
+  }, [selectedTeam]);
 
   useEffect(() => {
     let isMounted = true;
@@ -218,16 +240,29 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
       'px-4 py-1 text-sm font-semibold rounded-full transition-colors',
       teamViewTab === tab
         ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25'
-        : 'text-gray-300 hover:text-white',
+        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white',
       tab === 'compare' && !canCompareTeams ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'
     );
 
+  const teamStats = selectedTeam
+    ? getTeamStats(selectedTeam)
+    : { transfersIn: [], transfersOut: [], rumors: [], totalActivity: 0 };
+  const { transfersIn, transfersOut, rumors } = teamStats;
+
+  useEffect(() => {
+    if (!selectedTeam || !highlightedPlayer) return;
+    const key = highlightedPlayer.toLowerCase();
+    const target = playerCardRefs.current[key];
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [highlightedPlayer, selectedTeam, transfersIn, transfersOut, rumors]);
+
   if (selectedTeam) {
-    const { transfersIn, transfersOut, rumors } = getTeamStats(selectedTeam);
     const currentBio: TeamBioEntry | undefined = teamBiosData[selectedTeam];
 
     const teamHeader = (
-      <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+      <Card className="bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700">
         <div className="p-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button
@@ -237,7 +272,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 setSelectedTeam(null);
                 onBack?.();
               }}
-              className="text-blue-300 hover:text-blue-200 border-gray-600 hover:border-gray-500"
+              className="text-blue-600 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-200 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
             >
               <Home className="w-4 h-4 mr-2" />
               Home
@@ -247,8 +282,8 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
 
         <div className="px-6 pb-6 space-y-4">
           <div className="flex flex-wrap items-center gap-3 mb-2">
-            <h2 className="text-2xl font-bold text-white">{selectedTeam}</h2>
-            <div className="flex items-center rounded-full bg-slate-900/60 border border-slate-700 p-1">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedTeam}</h2>
+            <div className="flex items-center rounded-full bg-gray-100 dark:bg-slate-900/60 border border-gray-300 dark:border-slate-700 p-1">
               <button
                 type="button"
                 onClick={() => setTeamViewTab('overview')}
@@ -272,7 +307,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
             <img
               src={clubBadgeMap[selectedTeam] || `/badges/${selectedTeam.toLowerCase().replace(/[^a-z]/g, '')}.png`}
               alt={`${selectedTeam} badge`}
-              className="w-8 h-8 rounded-full shadow bg-white object-contain border border-gray-200"
+              className="w-8 h-8 rounded-full shadow bg-white dark:bg-white object-contain border border-gray-200 dark:border-gray-700"
               onError={e => {
                 (e.target as HTMLImageElement).style.display = 'none';
               }}
@@ -280,23 +315,23 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
           </div>
           {/* Show current spend for this club */}
           <div className="mt-2 flex items-center gap-2">
-            <span className="text-green-400 font-bold text-lg">
+            <span className="text-green-600 dark:text-green-400 font-bold text-lg">
               £{(clubSpendMap[selectedTeam] || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
             </span>
-            <span className="text-gray-400 text-sm">Current Spend</span>
+            <span className="text-gray-600 dark:text-gray-400 text-sm">Current Spend</span>
           </div>
           {currentBio && (
-            <div className="rounded-lg border border-slate-700/80 bg-slate-900/60 p-4 space-y-4">
+            <div className="rounded-lg border border-gray-300 dark:border-slate-700/80 bg-gray-50 dark:bg-slate-900/60 p-4 space-y-4">
               <div className="flex flex-wrap items-center gap-3">
-                <p className="text-xs uppercase tracking-wide text-blue-300">About</p>
+                <p className="text-xs uppercase tracking-wide text-blue-600 dark:text-blue-300">About</p>
                 {(currentBio.website || currentBio.twitter) && (
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-blue-200">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-blue-600 dark:text-blue-200">
                     {currentBio.website && (
                       <a
                         href={currentBio.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-white underline-offset-4 hover:underline"
+                        className="hover:text-blue-800 dark:hover:text-white underline-offset-4 hover:underline"
                       >
                         Official site
                       </a>
@@ -306,7 +341,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                         href={currentBio.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-white underline-offset-4 hover:underline"
+                        className="hover:text-blue-800 dark:hover:text-white underline-offset-4 hover:underline"
                       >
                         Twitter / X
                       </a>
@@ -315,18 +350,18 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 )}
               </div>
               {currentBio.facts && currentBio.facts.length > 0 && (
-                <div className="grid gap-2 text-sm text-gray-200 sm:grid-cols-2">
+                <div className="grid gap-2 text-sm text-gray-700 dark:text-gray-200 sm:grid-cols-2">
                   {currentBio.facts.map((fact) => (
                     <div key={`${fact.label}-${fact.value}`} className="flex items-center gap-2">
-                      <span className="text-blue-400 font-semibold whitespace-nowrap">{fact.label}:</span>
-                      <span className="text-white">{fact.value}</span>
+                      <span className="text-blue-600 dark:text-blue-400 font-semibold whitespace-nowrap">{fact.label}:</span>
+                      <span className="text-gray-900 dark:text-white">{fact.value}</span>
                     </div>
                   ))}
                 </div>
               )}
               <div className="relative">
                 <div
-                  className="space-y-3 text-sm text-gray-200 leading-relaxed transition-all duration-300"
+                  className="space-y-3 text-sm text-gray-700 dark:text-gray-200 leading-relaxed transition-all duration-300"
                   style={
                     !isBioExpanded
                       ? {
@@ -342,10 +377,10 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   <p>{currentBio.intro}</p>
                   {currentBio.honours && currentBio.honours.length > 0 && (
                     <div>
-                      <p className="font-semibold text-blue-400 mb-1">
+                      <p className="font-semibold text-blue-600 dark:text-blue-400 mb-1">
                         {currentBio.honoursHeading || 'Major honours'}
                       </p>
-                      <ul className="list-disc list-inside space-y-0.5 text-gray-300">
+                      <ul className="list-disc list-inside space-y-0.5 text-gray-600 dark:text-gray-300">
                         {currentBio.honours.map((item) => (
                           <li key={item}>{item}</li>
                         ))}
@@ -355,14 +390,14 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   <p>{currentBio.history}</p>
                 </div>
                 {!isBioExpanded && (
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent" />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-gray-50 via-gray-50/80 to-transparent dark:from-slate-900 dark:via-slate-900/80 dark:to-transparent" />
                 )}
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setIsBioExpanded((prev) => !prev)}
-                className="border-blue-400 text-blue-200 hover:bg-blue-500/20 hover:text-white w-max"
+                className="border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-500/20 hover:text-blue-800 dark:hover:text-white w-max"
               >
                 {isBioExpanded ? 'Show less' : 'Show more'}
               </Button>
@@ -403,9 +438,9 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
 
         {/* Media Hub */}
         {teamData?.mediaHub && teamData.mediaHub.filter(item => item.image).length > 0 && (
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <Card className="bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700">
             <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <ExternalLink className="w-5 h-5 text-purple-400" />
                 Media Hub ({teamData.mediaHub.filter(item => item.image).length})
               </h3>
@@ -419,7 +454,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                     .map((item, index) => (
                     <div key={`${item.id || index}`} className="flex-none w-80">
                       <Card 
-                        className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full cursor-pointer"
+                        className="bg-gray-100 dark:bg-slate-700/50 border-gray-300 dark:border-slate-600 hover:bg-gray-200 dark:hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full cursor-pointer"
                         onClick={async () => {
                           setMediaHubModal({ open: true, item, loading: item.source === 'Crowdy News' && item.url ? true : false, content: undefined });
                           
@@ -496,8 +531,8 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                                 }}
                               />
                             ) : (
-                              <div className="w-full h-full bg-slate-600/50 flex items-center justify-center">
-                                <ExternalLink className="w-6 h-6 text-gray-400" />
+                              <div className="w-full h-full bg-gray-200 dark:bg-slate-600/50 flex items-center justify-center">
+                                <ExternalLink className="w-6 h-6 text-gray-500 dark:text-gray-400" />
                               </div>
                             )}
                             {(item.videoUrl || item.url) && (
@@ -522,12 +557,12 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                               </div>
                             )}
                             
-                            <h4 className="text-white font-semibold text-sm leading-tight mb-2 line-clamp-3">
+                            <h4 className="text-gray-900 dark:text-white font-semibold text-sm leading-tight mb-2 line-clamp-3">
                               {item.title || 'Untitled'}
                             </h4>
                             
                             {item.summary && (
-                              <p className="text-gray-300 text-xs line-clamp-2 mb-3">
+                              <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-2 mb-3">
                                 {item.summary}
                               </p>
                             )}
@@ -575,18 +610,18 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
         {matchModal.open && (
           <Dialog open={matchModal.open} onOpenChange={(open) => setMatchModal((prev) => ({ open, matchId: open ? prev.matchId : undefined, details: open ? prev.details : undefined }))}>
             <DialogContent className="max-w-3xl p-0 overflow-hidden">
-              <div className="px-4 py-3 bg-slate-900 text-white border-b border-slate-700 flex items-center justify-between">
+              <div className="px-4 py-3 bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-white border-b border-gray-300 dark:border-slate-700 flex items-center justify-between">
                 <div className="font-semibold">Match Details</div>
                 <UIButton
                   variant="outline"
                   size="sm"
-                  className="border-slate-500 text-slate-200 hover:bg-slate-700 hover:text-white"
+                  className="border-gray-400 dark:border-slate-500 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-white"
                   onClick={() => setMatchModal({ open: false })}
                 >
                   Close
                 </UIButton>
               </div>
-              <div className="p-4 text-sm text-slate-100">
+              <div className="p-4 text-sm text-gray-700 dark:text-slate-100">
                 {!matchModal.details && <p>Loading match data...</p>}
                 {matchModal.details && matchModal.details.error && (
                   <p>Unable to load match details.</p>
@@ -602,7 +637,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                         <h5 className="font-semibold mb-2">Events</h5>
                         <ul className="list-disc pl-5 space-y-1">
                           {(matchModal.details.events || []).map((ev: any, i: number) => (
-                            <li key={i} className="text-slate-200">
+                                    <li key={i} className="text-gray-700 dark:text-slate-200">
                               {ev.minute || ev.min || ''}' - {ev.type || ev.ev || ''} - {ev.player || ev.pn || ''} {ev.detail ? `(${ev.detail})` : ''}
                             </li>
                           ))}
@@ -614,7 +649,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                         <h5 className="font-semibold mb-2">Cards</h5>
                         <ul className="list-disc pl-5 space-y-1">
                           {(matchModal.details.cards || []).map((c: any, i: number) => (
-                            <li key={i} className="text-slate-200">
+                                    <li key={i} className="text-gray-700 dark:text-slate-200">
                               {c.minute || ''}' - {c.color || c.type || ''} - {c.player || ''}
                             </li>
                           ))}
@@ -626,7 +661,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                         <h5 className="font-semibold mb-2">Scorers</h5>
                         <ul className="list-disc pl-5 space-y-1">
                           {(matchModal.details.scorers || []).map((s: any, i: number) => (
-                            <li key={i} className="text-slate-200">
+                                    <li key={i} className="text-gray-700 dark:text-slate-200">
                               {s.minute || ''}' - {s.player || ''}
                             </li>
                           ))}
@@ -642,26 +677,26 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
 
         {/* YouTube Channel */}
         {getTeamYoutubeUrl(selectedTeam) && (
-          <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+          <Card className="bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700">
             <div className="p-6">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <ExternalLink className="w-5 h-5 text-red-400" />
                 Official YouTube Channel {youtubeVideos.length > 0 && `(${youtubeVideos.length} videos)`}
               </h3>
               <div className="flex gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 pb-4">
                 {/* YouTube Channel Link Card */}
                 <div className="flex-none w-80">
-                  <Card className="bg-slate-700/50 border-slate-600 hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full">
+                  <Card className="bg-gray-100 dark:bg-slate-700/50 border-gray-300 dark:border-slate-600 hover:bg-gray-200 dark:hover:bg-slate-700/70 transition-all duration-200 overflow-hidden h-full">
                     <div className="flex flex-col h-full">
                       {/* YouTube Thumbnail */}
-                      <div className="w-full h-32 flex-shrink-0 bg-red-600/20 flex items-center justify-center">
+                              <div className="w-full h-32 flex-shrink-0 bg-red-100 dark:bg-red-600/20 flex items-center justify-center">
                         <div className="text-center">
                           <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mb-2 mx-auto">
                             <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
                               <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                             </svg>
                           </div>
-                          <p className="text-white text-sm font-medium">YouTube Channel</p>
+                          <p className="text-gray-900 dark:text-white text-sm font-medium">YouTube Channel</p>
                         </div>
                       </div>
                       
@@ -673,16 +708,16 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                           </Badge>
                         </div>
                         
-                        <h4 className="text-white font-semibold text-sm leading-tight mb-2">
+                        <h4 className="text-gray-900 dark:text-white font-semibold text-sm leading-tight mb-2">
                           {selectedTeam} Official Channel
                         </h4>
                         
-                        <p className="text-gray-300 text-xs mb-3">
+                        <p className="text-gray-600 dark:text-gray-300 text-xs mb-3">
                           Watch official videos, highlights, and behind-the-scenes content
                         </p>
                         
                         <div className="flex items-center justify-between mt-auto">
-                          <div className="flex items-center gap-1 text-gray-400 text-xs">
+                          <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-xs">
                             <Clock className="w-3 h-3" />
                             Official
                           </div>
@@ -703,10 +738,10 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                 {/* YouTube Videos - Show all videos */}
                 {youtubeVideosLoading ? (
                   <div className="flex-none w-80">
-                    <Card className="bg-slate-700/50 border-slate-600 p-4">
+                    <Card className="bg-gray-100 dark:bg-slate-700/50 border-gray-300 dark:border-slate-600 p-4">
                       <div className="flex flex-col items-center justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-400 mb-2"></div>
-                        <p className="text-gray-400 text-sm text-center">Loading videos...</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm text-center">Loading videos...</p>
                       </div>
                     </Card>
                   </div>
@@ -744,26 +779,26 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                             </Badge>
                           </div>
                           
-                          <h4 className="text-white font-semibold text-sm leading-tight mb-2 line-clamp-2">
+                          <h4 className="text-gray-900 dark:text-white font-semibold text-sm leading-tight mb-2 line-clamp-2">
                             {video.title}
                           </h4>
                           
                           {video.channelTitle && (
-                            <p className="text-gray-400 text-xs mb-2">
+                            <p className="text-gray-500 dark:text-gray-400 text-xs mb-2">
                               {video.channelTitle}
                             </p>
                           )}
                           
-                          <p className="text-gray-300 text-xs mb-3 line-clamp-2">
+                          <p className="text-gray-600 dark:text-gray-300 text-xs mb-3 line-clamp-2">
                             {video.description}
                           </p>
                           
                           <div className="flex items-center justify-between mt-auto">
-                            <div className="flex items-center gap-1 text-gray-400 text-xs">
+                            <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-xs">
                               <Clock className="w-3 h-3" />
                               {video.duration}
                             </div>
-                            <div className="flex items-center gap-1 text-gray-400 text-xs">
+                            <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-xs">
                               <span>Click to play</span>
                             </div>
                           </div>
@@ -774,8 +809,8 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   ))
                 ) : (
                   <div className="flex-none w-80">
-                    <Card className="bg-slate-700/50 border-slate-600 p-4">
-                      <p className="text-gray-400 text-sm text-center">No videos available</p>
+                    <Card className="bg-gray-100 dark:bg-slate-700/50 border-gray-300 dark:border-slate-600 p-4">
+                      <p className="text-gray-600 dark:text-gray-400 text-sm text-center">No videos available</p>
                     </Card>
                   </div>
                 )}
@@ -835,7 +870,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                   </UIButton>
                 </div>
               </div>
-              <div className="w-full h-[calc(85vh-42px)] overflow-auto bg-slate-900">
+              <div className="w-full h-[calc(85vh-42px)] overflow-auto bg-white dark:bg-slate-900">
                 {mediaHubModal.item.videoUrl ? (
                   // Video content
                   <div className="w-full h-full flex flex-col">
@@ -850,12 +885,12 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       </video>
                     </div>
                     {(mediaHubModal.item.title || mediaHubModal.item.summary) && (
-                      <div className="p-4 bg-slate-800 border-t border-slate-700">
+                      <div className="p-4 bg-gray-50 dark:bg-slate-800 border-t border-gray-300 dark:border-slate-700">
                         {mediaHubModal.item.title && (
-                          <h3 className="text-white font-semibold text-lg mb-2">{mediaHubModal.item.title}</h3>
+                          <h3 className="text-gray-900 dark:text-white font-semibold text-lg mb-2">{mediaHubModal.item.title}</h3>
                         )}
                         {mediaHubModal.item.summary && (
-                          <p className="text-gray-300 text-sm">{mediaHubModal.item.summary}</p>
+                          <p className="text-gray-600 dark:text-gray-300 text-sm">{mediaHubModal.item.summary}</p>
                         )}
                       </div>
                     )}
@@ -868,7 +903,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       <div className="w-full h-full flex items-center justify-center">
                         <div className="text-center">
                           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
-                          <p className="text-gray-300">Loading article...</p>
+                          <p className="text-gray-600 dark:text-gray-300">Loading article...</p>
                         </div>
                       </div>
                     ) : mediaHubModal.content ? (
@@ -933,12 +968,12 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                           />
                         )}
                         {mediaHubModal.item.title && (
-                          <h3 className="text-white font-semibold text-2xl mb-4 text-center">{mediaHubModal.item.title}</h3>
+                          <h3 className="text-gray-900 dark:text-white font-semibold text-2xl mb-4 text-center">{mediaHubModal.item.title}</h3>
                         )}
                         {mediaHubModal.item.summary && (
-                          <p className="text-gray-300 text-base leading-relaxed mb-6 max-w-2xl text-center">{mediaHubModal.item.summary}</p>
+                          <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed mb-6 max-w-2xl text-center">{mediaHubModal.item.summary}</p>
                         )}
-                        <p className="text-gray-400 text-sm mb-4">Unable to load full article content.</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">Unable to load full article content.</p>
                         <UIButton
                           onClick={() => {
                             window.open(mediaHubModal.item.url, '_blank', 'noopener,noreferrer');
@@ -976,10 +1011,10 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       />
                     )}
                     {mediaHubModal.item.title && (
-                      <h3 className="text-white font-semibold text-xl mb-3">{mediaHubModal.item.title}</h3>
+                      <h3 className="text-gray-900 dark:text-white font-semibold text-xl mb-3">{mediaHubModal.item.title}</h3>
                     )}
                     {mediaHubModal.item.summary && (
-                      <p className="text-gray-300 text-base leading-relaxed whitespace-pre-wrap">{mediaHubModal.item.summary}</p>
+                      <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed whitespace-pre-wrap">{mediaHubModal.item.summary}</p>
                     )}
                   </div>
                 )}
@@ -995,10 +1030,10 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Done Deals - Only INCOMING transfers (toClub === selectedTeam) */}
             {(transfersIn.length > 0 || (teamData?.transfers && teamData.transfers.length > 0) || (teamData?.doneDeals && teamData.doneDeals.some(t => t.toClub === selectedTeam))) && (
-              <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700">
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                       <TrendingUp className="w-4 h-4 text-green-400" />
                       Done Deals ({(() => {
                         // Only include INCOMING transfers (toClub === selectedTeam)
@@ -1035,14 +1070,19 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       return (
                         <>
                           {displayDoneDeals.map((transfer) => (
-                            <TransferCard key={transfer.id} transfer={transfer} />
+                            <div
+                              key={transfer.id}
+                              ref={registerPlayerRef(transfer.playerName)}
+                            >
+                              <TransferCard transfer={transfer} highlightedPlayerName={highlightedPlayer} />
+                            </div>
                           ))}
                           {uniqueDoneDeals.length > 5 && (
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => setExpandedSections(prev => ({ ...prev, doneDeals: !prev.doneDeals }))}
-                              className="w-full text-gray-400 hover:text-white mt-2"
+                              className="w-full text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mt-2"
                             >
                               {expandedSections.doneDeals ? (
                                 <>
@@ -1067,10 +1107,10 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
 
             {/* Departures - Only OUTGOING transfers (fromClub === selectedTeam) */}
             {(transfersOut.length > 0 || (teamData?.transfers && teamData.transfers.length > 0) || (teamData?.doneDeals && teamData.doneDeals.some(t => t.fromClub === selectedTeam))) && (
-              <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700">
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                       <TrendingDown className="w-4 h-4 text-red-400" />
                       Departures ({(() => {
                         const allDepartures = [
@@ -1105,14 +1145,19 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       return (
                         <>
                           {displayDepartures.map((transfer) => (
-                            <TransferCard key={transfer.id} transfer={transfer} />
+                            <div
+                              key={transfer.id}
+                              ref={registerPlayerRef(transfer.playerName)}
+                            >
+                              <TransferCard transfer={transfer} highlightedPlayerName={highlightedPlayer} />
+                            </div>
                           ))}
                           {uniqueDepartures.length > 5 && (
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => setExpandedSections(prev => ({ ...prev, departures: !prev.departures }))}
-                              className="w-full text-gray-400 hover:text-white mt-2"
+                              className="w-full text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mt-2"
                             >
                               {expandedSections.departures ? (
                                 <>
@@ -1137,10 +1182,10 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
 
             {/* Transfer Rumours */}
             {(rumors.length > 0 || (teamData?.rumours && teamData.rumours.length > 0)) && (
-              <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+              <Card className="bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700">
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                       <MessageCircle className="w-4 h-4 text-blue-400" />
                       Transfer Rumours ({(() => {
                         const allRumours = [
@@ -1177,14 +1222,19 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                       return (
                         <>
                           {displayRumours.map((transfer) => (
-                            <TransferCard key={transfer.id} transfer={transfer} />
+                            <div
+                              key={transfer.id}
+                              ref={registerPlayerRef(transfer.playerName)}
+                            >
+                              <TransferCard transfer={transfer} highlightedPlayerName={highlightedPlayer} />
+                            </div>
                           ))}
                           {uniqueRumours.length > 5 && (
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => setExpandedSections(prev => ({ ...prev, rumours: !prev.rumours }))}
-                              className="w-full text-gray-400 hover:text-white mt-2"
+                              className="w-full text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mt-2"
                             >
                               {expandedSections.rumours ? (
                                 <>
@@ -1215,20 +1265,20 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
   return (
     <TooltipProvider>
       <div className="space-y-6">
-        <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
+        <Card className="bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700">
           <div className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Users className="w-6 h-6 text-purple-400" />
-              <h2 className="text-2xl font-bold text-white">Select a Team</h2>
+              <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Select a Team</h2>
             </div>
             
             <div className="relative mb-6">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-500 dark:text-gray-400" />
               <Input
                 placeholder="Search teams..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9 bg-slate-700/50 border-slate-600 text-white placeholder-gray-400"
+                className="pl-9 bg-gray-50 dark:bg-slate-700/50 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               />
             </div>
           </div>
@@ -1241,7 +1291,7 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
             return (
               <Card
                 key={club}
-                className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200 cursor-pointer group"
+                className="bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800/70 transition-all duration-200 cursor-pointer group"
                 onClick={() => setSelectedTeam(club)}
               >
                 <div className="p-4">
@@ -1249,42 +1299,42 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
                     <img
                       src={`/badges/${clubBadgeMap[club] || club.toLowerCase().replace(/[^a-z]/g, '') + '.png'}`}
                       alt={`${club} badge`}
-                      className="w-6 h-6 rounded-full shadow bg-white object-contain border border-gray-200"
+                      className="w-6 h-6 rounded-full shadow bg-white dark:bg-white object-contain border border-gray-200 dark:border-gray-700"
                       onError={e => {
                         (e.target as HTMLImageElement).style.display = 'none';
                       }}
                     />
-                    <h3 className="font-semibold text-white group-hover:text-purple-300 transition-colors">
+                    <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors">
                       {club}
                     </h3>
                   </div>
                   
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center justify-between">
-                      <span className="text-green-400 flex items-center gap-1">
+                      <span className="text-green-600 dark:text-green-400 flex items-center gap-1">
                         <TrendingUp className="w-3 h-3" />
                         In: {stats.transfersIn.length}
                       </span>
-                      <span className="text-red-400 flex items-center gap-1">
+                      <span className="text-red-600 dark:text-red-400 flex items-center gap-1">
                         <TrendingDown className="w-3 h-3" />
                         Out: {stats.transfersOut.length}
                       </span>
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <span className="text-blue-400 flex items-center gap-1">
+                      <span className="text-blue-600 dark:text-blue-400 flex items-center gap-1">
                         <MessageCircle className="w-3 h-3" />
                         Rumours: {stats.rumors.length}
                       </span>
-                      <span className="text-gray-400 text-xs">
+                      <span className="text-gray-600 dark:text-gray-400 text-xs">
                         Total: {stats.totalActivity}
                       </span>
                     </div>
 
                     {/* Show current spend for this club */}
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-600">
-                      <span className="text-gray-400 text-xs">Current Spend:</span>
-                      <span className="text-green-400 font-semibold text-xs">
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-300 dark:border-slate-600">
+                      <span className="text-gray-600 dark:text-gray-400 text-xs">Current Spend:</span>
+                      <span className="text-green-600 dark:text-green-400 font-semibold text-xs">
                         £{(clubSpendMap[club] || 0).toLocaleString()}
                       </span>
                     </div>

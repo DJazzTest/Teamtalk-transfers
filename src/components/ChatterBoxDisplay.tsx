@@ -5,6 +5,41 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { ChatterBoxEntry } from './ChatterBoxManagement';
 
 const STORAGE_KEY = 'chatterBoxEntries';
+const API_URL = '/.netlify/functions/live-hub';
+const REFRESH_INTERVAL = 60 * 1000;
+
+const sortEntries = (data: ChatterBoxEntry[]) =>
+  data
+    .slice()
+    .sort((a, b) => {
+      try {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      } catch {
+        return 0;
+      }
+    });
+
+const persistLocally = (data: ChatterBoxEntry[]) => {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.warn('Live Hub display: failed to persist to localStorage', error);
+  }
+};
+
+const loadFromLocal = (): ChatterBoxEntry[] | null => {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return null;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (error) {
+    console.warn('Live Hub display: failed to parse local entries', error);
+  }
+  return null;
+};
 
 export const ChatterBoxDisplay: React.FC = () => {
   const [entries, setEntries] = useState<ChatterBoxEntry[]>([]);
@@ -13,11 +48,51 @@ export const ChatterBoxDisplay: React.FC = () => {
   const [articleContent, setArticleContent] = useState<string | null>(null);
   const [loadingArticle, setLoadingArticle] = useState(false);
 
+  const fetchRemoteEntries = async (): Promise<ChatterBoxEntry[]> => {
+    const response = await fetch(API_URL, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Live Hub API responded with ${response.status}`);
+    }
+
+    const payload = await response.json();
+    if (Array.isArray(payload)) {
+      return payload;
+    }
+    if (payload && Array.isArray(payload.entries)) {
+      return payload.entries;
+    }
+    return [];
+  };
+
+  const loadEntries = async () => {
+    try {
+      const remoteEntries = await fetchRemoteEntries();
+      const sorted = sortEntries(remoteEntries);
+      setEntries(sorted);
+      persistLocally(sorted);
+      return;
+    } catch (error) {
+      console.warn('Live Hub display: remote fetch failed, falling back to local', error);
+    }
+
+    const localEntries = loadFromLocal();
+    setEntries(localEntries ? sortEntries(localEntries) : []);
+  };
+
   useEffect(() => {
     // Delay initial load slightly to ensure localStorage is ready (especially on mobile)
     const loadTimer = setTimeout(() => {
       loadEntries();
     }, 100);
+
+    // Periodically refresh to capture remote updates (e.g., other devices)
+    const intervalId = setInterval(() => {
+      loadEntries();
+    }, REFRESH_INTERVAL);
     
     // Listen for storage changes (when CMS updates entries in another tab/window)
     const handleStorageChange = (e: StorageEvent) => {
@@ -44,6 +119,7 @@ export const ChatterBoxDisplay: React.FC = () => {
     
     return () => {
       clearTimeout(loadTimer);
+      clearInterval(intervalId);
       if (typeof window !== 'undefined') {
         window.removeEventListener('storage', handleStorageChange);
         window.removeEventListener('chatterBoxUpdated', handleCustomUpdate);
@@ -52,85 +128,27 @@ export const ChatterBoxDisplay: React.FC = () => {
     };
   }, []);
 
-  const loadEntries = () => {
-    try {
-      // Check if localStorage is available (some mobile browsers in private mode block it)
-      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
-        console.warn('localStorage is not available - may be in private browsing mode');
-        setEntries([]);
-        return;
-      }
-
-      // Test localStorage access (some mobile browsers throw errors on access)
-      try {
-        localStorage.setItem('__test__', 'test');
-        localStorage.removeItem('__test__');
-      } catch (testError) {
-        console.warn('localStorage access test failed:', testError);
-        setEntries([]);
-        return;
-      }
-
-      const stored = localStorage.getItem(STORAGE_KEY);
-      console.log('ChatterBox: Checking localStorage for key:', STORAGE_KEY, 'Found:', !!stored);
-      
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        console.log('ChatterBox: Parsed data type:', typeof parsed, 'Is array:', Array.isArray(parsed));
-        
-        // Ensure it's an array
-        if (!Array.isArray(parsed)) {
-          console.warn('Chatter box entries is not an array:', parsed);
-          setEntries([]);
-          return;
-        }
-        
-        // Sort by date, newest first
-        const sorted = parsed.sort((a: ChatterBoxEntry, b: ChatterBoxEntry) => {
-          try {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-          } catch {
-            return 0;
-          }
-        });
-        console.log(`ChatterBox: Loaded ${sorted.length} entries successfully`);
-        setEntries(sorted);
-      } else {
-        console.log('ChatterBox: No entries found in localStorage. Current domain:', window.location.hostname);
-        console.log('ChatterBox: Note - localStorage is domain-specific. Entries created on localhost won\'t appear on production domain.');
-        setEntries([]);
-      }
-    } catch (error) {
-      console.error('ChatterBox: Error loading entries:', error);
-      // Try to recover by checking if localStorage has the key but corrupted data
-      try {
-        if (typeof localStorage !== 'undefined') {
-          localStorage.removeItem(STORAGE_KEY);
-          console.log('ChatterBox: Cleared corrupted entries');
-        }
-      } catch {
-        // Ignore errors when trying to clear
-      }
-      setEntries([]);
-    }
-  };
-
   const handleEntryClick = (entry: ChatterBoxEntry) => {
+    // For articles, open in new tab instead of modal
+    if (entry.linkPreview?.type === 'article' || entry.articleUrl || entry.socialMediaUrl) {
+      const articleUrl = entry.articleUrl || entry.socialMediaUrl || entry.linkPreview?.url;
+      if (articleUrl) {
+        window.open(articleUrl, '_blank', 'noopener,noreferrer');
+        return;
+      }
+    }
+    
+    // For YouTube videos, open in new tab
+    if (entry.linkPreview?.type === 'youtube' && entry.linkPreview.url) {
+      window.open(entry.linkPreview.url, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    
+    // For other entries (text-only or images), open modal as before
     setSelectedEntry(entry);
     setIsModalOpen(true);
-    setArticleContent(null); // Reset article content when opening modal
+    setArticleContent(null);
     setLoadingArticle(false);
-    
-    // Auto-load article content if it's an article
-    if (entry.linkPreview?.type === 'article' || entry.articleUrl) {
-      const articleUrl = entry.articleUrl || entry.linkPreview?.url;
-      if (articleUrl) {
-        setLoadingArticle(true);
-        fetchArticleContent(articleUrl).finally(() => {
-          setLoadingArticle(false);
-        });
-      }
-    }
   };
 
   const fetchArticleContent = async (url: string) => {

@@ -1,0 +1,102 @@
+[
+  {
+    "club": "Arsenal",
+    "currentManager": "❌ NOT FOUND IN BIOS",
+    "url": "https://www.sofascore.com/football/team/arsenal"
+  },
+  {
+    "club": "Aston Villa",
+    "currentManager": "Unai Emery",
+    "url": "https://www.sofascore.com/football/team/aston-villa"
+  },
+  {
+    "club": "AFC Bournemouth",
+    "currentManager": "❌ NOT FOUND IN BIOS",
+    "url": "https://www.sofascore.com/football/team/bournemouth"
+  },
+  {
+    "club": "Brentford",
+    "currentManager": "Keith Andrews",
+    "url": "https://www.sofascore.com/football/team/brentford"
+  },
+  {
+    "club": "Brighton & Hove Albion",
+    "currentManager": "Fabian Hürzeler",
+    "url": "https://www.sofascore.com/football/team/brighton-hove-albion"
+  },
+  {
+    "club": "Chelsea",
+    "currentManager": "Enzo Maresca",
+    "url": "https://www.sofascore.com/football/team/chelsea"
+  },
+  {
+    "club": "Crystal Palace",
+    "currentManager": "Oliver Glasner",
+    "url": "https://www.sofascore.com/football/team/crystal-palace"
+  },
+  {
+    "club": "Everton",
+    "currentManager": "Sean Dyche",
+    "url": "https://www.sofascore.com/football/team/everton"
+  },
+  {
+    "club": "Fulham",
+    "currentManager": "Marco Silva",
+    "url": "https://www.sofascore.com/football/team/fulham"
+  },
+  {
+    "club": "Ipswich Town",
+    "currentManager": "Kieran McKenna",
+    "url": "https://www.sofascore.com/football/team/ipswich-town"
+  },
+  {
+    "club": "Leicester City",
+    "currentManager": "Steve Cooper",
+    "url": "https://www.sofascore.com/football/team/leicester-city"
+  },
+  {
+    "club": "Liverpool",
+    "currentManager": "❌ NOT FOUND IN BIOS",
+    "url": "https://www.sofascore.com/football/team/liverpool"
+  },
+  {
+    "club": "Manchester City",
+    "currentManager": "Pep Guardiola",
+    "url": "https://www.sofascore.com/football/team/manchester-city"
+  },
+  {
+    "club": "Manchester United",
+    "currentManager": "Rúben Amorim",
+    "url": "https://www.sofascore.com/football/team/manchester-united"
+  },
+  {
+    "club": "Newcastle United",
+    "currentManager": "Eddie Howe",
+    "url": "https://www.sofascore.com/football/team/newcastle-united"
+  },
+  {
+    "club": "Nottingham Forest",
+    "currentManager": "Nuno Espírito Santo",
+    "url": "https://www.sofascore.com/football/team/nottingham-forest"
+  },
+  {
+    "club": "Southampton",
+    "currentManager": "Russell Martin",
+    "url": "https://www.sofascore.com/football/team/southampton"
+  },
+  {
+    "club": "Tottenham Hotspur",
+    "currentManager": "Ange Postecoglou",
+    "url": "https://www.sofascore.com/football/team/tottenham-hotspur"
+  },
+  {
+    "club": "West Ham United",
+    "currentManager": "Julen Lopetegui",
+    "url": "https://www.sofascore.com/football/team/west-ham-united"
+  },
+  {
+    "club": "Wolverhampton Wanderers",
+    "currentManager": "Gary O’Neil",
+    "url": "https://www.sofascore.com/football/team/wolverhampton-wanderers"
+  }
+]

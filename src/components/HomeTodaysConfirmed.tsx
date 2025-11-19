@@ -7,7 +7,7 @@ import { PlayerNameLink } from './PlayerNameLink';
 
 interface HomeTodaysConfirmedProps {
   transfers: Transfer[];
-  onSelectClub?: (club: string) => void;
+  onSelectClub?: (club: string, playerName?: string) => void;
 }
 
 // Use the user's current local time as source of truth
@@ -47,6 +47,8 @@ export const HomeTodaysConfirmed: React.FC<HomeTodaysConfirmedProps> = ({ transf
                       }}
                       className="text-base text-green-700 hover:text-green-600 truncate"
                       stopPropagation={false}
+                      navigateToClub={!!onSelectClub}
+                      onNavigateToClub={(clubName) => onSelectClub?.(clubName, transfer.playerName)}
                     />
                   </div>
                   <div className="text-xs text-gray-600">

@@ -84,6 +84,19 @@ export const TeamPhaseComparisonCharts: React.FC<TeamPhaseComparisonChartsProps>
         const gradientComparison = `comparison-secondary-${sectionKey}`;
         const colors = SECTION_COLORS[sectionKey];
 
+        // Calculate domain to ensure small values are visible
+        const allValues = [
+          ...data.map(d => d.primaryValue),
+          ...data.map(d => d.comparisonValue)
+        ].filter(v => !isNaN(v) && isFinite(v));
+        if (allValues.length === 0) return null; // Skip if no valid values
+        
+        const dataMin = 0; // Always start at 0 for better visibility
+        const dataMax = Math.max(...allValues);
+        // Add padding: 20% for small values (< 1), 10% for larger values
+        const padding = dataMax < 1 ? dataMax * 0.2 : dataMax * 0.1;
+        const domainMax = Math.max(dataMax + padding, 0.1); // Ensure at least 0.1 is shown
+
         return (
           <Card key={sectionKey} className="bg-slate-900/70 border-slate-700 overflow-hidden">
             <div className="p-6 space-y-4">
@@ -111,7 +124,7 @@ export const TeamPhaseComparisonCharts: React.FC<TeamPhaseComparisonChartsProps>
                     margin={{ top: 8, right: 16, left: 16, bottom: 8 }}
                     barCategoryGap={8}
                   >
-                    <XAxis type="number" hide />
+                    <XAxis type="number" hide domain={[dataMin, domainMax]} />
                     <YAxis
                       type="category"
                       dataKey="shortLabel"

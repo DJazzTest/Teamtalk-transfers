@@ -26,7 +26,7 @@ function parseFee(fee: string): number {
 
 interface WalletWarpingDealsProps {
   transfers: any[];
-  onSelectClub?: (club: string) => void;
+  onSelectClub?: (club: string, playerName?: string) => void;
   onRefresh?: () => void;
 }
 
@@ -140,7 +140,7 @@ export const WalletWarpingDeals: React.FC<WalletWarpingDealsProps> = ({ transfer
                         className="text-xs text-purple-500 hover:text-purple-700 hover:bg-purple-100/70 px-2 py-1"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onSelectClub(transfer.toClub);
+                          onSelectClub(transfer.toClub, transfer.playerName);
                         }}
                       >
                         View team
@@ -151,7 +151,7 @@ export const WalletWarpingDeals: React.FC<WalletWarpingDealsProps> = ({ transfer
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <span
                           className="font-semibold text-purple-700 hover:underline cursor-pointer text-base truncate"
-                          onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
+                          onClick={() => onSelectClub && onSelectClub(transfer.toClub, transfer.playerName)}
                           title={`View ${transfer.toClub} squad`}
                         >
                           {transfer.playerName}

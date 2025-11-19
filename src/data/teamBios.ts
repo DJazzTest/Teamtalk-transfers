@@ -59,7 +59,7 @@ export const DEFAULT_TEAM_BIOS: TeamBioMap = {
       { label: 'Location', value: 'Old Trafford, Greater Manchester' },
       { label: 'Stadium', value: 'Old Trafford (74,310)' },
       { label: 'Nickname', value: 'The Red Devils' },
-      { label: 'Manager', value: 'Erik ten Hag' },
+      { label: 'Manager', value: 'Rúben Amorim' },
     ],
     website: 'https://www.manutd.com',
     twitter: 'https://x.com/ManUtd',
@@ -470,6 +470,73 @@ export const DEFAULT_TEAM_BIOS: TeamBioMap = {
     ],
     website: 'https://www.wolves.co.uk',
     twitter: 'https://x.com/Wolves',
+  },
+  'Ipswich Town': {
+    intro:
+      'Ipswich Town Football Club, founded in 1878, are based in Ipswich, Suffolk. The Tractor Boys returned to the Premier League in 2024 after 22 years away, achieving back-to-back promotions under Kieran McKenna.',
+    honoursHeading: 'Major honours',
+    honours: [
+      'First Division: 1 (1961–62)',
+      'FA Cup: 1 (1978)',
+      'UEFA Cup: 1 (1981)',
+      'Championship Winners: 2 (1961–62, 1967–68)',
+    ],
+    history:
+      'Ipswich enjoyed their greatest success under Sir Bobby Robson in the 1970s and early 1980s, winning the FA Cup and UEFA Cup. After years in the lower leagues, they achieved a remarkable return to the Premier League under McKenna\'s progressive, attacking style.',
+    facts: [
+      { label: 'Founded', value: '1878' },
+      { label: 'Location', value: 'Ipswich, Suffolk' },
+      { label: 'Stadium', value: 'Portman Road (30,311)' },
+      { label: 'Nickname', value: 'The Tractor Boys' },
+      { label: 'Manager', value: 'Kieran McKenna' },
+    ],
+    website: 'https://www.itfc.co.uk',
+    twitter: 'https://x.com/IpswichTown',
+  },
+  'Leicester City': {
+    intro:
+      'Leicester City Football Club, founded in 1884 as Leicester Fosse, achieved one of football\'s greatest underdog stories by winning the Premier League in 2015–16 under Claudio Ranieri. The Foxes returned to the top flight in 2024 after a season in the Championship.',
+    honoursHeading: 'Major honours',
+    honours: [
+      'Premier League: 1 (2015–16)',
+      'First Division: 1 (1928–29)',
+      'FA Cups: 1 (2021)',
+      'League Cups: 3',
+      'Championship Winners: 7',
+    ],
+    history:
+      'Leicester\'s 2015–16 title triumph remains one of the most remarkable achievements in football history. The club has consistently punched above its weight, winning the FA Cup in 2021 and establishing themselves as a respected Premier League side.',
+    facts: [
+      { label: 'Founded', value: '1884 (as Leicester Fosse)' },
+      { label: 'Location', value: 'Leicester, Leicestershire' },
+      { label: 'Stadium', value: 'King Power Stadium (32,262)' },
+      { label: 'Nickname', value: 'The Foxes' },
+      { label: 'Manager', value: 'Steve Cooper' },
+    ],
+    website: 'https://www.lcfc.com',
+    twitter: 'https://x.com/LCFC',
+  },
+  'Southampton': {
+    intro:
+      'Southampton Football Club, founded in 1885 as St. Mary\'s Y.M.A., are based on the south coast of England. The Saints returned to the Premier League in 2024 under Russell Martin, known for their academy development and attractive football.',
+    honoursHeading: 'Major honours',
+    honours: [
+      'FA Cup: 1 (1976)',
+      'FA Charity Shield: 1 (1976)',
+      'Championship Winners: 1 (1965–66)',
+      'League One Winners: 1 (2010–11)',
+    ],
+    history:
+      'Southampton are renowned for their excellent academy, producing talents such as Gareth Bale, Theo Walcott, and Alex Oxlade-Chamberlain. The club has a reputation for developing young players and playing attractive, possession-based football.',
+    facts: [
+      { label: 'Founded', value: '1885 (as St. Mary\'s Y.M.A.)' },
+      { label: 'Location', value: 'Southampton, Hampshire' },
+      { label: 'Stadium', value: 'St. Mary\'s Stadium (32,384)' },
+      { label: 'Nickname', value: 'The Saints' },
+      { label: 'Manager', value: 'Russell Martin' },
+    ],
+    website: 'https://www.southamptonfc.com',
+    twitter: 'https://x.com/SouthamptonFC',
   },
 };
 

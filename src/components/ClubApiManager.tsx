@@ -19,7 +19,7 @@ import {
   Users,
   Shield
 } from 'lucide-react';
-import { TEAM_API_CONFIGS } from '@/types/scoreinside';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface ApiEndpoint {
   id: string;
@@ -40,6 +40,17 @@ const ClubApiManager: React.FC = () => {
   const [testResults, setTestResults] = useState<Record<string, any>>({});
   const [refreshingAll, setRefreshingAll] = useState(false);
   const [failedApis, setFailedApis] = useState<Array<{club: string, error: string}>>([]);
+  const [newEndpoint, setNewEndpoint] = useState<{
+    team: string;
+    name: string;
+    url: string;
+    provider: ApiEndpoint['provider'];
+  }>({
+    team: '',
+    name: '',
+    url: '',
+    provider: 'Custom',
+  });
 
   // Initialize with team-specific APIs using new FCM token
   useEffect(() => {
@@ -495,6 +506,31 @@ const ClubApiManager: React.FC = () => {
     window.dispatchEvent(new CustomEvent('autoRefresh'));
   };
 
+  const handleAddEndpoint = () => {
+    if (!newEndpoint.team || !newEndpoint.url.trim()) {
+      alert('Please choose a team and provide an endpoint URL.');
+      return;
+    }
+
+    const id = `${newEndpoint.team.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`;
+    const endpoint: ApiEndpoint = {
+      id,
+      team: newEndpoint.team,
+      name: newEndpoint.name.trim() || `${newEndpoint.team} - Custom`,
+      url: newEndpoint.url.trim(),
+      provider: newEndpoint.provider,
+      status: 'inactive',
+    };
+
+    setApiEndpoints(prev => [...prev, endpoint]);
+    setNewEndpoint({
+      team: '',
+      name: '',
+      url: '',
+      provider: 'Custom',
+    });
+  };
+
   const handleTestEndpoint = async (endpoint: ApiEndpoint) => {
     setTestingEndpoint(endpoint.id);
     const startTime = Date.now();
@@ -647,9 +683,9 @@ const ClubApiManager: React.FC = () => {
   // Premier League teams for display
   const premierLeagueTeams = [
     'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
-    'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town',
-    'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United',
-    'Nottingham Forest', 'Southampton', 'Tottenham Hotspur', 'West Ham United', 'Wolverhampton Wanderers'
+    'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Liverpool',
+    'Manchester City', 'Manchester United', 'Newcastle United',
+    'Nottingham Forest', 'Sunderland', 'Tottenham Hotspur', 'West Ham United', 'Wolverhampton Wanderers'
   ];
 
   // Check for stale rumors in API data
@@ -696,9 +732,73 @@ const ClubApiManager: React.FC = () => {
               ) : (
                 <RefreshCw className="w-4 h-4 mr-2" />
               )}
-              {refreshingAll ? 'Refreshing All APIs...' : 'Refresh All APIs'}
+              {refreshingAll ? 'Testing APIs…' : 'Test All APIs'}
             </Button>
           </div>
+          <div className="mt-6 border-t border-slate-700 pt-4">
+            <h4 className="text-white font-semibold mb-3">Add Club Endpoint</h4>
+            <div className="grid gap-4 md:grid-cols-4">
+              <div>
+                <Label className="text-sm text-gray-300 mb-1 block">Club</Label>
+                <Select
+                  value={newEndpoint.team}
+                  onValueChange={(value) => setNewEndpoint(prev => ({ ...prev, team: value }))}
+                >
+                  <SelectTrigger className="bg-slate-900 border-slate-700 text-white">
+                    <SelectValue placeholder="Select club" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-slate-900 border-slate-700 text-white">
+                    {premierLeagueTeams.map(team => (
+                      <SelectItem key={team} value={team}>
+                        {team}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-sm text-gray-300 mb-1 block">Name</Label>
+                <Input
+                  placeholder="e.g., Arsenal Rumours"
+                  value={newEndpoint.name}
+                  onChange={e => setNewEndpoint(prev => ({ ...prev, name: e.target.value }))}
+                  className="bg-slate-900 border-slate-700 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-sm text-gray-300 mb-1 block">Provider</Label>
+                <Select
+                  value={newEndpoint.provider}
+                  onValueChange={(value) => setNewEndpoint(prev => ({ ...prev, provider: value as ApiEndpoint['provider'] }))}
+                >
+                  <SelectTrigger className="bg-slate-900 border-slate-700 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-slate-900 border-slate-700 text-white">
+                    <SelectItem value="ScoreInside">ScoreInside</SelectItem>
+                    <SelectItem value="TeamTalk">TeamTalk</SelectItem>
+                    <SelectItem value="Custom">Custom</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-sm text-gray-300 mb-1 block">Endpoint URL</Label>
+                <Input
+                  placeholder="https://..."
+                  value={newEndpoint.url}
+                  onChange={e => setNewEndpoint(prev => ({ ...prev, url: e.target.value }))}
+                  className="bg-slate-900 border-slate-700 text-white"
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <Button onClick={handleAddEndpoint} className="bg-green-600 hover:bg-green-700 text-white">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Endpoint
+              </Button>
+            </div>
+          </div>
+
           
           {/* Failed APIs Display */}
           {failedApis.length > 0 && (

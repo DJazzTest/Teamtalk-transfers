@@ -68,6 +68,16 @@ const TeamPhaseCharts: React.FC<TeamPhaseChartsProps> = ({ teamName }) => {
         if (!data.length) return null;
         const color = SECTION_COLORS[sectionKey];
 
+        // Calculate domain to ensure small values are visible
+        const values = data.map(d => d.value).filter(v => !isNaN(v) && isFinite(v));
+        if (values.length === 0) return null; // Skip if no valid values
+        
+        const dataMin = 0; // Always start at 0 for better visibility
+        const dataMax = Math.max(...values);
+        // Add padding: 20% for small values (< 1), 10% for larger values
+        const padding = dataMax < 1 ? dataMax * 0.2 : dataMax * 0.1;
+        const domainMax = Math.max(dataMax + padding, 0.1); // Ensure at least 0.1 is shown
+
         return (
           <Card
             key={sectionKey}
@@ -88,7 +98,11 @@ const TeamPhaseCharts: React.FC<TeamPhaseChartsProps> = ({ teamName }) => {
               <div className="h-52">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data} layout="vertical" margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
-                    <XAxis type="number" hide domain={['dataMin', 'dataMax']} />
+                    <XAxis 
+                      type="number" 
+                      hide 
+                      domain={[dataMin, domainMax]}
+                    />
                     <YAxis
                       type="category"
                       dataKey="shortLabel"

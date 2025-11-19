@@ -3,8 +3,8 @@ import { ExternalLink, Facebook, Instagram, Youtube } from 'lucide-react';
 
 export const PlanetSportFooter: React.FC = () => {
   return (
-    <div className="bg-[#1a1d24] dark:bg-[#0f1115] text-white" style={{ padding: '32px 16px', width: '960px', margin: '0 auto' }}>
-      <div style={{ width: '960px', margin: '0 auto' }}>
+    <div className="bg-[#1a1d24] dark:bg-[#0f1115] text-white" style={{ padding: '32px 16px', width: '1200px', margin: '0 auto' }}>
+      <div style={{ width: '1200px', margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '32px', marginBottom: '32px' }}>
           {/* Planet Sport Network */}
           <div>

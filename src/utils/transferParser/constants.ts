@@ -1,10 +1,13 @@
 
 export const PREMIER_LEAGUE_CLUBS = [
-  'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton', 'Brighton & Hove Albion',
-  'Burnley', 'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 'Leeds',
-  'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United', 'Newcastle',
-  'Nottingham Forest', 'Sheffield United', 'Tottenham', 'Tottenham Hotspur', 'West Ham United', 'West Ham',
-  'Wolverhampton Wanderers', 'Wolves', 'Luton Town', 'Luton', 'Leicester City', 'Leicester', 'Sunderland'
+  // 2024/25 Season
+  'Arsenal', 'Aston Villa', 'AFC Bournemouth', 'Bournemouth', 'Brentford', 'Brighton', 'Brighton & Hove Albion',
+  'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town', 'Ipswich',
+  'Leicester City', 'Leicester', 'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United', 'Newcastle',
+  'Nottingham Forest', 'Southampton', 'Tottenham', 'Tottenham Hotspur', 'West Ham United', 'West Ham',
+  'Wolverhampton Wanderers', 'Wolves',
+  // 2023/24 Season (relegated clubs)
+  'Burnley', 'Luton Town', 'Luton', 'Sheffield United', 'Sheffield Utd'
 ];
 
 // CONFIRMED TRANSFER KEYWORDS - Only phrases that indicate official completion

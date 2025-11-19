@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface ClubSpendingChart2025Props {
-  onSelectClub?: (club: string) => void;
+  onSelectClub?: (club: string, playerName?: string) => void;
 }
 
 // Official 2025/26 Summer Window Data - Ordered by spending (descending)
@@ -86,8 +86,11 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
   const totalNetSpend = totalSpending - totalEarnings;
 
   return (
-    <Card className="border border-gray-200 dark:border-slate-700 shadow-lg mb-6 bg-white dark:bg-slate-800/70 transition-colors" style={{ width: '960px' }}>
-      <div style={{ padding: '16px' }}>
+    <Card
+      className="border border-gray-200 dark:border-slate-700 shadow-lg mb-2 bg-white dark:bg-slate-800/70 transition-colors"
+      style={{ width: '100%' }}
+    >
+      <div style={{ padding: '12px' }}>
             <div className="flex items-center gap-2">
               <div className="bg-blue-100 dark:bg-blue-900/40 p-1.5 rounded-lg">
                 <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-300" />

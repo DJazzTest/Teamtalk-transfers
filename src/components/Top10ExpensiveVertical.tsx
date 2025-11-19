@@ -22,7 +22,7 @@ function parseFee(fee: string): number {
 
 interface Top10ExpensiveVerticalProps {
   transfers: any[];
-  onSelectClub?: (club: string) => void;
+  onSelectClub?: (club: string, playerName?: string) => void;
 }
 
 export const Top10ExpensiveVertical: React.FC<Top10ExpensiveVerticalProps> = ({ transfers, onSelectClub }) => {
@@ -85,17 +85,12 @@ export const Top10ExpensiveVertical: React.FC<Top10ExpensiveVerticalProps> = ({ 
         return (
           <Card
             key={transfer.id}
-            className="p-3 border-2 hover:shadow-lg transition-all duration-200"
-            style={{ 
-              backgroundColor: 'rgba(5, 223, 114, 0.15)',
-              borderColor: '#05DF72'
-            }}
+            className="p-3 border-2 hover:shadow-lg transition-all duration-200 border-green-700 dark:border-green-200 bg-green-50/50 dark:bg-green-500/10"
           >
             <div className="flex items-center gap-3">
               {/* Rank Number */}
               <div 
-                className="flex-shrink-0 w-8 h-8 rounded-full text-white flex items-center justify-center font-bold text-sm"
-                style={{ backgroundColor: '#05DF72' }}
+                className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-green-700 dark:bg-green-200 text-white dark:text-green-900"
               >
                 {index + 1}
               </div>
@@ -110,12 +105,7 @@ export const Top10ExpensiveVertical: React.FC<Top10ExpensiveVerticalProps> = ({ 
                   }}
                 />
                 <AvatarFallback 
-                  className="text-xs font-bold"
-                  style={{ 
-                    backgroundColor: 'rgba(5, 223, 114, 0.3)',
-                    color: '#05DF72',
-                    border: '2px solid #05DF72'
-                  }}
+                  className="text-xs font-bold text-green-700 dark:text-green-200 border-2 border-green-700 dark:border-green-200 bg-green-100 dark:bg-green-500/20"
                 >
                   {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
                 </AvatarFallback>
@@ -125,22 +115,21 @@ export const Top10ExpensiveVertical: React.FC<Top10ExpensiveVerticalProps> = ({ 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <span
-                    className="font-semibold hover:underline cursor-pointer text-sm truncate"
-                    style={{ color: '#05DF72' }}
-                    onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
+                    className="font-semibold hover:underline cursor-pointer text-sm truncate text-green-700 dark:text-green-200"
+                  onClick={() => onSelectClub && onSelectClub(transfer.toClub, transfer.playerName)}
                     title={`View ${transfer.toClub} squad`}
                   >
                     {transfer.playerName}
                   </span>
                 </div>
-                <div className="text-xs" style={{ color: '#05DF72' }}>
+                <div className="text-xs text-green-700 dark:text-green-200">
                   <span>{transfer.fromClub}</span> → <span className="font-semibold">{transfer.toClub}</span>
                 </div>
               </div>
               
               {/* Fee */}
               <div className="flex-shrink-0 text-right">
-                <div className="font-bold text-base" style={{ color: '#05DF72' }}>
+                <div className="font-bold text-base text-green-700 dark:text-green-200">
                   {transfer.fee}
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -159,19 +148,7 @@ export const Top10ExpensiveVertical: React.FC<Top10ExpensiveVerticalProps> = ({ 
             onClick={() => setShowAll(!showAll)}
             variant="outline"
             size="sm"
-            style={{
-              borderColor: '#05DF72',
-              borderWidth: '2px',
-              color: '#05DF72',
-              fontWeight: 'bold'
-            }}
-            className="hover:opacity-90"
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(5, 223, 114, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
+            className="border-2 border-green-700 dark:border-green-200 text-green-700 dark:text-green-200 font-bold hover:bg-green-700/20 dark:hover:bg-green-200/20"
           >
             {showAll ? (
               <>

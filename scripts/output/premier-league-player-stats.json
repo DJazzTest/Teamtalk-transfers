@@ -1,0 +1,2509 @@
+{
+  "generatedAt": "2025-11-18T10:07:02.306Z",
+  "totalMissing": 500,
+  "successCount": 0,
+  "failureCount": 500,
+  "players": [],
+  "failures": [
+    {
+      "club": "Aston Villa",
+      "name": "Boubacar Kamara",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Youri Tielemans",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Emiliano Martínez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Donyell Malen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Amadou Onana",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Ollie Watkins",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Philippe Coutinho",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Lucas Digne",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "John McGinn",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Tyrone Mings",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Ian Maatsen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Pau Torres",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Ezri Konsa",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Matty Cash",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Samuel Iling-Junior",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Morgan Rogers",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Evann Guessand",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Ross Barkley",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Marco Bizot",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Andres Garcia",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Lino Sousa",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Lamare Bogarde",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Travis Patterson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "James Wright",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Jamaldeen Jimoh",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Bradley Burrowes",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "George Hemmings",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Sam Proctor",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Aston Villa",
+      "name": "Triston Rowe",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Djordje Petrovic",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Will Dennis",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Adrien Truffert",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Álex Jiménez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Julio Soler",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Marcos Senesi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Matai Akinmboni",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Veljko Milosavljevic",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Bafodé Diakité",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "James Hill",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Julián Araujo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Ryan Christie",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Lewis Cook",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Justin Kluivert",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Marcus Tavernier",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Tyler Adams",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Alex Scott",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Ben Gannon Doak",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Eli Kroupi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Enes Ünal",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Evanilson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Antoine Semenyo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "David Brooks",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Adam Smith",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Bournemouth",
+      "name": "Amine Adli",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Caoimhín Kelleher",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Julian Eyestone",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Ellery Balcombe",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Hákon Valdimarsson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Matthew Cox",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Benjamin Arthur",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Michael Kayode",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Nathan Collins",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Rico Henry",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Aaron Hickey",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Ethan Pinnock",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Sepp van den Berg",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Kristoffer Ajer",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Antoni Milambo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Mikkel Damsgaard",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Nikolaj Kirk",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Paris Maghoma",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Vitaly Janelt",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Yegor Yarmolyuk",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Yunus Konak",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Frank Onyeka",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Joshua Dasilva",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Myles Peart-Harris",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Fábio Carvalho",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Keane Lewis-Potter",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Jordan Henderson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Gustavo Nunes",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Romelle Donovan",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Igor Thiago",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Dango Ouattara",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Kevin Schade",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brentford",
+      "name": "Reiss Nelson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Bart Verbruggen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Tom McGill",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Jason Steele",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Adam Webster",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Ferdi Kadıoğlu",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Jan Paul van Hecke",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Lewis Dunk",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Maxim De Cuyper",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Olivier Boscagli",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Joël Veltman",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Diego Coppola",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Carlos Baleba",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Jack Hinshelwood",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Mats Wieffer",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Yasin Ayari",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Diego Gómez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "James Milner",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Brajan Gruda",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Charalampos Kostoulas",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Stefanos Tzimas",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Tom Watson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Danny Welbeck",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Kaoru Mitoma",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Solly March",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Yankuba Minteh",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Brighton & Hove Albion",
+      "name": "Georginio Rutter",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Max Weiß",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Martin Dúbravka",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Václav Hladký",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Hannes Delcroix",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Kyle Walker",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Maxime Estève",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Oliver Sonne",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Quilindschy Hartman",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Connor Roberts",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Lucas Pires",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Axel Tuanzebe",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Bashir Humphreys",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Hjalmar Ekdal",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Joe Worrall",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Jordan Beyer",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Josh Laurent",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Lesley Ugochukwu",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Hannibal",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Mike Tresor",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Florentino",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Josh Cullen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Zeki Amdouni",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Zian Flemming",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Jacob Bruun Larsen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Jaidon Anthony",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Marcus Edwards",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Enock Agyei",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Jaydon Banel",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Loum Tchaouna",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Lyle Foster",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Armando Broja",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Burnley",
+      "name": "Ashley Barnes",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Robert Sánchez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Gabriel Slonina",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Axel Disasi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Josh Acheampong",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Malo Gusto",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Marc Cucurella",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Reece James",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Tosin Adarabioyo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Benoît Badiashile",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Jorrel Hato",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Levi Colwill",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Trevoh Chalobah",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Wesley Fofana",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Andrey Santos",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Cole Palmer",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Roméo Lavia",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Facundo Buonanotte",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Filip Jørgensen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Dário Essugo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Enzo Fernández",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Moisés Caicedo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Alejandro Garnacho",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Estêvão Willian",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Marc Guiu",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Tyrique George",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Jamie Gittens",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Mykhaylo Mudryk",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Raheem Sterling",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Pedro Neto",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "João Pedro",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Chelsea",
+      "name": "Liam Delap",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Remi Matthews",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Dean Henderson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Walter Benítez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Borna Sosa",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Caleb Kporha",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Jaydee Canvot",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Marc Guéhi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Daniel Muñoz",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Chadi Riad",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Joel Ward",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Nathaniel Clyne",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Tyrick Mitchell",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Chris Richards",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Maxence Lacroix",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Cheick Doucouré",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Rio Cardines",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Adam Wharton",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Jefferson Lerma",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Will Hughes",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Justin Devenny",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Daichi Kamada",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Naouirou Ahamada",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Christantus Uche",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Romain Esse",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Eddie Nketiah",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Jean-Philippe Mateta",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Yéremy Pino",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Crystal Palace",
+      "name": "Ismaïla Sarr",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Harry Tyrer",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Jordan Pickford",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Mark Travers",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Tom King",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Adam Aznou",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Jarrad Branthwaite",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Vitaliy Mykolenko",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Nathan Patterson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Jake O'Brien",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "James Tarkowski",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Michael Keane",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Séamus Coleman",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Idrissa Gueye",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "James Garner",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Tim Iroegbunam",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Carlos Alcaraz",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Kiernan Dewsbury-Hall",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Merlin Röhl",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Iliman Ndiaye",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Tyler Dibling",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Beto",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Thierno Barry",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Dwight McNeil",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Everton",
+      "name": "Jack Grealish",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Benjamin Lecomte",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Bernd Leno",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Antonee Robinson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Calvin Bassey",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Jorge Cuenca",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Kenny Tete",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Ryan Sessegnon",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Timothy Castagne",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Joachim Andersen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Issa Diop",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Emile Smith Rowe",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Josh King",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Sander Berge",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Saša Lukić",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Tom Cairney",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Harrison Reed",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Jonah Kusi-Asare",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Raúl Jiménez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Adama Traoré",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Samuel Chukwueze",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Alex Iwobi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Fulham",
+      "name": "Rodrigo Muniz",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Ármin Pécsi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Kornel Misciur",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Giorgi Mamardashvili",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Alisson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Freddie Woodman",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Andrew Robertson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Giovanni Leoni",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Jeremie Frimpong",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Joe Gomez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Milos Kerkez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Ibrahima Konaté",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Rhys Williams",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Virgil van Dijk",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Conor Bradley",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Curtis Jones",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Stefan Bajcetic",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Trey Nyoni",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Wataru Endo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Dominik Szoboszlai",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Ryan Gravenberch",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Alexis Mac Allister",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Florian Wirtz",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Hugo Ekitiké",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Rio Ngumoha",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Alexander Isak",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Mohamed Salah",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Cody Gakpo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Liverpool",
+      "name": "Federico Chiesa",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Gianluigi Donnarumma",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Stefan Ortega",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "James Trafford",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Marcus Bettinelli",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Matheus Nunes",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Nico O'Reilly",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Rayan Aït-Nouri",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Rico Lewis",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Abdukodir Khusanov",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "John Stones",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Josko Gvardiol",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Nathan Aké",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Rúben Dias",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Nico González",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Kalvin Phillips",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Tijjani Reijnders",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Bernardo Silva",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Mateo Kovacic",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Rodri",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Oscar Bobb",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Erling Haaland",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Omar Marmoush",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Phil Foden",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Jérémy Doku",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Savinho",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester City",
+      "name": "Rayan Cherki",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Altay Bayındır",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Senne Lammens",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Tom Heaton",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Diogo Dalot",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Leny Yoro",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Luke Shaw",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Noussair Mazraoui",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Tyler Fredricson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Patrick Dorgu",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Tyrell Malacia",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Ayden Heaven",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Harry Maguire",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Lisandro Martínez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Matthijs de Ligt",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Kobbie Mainoo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Manuel Ugarte",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Mason Mount",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Casemiro",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Bruno Fernandes",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Chido Obi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Benjamin Sesko",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Amad Diallo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Bryan Mbeumo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Joshua Zirkzee",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Manchester United",
+      "name": "Matheus Cunha",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Nick Pope",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Aaron Ramsdale",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "John Ruddy",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Mark Gillespie",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Alex Murphy",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Kieran Trippier",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Lewis Hall",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Sven Botman",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Tino Livramento",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Fabian Schär",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Jamaal Lascelles",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Dan Burn",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Harrison Ashby",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Malick Thiaw",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Emil Krafth",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Lewis Miley",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Jacob Ramsey",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Joe Willock",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Sandro Tonali",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Bruno Guimarães",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Joelinton",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "William Osula",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Nick Woltemade",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Anthony Elanga",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Harvey Barnes",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Anthony Gordon",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Jacob Murphy",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Newcastle United",
+      "name": "Yoane Wissa",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Angus Gunn",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Matz Sels",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "John Victor",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Jair Cunha",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Murillo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Neco Williams",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Ola Aina",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Morato",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Nicolò Savona",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Willy Boly",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Nikola Milenković",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Zach Abbott",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Oleksandr Zinchenko",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Ryan Yates",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "James McAtee",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Douglas Luiz",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Elliot Anderson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Omari Hutchinson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Nicolás Domínguez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Morgan Gibbs-White",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Igor Jesus",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Taiwo Awoniyi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Arnaud Kalimuendo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Callum Hudson-Odoi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Dan Ndoye",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Dilane Bakwa",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Ibrahima Sangaré",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Nottingham Forest",
+      "name": "Chris Wood",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Robin Roefs",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Simon Moore",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Anthony Patterson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Blondy Nna Noukeu",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Arthur Masuaku",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Joe Anderson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Nordi Mukiele",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Timothée Pembélé",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Lutsharel Geertruida",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Trai Hume",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Aji Alese",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Dennis Cirkin",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Leo Fuhr Hjelde",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Omar Alderete",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Daniel George Ballard",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Luke O'Nien",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Reinildo Mandava",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Chris Rigg",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Noah Sadiki",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Granit Xhaka",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Habib Diarra",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Harrison Jones",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Abdoullah Ba",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Dan Neil",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Enzo Le Fée",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Jay Matete",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Ahmed Abdullahi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Eliezer Mayenda",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Romaine Mundle",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Simon Adingra",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Wilson Isidor",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Brian Brobbey",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Chemsdine Talbi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Bertrand Traoré",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Sunderland",
+      "name": "Ian Poveda",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Antonín Kinský",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Brandon Austin",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Guglielmo Vicario",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Luca Gunter",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Pedro Porro",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Destiny Udogie",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Djed Spence",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Ben Davies",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Cristian Romero",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Kevin Danso",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Kota Takai",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Micky van de Ven",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Radu Drăgușin",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Pape Matar Sarr",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Rodrigo Bentancur",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Yves Bissouma",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Archie Gray",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "James Maddison",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Xavi Simons",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "João Palhinha",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Lucas Bergvall",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Dejan Kulusevski",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Mathys Tel",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Randal Kolo Muani",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Dane Scarlett",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Dominic Solanke",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Mohammed Kudus",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Richarlison",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Wilson Odobert",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Tottenham Hotspur",
+      "name": "Brennan Johnson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Alphonse Areola",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Łukasz Fabiański",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Mads Hermansen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "El Hadji Malick Diouf",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Konstantinos Mavropanos",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Kyle Walker-Peters",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Oliver Scarles",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Aaron Wan-Bissaka",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Igor Julio",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Jean-Clair Todibo",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Maximilian Kilman",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Freddie Potts",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Guido Rodríguez",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Soungoutou Magassa",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Tomas Soucek",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Lucas Paquetá",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "George Earthy",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Andrew Irving",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "James Ward-Prowse",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Mateus Fernandes",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Callum Marshall",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Luis Guilherme",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Crysencio Summerville",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Jarrod Bowen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "West Ham United",
+      "name": "Niclas Füllkrug",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Daniel Bentley",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "José Sá",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Sam Johnstone",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Emmanuel Agbadou",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Matt Doherty",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "David Møller Wolfe",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Craig Dawson",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Ladislav Krejci",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Santiago Bueno",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Toti",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Yerson Mosquera",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Hugo Bueno",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Jackson Tchatchoua",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Ki-Jana Hoever",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Fer López",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Tawanda Chirewa",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Jean-Ricner Bellegarde",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Marshall Munetsi",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "André",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "João Gomes",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Mateus Mané",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Jörgen Strand Larsen",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Tolu Arokodare",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Enso González",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Jhon Arias",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    },
+    {
+      "club": "Wolverhampton Wanderers",
+      "name": "Hee-chan Hwang",
+      "reason": "PLAYER_ID_NOT_FOUND"
+    }
+  ]
+}

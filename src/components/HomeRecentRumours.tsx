@@ -9,7 +9,7 @@ import { getPlayerImage } from '@/utils/playerImageUtils';
 
 interface HomeRecentRumoursProps {
   transfers: Transfer[];
-  onSelectClub?: (club: string) => void;
+  onSelectClub?: (club: string, playerName?: string) => void;
   onRefresh?: () => void;
 }
 
@@ -68,7 +68,7 @@ export const HomeRecentRumours: React.FC<HomeRecentRumoursProps> = ({ transfers,
                     <MessageCircle className="w-4 h-4 text-blue-500 flex-shrink-0" />
                     <span
                       className="font-semibold text-blue-600 hover:underline cursor-pointer text-base truncate"
-                      onClick={() => onSelectClub && onSelectClub(transfer.toClub)}
+                      onClick={() => onSelectClub && onSelectClub(transfer.toClub, transfer.playerName)}
                       title={`View ${transfer.toClub} squad`}
                     >
                       {transfer.playerName}

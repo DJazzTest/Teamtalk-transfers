@@ -1,10 +1,8 @@
 import React from 'react';
 import Admin from './Admin';
-import { ApiManagementPanel } from '@/components/ApiManagementPanel';
 import { TeamApiConfigManager } from '@/components/TeamApiConfigManager';
 import { TeamBioManager } from '@/components/TeamBioManager';
 import { PlayerManagement } from '@/components/PlayerManagement';
-import { FeedStatusPanel } from '@/components/FeedStatusPanel';
 import { ChatterBoxManagement } from '@/components/ChatterBoxManagement';
 import { FlashBannerManagement } from '@/components/FlashBannerManagement';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -23,7 +21,6 @@ const Cms: React.FC = () => {
             <Tabs defaultValue="players" className="space-y-6">
               <TabsList className="bg-slate-800">
                 <TabsTrigger value="players">Players</TabsTrigger>
-                <TabsTrigger value="apis">APIs</TabsTrigger>
                 <TabsTrigger value="teams">Teams</TabsTrigger>
                 <TabsTrigger value="chatter">Live Hub</TabsTrigger>
                 <TabsTrigger value="flash-banner">Flash Banner</TabsTrigger>
@@ -32,11 +29,6 @@ const Cms: React.FC = () => {
 
               <TabsContent value="players">
                 <PlayerManagement />
-              </TabsContent>
-
-              <TabsContent value="apis" className="space-y-6">
-                <FeedStatusPanel />
-                <ApiManagementPanel />
               </TabsContent>
 
               <TabsContent value="teams" className="space-y-6">
