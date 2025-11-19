@@ -20,7 +20,7 @@ const formatSummaryMetrics = (team: TeamComparisonEntry | null) => {
     return [];
   }
   return [
-    { label: 'Avg. Sofascore Rating', value: team.averageRating.toFixed(2) },
+    { label: 'Avg. TEAMTALK Rating', value: team.averageRating.toFixed(2) },
     { label: 'Matches', value: team.matches.toString() },
     { label: 'Goals scored', value: team.goalsScored.toString() },
     { label: 'Goals conceded', value: team.goalsConceded.toString() },

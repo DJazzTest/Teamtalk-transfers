@@ -536,7 +536,7 @@ export const PlayerManagement: React.FC = () => {
     });
   };
 
-  // Import comprehensive player data from SofaScore URL
+  // Import comprehensive player data from TEAMTALK URL
   const handleImportFromSofaScore = async (url: string) => {
     if (!url || !url.includes('sofascore.com')) {
       toast({
@@ -1279,7 +1279,7 @@ export const PlayerManagement: React.FC = () => {
                           description: `Loaded ${editedPlayer.name} data from file`,
                         });
                       } else {
-                        // Fallback to SofaScore URL for Kepa
+                        // Fallback to TEAMTALK URL for Kepa
                         const kepaUrl = 'https://www.sofascore.com/football/player/kepa-arrizabalaga/232422';
                         if (editedPlayer.name.toLowerCase().includes('kepa')) {
                           handleImportFromSofaScore(kepaUrl);

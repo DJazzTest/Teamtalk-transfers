@@ -1,5 +1,5 @@
 // Fallback player comparison data when API data is not available
-// This provides detailed statistics similar to SofaScore
+// This provides detailed statistics from TEAMTALK
 
 export interface DetailedPlayerStats {
   // General
