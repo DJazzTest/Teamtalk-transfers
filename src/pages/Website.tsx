@@ -23,6 +23,8 @@ import { FlashBanner } from '@/components/FlashBanner';
 import { normalizeClubName } from '@/utils/clubNormalizer';
 import { ConfirmedTransfersTab } from '@/components/ConfirmedTransfersTab';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ViewToggle } from '@/components/ViewToggle';
+import { MobileLayout } from '@/components/MobileLayout';
 
 const WebsiteContent = () => {
   console.log('WebsiteContent: Component rendering');
@@ -38,6 +40,17 @@ const WebsiteContent = () => {
   
   const [transferSelectionIns, setTransferSelectionIns] = useState<string | undefined>(undefined);
   const [transferSelectionOuts, setTransferSelectionOuts] = useState<string | undefined>(undefined);
+  
+  // View mode state (desktop or mobile)
+  const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>(() => {
+    if (typeof window === 'undefined') return 'desktop';
+    const saved = localStorage.getItem('viewMode');
+    return (saved === 'mobile' || saved === 'desktop') ? saved : 'desktop';
+  });
+  
+  useEffect(() => {
+    localStorage.setItem('viewMode', viewMode);
+  }, [viewMode]);
   
   // All transfer data is now sourced from useTransferDataStore()
 
@@ -140,9 +153,16 @@ const WebsiteContent = () => {
     // Show club card view
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#2F517A' }}>
-
-        <AppHeader lastUpdated={lastUpdated || new Date()} />
-        <div style={{ width: '1200px', margin: '0 auto', padding: '16px' }}>
+        <div className="sticky top-0 z-50 bg-[#2F517A] border-b border-slate-700">
+          <AppHeader lastUpdated={lastUpdated || new Date()} />
+          <div className="flex justify-end px-4 py-2">
+            <ViewToggle viewMode={viewMode} onViewModeChange={setViewMode} />
+          </div>
+        </div>
+        <div 
+          className={viewMode === 'mobile' ? 'w-full max-w-full px-2 sm:px-4 py-2' : ''}
+          style={viewMode === 'desktop' ? { width: '1200px', margin: '0 auto', padding: '16px' } : {}}
+        >
           <TeamTransferView
             transfers={allTransfers}
             selectedTeam={selectedClub}
@@ -157,9 +177,29 @@ const WebsiteContent = () => {
   // Main dashboard
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#2F517A] transition-colors">
-      <AppHeader lastUpdated={lastUpdated || new Date()} />
+      <div className="sticky top-0 z-50 bg-gray-50 dark:bg-[#2F517A] border-b border-gray-200 dark:border-slate-700">
+        <AppHeader lastUpdated={lastUpdated || new Date()} />
+        <div className="flex justify-end px-4 py-2">
+          <ViewToggle viewMode={viewMode} onViewModeChange={setViewMode} />
+        </div>
+      </div>
 
-      <div style={{ width: '1200px', margin: '0 auto', padding: '8px' }}>
+      {viewMode === 'mobile' ? (
+        <MobileLayout
+          countdownTarget={countdownTarget}
+          newsView={newsView}
+          setNewsView={setNewsView}
+          allTransfers={allTransfers}
+          premierLeagueClubs={premierLeagueClubs}
+          availableSeasons={availableSeasons}
+          transferSelectionIns={transferSelectionIns}
+          setTransferSelectionIns={setTransferSelectionIns}
+          transferSelectionOuts={transferSelectionOuts}
+          setTransferSelectionOuts={setTransferSelectionOuts}
+          onSelectClub={handleSelectClub}
+        />
+      ) : (
+        <div style={{ width: '1200px', margin: '0 auto', padding: '8px' }}>
         {/* Transfer Window Countdown */}
         <Card className="mb-2 bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700 shadow-lg">
           <div style={{ padding: '8px' }}>
@@ -398,6 +438,7 @@ const WebsiteContent = () => {
           <PlanetSportFooter />
         </div>
       </div>
+      )}
     </div>
   );
 };
