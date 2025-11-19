@@ -28,6 +28,7 @@ const PREMIER_LEAGUE_CLUBS = [
   'Everton',
   'Fulham',
   'Ipswich Town',
+  'Leeds United',
   'Leicester City',
   'Liverpool',
   'Manchester City',
