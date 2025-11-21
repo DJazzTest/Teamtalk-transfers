@@ -86,13 +86,29 @@ async function fetchTikTokPosts(rapidApiKey) {
     triedEndpoints.push(url);
     try {
       console.log(`Trying endpoint: ${url}`);
-      const response = await fetch(url, {
+      
+      // Try GET first
+      let response = await fetch(url, {
         method: 'GET',
         headers: {
           'X-RapidAPI-Key': rapidApiKey,
           'X-RapidAPI-Host': RAPIDAPI_HOST
         }
       });
+
+      // If GET fails with 405 (Method Not Allowed), try POST
+      if (response.status === 405) {
+        console.log(`GET not allowed, trying POST for: ${url}`);
+        response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'X-RapidAPI-Key': rapidApiKey,
+            'X-RapidAPI-Host': RAPIDAPI_HOST,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username: TIKTOK_USERNAME })
+        });
+      }
 
       lastStatus = response.status;
       const responseText = await response.text();
