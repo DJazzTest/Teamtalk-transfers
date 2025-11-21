@@ -53,19 +53,27 @@ async function fetchTikTokPosts(rapidApiKey) {
   // Try different possible endpoint formats - prioritizing most common RapidAPI TikTok patterns
   // Based on the API name "tiktok-api23" and common RapidAPI endpoint structures
   const endpoints = [
-    // Most likely formats for TikTok API23 on RapidAPI
+    // Most likely formats for TikTok API23 on RapidAPI (camelCase)
     `https://${RAPIDAPI_HOST}/userPosts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/userPostsByUsername?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/getUserPosts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/getUserVideos?username=${TIKTOK_USERNAME}`,
+    // snake_case variations
+    `https://${RAPIDAPI_HOST}/user_posts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/get_user_posts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/user_posts_by_username?username=${TIKTOK_USERNAME}`,
+    // kebab-case variations
+    `https://${RAPIDAPI_HOST}/user-posts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/get-user-posts?username=${TIKTOK_USERNAME}`,
+    // Path-based formats
     `https://${RAPIDAPI_HOST}/user/posts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/user/videos?username=${TIKTOK_USERNAME}`,
-    // Alternative formats
+    // Alternative query parameter names
     `https://${RAPIDAPI_HOST}/posts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/videos?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/userPosts?user=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/userPosts?user_id=${TIKTOK_USERNAME}`,
-    // Path-based formats
+    // Path parameter formats
     `https://${RAPIDAPI_HOST}/user/${TIKTOK_USERNAME}/posts`,
     `https://${RAPIDAPI_HOST}/user/${TIKTOK_USERNAME}/videos`,
     // Versioned API formats
