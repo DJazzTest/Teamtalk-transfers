@@ -5,6 +5,38 @@ const TIKTOK_USERNAME = 'rugbyfootballleague';
 const RAPIDAPI_HOST = 'tiktok-api23.p.rapidapi.com';
 
 /**
+ * Try to get user info first to understand API structure
+ */
+async function getUserInfo(rapidApiKey) {
+  const userInfoEndpoints = [
+    `https://${RAPIDAPI_HOST}/userInfo?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/getUserInfo?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/user/info?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/user?username=${TIKTOK_USERNAME}`,
+  ];
+
+  for (const url of userInfoEndpoints) {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': rapidApiKey,
+          'X-RapidAPI-Host': RAPIDAPI_HOST
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(`Found user info endpoint: ${url}`);
+        return data;
+      }
+    } catch (e) {
+      // Continue trying
+    }
+  }
+  return null;
+}
+
+/**
  * Fetch TikTok posts from RapidAPI
  */
 async function fetchTikTokPosts(rapidApiKey) {
@@ -12,26 +44,38 @@ async function fetchTikTokPosts(rapidApiKey) {
     throw new Error('RAPIDAPI_KEY is not set in environment variables');
   }
 
-  // Try different possible endpoint formats based on RapidAPI TikTok API documentation
-  // Based on common TikTok API patterns
+  // Try to get user info first - this might help us understand the API structure
+  const userInfo = await getUserInfo(rapidApiKey);
+  if (userInfo) {
+    console.log('User info retrieved, API connection working');
+  }
+
+  // Try different possible endpoint formats - prioritizing most common RapidAPI TikTok patterns
+  // Based on the API name "tiktok-api23" and common RapidAPI endpoint structures
   const endpoints = [
-    // Most common TikTok API formats
+    // Most likely formats for TikTok API23 on RapidAPI
     `https://${RAPIDAPI_HOST}/userPosts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/userPostsByUsername?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/getUserPosts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/getUserVideos?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/user/posts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/user/videos?username=${TIKTOK_USERNAME}`,
+    // Alternative formats
     `https://${RAPIDAPI_HOST}/posts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/videos?username=${TIKTOK_USERNAME}`,
-    // Alternative query parameter names
-    `https://${RAPIDAPI_HOST}/user/posts?user=${TIKTOK_USERNAME}`,
-    `https://${RAPIDAPI_HOST}/user/posts?user_id=${TIKTOK_USERNAME}`,
-    // Path parameter formats
+    `https://${RAPIDAPI_HOST}/userPosts?user=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/userPosts?user_id=${TIKTOK_USERNAME}`,
+    // Path-based formats
     `https://${RAPIDAPI_HOST}/user/${TIKTOK_USERNAME}/posts`,
     `https://${RAPIDAPI_HOST}/user/${TIKTOK_USERNAME}/videos`,
-    // API versioned formats
+    // Versioned API formats
     `https://${RAPIDAPI_HOST}/api/user/posts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/v1/user/posts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/v2/user/posts?username=${TIKTOK_USERNAME}`,
+    // Additional common patterns
+    `https://${RAPIDAPI_HOST}/userPostsByUser?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/getPosts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/getVideos?username=${TIKTOK_USERNAME}`,
   ];
 
   let lastError = null;
