@@ -9,11 +9,6 @@
 [functions]
   directory = "netlify/functions"
 
-[[redirects]]
-  from = "/.netlify/functions/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-
 # TikTok RSS Feed endpoints
 [[redirects]]
   from = "/feed.xml"
