@@ -12,15 +12,22 @@ async function fetchTikTokPosts(rapidApiKey) {
     throw new Error('RAPIDAPI_KEY is not set in environment variables');
   }
 
-  // Try different possible endpoint formats
+  // Try different possible endpoint formats based on RapidAPI TikTok API documentation
   const endpoints = [
+    // Most common format
     `https://${RAPIDAPI_HOST}/user/posts?username=${TIKTOK_USERNAME}`,
+    // Alternative formats
     `https://${RAPIDAPI_HOST}/user/${TIKTOK_USERNAME}/posts`,
     `https://${RAPIDAPI_HOST}/user/videos?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/user/posts/${TIKTOK_USERNAME}`,
   ];
+
+  let lastError = null;
+  let lastStatus = null;
 
   for (const url of endpoints) {
     try {
+      console.log(`Trying endpoint: ${url}`);
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -29,25 +36,42 @@ async function fetchTikTokPosts(rapidApiKey) {
         }
       });
 
+      lastStatus = response.status;
+      const responseText = await response.text();
+
       if (response.ok) {
-        const data = await response.json();
-        return data;
+        try {
+          const data = JSON.parse(responseText);
+          console.log(`Success with endpoint: ${url}`);
+          return data;
+        } catch (parseError) {
+          console.error('Failed to parse JSON response:', parseError);
+          continue;
+        }
       } else if (response.status === 401) {
-        throw new Error('Unauthorized: Check your RapidAPI key');
+        lastError = `Unauthorized (401): Check your RapidAPI key. Response: ${responseText.substring(0, 200)}`;
+        continue; // Try next endpoint
       } else if (response.status === 403) {
-        throw new Error('Forbidden: You may need to subscribe to the API plan');
+        lastError = `Forbidden (403): You may need to subscribe to the API plan on RapidAPI. Response: ${responseText.substring(0, 200)}`;
+        // Don't continue - 403 usually means subscription issue, not endpoint issue
+        break;
       } else {
+        lastError = `HTTP ${response.status}: ${responseText.substring(0, 200)}`;
         continue;
       }
     } catch (error) {
-      if (error.message.includes('Unauthorized') || error.message.includes('Forbidden')) {
-        throw error;
-      }
+      lastError = `Network error: ${error.message}`;
+      console.error(`Error with endpoint ${url}:`, error);
       continue;
     }
   }
 
-  throw new Error('All API endpoints failed. Check your RapidAPI key and subscription.');
+  // Provide helpful error message
+  if (lastStatus === 403) {
+    throw new Error(`Forbidden (403): You need to subscribe to the TikTok API plan on RapidAPI. Go to https://rapidapi.com/Lundehund/api/tiktok-api23 and subscribe to a plan. Last error: ${lastError}`);
+  }
+  
+  throw new Error(`All API endpoints failed. Last status: ${lastStatus}, Last error: ${lastError || 'Unknown error'}. Please check: 1) Your RapidAPI key is correct, 2) You're subscribed to the TikTok API plan, 3) The endpoint format is correct.`);
 }
 
 /**
@@ -146,4 +170,6 @@ exports.handler = async (event, context) => {
     };
   }
 };
+
+
 
