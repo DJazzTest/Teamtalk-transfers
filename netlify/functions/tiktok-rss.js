@@ -13,19 +13,33 @@ async function fetchTikTokPosts(rapidApiKey) {
   }
 
   // Try different possible endpoint formats based on RapidAPI TikTok API documentation
+  // Based on common TikTok API patterns
   const endpoints = [
-    // Most common format
+    // Most common TikTok API formats
+    `https://${RAPIDAPI_HOST}/userPosts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/getUserPosts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/user/posts?username=${TIKTOK_USERNAME}`,
-    // Alternative formats
-    `https://${RAPIDAPI_HOST}/user/${TIKTOK_USERNAME}/posts`,
     `https://${RAPIDAPI_HOST}/user/videos?username=${TIKTOK_USERNAME}`,
-    `https://${RAPIDAPI_HOST}/user/posts/${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/posts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/videos?username=${TIKTOK_USERNAME}`,
+    // Alternative query parameter names
+    `https://${RAPIDAPI_HOST}/user/posts?user=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/user/posts?user_id=${TIKTOK_USERNAME}`,
+    // Path parameter formats
+    `https://${RAPIDAPI_HOST}/user/${TIKTOK_USERNAME}/posts`,
+    `https://${RAPIDAPI_HOST}/user/${TIKTOK_USERNAME}/videos`,
+    // API versioned formats
+    `https://${RAPIDAPI_HOST}/api/user/posts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/v1/user/posts?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/v2/user/posts?username=${TIKTOK_USERNAME}`,
   ];
 
   let lastError = null;
   let lastStatus = null;
+  const triedEndpoints = [];
 
   for (const url of endpoints) {
+    triedEndpoints.push(url);
     try {
       console.log(`Trying endpoint: ${url}`);
       const response = await fetch(url, {
@@ -42,10 +56,11 @@ async function fetchTikTokPosts(rapidApiKey) {
       if (response.ok) {
         try {
           const data = JSON.parse(responseText);
-          console.log(`Success with endpoint: ${url}`);
+          console.log(`✅ Success with endpoint: ${url}`);
           return data;
         } catch (parseError) {
           console.error('Failed to parse JSON response:', parseError);
+          lastError = `Failed to parse response as JSON: ${parseError.message}`;
           continue;
         }
       } else if (response.status === 401) {
@@ -55,6 +70,10 @@ async function fetchTikTokPosts(rapidApiKey) {
         lastError = `Forbidden (403): You may need to subscribe to the API plan on RapidAPI. Response: ${responseText.substring(0, 200)}`;
         // Don't continue - 403 usually means subscription issue, not endpoint issue
         break;
+      } else if (response.status === 404) {
+        // 404 means endpoint doesn't exist, try next one
+        lastError = `Not Found (404): ${responseText.substring(0, 200)}`;
+        continue;
       } else {
         lastError = `HTTP ${response.status}: ${responseText.substring(0, 200)}`;
         continue;
@@ -66,12 +85,13 @@ async function fetchTikTokPosts(rapidApiKey) {
     }
   }
 
-  // Provide helpful error message
+  // Provide helpful error message with all tried endpoints
   if (lastStatus === 403) {
     throw new Error(`Forbidden (403): You need to subscribe to the TikTok API plan on RapidAPI. Go to https://rapidapi.com/Lundehund/api/tiktok-api23 and subscribe to a plan. Last error: ${lastError}`);
   }
   
-  throw new Error(`All API endpoints failed. Last status: ${lastStatus}, Last error: ${lastError || 'Unknown error'}. Please check: 1) Your RapidAPI key is correct, 2) You're subscribed to the TikTok API plan, 3) The endpoint format is correct.`);
+  const endpointsList = triedEndpoints.map((ep, i) => `${i + 1}. ${ep}`).join('\n');
+  throw new Error(`All API endpoints failed (tried ${triedEndpoints.length} endpoints).\n\nLast status: ${lastStatus}\nLast error: ${lastError || 'Unknown error'}\n\nTried endpoints:\n${endpointsList}\n\nPlease check the RapidAPI playground (https://rapidapi.com/Lundehund/api/tiktok-api23/playground) to find the correct endpoint format and share it with me.`);
 }
 
 /**
