@@ -10,17 +10,16 @@
   directory = "netlify/functions"
 
 # TikTok RSS Feed endpoints (must come before SPA catch-all)
+# Note: The _redirects file in public/ takes precedence and is already configured
 [[redirects]]
   from = "/feed.xml"
   to = "/.netlify/functions/tiktok-rss"
   status = 200
-  force = true
 
 [[redirects]]
   from = "/rss"
   to = "/.netlify/functions/tiktok-rss"
   status = 200
-  force = true
 
 # SPA routing - redirect all routes to index.html for client-side routing
 [[redirects]]
