@@ -53,6 +53,12 @@ async function fetchTikTokPosts(rapidApiKey) {
   // Try different possible endpoint formats - prioritizing most common RapidAPI TikTok patterns
   // Based on the API name "tiktok-api23" and common RapidAPI endpoint structures
   const endpoints = [
+    // TikTok-specific endpoint names
+    `https://${RAPIDAPI_HOST}/feed?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/timeline?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/aweme?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/userFeed?username=${TIKTOK_USERNAME}`,
+    `https://${RAPIDAPI_HOST}/userTimeline?username=${TIKTOK_USERNAME}`,
     // Most likely formats for TikTok API23 on RapidAPI (camelCase)
     `https://${RAPIDAPI_HOST}/userPosts?username=${TIKTOK_USERNAME}`,
     `https://${RAPIDAPI_HOST}/userPostsByUsername?username=${TIKTOK_USERNAME}`,
