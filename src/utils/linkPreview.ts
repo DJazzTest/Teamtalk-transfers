@@ -6,6 +6,7 @@ export interface LinkPreview {
   type: 'youtube' | 'instagram' | 'article' | 'unknown';
   embedUrl?: string;
   videoId?: string;
+  duration?: string;
 }
 
 const YOUTUBE_REGEX = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
@@ -91,29 +92,49 @@ export const fetchLinkPreview = async (url: string): Promise<LinkPreview | null>
     }
     
     if (linkType === 'article') {
-      // Fetch Open Graph metadata
+      // Prefer serverless preview to avoid CORS limitations
       try {
-        // Use a CORS proxy to fetch the page
+        const response = await fetch(`/.netlify/functions/link-preview?url=${encodeURIComponent(url)}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data) {
+            return {
+              url: data.url || url,
+              title: data.title || '',
+              description: data.description || '',
+              image: data.image || '',
+              type: 'article'
+            };
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching article preview via Netlify function:', error);
+      }
+
+      // Fallback: fetch via public proxy directly from the browser
+      try {
         const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
         const response = await fetch(proxyUrl);
         if (response.ok) {
           const data = await response.json();
           const html = data.contents;
-          
-          // Parse Open Graph tags
+
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
-          
-          const ogTitle = doc.querySelector('meta[property="og:title"]')?.getAttribute('content') ||
-                         doc.querySelector('title')?.textContent ||
-                         '';
-          const ogDescription = doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
-                              doc.querySelector('meta[name="description"]')?.getAttribute('content') ||
-                              '';
-          const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') ||
-                         doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content') ||
-                         '';
-          
+
+          const ogTitle =
+            doc.querySelector('meta[property="og:title"]')?.getAttribute('content') ||
+            doc.querySelector('title')?.textContent ||
+            '';
+          const ogDescription =
+            doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
+            doc.querySelector('meta[name="description"]')?.getAttribute('content') ||
+            '';
+          const ogImage =
+            doc.querySelector('meta[property="og:image"]')?.getAttribute('content') ||
+            doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content') ||
+            '';
+
           return {
             url,
             title: ogTitle || '',
@@ -123,10 +144,10 @@ export const fetchLinkPreview = async (url: string): Promise<LinkPreview | null>
           };
         }
       } catch (error) {
-        console.error('Error fetching article preview:', error);
+        console.error('Error fetching article preview via proxy:', error);
       }
-      
-      // Fallback: return basic article info
+
+      // Last resort: basic info
       try {
         const urlObj = new URL(url);
         return {

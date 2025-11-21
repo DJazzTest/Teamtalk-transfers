@@ -51,7 +51,7 @@ export const ChatterBoxDisplay: React.FC = () => {
   const [showAppPrompt, setShowAppPrompt] = useState(false);
   const [selectedArticleUrl, setSelectedArticleUrl] = useState<string | undefined>();
 
-  const fetchRemoteEntries = async (): Promise<ChatterBoxEntry[]> => {
+const fetchRemoteEntries = async (): Promise<ChatterBoxEntry[]> => {
     const response = await fetch(API_URL, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
@@ -131,32 +131,41 @@ export const ChatterBoxDisplay: React.FC = () => {
     };
   }, []);
 
-  const handleEntryClick = (entry: ChatterBoxEntry) => {
-    // For articles, open in new tab instead of modal
-    if (entry.linkPreview?.type === 'article' || entry.articleUrl || entry.socialMediaUrl) {
-      const articleUrl = entry.articleUrl || entry.socialMediaUrl || entry.linkPreview?.url;
-      if (articleUrl) {
-        // Check if it's a TeamTalk article and if user hasn't dismissed the prompt
-        const isTeamTalk = isTeamTalkUrl(articleUrl);
-        const hasDismissed = localStorage.getItem('teamtalk-app-prompt-dismissed') === 'true';
-        
-        if (isTeamTalk && !hasDismissed) {
-          setSelectedArticleUrl(articleUrl);
-          setShowAppPrompt(true);
-          return;
-        } else {
-          window.open(articleUrl, '_blank', 'noopener,noreferrer');
-          return;
-        }
-      }
+  const openArticle = (articleUrl: string) => {
+    const isTeamTalk = isTeamTalkUrl(articleUrl);
+    const hasDismissed = localStorage.getItem('teamtalk-app-prompt-dismissed') === 'true';
+    if (isTeamTalk && !hasDismissed) {
+      setSelectedArticleUrl(articleUrl);
+      setShowAppPrompt(true);
+    } else {
+      window.open(articleUrl, '_blank', 'noopener,noreferrer');
     }
-    
-    // For YouTube videos, open in new tab
-    if (entry.linkPreview?.type === 'youtube' && entry.linkPreview.url) {
-      window.open(entry.linkPreview.url, '_blank', 'noopener,noreferrer');
+  };
+
+  const openVideo = (videoUrl: string) => {
+    window.open(videoUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleEntryClick = (entry: ChatterBoxEntry) => {
+    const articleUrl = entry.articleUrl || entry.socialMediaUrl || entry.linkPreview?.url;
+    const videoUrl = entry.videoUrl || entry.linkPreview?.embedUrl;
+
+    if (videoUrl) {
+      openVideo(videoUrl);
       return;
     }
-    
+
+    if (articleUrl && entry.linkPreview?.type === 'article') {
+      openArticle(articleUrl);
+      return;
+    }
+
+    // Fall back to article/social link even if preview isn't ready
+    if (articleUrl && (entry.articleUrl || entry.socialMediaUrl)) {
+      openArticle(articleUrl);
+      return;
+    }
+
     // For other entries (text-only or images), open modal as before
     setSelectedEntry(entry);
     setIsModalOpen(true);
@@ -320,13 +329,14 @@ export const ChatterBoxDisplay: React.FC = () => {
     <>
       <div className="space-y-4">
         {entries.map((entry) => {
-          // Check if this is a YouTube video entry
-          const isYouTubeVideo = entry.linkPreview && entry.linkPreview.type === 'youtube' && entry.linkPreview.image;
-          const isArticle = (entry.articleUrl || entry.socialMediaUrl) && entry.linkPreview && entry.linkPreview.type === 'article';
-          const hasImage = entry.imageDataUrl;
-          
-          // Use news-style layout for YouTube videos, articles, and entries with images
-          if (isYouTubeVideo || isArticle || hasImage) {
+          const isVideo = Boolean(entry.videoUrl || (entry.linkPreview && entry.linkPreview.type === 'youtube'));
+          const isArticle = Boolean((entry.linkPreview && entry.linkPreview.type === 'article') || (entry.articleUrl && !isVideo));
+          const hasMedia =
+            Boolean(entry.linkPreview?.image) ||
+            Boolean(entry.imageDataUrl) ||
+            Boolean(entry.linkPreview?.type === 'instagram');
+
+          if (isVideo || isArticle || hasMedia) {
             return (
               <div
                 key={entry.id}
@@ -334,25 +344,26 @@ export const ChatterBoxDisplay: React.FC = () => {
                 className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-slate-700/70 transition-all duration-200 cursor-pointer border border-gray-200 dark:border-slate-600"
               >
                 <div className="flex gap-4">
-                  {/* Thumbnail */}
                   <div className="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200 dark:bg-slate-600 relative">
                     {entry.linkPreview?.image ? (
                       <>
                         <img
                           src={entry.linkPreview.image}
-                          alt={entry.linkPreview.title || 'Video thumbnail'}
+                          alt={entry.linkPreview.title || 'Preview'}
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.display = 'none';
                           }}
                         />
-                        {isYouTubeVideo && (
-                          <div className="absolute top-1 right-1 bg-black/50 backdrop-blur-sm rounded-full p-1" title="Video">
-                            <Video className="w-3 h-3 text-white" />
+                        {isVideo && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                            <div className="w-8 h-8 border-2 border-white rounded-full flex items-center justify-center">
+                              <Video className="w-4 h-4 text-white" />
+                            </div>
                           </div>
                         )}
                       </>
-                    ) : hasImage ? (
+                    ) : entry.imageDataUrl ? (
                       <div className="relative w-full h-full">
                         <img
                           src={entry.imageDataUrl}
@@ -371,45 +382,25 @@ export const ChatterBoxDisplay: React.FC = () => {
                           <ImageIcon className="w-3 h-3 text-white" />
                         </div>
                       </div>
-                    ) : isArticle && entry.linkPreview?.image ? (
-                      <div className="w-full h-full rounded-lg overflow-hidden">
-                        <img
-                          src={entry.linkPreview.image}
-                          alt={entry.linkPreview.title || 'Article preview'}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            // Fallback to TeamTalk logo if image fails
-                            const img = e.target as HTMLImageElement;
-                            img.src = 'https://www.teamtalk.com/content/themes/teamtalk2/img/png/logo/teamtalk-mobile.png';
-                            img.className = 'w-full h-full object-contain p-2 bg-slate-700';
-                          }}
-                        />
-                      </div>
-                    ) : isArticle ? (
-                      <div className="w-full h-full rounded-lg bg-slate-600 flex items-center justify-center">
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-slate-600">
                         <img
                           src="https://www.teamtalk.com/content/themes/teamtalk2/img/png/logo/teamtalk-mobile.png"
                           alt="TEAMtalk"
-                          className="w-12 h-auto opacity-50"
+                          className="w-16 h-auto opacity-60"
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.display = 'none';
                           }}
                         />
                       </div>
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-gray-500 dark:text-gray-400 text-xs">No Image</span>
-                      </div>
                     )}
                   </div>
-                  
-                  {/* Content */}
+
                   <div className="flex-1 min-w-0 relative">
-                    {/* Metadata Line */}
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full"></div>
                       <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">
-                        {isYouTubeVideo ? 'Video' : entry.articleUrl ? 'Article' : entry.socialMediaUrl ? 'Social Media' : hasImage ? 'Image' : 'Transfer News'}
+                        {isVideo ? 'Video' : isArticle ? 'Article' : entry.socialMediaUrl ? 'Social Media' : 'Update'}
                       </span>
                       <span className="text-gray-400 dark:text-gray-500">•</span>
                       <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
@@ -417,13 +408,11 @@ export const ChatterBoxDisplay: React.FC = () => {
                         {formatTimeAgo(entry.createdAt)}
                       </div>
                     </div>
-                    
-                    {/* Headline - prioritize link preview title, then text */}
+
                     <h4 className="text-base font-bold text-gray-900 dark:text-white mb-1 line-clamp-2 leading-snug">
-                      {entry.linkPreview?.title || (entry.text ? (entry.text.length > 80 ? entry.text.substring(0, 80) + '...' : entry.text) : 'Article')}
+                      {entry.linkPreview?.title || (entry.text ? (entry.text.length > 80 ? entry.text.substring(0, 80) + '...' : entry.text) : 'Live update')}
                     </h4>
-                    
-                    {/* Description/Text */}
+
                     {entry.linkPreview?.description ? (
                       <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-1">
                         {entry.linkPreview.description}
@@ -437,12 +426,11 @@ export const ChatterBoxDisplay: React.FC = () => {
                         {entry.text}
                       </p>
                     ) : null}
-                    
-                    {/* Source/Author and Timestamp */}
+
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex flex-col">
                         <span className="text-xs text-gray-500 dark:text-gray-400">
-                          {isYouTubeVideo ? 'YouTube' : entry.articleUrl ? 'Article' : entry.socialMediaUrl ? 'Social Media' : hasImage ? 'Image Post' : 'Post'}
+                          {isVideo ? 'Video' : isArticle ? 'Article' : entry.socialMediaUrl ? 'Social Media' : 'Post'}
                         </span>
                         {(entry.articleUrl || entry.socialMediaUrl) && (() => {
                           try {
@@ -465,15 +453,13 @@ export const ChatterBoxDisplay: React.FC = () => {
               </div>
             );
           }
-          
-          // Default layout for text-only entries (no images, videos, or articles)
+
           return (
             <div
               key={entry.id}
               onClick={() => handleEntryClick(entry)}
               className="bg-gray-50 dark:bg-slate-700/50 rounded-lg border border-gray-200 dark:border-slate-600 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors overflow-hidden"
             >
-              {/* Text Content */}
               <div className="p-4">
                 <p className="text-sm text-gray-800 dark:text-gray-200 line-clamp-3 mb-2">
                   {entry.text}

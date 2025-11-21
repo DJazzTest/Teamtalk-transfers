@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Trash2, Plus, Image as ImageIcon, Link as LinkIcon, Video, X, Loader2, Edit2, Save, Clock, Upload, Type } from 'lucide-react';
 import { toast } from 'sonner';
-import { fetchLinkPreview, detectLinkType, extractYouTubeVideoId, getYouTubeEmbedUrl } from '@/utils/linkPreview';
+import { fetchLinkPreview, detectLinkType, extractYouTubeVideoId, getYouTubeEmbedUrl, getYouTubeThumbnail } from '@/utils/linkPreview';
 import type { LinkPreview } from '@/utils/linkPreview';
 import { EmojiPicker } from '@/components/EmojiPicker';
 
@@ -18,6 +18,7 @@ export interface ChatterBoxEntry {
   imageDataUrl?: string; // Base64 image data
   imageOverlayText?: string; // Text overlay on image
   linkPreview?: LinkPreview;
+  videoUrl?: string; // direct video url if known
   createdAt: string;
   updatedAt?: string;
 }
@@ -67,6 +68,7 @@ export const ChatterBoxManagement: React.FC = () => {
   const [imageOverlayText, setImageOverlayText] = useState('');
   const [showOverlayEditor, setShowOverlayEditor] = useState(false);
   const [linkPreview, setLinkPreview] = useState<LinkPreview | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -192,17 +194,26 @@ export const ChatterBoxManagement: React.FC = () => {
         const preview = await fetchLinkPreview(url);
         if (preview) {
           setLinkPreview(preview);
+          if (preview.type === 'youtube' && preview.embedUrl) {
+            setVideoUrl(preview.embedUrl);
+          } else if (preview.type === 'article') {
+            // Clear video URL for article content
+            setVideoUrl(undefined);
+          }
         } else {
           setLinkPreview(null);
+          setVideoUrl(undefined);
         }
       } catch (error) {
         console.error('Error fetching article preview:', error);
         setLinkPreview(null);
+        setVideoUrl(undefined);
       } finally {
         setLoadingPreview(false);
       }
     } else {
       setLinkPreview(null);
+      setVideoUrl(undefined);
     }
   };
 
@@ -216,17 +227,25 @@ export const ChatterBoxManagement: React.FC = () => {
         const preview = await fetchLinkPreview(url);
         if (preview) {
           setLinkPreview(preview);
+          if (preview.type === 'youtube' && preview.embedUrl) {
+            setVideoUrl(preview.embedUrl);
+          } else {
+            setVideoUrl(undefined);
+          }
         } else {
           setLinkPreview(null);
+          setVideoUrl(undefined);
         }
       } catch (error) {
         console.error('Error fetching social media preview:', error);
         setLinkPreview(null);
+        setVideoUrl(undefined);
       } finally {
         setLoadingPreview(false);
       }
     } else {
       setLinkPreview(null);
+      setVideoUrl(undefined);
     }
   };
 
@@ -244,6 +263,8 @@ export const ChatterBoxManagement: React.FC = () => {
       return;
     }
 
+    const normalizedVideoUrl = videoUrl?.trim() || undefined;
+
     if (editingId) {
       // Update existing entry
       const updatedEntries = entries.map(entry => {
@@ -255,6 +276,7 @@ export const ChatterBoxManagement: React.FC = () => {
             socialMediaUrl: socialMediaUrl.trim() || undefined,
             imageDataUrl: imageDataUrl || undefined,
             imageOverlayText: imageOverlayText.trim() || undefined,
+            videoUrl: normalizedVideoUrl,
             linkPreview: linkPreview || undefined,
             updatedAt: new Date().toISOString()
           };
@@ -272,6 +294,7 @@ export const ChatterBoxManagement: React.FC = () => {
         socialMediaUrl: socialMediaUrl.trim() || undefined,
         imageDataUrl: imageDataUrl || undefined,
         imageOverlayText: imageOverlayText.trim() || undefined,
+        videoUrl: normalizedVideoUrl,
         linkPreview: linkPreview || undefined,
         createdAt: new Date().toISOString()
       };
@@ -288,6 +311,7 @@ export const ChatterBoxManagement: React.FC = () => {
     setImageOverlayText('');
     setShowOverlayEditor(false);
     setLinkPreview(null);
+    setVideoUrl(undefined);
   };
 
   const handleEdit = (entry: ChatterBoxEntry) => {
@@ -299,6 +323,7 @@ export const ChatterBoxManagement: React.FC = () => {
     setImageOverlayText(entry.imageOverlayText || '');
     setShowOverlayEditor(!!entry.imageDataUrl);
     setLinkPreview(entry.linkPreview || null);
+    setVideoUrl(entry.videoUrl);
     
     // Scroll to form
     document.getElementById('chatter-box-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -313,6 +338,7 @@ export const ChatterBoxManagement: React.FC = () => {
     setImageOverlayText('');
     setShowOverlayEditor(false);
     setLinkPreview(null);
+    setVideoUrl(undefined);
   };
 
   const handleDelete = async (id: string) => {
@@ -709,71 +735,122 @@ export const ChatterBoxManagement: React.FC = () => {
           <p className="text-gray-400 text-center py-8">No entries yet. Add your first entry above!</p>
         ) : (
           <div className="space-y-4">
-            {entries.map((entry) => (
-              <Card key={entry.id} className="p-4 bg-slate-700 border-slate-600">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 space-y-2">
-                    <p className="text-white">{entry.text}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {entry.articleUrl && (
-                        <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded flex items-center gap-1">
-                          <LinkIcon className="w-3 h-3" />
-                          Article
-                        </span>
-                      )}
-                      {entry.socialMediaUrl && (
-                        <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded flex items-center gap-1">
-                          <LinkIcon className="w-3 h-3" />
-                          Social Media
-                        </span>
-                      )}
-                      {entry.imageDataUrl && (
-                        <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded flex items-center gap-1">
-                          <ImageIcon className="w-3 h-3" />
-                          Image
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-gray-400">
-                      <div className="flex items-center gap-1">
+            {entries.map((entry) => {
+              const previewImage =
+                entry.linkPreview?.image ||
+                entry.imageDataUrl ||
+                (entry.linkPreview?.type === 'youtube' && entry.linkPreview?.videoId
+                  ? getYouTubeThumbnail(entry.linkPreview.videoId)
+                  : null);
+              const isVideo = entry.linkPreview?.type === 'youtube' || Boolean(entry.videoUrl);
+              const badgeLabel = isVideo
+                ? 'Video'
+                : entry.linkPreview?.type === 'article'
+                  ? 'Article'
+                  : entry.socialMediaUrl
+                    ? 'Social'
+                    : entry.imageDataUrl
+                      ? 'Image'
+                      : 'Update';
+
+              return (
+                <Card key={entry.id} className="p-4 bg-slate-700 border-slate-600 space-y-4">
+                  <div className="relative rounded-lg overflow-hidden border border-slate-600 bg-slate-600 aspect-video">
+                    {previewImage ? (
+                      <img
+                        src={previewImage}
+                        alt={entry.linkPreview?.title || entry.text || 'Preview'}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const img = e.target as HTMLImageElement;
+                          img.src = 'https://www.teamtalk.com/content/themes/teamtalk2/img/png/logo/teamtalk-mobile.png';
+                          img.className = 'w-24 h-auto mx-auto opacity-60 p-4';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <img
+                          src="https://www.teamtalk.com/content/themes/teamtalk2/img/png/logo/teamtalk-mobile.png"
+                          alt="TEAMtalk"
+                          className="w-24 h-auto opacity-60"
+                        />
+                      </div>
+                    )}
+                    <span className="absolute top-2 left-2 bg-black/70 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide text-white">
+                      {badgeLabel}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <div className="flex-1 space-y-3">
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
                         <Clock className="w-3 h-3" />
                         <span>Created: {formatDate(entry.createdAt)}</span>
                         <span className="text-gray-500">({formatTimeAgo(entry.createdAt)})</span>
+                        {entry.updatedAt && (
+                          <>
+                            <span className="text-gray-500">•</span>
+                            <span>Updated: {formatDate(entry.updatedAt)} ({formatTimeAgo(entry.updatedAt)})</span>
+                          </>
+                        )}
                       </div>
-                      {entry.updatedAt && (
-                        <>
-                          <span className="text-gray-500">•</span>
-                          <div className="flex items-center gap-1">
-                            <span>Updated: {formatDate(entry.updatedAt)}</span>
-                            <span className="text-gray-500">({formatTimeAgo(entry.updatedAt)})</span>
-                          </div>
-                        </>
-                      )}
+
+                      <p className="text-white text-sm">
+                        {entry.text || entry.linkPreview?.title || 'No description provided'}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2">
+                        {entry.articleUrl && (
+                          <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded flex items-center gap-1">
+                            <LinkIcon className="w-3 h-3" />
+                            Article
+                          </span>
+                        )}
+                        {entry.socialMediaUrl && (
+                          <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded flex items-center gap-1">
+                            <LinkIcon className="w-3 h-3" />
+                            Social Media
+                          </span>
+                        )}
+                        {entry.imageDataUrl && (
+                          <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded flex items-center gap-1">
+                            <ImageIcon className="w-3 h-3" />
+                            Image
+                          </span>
+                        )}
+                        {isVideo && (
+                          <span className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded flex items-center gap-1">
+                            <Video className="w-3 h-3" />
+                            Video
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(entry)}
+                        className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/20"
+                        title="Edit entry"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(entry.id)}
+                        className="text-red-400 hover:text-red-300 hover:bg-red-500/20"
+                        title="Delete entry"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEdit(entry)}
-                      className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/20"
-                      title="Edit entry"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(entry.id)}
-                      className="text-red-400 hover:text-red-300 hover:bg-red-500/20"
-                      title="Delete entry"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              );
+            })}
           </div>
         )}
       </Card>
