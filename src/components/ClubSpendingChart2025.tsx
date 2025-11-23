@@ -55,6 +55,7 @@ const clubNameVariants: Record<string, { medium: string; short: string; veryShor
 };
 
 export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ onSelectClub }) => {
+  const chartContainerRef = React.useRef<HTMLDivElement>(null);
   const getResponsiveName = React.useCallback((club: string, defaultName: string) => {
     // Always use display name for fixed-width layout
     return defaultName;
@@ -75,11 +76,100 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
       .sort((a, b) => b.spending - a.spending);
   }, [getResponsiveName]);
 
-  const handleBarClick = (data: any) => {
-    if (onSelectClub) {
+  const handleBarClick = (data: any, event?: any) => {
+    if (onSelectClub && data?.club) {
       onSelectClub(data.club);
     }
   };
+
+  // Handle touch events on iOS - find the bar that was touched
+  React.useEffect(() => {
+    if (!onSelectClub || !chartContainerRef.current) return;
+
+    const container = chartContainerRef.current;
+    const handleTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      const touchX = touch.clientX;
+      const touchY = touch.clientY;
+
+      // Find the SVG element
+      const svg = container.querySelector('svg');
+      if (!svg) return;
+
+      // Find all bar rects - Recharts renders bars as rect elements
+      // We need to find rects that are actual bars (not grid lines, etc.)
+      // Bars are typically in g.recharts-bar > rect
+      const barGroups = svg.querySelectorAll('g.recharts-bar');
+      let touchedBarIndex: number | null = null;
+
+      // First, try to find the exact bar element that was touched
+      barGroups.forEach((group) => {
+        const rects = group.querySelectorAll('rect');
+        rects.forEach((rect, rectIndex) => {
+          const bounds = rect.getBoundingClientRect();
+          if (
+            touchX >= bounds.left &&
+            touchX <= bounds.right &&
+            touchY >= bounds.top &&
+            touchY <= bounds.bottom
+          ) {
+            // Recharts renders bars in order: first all spending bars, then all earnings bars
+            // So rectIndex corresponds to the data index
+            if (rectIndex < chartData.length) {
+              touchedBarIndex = rectIndex;
+            }
+          }
+        });
+      });
+
+      // Fallback: use coordinate-based calculation
+      if (touchedBarIndex === null) {
+        const svgRect = svg.getBoundingClientRect();
+        const svgX = touchX - svgRect.left;
+        const svgY = touchY - svgRect.top;
+
+        // Chart margins (matching BarChart margin prop)
+        const marginLeft = 16;
+        const marginRight = 24;
+        const marginTop = 20;
+        const marginBottom = 60; // Space for x-axis labels
+
+        const chartWidth = svgRect.width;
+        const chartHeight = svgRect.height;
+        const availableWidth = chartWidth - marginLeft - marginRight;
+
+        // Check if touch is within the chart plotting area
+        if (
+          svgX >= marginLeft &&
+          svgX <= chartWidth - marginRight &&
+          svgY >= marginTop &&
+          svgY <= chartHeight - marginBottom
+        ) {
+          // Calculate which bar based on x position
+          const barWidth = availableWidth / chartData.length;
+          const relativeX = svgX - marginLeft;
+          const barIndex = Math.floor(relativeX / barWidth);
+          
+          if (barIndex >= 0 && barIndex < chartData.length) {
+            touchedBarIndex = barIndex;
+          }
+        }
+      }
+
+      if (touchedBarIndex !== null && touchedBarIndex < chartData.length) {
+        e.preventDefault();
+        e.stopPropagation();
+        onSelectClub(chartData[touchedBarIndex].club);
+      }
+    };
+
+    container.addEventListener('touchstart', handleTouchStart, { passive: false });
+    return () => {
+      container.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, [onSelectClub, chartData]);
 
   const totalSpending = chartData.reduce((sum, club) => sum + club.spending, 0);
   const totalEarnings = chartData.reduce((sum, club) => sum + club.earnings, 0);
@@ -101,7 +191,15 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
             </div>
             
             {/* Chart */}
-            <div className="w-full text-slate-600 dark:text-slate-200">
+            <div 
+              className="w-full text-slate-600 dark:text-slate-200"
+              ref={chartContainerRef}
+              style={{ 
+                position: 'relative',
+                touchAction: 'manipulation',
+                WebkitTapHighlightColor: 'transparent'
+              }}
+            >
               <div style={{ width: '100%', height: '224px' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart 
