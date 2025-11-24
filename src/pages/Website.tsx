@@ -262,18 +262,6 @@ const WebsiteContent = () => {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', borderBottom: '2px solid', borderColor: 'rgb(209 213 219)', paddingBottom: '6px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'center', width: '100%', flexWrap: 'wrap' }}>
                     <button
-                      onClick={() => setNewsView('confirmed')}
-                      className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
-                        newsView === 'confirmed'
-                          ? 'border-b-2 border-blue-600 dark:border-blue-400 pb-1'
-                          : ''
-                      }`}
-                      style={newsView === 'confirmed' ? { color: '#6b8e6b', borderBottom: '2px solid #6b8e6b' } : { color: '#6b8e6b' }}
-                    >
-                      <CheckCircle className="w-4 h-4" style={{ color: '#6b8e6b' }} />
-                      Confirmed
-                    </button>
-                    <button
                       onClick={() => setNewsView('news')}
                       className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
                         newsView === 'news'
@@ -284,6 +272,18 @@ const WebsiteContent = () => {
                     >
                       <Newspaper className="w-4 h-4" style={{ color: '#6b8e6b' }} />
                       News
+                    </button>
+                    <button
+                      onClick={() => setNewsView('video')}
+                      className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
+                        newsView === 'video'
+                          ? 'border-b-2 border-blue-600 dark:border-blue-400 pb-1'
+                          : ''
+                      }`}
+                      style={newsView === 'video' ? { color: '#6b8e6b', borderBottom: '2px solid #6b8e6b' } : { color: '#6b8e6b' }}
+                    >
+                      <Video className="w-4 h-4" style={{ color: '#6b8e6b' }} />
+                      Video
                     </button>
                     <button
                       onClick={() => setNewsView('chatter')}
@@ -300,34 +300,34 @@ const WebsiteContent = () => {
                         className="live-dot w-2.5 h-2.5 rounded-full bg-green-500"
                       />
                     </button>
-                      <button
-                        onClick={() => setNewsView('top10')}
-                        className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
-                          newsView === 'top10'
-                            ? 'pb-1'
-                            : ''
-                        }`}
-                        style={newsView === 'top10' ? { 
-                          color: '#6b8e6b',
-                          borderBottom: '3px solid #6b8e6b',
-                          fontWeight: 'bold'
-                        } : { color: '#6b8e6b' }}
-                      >
-                        <TrendingUp className="w-4 h-4" style={{ color: '#6b8e6b' }} />
-                        Top 10
-                      </button>
-                      <button
-                        onClick={() => setNewsView('video')}
-                        className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
-                          newsView === 'video'
-                            ? 'border-b-2 border-blue-600 dark:border-blue-400 pb-1'
-                            : ''
-                        }`}
-                        style={newsView === 'video' ? { color: '#6b8e6b', borderBottom: '2px solid #6b8e6b' } : { color: '#6b8e6b' }}
-                      >
-                        <Video className="w-4 h-4" style={{ color: '#6b8e6b' }} />
-                        Video
-                      </button>
+                    <button
+                      onClick={() => setNewsView('confirmed')}
+                      className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
+                        newsView === 'confirmed'
+                          ? 'border-b-2 border-blue-600 dark:border-blue-400 pb-1'
+                          : ''
+                      }`}
+                      style={newsView === 'confirmed' ? { color: '#6b8e6b', borderBottom: '2px solid #6b8e6b' } : { color: '#6b8e6b' }}
+                    >
+                      <CheckCircle className="w-4 h-4" style={{ color: '#6b8e6b' }} />
+                      Confirmed In
+                    </button>
+                    <button
+                      onClick={() => setNewsView('top10')}
+                      className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
+                        newsView === 'top10'
+                          ? 'pb-1'
+                          : ''
+                      }`}
+                      style={newsView === 'top10' ? { 
+                        color: '#6b8e6b',
+                        borderBottom: '3px solid #6b8e6b',
+                        fontWeight: 'bold'
+                      } : { color: '#6b8e6b' }}
+                    >
+                      <TrendingUp className="w-4 h-4" style={{ color: '#6b8e6b' }} />
+                      Top 10
+                    </button>
                   </div>
                 </div>
                 <style>{`

@@ -120,6 +120,17 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
                 <span>News</span>
               </button>
               <button
+                onClick={() => setNewsView('video')}
+                className={`flex items-center gap-1 text-xs sm:text-sm font-semibold transition-colors px-2 py-1 rounded ${
+                  newsView === 'video'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
+                }`}
+              >
+                <Video className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span>Video</span>
+              </button>
+              <button
                 onClick={() => setNewsView('chatter')}
                 className={`flex items-center gap-1 text-xs sm:text-sm font-semibold transition-colors px-2 py-1 rounded ${
                   newsView === 'chatter'
@@ -132,6 +143,17 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
                 <span className="live-dot w-2 h-2 rounded-full bg-green-500" />
               </button>
               <button
+                onClick={() => setNewsView('confirmed')}
+                className={`flex items-center gap-1 text-xs sm:text-sm font-semibold transition-colors px-2 py-1 rounded ${
+                  newsView === 'confirmed'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
+                }`}
+              >
+                <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span>Confirmed In</span>
+              </button>
+              <button
                 onClick={() => setNewsView('top10')}
                 className={`flex items-center gap-1 text-xs sm:text-sm font-semibold transition-colors px-2 py-1 rounded ${
                   newsView === 'top10'
@@ -141,17 +163,6 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
               >
                 <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span>Top 10</span>
-              </button>
-              <button
-                onClick={() => setNewsView('video')}
-                className={`flex items-center gap-1 text-xs sm:text-sm font-semibold transition-colors px-2 py-1 rounded ${
-                  newsView === 'video'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
-                }`}
-              >
-                <Video className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span>Video</span>
               </button>
             </div>
           </div>
@@ -180,14 +191,14 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
           `}</style>
           {/* Tab Content */}
           <div className="max-h-96 overflow-y-auto">
-            {newsView === 'confirmed' ? (
-              <ConfirmedTransfersTab transfers={allTransfers} onSelectClub={onSelectClub} />
-            ) : newsView === 'news' ? (
+            {newsView === 'news' ? (
               <NewsCarousel maxItems={5} />
-            ) : newsView === 'chatter' ? (
-              <ChatterBoxDisplay />
             ) : newsView === 'video' ? (
               <VideoTab />
+            ) : newsView === 'chatter' ? (
+              <ChatterBoxDisplay />
+            ) : newsView === 'confirmed' ? (
+              <ConfirmedTransfersTab transfers={allTransfers} onSelectClub={onSelectClub} />
             ) : (
               <Top10ExpensiveVertical transfers={allTransfers} onSelectClub={onSelectClub} />
             )}
