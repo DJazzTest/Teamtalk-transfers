@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { X, Calendar, Globe, Footprints, Trophy, Users, History, CalendarDays, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, Footprints, Trophy, Users, User, History, CalendarDays, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PlayerSeasonStats } from '@/data/squadWages';
 import { PlayerStatsHexagon } from './PlayerStatsHexagon';
 import { ShirtNumberIcon } from './ShirtNumberIcon';
 import { PlayerComparisonModal } from './PlayerComparisonModal';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, LineChart, Line, Cell, Legend } from 'recharts';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 
 interface Player {
   name: string;
@@ -75,6 +75,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
   const [expandedTransferHistory, setExpandedTransferHistory] = useState(false);
   const [expandedRecentMatches, setExpandedRecentMatches] = useState(false);
+  const [showFullProfile, setShowFullProfile] = useState(false);
 
   useEffect(() => {
     if (!player || !isOpen) {
@@ -93,6 +94,18 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
       setCompetitionStats([]);
     }
   }, [player, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setShowFullProfile(false);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (player?.name) {
+      setShowFullProfile(false);
+    }
+  }, [player?.name]);
 
   // Early return if no player (after hooks)
   if (!player || !player.name) {
@@ -508,8 +521,14 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
           <div className="flex items-center justify-between">
             <DialogTitle className="text-2xl font-bold text-white flex items-center gap-3">
               <Avatar className="w-12 h-12">
-                <AvatarImage src={player?.imageUrl || ''} alt={player?.name || 'Player'} />
-                <AvatarFallback>{(player?.name && player.name.length > 0) ? player.name[0].toUpperCase() : '?'}</AvatarFallback>
+                <AvatarImage
+                  src={player?.imageUrl || getPlayerImage(player?.name || '')}
+                  alt={player?.name || 'Player'}
+                  onError={handlePlayerImageError}
+                />
+                <AvatarFallback className="bg-green-100 text-green-600">
+                  <img src="/player-placeholder.png" alt="Player placeholder" className="w-full h-full object-cover" />
+                </AvatarFallback>
               </Avatar>
               <div className="flex items-center gap-3">
                 {player?.shirtNumber && (
@@ -523,6 +542,15 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
               </div>
             </DialogTitle>
             <div className="flex items-center gap-2">
+              <Button
+                variant={showFullProfile ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setShowFullProfile(true)}
+                className={showFullProfile ? 'bg-blue-600 text-white hover:bg-blue-500' : 'text-blue-300 border-blue-500 hover:bg-blue-500/10'}
+              >
+                <User className="w-4 h-4 mr-1.5" />
+                Player
+              </Button>
               <Button
                 variant="outline"
                 size="sm"
@@ -676,6 +704,21 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
               <span className="text-white font-semibold">No {player.shirtNumber}</span>
             )}
           </div>
+
+          {showFullProfile ? (
+            <>
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowFullProfile(false)}
+                  className="text-gray-300 hover:text-white"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-1.5" />
+                  Back
+                </Button>
+                <span className="text-xs uppercase tracking-wide text-gray-400">Player profile</span>
+              </div>
 
           {/* Season Heatmap - Soccer Field Visualization */}
           {quickStats.filter(stat => stat.value !== null).length > 0 && (
@@ -1082,7 +1125,15 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
               </div>
             </Card>
           )}
-
+            </>
+          ) : (
+            <Card className="p-4 bg-slate-700/40 border-slate-600/70">
+              <h3 className="text-lg font-semibold text-white mb-2">Player overview</h3>
+              <p className="text-sm text-gray-300">
+                Tap the Player button to open the full profile with stats, transfer history, and match logs while keeping this basic bio view clean.
+              </p>
+            </Card>
+          )}
         </div>
       </DialogContent>
     </Dialog>

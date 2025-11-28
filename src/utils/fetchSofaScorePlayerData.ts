@@ -3,6 +3,8 @@
  * Can be used in browser or Node.js environment
  */
 
+const SOFASCORE_API_BASE = 'https://api.sofascore.com/api/v1';
+
 export interface SofaScorePlayerData {
   name: string;
   sofascoreId: string;
@@ -50,7 +52,8 @@ export interface SofaScorePlayerData {
 
 export async function fetchSofaScoreAPI(endpoint: string): Promise<any> {
   try {
-    const response = await fetch(endpoint, {
+    const url = endpoint.startsWith('http') ? endpoint : `${SOFASCORE_API_BASE}${endpoint}`;
+    const response = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         'Accept': 'application/json',
@@ -79,16 +82,21 @@ export async function fetchWithProxy(url: string): Promise<string> {
     try {
       const response = await fetch(proxyUrl);
       
-      if (response.ok) {
-        let text = await response.text();
-        
-        // Handle allorigins wrapper
-        if (proxyUrl.includes('allorigins.win')) {
-          const data = JSON.parse(text);
-          text = data.contents;
+      if (!response.ok) {
+        continue;
+      }
+
+      if (proxyUrl.includes('allorigins.win')) {
+        try {
+          const data = await response.json();
+          if (data && typeof data.contents === 'string') {
+            return data.contents;
+          }
+        } catch (err) {
+          continue;
         }
-        
-        return text;
+      } else {
+        return await response.text();
       }
     } catch (error) {
       continue;
@@ -96,6 +104,66 @@ export async function fetchWithProxy(url: string): Promise<string> {
   }
   
   throw new Error('All proxies failed');
+}
+
+export interface SofaScorePlayerSearchResult {
+  id: number;
+  name: string;
+  slug?: string;
+  position?: string;
+  teamName?: string;
+}
+
+const slugifyName = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+const extractPlayersFromSearch = (payload: any): any[] => {
+  if (!payload) return [];
+  if (Array.isArray(payload.players)) return payload.players;
+  if (Array.isArray(payload.data?.players)) return payload.data.players;
+  if (Array.isArray(payload.results?.players)) return payload.results.players;
+  if (Array.isArray(payload.searchResults?.players)) return payload.searchResults.players;
+  if (Array.isArray(payload.items?.players)) return payload.items.players;
+  if (Array.isArray(payload.player)) return payload.player;
+  if (Array.isArray(payload.topPlayers)) return payload.topPlayers;
+  if (payload.players?.data && Array.isArray(payload.players.data)) return payload.players.data;
+  if (payload.data?.data?.players && Array.isArray(payload.data.data.players)) return payload.data.data.players;
+  return [];
+};
+
+export async function searchSofaScorePlayers(
+  query: string
+): Promise<SofaScorePlayerSearchResult | null> {
+  if (!query) return null;
+  try {
+    const payload = await fetchSofaScoreAPI(`/search/all?q=${encodeURIComponent(query)}`);
+    const players = extractPlayersFromSearch(payload);
+    if (!players.length) return null;
+
+    const normalized = query.toLowerCase();
+    const exact =
+      players.find((p: any) => (p.name || p.fullName || '').toLowerCase() === normalized) ||
+      players.find((p: any) => (p.shortName || '').toLowerCase() === normalized);
+    const candidate = exact || players[0];
+    if (!candidate) return null;
+
+    const id = candidate.id || candidate.entityId || candidate.playerId || candidate.itemId;
+    if (!id) return null;
+
+    return {
+      id: Number(id),
+      name: candidate.name || candidate.fullName || candidate.shortName || query,
+      slug: candidate.slug || candidate.seoName || slugifyName(candidate.name || query),
+      position: candidate.position || candidate.playerPrimaryPosition,
+      teamName: candidate.team?.name || candidate.teamName
+    };
+  } catch (error) {
+    console.error('[SofaScore] search failed:', error);
+    return null;
+  }
 }
 
 export async function fetchSofaScorePlayerData(
@@ -243,7 +311,7 @@ export async function fetchSofaScorePlayerData(
           });
 
           // Extract date of birth
-          const dobMatch = html.match(/(?:born|dob|date of birth)[\s:]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i);
+          const dobMatch = html.match(/(?:born|dob|date of birth)[\s:]+(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})/i);
           if (dobMatch && !playerData.bio.dateOfBirth) {
             playerData.bio.dateOfBirth = dobMatch[1];
           }

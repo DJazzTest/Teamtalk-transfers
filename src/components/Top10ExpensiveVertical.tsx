@@ -3,8 +3,9 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { getPlayerImage } from '@/utils/playerImageUtils';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 import { findPlayerInSquads } from '@/utils/playerUtils';
+import { ClubBadgeIcon } from '@/components/ClubBadgeIcon';
 
 // Helper to parse transfer fee to a number
 function parseFee(fee: string): number {
@@ -88,26 +89,17 @@ export const Top10ExpensiveVertical: React.FC<Top10ExpensiveVerticalProps> = ({ 
             className="p-3 border-2 hover:shadow-lg transition-all duration-200 border-green-700 dark:border-green-200 bg-green-50/50 dark:bg-green-500/10"
           >
             <div className="flex items-center gap-3">
-              {/* Rank Number */}
-              <div 
-                className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-green-700 dark:bg-green-200 text-white dark:text-green-900"
-              >
-                {index + 1}
-              </div>
-              
               {/* Avatar */}
               <Avatar className="w-12 h-12 flex-shrink-0">
                 <AvatarImage 
                   src={getPlayerImage(transfer.playerName, transfer.toClub)} 
                   alt={transfer.playerName}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
+                  onError={handlePlayerImageError}
                 />
                 <AvatarFallback 
-                  className="text-xs font-bold text-green-700 dark:text-green-200 border-2 border-green-700 dark:border-green-200 bg-green-100 dark:bg-green-500/20"
+                  className="bg-green-100 text-green-600 text-sm sm:text-base"
                 >
-                  {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                  <img src="/player-placeholder.png" alt="Player placeholder" className="w-full h-full object-cover" />
                 </AvatarFallback>
               </Avatar>
               
@@ -122,8 +114,10 @@ export const Top10ExpensiveVertical: React.FC<Top10ExpensiveVerticalProps> = ({ 
                     {transfer.playerName}
                   </span>
                 </div>
-                <div className="text-xs text-green-700 dark:text-green-200">
-                  <span>{transfer.fromClub}</span> → <span className="font-semibold">{transfer.toClub}</span>
+                <div className="flex items-center gap-2 text-xs text-green-700 dark:text-green-200">
+                  <ClubBadgeIcon club={transfer.fromClub} size="sm" />
+                  <span>→</span>
+                  <ClubBadgeIcon club={transfer.toClub} size="sm" highlight />
                 </div>
               </div>
               

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -8,6 +8,70 @@ import { AlertCircle, BarChart3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { TeamPhaseComparisonCharts } from './TeamPhaseComparisonCharts';
 import { TeamHonoursComparison } from './TeamHonoursComparison';
+import { TeamResultsFixturesService, Match } from '@/services/teamResultsFixturesService';
+
+interface TeamLiveStats {
+  matches: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  lastUpdated: number;
+}
+
+const getSeasonStartIso = () => {
+  const now = new Date();
+  const seasonYear = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1;
+  return new Date(Date.UTC(seasonYear, 7, 1, 0, 0, 0)).toISOString(); // August 1st
+};
+
+const normalizeTeamName = (name: string) =>
+  (name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+const summarizeTeamResults = (team: string, matches: Match[]): TeamLiveStats => {
+  const normalized = normalizeTeamName(team);
+  let matchCount = 0;
+  let goalsFor = 0;
+  let goalsAgainst = 0;
+
+  matches.forEach((match) => {
+    const home = normalizeTeamName(match.homeTeam || '');
+    const away = normalizeTeamName(match.awayTeam || '');
+    const homeGoals =
+      typeof match.homeScore === 'number' && Number.isFinite(match.homeScore) ? match.homeScore : 0;
+    const awayGoals =
+      typeof match.awayScore === 'number' && Number.isFinite(match.awayScore) ? match.awayScore : 0;
+
+    if (home === normalized) {
+      matchCount += 1;
+      goalsFor += homeGoals;
+      goalsAgainst += awayGoals;
+    } else if (away === normalized) {
+      matchCount += 1;
+      goalsFor += awayGoals;
+      goalsAgainst += homeGoals;
+    }
+  });
+
+  return {
+    matches: matchCount,
+    goalsFor,
+    goalsAgainst,
+    lastUpdated: Date.now()
+  };
+};
+
+const applyLiveStats = (
+  entry: TeamComparisonEntry | null,
+  liveStats: TeamLiveStats | null
+): TeamComparisonEntry | null => {
+  if (!entry) return null;
+  if (!liveStats || liveStats.matches === 0) return entry;
+  return {
+    ...entry,
+    matches: liveStats.matches,
+    goalsScored: liveStats.goalsFor,
+    goalsConceded: liveStats.goalsAgainst
+  };
+};
 
 interface TeamComparisonPanelProps {
   primaryTeam: string;
@@ -33,9 +97,98 @@ export const TeamComparisonPanel: React.FC<TeamComparisonPanelProps> = ({
   comparisonTeam,
   onComparisonTeamChange,
 }) => {
+  const [primaryLiveStats, setPrimaryLiveStats] = useState<TeamLiveStats | null>(null);
+  const [comparisonLiveStats, setComparisonLiveStats] = useState<TeamLiveStats | null>(null);
+  const liveStatsCacheRef = useRef<Map<string, TeamLiveStats>>(new Map());
+
   const primaryData = teamComparisonData[primaryTeam] || null;
   const comparisonData = comparisonTeam ? teamComparisonData[comparisonTeam] || null : null;
   const selectableTeams = getAvailableComparisonTeams().filter((team) => team !== primaryTeam);
+  const resolvedComparisonTeam = comparisonData ? comparisonTeam : selectableTeams[0];
+  const resolvedComparisonData = resolvedComparisonTeam ? teamComparisonData[resolvedComparisonTeam] : null;
+
+  useEffect(() => {
+    let cancelled = false;
+    const cacheKey = normalizeTeamName(primaryTeam);
+
+    const loadStats = async () => {
+      if (liveStatsCacheRef.current.has(cacheKey)) {
+        setPrimaryLiveStats(liveStatsCacheRef.current.get(cacheKey) || null);
+        return;
+      }
+
+      try {
+        const service = TeamResultsFixturesService.getInstance();
+        const from = getSeasonStartIso();
+        const to = new Date().toISOString();
+        const results = await service.getTeamResults(primaryTeam, from, to);
+        if (cancelled) return;
+
+        if (results.length > 0) {
+          const summary = summarizeTeamResults(primaryTeam, results);
+          liveStatsCacheRef.current.set(cacheKey, summary);
+          setPrimaryLiveStats(summary);
+        } else {
+          setPrimaryLiveStats(null);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.warn('Failed to load live stats for', primaryTeam, error);
+          setPrimaryLiveStats(null);
+        }
+      }
+    };
+
+    loadStats();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [primaryTeam]);
+
+  useEffect(() => {
+    if (!resolvedComparisonTeam) {
+      setComparisonLiveStats(null);
+      return;
+    }
+
+    let cancelled = false;
+    const cacheKey = normalizeTeamName(resolvedComparisonTeam);
+
+    const loadStats = async () => {
+      if (liveStatsCacheRef.current.has(cacheKey)) {
+        setComparisonLiveStats(liveStatsCacheRef.current.get(cacheKey) || null);
+        return;
+      }
+
+      try {
+        const service = TeamResultsFixturesService.getInstance();
+        const from = getSeasonStartIso();
+        const to = new Date().toISOString();
+        const results = await service.getTeamResults(resolvedComparisonTeam, from, to);
+        if (cancelled) return;
+
+        if (results.length > 0) {
+          const summary = summarizeTeamResults(resolvedComparisonTeam, results);
+          liveStatsCacheRef.current.set(cacheKey, summary);
+          setComparisonLiveStats(summary);
+        } else {
+          setComparisonLiveStats(null);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.warn('Failed to load live stats for', resolvedComparisonTeam, error);
+          setComparisonLiveStats(null);
+        }
+      }
+    };
+
+    loadStats();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [resolvedComparisonTeam]);
 
   if (!primaryData) {
     return (
@@ -69,15 +222,15 @@ export const TeamComparisonPanel: React.FC<TeamComparisonPanelProps> = ({
     );
   }
 
-  const resolvedComparisonTeam = comparisonData ? comparisonTeam : selectableTeams[0];
-  const resolvedComparisonData = resolvedComparisonTeam ? teamComparisonData[resolvedComparisonTeam] : null;
-
   if (!resolvedComparisonData) {
     return null;
   }
 
-  const summaryMetrics = formatSummaryMetrics(primaryData).map((metric) => {
-    const comparisonMetric = formatSummaryMetrics(resolvedComparisonData).find((item) => item.label === metric.label);
+  const primarySummarySource = applyLiveStats(primaryData, primaryLiveStats);
+  const comparisonSummarySource = applyLiveStats(resolvedComparisonData, comparisonLiveStats);
+
+  const summaryMetrics = formatSummaryMetrics(primarySummarySource).map((metric) => {
+    const comparisonMetric = formatSummaryMetrics(comparisonSummarySource).find((item) => item.label === metric.label);
     return {
       label: metric.label,
       primary: metric.value,

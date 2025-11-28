@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Smartphone, X, ExternalLink } from 'lucide-react';
+import { Smartphone, X, ExternalLink, ArrowLeft } from 'lucide-react';
 
 interface TeamTalkAppPromptProps {
   isOpen: boolean;
@@ -64,27 +64,45 @@ export const TeamTalkAppPrompt: React.FC<TeamTalkAppPromptProps> = ({
     }
   };
 
+  const handleBackNavigation = () => {
+    onClose();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-md bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 p-4 sm:p-6">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <Smartphone className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-              View in TEAMtalk App
-            </DialogTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="h-6 w-6 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            >
-              <X className="w-4 h-4" />
-            </Button>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleBackNavigation}
+                  className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex items-center gap-1"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Back
+                </Button>
+                <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                  <Smartphone className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  View in TEAMtalk App
+                </DialogTitle>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClose}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1 px-2"
+              >
+                <X className="w-4 h-4" />
+                Close
+              </Button>
+            </div>
+            <DialogDescription className="text-gray-600 dark:text-gray-300">
+              Get the best experience reading this article in the TEAMtalk app with live notifications and exclusive content.
+            </DialogDescription>
           </div>
-          <DialogDescription className="text-gray-600 dark:text-gray-300 pt-2">
-            Get the best experience reading this article in the TEAMtalk app with live notifications and exclusive content.
-          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
@@ -123,11 +141,11 @@ export const TeamTalkAppPrompt: React.FC<TeamTalkAppPromptProps> = ({
           <Button
             onClick={handleViewOnWeb}
             variant="outline"
-            className="w-full border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700"
+            className="w-full border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 flex items-center justify-center"
             size="lg"
           >
             <ExternalLink className="w-4 h-4 mr-2" />
-            View on this device instead
+            Dismiss and view on this device
           </Button>
         </div>
 

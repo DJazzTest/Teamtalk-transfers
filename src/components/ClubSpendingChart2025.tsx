@@ -2,6 +2,9 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import { useClubBadge } from '@/hooks/useClubBadge';
+import { useClubBio } from '@/context/ClubBioContext';
+import { getClubInitials } from '@/utils/clubBadgeUtils';
 
 interface ClubSpendingChart2025Props {
   onSelectClub?: (club: string, playerName?: string) => void;
@@ -27,8 +30,8 @@ const clubFinancialData = [
   { club: 'West Ham United', spending: 72.8, earnings: 54.5, displayName: 'West H' },
   { club: 'Brighton & Hove Albion', spending: 67.75, earnings: 110.0, displayName: 'Brighton' },
   { club: 'Aston Villa', spending: 34.5, earnings: 42.5, displayName: 'A Villa' },
-  { club: 'Crystal Palace', spending: 3.0, earnings: 68.5, displayName: 'Palace' },
-  { club: 'Fulham', spending: 0.43, earnings: 0.0, displayName: 'Fulham' }
+  { club: 'Crystal Palace', spending: 31.0, earnings: 46.0, displayName: 'Palace' },
+  { club: 'Fulham', spending: 34.0, earnings: 10.5, displayName: 'Fulham' }
 ];
 
 const clubNameVariants: Record<string, { medium: string; short: string; veryShort: string; single: string }> = {
@@ -52,6 +55,31 @@ const clubNameVariants: Record<string, { medium: string; short: string; veryShor
   'Aston Villa': { medium: 'Aston Villa', short: 'A Villa', veryShort: 'A..', single: 'A.' },
   'Crystal Palace': { medium: 'Palace', short: 'Pal', veryShort: 'Pa..', single: 'P.' },
   'Fulham': { medium: 'Fulham', short: 'Ful', veryShort: 'Fu..', single: 'F.' }
+};
+
+const ChartClubBadge: React.FC<{ club: string; label: string }> = ({ club, label }) => {
+  const { badgeSrc, isLoading, placeholderInitials } = useClubBadge(club);
+  const { openClubBio } = useClubBio();
+  const initials = placeholderInitials || getClubInitials(club) || club[0];
+  return (
+    <button
+      type="button"
+      onClick={() => openClubBio(club)}
+      className="flex flex-col items-center gap-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+      title={`View ${club} bio`}
+    >
+      <div className="w-7 h-7 rounded-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden shadow-sm translate-y-[-6px]">
+        {badgeSrc ? (
+          <img src={badgeSrc} alt={`${club} badge`} className="w-full h-full object-contain scale-110" loading="lazy" />
+        ) : isLoading ? (
+          <div className="w-5 h-5 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin" />
+        ) : (
+          <span className="text-xs font-semibold text-gray-500">{initials}</span>
+        )}
+      </div>
+      <span className="text-[7px] text-slate-500 dark:text-slate-300 text-center leading-tight mt-[-3px]">{label}</span>
+    </button>
+  );
 };
 
 export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ onSelectClub }) => {
@@ -215,15 +243,11 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.3)" />
                 <XAxis 
                   dataKey="clubShort" 
-                  tick={{ fontSize: 10, fill: 'currentColor' }}
+                  tick={false}
                   tickLine={false}
                   axisLine={false}
                   interval={0}
-                  height={60}
-                  tickFormatter={(value) => value}
-                  tickMargin={8}
-                  angle={0}
-                  textAnchor="middle"
+                  height={10}
                 />
                 <YAxis 
                   tick={{ fontSize: 12, fill: 'currentColor' }}
@@ -266,6 +290,17 @@ export const ClubSpendingChart2025: React.FC<ClubSpendingChart2025Props> = ({ on
           </div>
         </div>
         
+            {/* Badge rail aligned to clubs */}
+            <div className="-mt-2.5">
+              <div className="flex items-start -translate-y-6" style={{ paddingLeft: 76, paddingRight: 24, gap: 0 }}>
+                {chartData.map((club) => (
+                  <div key={club.club} className="flex-1 flex justify-center">
+                    <ChartClubBadge club={club.club} label={club.club} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Summary Statistics */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', textAlign: 'center' }}>
               <div className="bg-red-100 dark:bg-red-500/20 p-2 rounded-lg border border-red-200 dark:border-red-500/40">

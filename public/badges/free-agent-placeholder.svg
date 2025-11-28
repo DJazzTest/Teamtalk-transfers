@@ -1,0 +1,16 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="faGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="url(#faGradient)" stroke="#3b82f6" stroke-width="4"/>
+  <text x="50%" y="52%" text-anchor="middle" fill="#1e3a8a" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700" dominant-baseline="middle">
+    FA
+  </text>
+  <text x="50%" y="78%" text-anchor="middle" fill="#1d4ed8" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="600">
+    Free Agent
+  </text>
+</svg>
+

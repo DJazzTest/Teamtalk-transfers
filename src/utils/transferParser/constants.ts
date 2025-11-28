@@ -1,7 +1,7 @@
 
 export const PREMIER_LEAGUE_CLUBS = [
   // 2024/25 Season
-  'Arsenal', 'Aston Villa', 'AFC Bournemouth', 'Bournemouth', 'Brentford', 'Brighton', 'Brighton & Hove Albion',
+  'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton', 'Brighton & Hove Albion',
   'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Ipswich Town', 'Ipswich',
   'Leicester City', 'Leicester', 'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United', 'Newcastle',
   'Nottingham Forest', 'Southampton', 'Tottenham', 'Tottenham Hotspur', 'West Ham United', 'West Ham',

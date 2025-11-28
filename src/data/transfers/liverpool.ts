@@ -179,7 +179,7 @@ export const liverpoolTransfers: Transfer[] = [
     id: 'liverpool-gannon-doak-2025',
     playerName: 'Ben Gannon-Doak',
     fromClub: 'Liverpool',
-    toClub: 'AFC Bournemouth',
+    toClub: 'Bournemouth',
     fee: '£3M',
     date: '2025-01-04T11:00:00Z',
     source: 'liverpoolfc.com',

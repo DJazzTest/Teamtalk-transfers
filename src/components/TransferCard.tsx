@@ -7,9 +7,12 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Newspaper } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { getStatusColor } from '@/utils/statusUtils';
-import { getPlayerImage } from '@/utils/playerImageUtils';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 import { PlayerNameLink } from './PlayerNameLink';
 import { findPlayerInSquads } from '@/utils/playerUtils';
+import { useClubBadge } from '@/hooks/useClubBadge';
+import { useClubBio } from '@/context/ClubBioContext';
+import { ClubBadgeIcon } from '@/components/ClubBadgeIcon';
 
 interface TransferCardProps {
   transfer: Transfer;
@@ -61,66 +64,104 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
     ? 'ring-2 ring-green-500 dark:ring-green-300 shadow-lg shadow-green-500/30'
     : '';
 
-  if (isCompact) {
+  const { openClubBio } = useClubBio();
+
+  const ClubBadgeButton: React.FC<{ clubName?: string | null; label: string }> = ({ clubName, label }) => {
+    if (!clubName) {
+      return (
+        <span className="text-xs text-gray-500 dark:text-gray-400 px-2 py-1 rounded-full border border-dashed border-gray-300 dark:border-slate-700">
+          {label}
+        </span>
+      );
+    }
+    const { badgeSrc, isLoading, placeholderInitials } = useClubBadge(clubName);
     return (
-      <Card className={`bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800/70 transition-all duration-200 overflow-hidden ${highlightClasses}`}>
-        <div className="p-4">
-          <div className="space-y-3">
+      <button
+        type="button"
+        onClick={() => openClubBio(clubName)}
+        className="flex flex-col items-center gap-1 text-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl"
+        title={`View ${clubName} club bio`}
+      >
+        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 flex items-center justify-center shadow group-hover:shadow-lg transition-all overflow-hidden">
+          {badgeSrc ? (
+            <img
+              src={badgeSrc}
+              alt={`${clubName} badge`}
+              className="w-full h-full object-contain scale-110 transition-transform duration-200 group-hover:scale-125"
+              loading="lazy"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+          ) : isLoading ? (
+            <div className="w-6 h-6 border-2 border-blue-300 border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              {placeholderInitials || clubName[0]}
+            </span>
+          )}
+        </div>
+        <span className="text-[11px] text-gray-600 dark:text-gray-300 leading-tight max-w-[80px] line-clamp-2">
+          {clubName}
+        </span>
+      </button>
+    );
+  };
+
+  const ClubBadgeRow = () => (
+    <div className="flex items-center gap-3 justify-start">
+      <ClubBadgeButton clubName={transfer.fromClub} label="From club" />
+      <span className="text-gray-500 dark:text-gray-300 text-lg font-semibold">→</span>
+      <ClubBadgeButton clubName={transfer.toClub} label="To club" />
+    </div>
+  );
+
+  const compactCard = (
+    <Card className={`bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-md transition-all duration-200 hover:border-green-300 ${highlightClasses}`}>
+        <div className="p-3 sm:p-4">
+          <div className="space-y-2 sm:space-y-3">
             <div className="flex items-center gap-3">
-              <Avatar className="w-8 h-8">
+              <Avatar className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
                 <AvatarImage 
                   src={transfer.playerImage || getPlayerImage(transfer.playerName, transfer.toClub)} 
                   alt={transfer.playerName}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
+                  onError={handlePlayerImageError}
                 />
-                <AvatarFallback className="bg-gray-400 dark:bg-slate-600 text-white text-xs">
-                  {getPlayerInitials(transfer.playerName)}
+                <AvatarFallback className="bg-green-100 text-green-600 text-sm sm:text-base">
+                  <img 
+                    src="/player-placeholder.png" 
+                    alt="Player placeholder" 
+                    className="w-full h-full object-cover"
+                  />
                 </AvatarFallback>
               </Avatar>
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                <Badge className={`text-[10px] px-1.5 py-0.5 flex-shrink-0 whitespace-nowrap leading-tight`} style={{ background: getStatusColor(transfer.status), color: '#fff' }}>{transfer.status.toUpperCase()}</Badge>
-                <div className="flex-1 min-w-0 pr-2">
-                  {(() => {
-                    const playerInfo = findPlayerInSquads(transfer.playerName);
-                    if (playerInfo.found) {
-                      return (
-                        <PlayerNameLink
-                          playerName={transfer.playerName}
-                          teamName={playerInfo.club}
-                          playerData={playerInfo.player}
-                          className="text-gray-900 dark:text-white text-sm font-semibold hover:text-blue-600 dark:hover:text-blue-300 break-words"
-                        />
-                      );
-                    }
-                    return <h4 className="font-semibold text-gray-900 dark:text-white text-sm break-words">{transfer.playerName}</h4>;
-                  })()}
-                </div>
+              <div className="flex-1 min-w-0">
+                {(() => {
+                  const playerInfo = findPlayerInSquads(transfer.playerName);
+                  if (playerInfo.found) {
+                    return (
+                      <PlayerNameLink
+                        playerName={transfer.playerName}
+                        teamName={playerInfo.club}
+                        playerData={playerInfo.player}
+                        className="font-bold text-gray-800 text-base sm:text-lg leading-tight"
+                      />
+                    );
+                  }
+                  return <h4 className="font-bold text-gray-800 text-base sm:text-lg leading-tight">{transfer.playerName}</h4>;
+                })()}
               </div>
             </div>
             
-            <div className="text-xs text-gray-600 dark:text-gray-300">
-              <div className="flex items-center gap-1 mb-1">
-              <span>{transfer.fromClub}</span>
-              <span>→</span>
-              <span className="font-semibold text-gray-900 dark:text-white">{transfer.toClub}</span>
-            </div>
-            </div>
-            
-            {transfer.rejectionReason && (
-              <div className="bg-red-500/10 border border-red-500/20 rounded p-2">
-                <p className="text-red-600 dark:text-red-400 text-xs">{transfer.rejectionReason}</p>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <ClubBadgeIcon club={transfer.fromClub} size="sm" />
+                <span className="text-xs text-gray-500">→</span>
+                <ClubBadgeIcon club={transfer.toClub} size="sm" highlight />
               </div>
-            )}
-            
-            <div className="flex justify-between items-end">
-              <div>
-                <p className="text-sm font-bold text-green-600 dark:text-green-400">{transfer.fee}</p>
-                <p className="text-xs text-gray-600 dark:text-gray-300">{new Date(transfer.date).toLocaleDateString()}</p>
+              <div className="text-xs text-gray-500">
+                {new Date(transfer.date).toLocaleDateString()}
               </div>
-              <p className="text-xs text-gray-600 dark:text-gray-300">{transfer.source}</p>
             </div>
             
             {/* Player News Section - Compact View */}
@@ -150,10 +191,9 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
           </div>
         </div>
       </Card>
-    );
-  }
+  );
 
-  return (
+  const fullCard = (
     <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700 hover:bg-slate-800/70 transition-all duration-200 overflow-hidden">
       <div className="p-4">
         <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#475569 #1e293b' }}>
@@ -163,13 +203,14 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
                 <AvatarImage 
                   src={transfer.playerImage || getPlayerImage(transfer.playerName, transfer.toClub)} 
                   alt={transfer.playerName}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
+                  onError={handlePlayerImageError}
                 />
                 <AvatarFallback className="bg-slate-600 text-white">
-                  {getPlayerInitials(transfer.playerName)}
+                  <img 
+                    src="/player-placeholder.png" 
+                    alt="Player placeholder" 
+                    className="w-full h-full object-cover"
+                  />
                 </AvatarFallback>
               </Avatar>
               <div className="flex-shrink-0" style={{ minWidth: 'min-content' }}>
@@ -193,12 +234,8 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
                     {transfer.status}
                   </Badge>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
-                  <span>{transfer.fromClub}</span>
-                  <span>→</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
-                    {transfer.toClub}
-                  </span>
+                <div className="mt-2">
+                  <ClubBadgeRow />
                 </div>
                 {transfer.rejectionReason && (
                   <div className="mt-2 bg-red-500/10 border border-red-500/20 rounded p-2">
@@ -260,5 +297,13 @@ export const TransferCard: React.FC<TransferCardProps> = ({ transfer, isCompact 
         )}
       </div>
     </Card>
+  );
+
+  const cardContent = isCompact ? compactCard : fullCard;
+
+  return (
+    <>
+      {cardContent}
+    </>
   );
 };

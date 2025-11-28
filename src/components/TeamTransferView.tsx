@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
-import { Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock, Home, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, TrendingUp, TrendingDown, MessageCircle, Users, ExternalLink, Clock, Home, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { SquadWageCarousel } from './SquadWageCarousel';
 import { TeamComparisonPanel } from './TeamComparisonPanel';
 import { TeamPhaseCharts } from './TeamPhaseCharts';
 import { getPremierLeagueClubs } from '@/utils/teamMapping';
-import { clubBadgeMap } from './ClubsView';
+import { clubBadgeMap } from '@/data/clubBadgeMap';
 import { topSpendingClubs } from '@/data/topSpendingClubs';
 import { newsApi } from '@/services/newsApi';
 import { teamDataService, TeamData } from '@/services/teamDataService';
@@ -244,6 +244,26 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
       tab === 'compare' && !canCompareTeams ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'
     );
 
+  const handleReturnHome = useCallback(() => {
+    setSelectedTeam(null);
+    onBack?.();
+  }, [onBack]);
+
+  const handleBackNavigation = useCallback(() => {
+    if (typeof window !== 'undefined' && typeof document !== 'undefined' && document.referrer) {
+      try {
+        const referrerOrigin = new URL(document.referrer).origin;
+        if (referrerOrigin === window.location.origin) {
+          window.history.back();
+          return;
+        }
+      } catch (error) {
+        console.warn('Unable to navigate back via history', error);
+      }
+    }
+    handleReturnHome();
+  }, [handleReturnHome]);
+
   const teamStats = selectedTeam
     ? getTeamStats(selectedTeam)
     : { transfersIn: [], transfersOut: [], rumors: [], totalActivity: 0 };
@@ -264,14 +284,20 @@ export const TeamTransferView: React.FC<TeamTransferViewProps> = ({ transfers, s
     const teamHeader = (
       <Card className="bg-white dark:bg-slate-800/50 backdrop-blur-md border-gray-200 dark:border-slate-700">
         <div className="p-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 flex-wrap">
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
-                setSelectedTeam(null);
-                onBack?.();
-              }}
+              onClick={handleBackNavigation}
+              className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleReturnHome}
               className="text-blue-600 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-200 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
             >
               <Home className="w-4 h-4 mr-2" />

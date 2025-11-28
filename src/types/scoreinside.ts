@@ -51,6 +51,7 @@ export interface ScoreInsideTransferArticle {
   };
 }
 
+
 export interface TeamApiConfig {
   slug: string;
   name: string;

@@ -10,7 +10,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Transfer } from '@/types/transfer';
-import { getPlayerImage } from '@/utils/playerImageUtils';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
+import { ClubBadgeIcon } from '@/components/ClubBadgeIcon';
 
 interface ConfirmedTransfersTabProps {
   transfers: Transfer[];
@@ -20,7 +21,7 @@ interface ConfirmedTransfersTabProps {
 const PREMIER_LEAGUE_CLUBS = [
   'Arsenal',
   'Aston Villa',
-  'AFC Bournemouth',
+  'Bournemouth',
   'Brentford',
   'Brighton & Hove Albion',
   'Chelsea',
@@ -156,26 +157,19 @@ export const ConfirmedTransfersTab: React.FC<ConfirmedTransfersTabProps> = ({
               }}
             >
               <div className="flex items-center gap-3">
-                {/* Rank Number */}
-                <div 
-                  className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-green-700 dark:bg-green-200 text-white dark:text-green-900"
-                >
-                  {index + 1}
-                </div>
-                
                 {/* Avatar */}
-                <Avatar className="w-12 h-12 flex-shrink-0">
+                <Avatar className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
                   <AvatarImage 
                     src={getPlayerImage(transfer.playerName || '', transfer.toClub || '')} 
                     alt={transfer.playerName || 'Player'}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
+                    onError={handlePlayerImageError}
                   />
-                  <AvatarFallback 
-                    className="text-xs font-bold text-green-700 dark:text-green-200 border-2 border-green-700 dark:border-green-200 bg-green-100 dark:bg-green-500/20"
-                  >
-                    {(transfer.playerName || 'PL').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                  <AvatarFallback className="bg-green-100 text-green-600 text-sm sm:text-base">
+                    <img 
+                      src="/player-placeholder.png" 
+                      alt="Player placeholder" 
+                      className="w-full h-full object-cover"
+                    />
                   </AvatarFallback>
                 </Avatar>
                 
@@ -184,9 +178,11 @@ export const ConfirmedTransfersTab: React.FC<ConfirmedTransfersTabProps> = ({
                   <p className="font-semibold text-sm truncate text-green-700 dark:text-green-200 mb-1">
                     {transfer.playerName || 'Unnamed player'}
                   </p>
-                  <div className="text-xs text-green-700 dark:text-green-200">
-                    <span>{transfer.fromClub || 'Unknown'}</span> → <span className="font-semibold">{transfer.toClub || 'Unknown'}</span>
-                  </div>
+                <div className="flex items-center gap-2 text-xs text-green-700 dark:text-green-200">
+                  <ClubBadgeIcon club={transfer.fromClub} size="sm" />
+                  <span>→</span>
+                  <ClubBadgeIcon club={transfer.toClub} size="sm" highlight />
+                </div>
                 </div>
                 
                 {/* Fee */}

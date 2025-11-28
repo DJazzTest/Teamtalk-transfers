@@ -5,6 +5,7 @@ import { TeamBioManager } from '@/components/TeamBioManager';
 import { PlayerManagement } from '@/components/PlayerManagement';
 import { ChatterBoxManagement } from '@/components/ChatterBoxManagement';
 import { FlashBannerManagement } from '@/components/FlashBannerManagement';
+import { ApiFeedManager } from '@/components/ApiFeedManager';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PlayerModalProvider } from '@/context/PlayerModalContext';
 import { TransferDataProvider } from '@/store/transferDataStore';
@@ -24,6 +25,7 @@ const Cms: React.FC = () => {
                 <TabsTrigger value="teams">Teams</TabsTrigger>
                 <TabsTrigger value="chatter">Live Hub</TabsTrigger>
                 <TabsTrigger value="flash-banner">Flash Banner</TabsTrigger>
+                <TabsTrigger value="apis">APIs & Feeds</TabsTrigger>
                 <TabsTrigger value="admin">Admin</TabsTrigger>
               </TabsList>
 
@@ -42,6 +44,10 @@ const Cms: React.FC = () => {
 
               <TabsContent value="flash-banner">
                 <FlashBannerManagement />
+              </TabsContent>
+
+              <TabsContent value="apis">
+                <ApiFeedManager />
               </TabsContent>
 
               <TabsContent value="admin">

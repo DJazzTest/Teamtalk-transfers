@@ -6,7 +6,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { TrendingUp } from 'lucide-react';
 import { TransferCard } from './TransferCard';
 import { StaleTransferAlert } from './StaleTransferAlert';
-import { getPlayerImage } from '@/utils/playerImageUtils';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 import { PlayerNameLink } from './PlayerNameLink';
 import { findPlayerInSquads } from '@/utils/playerUtils';
 
@@ -122,13 +122,10 @@ export const WalletWarpingDeals: React.FC<WalletWarpingDealsProps> = ({ transfer
                     <AvatarImage 
                       src={getPlayerImage(transfer.playerName, transfer.toClub)} 
                       alt={transfer.playerName}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
+                      onError={handlePlayerImageError}
                     />
                     <AvatarFallback className="bg-purple-100 text-purple-600 text-xs">
-                      {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                      <img src="/player-placeholder.png" alt="Player placeholder" className="w-full h-full object-cover" />
                     </AvatarFallback>
                   </Avatar>
                   {(() => {

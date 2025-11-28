@@ -12,7 +12,8 @@
     "scrape:sofascore": "node scripts/scrapeSofaScoreWithPlaywright.js",
     "scrape:all-players": "node scripts/automatedPlayerDataScraper.mjs",
     "scrape:arsenal-images": "node scripts/scrapeFootballTransfersImages.mjs",
-    "scrape:prem-players": "node scripts/fetchMissingPremPlayers.mjs"
+    "scrape:prem-players": "node scripts/fetchMissingPremPlayers.mjs",
+    "export:transfer-players": "node scripts/extractTransferPlayerData.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

@@ -1,13 +1,23 @@
-/**
- * Utility functions for getting player images
- */
+import type React from 'react';
+
+export const PLAYER_PLACEHOLDER = '/player-placeholder.png';
+
+const applyPlaceholder = (img: HTMLImageElement | null) => {
+  if (img && img.src !== PLAYER_PLACEHOLDER) {
+    img.src = PLAYER_PLACEHOLDER;
+  }
+};
+
+export const handlePlayerImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  applyPlaceholder(event.currentTarget);
+};
 
 /**
  * Get player image URL from various sources
- * Priority: localStorage > player-images directory > null
+ * Priority: localStorage > player-images directory > placeholder
  */
-export function getPlayerImage(playerName: string, clubName?: string): string | undefined {
-  if (!playerName) return undefined;
+export function getPlayerImage(playerName: string, clubName?: string): string {
+  if (!playerName) return PLAYER_PLACEHOLDER;
 
   // Try to get from localStorage (CMS uploaded images)
   try {
@@ -36,7 +46,7 @@ export function getPlayerImage(playerName: string, clubName?: string): string | 
     return `/player-images/${clubSlug}/${playerSlug}.png`;
   }
 
-  return undefined;
+  return PLAYER_PLACEHOLDER;
 }
 
 /**

@@ -1,33 +1,10 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-
-// Maps club names to badge filenames - REAL official badges only
-export const clubBadgeMap: Record<string, string> = {
-  'Arsenal': '/badges/arsenal-real.png',
-  'Aston Villa': '/badges/astonvilla.png',
-  'Bournemouth': '/badges/bournemouth-real.png',
-  'Brentford': '/badges/brentford.png',
-  'Brighton & Hove Albion': '/badges/brightonhovealbion.png',
-  'Burnley': '/badges/burnley.png',
-  'Chelsea': '/badges/chelsea-real.png',
-  'Crystal Palace': '/badges/crystalpalace.png',
-  'Everton': '/badges/everton.png',
-  'Fulham': '/badges/fulham.png',
-  'Leeds United': '/lovable-uploads/f1403919-509d-469c-8455-d3b11b3d5cb6.png',
-  'Liverpool': '/badges/liverpool-real.png',
-  'Manchester City': '/badges/manchestercity-real.png',
-  'Manchester United': '/badges/manchesterunited-real.png',
-  'Newcastle United': '/badges/newcastleunited.png',
-  'Nottingham Forest': '/badges/nottinghamforest.png',
-  'Sunderland': '/badges/sunderland.png',
-  'Tottenham Hotspur': '/badges/tottenhamhotspur.png',
-  'West Ham United': '/badges/westhamunited.png',
-  'Wolverhampton Wanderers': '/badges/wolverhamptonwanderers.png'
-};
+import { clubBadgeMap } from '@/data/clubBadgeMap';
 
 import { Button } from '@/components/ui/button';
-import { Star, ArrowLeft } from 'lucide-react';
+import { Star, ArrowLeft, Home } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
 import { TeamTransferStats } from './TeamTransferStats';
@@ -90,6 +67,16 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
     setSelectedClub(null);
   };
 
+  const handleGoHome = () => {
+    setSelectedClub(null);
+    if (typeof window === 'undefined') return;
+    if (window.location.pathname !== '/') {
+      window.location.href = '/';
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // If a specific club is selected, show detailed transfers
   if (selectedClub && normalizedClubTransfers[selectedClub]) {
     const clubTransferList = normalizedClubTransfers[selectedClub];
@@ -98,15 +85,27 @@ export const ClubsView: React.FC<ClubsViewProps> = ({ clubTransfers, allTransfer
       <Card className="bg-slate-800/50 backdrop-blur-md border-slate-700">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4 border-b border-slate-600 pb-2">
-            <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleBackToOverview}
-                className="text-gray-400 hover:text-white"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
+            <div className="flex items-center gap-4 flex-wrap">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleBackToOverview}
+                  className="text-gray-400 hover:text-white"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-1" />
+                  Back
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleGoHome}
+                  className="text-blue-300 hover:text-white"
+                >
+                  <Home className="w-4 h-4 mr-1" />
+                  Home
+                </Button>
+              </div>
               <h3 className="text-xl font-bold text-white flex items-center gap-2">
                 <img
                   src={`/badges/${selectedClub?.toLowerCase().replace(/[^a-z]/g, '')}.png`}

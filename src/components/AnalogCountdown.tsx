@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { RotateCcw } from 'lucide-react';
 
 interface AnalogCountdownProps {
   targetDate: string;
-  onRevert: () => void;
 }
 
-export const AnalogCountdown: React.FC<AnalogCountdownProps> = ({ targetDate, onRevert }) => {
+export const AnalogCountdown: React.FC<AnalogCountdownProps> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,

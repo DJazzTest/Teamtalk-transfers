@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { CheckCircle } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
-import { getPlayerImage } from '@/utils/playerImageUtils';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 
 interface HomeRecentConfirmedProps {
   transfers: Transfer[];
@@ -46,13 +46,10 @@ export const HomeRecentConfirmed: React.FC<HomeRecentConfirmedProps> = ({ transf
                     <AvatarImage 
                       src={getPlayerImage(transfer.playerName, transfer.toClub)} 
                       alt={transfer.playerName}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
+                      onError={handlePlayerImageError}
                     />
                     <AvatarFallback className="bg-green-100 text-green-600 text-xs">
-                      {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                      <img src="/player-placeholder.png" alt="Player placeholder" className="w-full h-full object-cover" />
                     </AvatarFallback>
                   </Avatar>
                 <span

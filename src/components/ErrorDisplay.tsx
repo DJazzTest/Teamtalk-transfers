@@ -35,9 +35,10 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
           variant="ghost"
           size="sm"
           onClick={onClearScrapeErrors}
-          className="text-red-600 hover:text-red-800 hover:bg-red-100"
+          className="text-red-600 hover:text-red-800 hover:bg-red-100 flex items-center gap-1"
         >
           <X className="w-4 h-4" />
+          Dismiss
         </Button>
       </div>
     </Alert>

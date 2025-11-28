@@ -5,6 +5,7 @@ import { findPlayerInSquads } from '@/utils/playerUtils';
 import { ChevronDown, ChevronUp, Info } from 'lucide-react';
 import { TransferDetailsModal } from './TransferDetailsModal';
 import { filterTransfersByWindow } from '@/utils/transferWindow';
+import { ClubBadgeIcon } from '@/components/ClubBadgeIcon';
 
 interface ClubTransfersListProps {
   transfers: Transfer[];
@@ -104,14 +105,21 @@ export const ClubTransfersList: React.FC<ClubTransfersListProps> = ({
         return (
           <div key={club} className="border-b border-gray-200 dark:border-slate-600 pb-4 last:border-b-0">
             {/* Club Header */}
-            <div 
-              className="flex items-center gap-2 mb-3 cursor-pointer hover:opacity-80 transition-opacity"
+            <div
+              className="flex items-center gap-3 mb-3 cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => onSelectClub?.(club)}
             >
               <span className="text-gray-500 dark:text-gray-400 text-sm font-semibold w-6">{displayNumber}.</span>
-              <h4 className={`font-bold text-base flex-1 ${type === 'in' ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}`}>
-                {club}:
-              </h4>
+              <div className="flex items-center gap-2">
+                <ClubBadgeIcon club={club} size="md" highlight={type === 'in'} />
+                <h4
+                  className={`font-bold text-base ${
+                    type === 'in' ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'
+                  }`}
+                >
+                  {club}
+                </h4>
+              </div>
             </div>
             
             {/* Transfers List */}
@@ -126,35 +134,30 @@ export const ClubTransfersList: React.FC<ClubTransfersListProps> = ({
                     const playerInfo = findPlayerInSquads(transfer.playerName);
                     const feeDisplay = transfer.fee || 'undisc.';
                     const targetClub = type === 'in' ? transfer.toClub : transfer.fromClub;
+                    const highlightFrom = type === 'out';
+                    const highlightTo = type === 'in';
                     
                     return (
-                      <div 
-                        key={transfer.id} 
-                        className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
+                      <div
+                        key={transfer.id}
+                        className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-200"
                       >
-                        <PlayerNameLink
-                          playerName={transfer.playerName}
-                          teamName={targetClub}
-                          playerData={playerInfo.player}
-                          className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-300 transition-colors"
-                          stopPropagation={true}
-                          navigateToClub={!!onSelectClub}
-                          onNavigateToClub={(clubName) => onSelectClub?.(clubName, transfer.playerName)}
-                        />
-                        <button
-                          type="button"
-                          className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            setSelectedTransfer(transfer);
-                            setIsTransferModalOpen(true);
-                          }}
-                          title="View transfer details"
-                        >
-                          <Info className="w-3 h-3" />
-                          <span>Details</span>
-                        </button>
-                        <span className="text-gray-500 dark:text-gray-400 text-sm">({feeDisplay})</span>
+                        <div className="flex items-center gap-2 hover:text-gray-900 dark:hover:text-white transition-colors">
+                          <PlayerNameLink
+                            playerName={transfer.playerName}
+                            teamName={targetClub}
+                            playerData={playerInfo.player}
+                            className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-300 transition-colors"
+                            stopPropagation={true}
+                            navigateToClub={!!onSelectClub}
+                            onNavigateToClub={(clubName) => onSelectClub?.(clubName, transfer.playerName)}
+                          />
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                          <ClubBadgeIcon club={transfer.fromClub} size="sm" highlight={highlightFrom} />
+                          <span>→</span>
+                          <ClubBadgeIcon club={transfer.toClub} size="sm" highlight={highlightTo} />
+                        </div>
                       </div>
                     );
                   })}

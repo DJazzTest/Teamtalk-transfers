@@ -51,7 +51,6 @@ const WebsiteContent = () => {
   useEffect(() => {
     localStorage.setItem('viewMode', viewMode);
   }, [viewMode]);
-  
   // All transfer data is now sourced from useTransferDataStore()
 
   // Favourites state for badge
@@ -104,7 +103,7 @@ const WebsiteContent = () => {
   const premierLeagueClubs = [
     'Arsenal',
     'Aston Villa',
-    'AFC Bournemouth',
+    'Bournemouth',
     'Brentford',
     'Brighton & Hove Albion',
     'Chelsea',
@@ -127,7 +126,7 @@ const WebsiteContent = () => {
     premierLeagueClubs.map((club) => normalizeClubName(club).toLowerCase())
   );
 
-  const handleSelectClub = (club: string, playerName?: string) => {
+  const handleSelectClub = React.useCallback((club: string, playerName?: string) => {
     const normalizedClub = normalizeClubName(club);
     const normalizedKey = normalizedClub.toLowerCase();
     if (!premierLeagueClubSet.has(normalizedKey)) {
@@ -143,7 +142,20 @@ const WebsiteContent = () => {
 
     setSelectedClub(canonicalClub);
     setSelectedPlayer(playerName || null);
-  };
+  }, [premierLeagueClubSet, premierLeagueClubs]);
+
+  useEffect(() => {
+    const handleClubBioNavigate = (event: Event) => {
+      const detail = (event as CustomEvent<{ action: string; club: string }>).detail;
+      if (!detail) return;
+      if (detail.action === 'overview') {
+        handleSelectClub(detail.club);
+      }
+      // Future actions (compare, squad) can be handled here.
+    };
+    window.addEventListener('clubbio:navigate', handleClubBioNavigate as EventListener);
+    return () => window.removeEventListener('clubbio:navigate', handleClubBioNavigate as EventListener);
+  }, [handleSelectClub]);
   const handleBackToDashboard = () => {
     setSelectedClub(null);
     setSelectedPlayer(null);

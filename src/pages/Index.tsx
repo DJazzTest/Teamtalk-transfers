@@ -33,8 +33,7 @@ const Index = () => {
     clearScrapeErrors
   } = useRefreshControl();
 
-  // Set countdown to December 31, 2025 at 23:00 (120 days, 16 hours, 19 minutes from now)
-  const [countdownTarget, setCountdownTarget] = useState('2025-12-31T23:00:00');
+  const [countdownTarget] = useState('2025-12-31T23:00:00');
   const [allTransfers, setAllTransfers] = useState<Transfer[]>([]);
   
   // Initialize transfers on mount

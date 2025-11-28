@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { TrendingUp, MessageCircle, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
-import { getPlayerImage } from '@/utils/playerImageUtils';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 
 interface HomeRecentRumoursProps {
   transfers: Transfer[];
@@ -55,13 +55,10 @@ export const HomeRecentRumours: React.FC<HomeRecentRumoursProps> = ({ transfers,
                     <AvatarImage 
                       src={getPlayerImage(transfer.playerName, transfer.toClub)} 
                       alt={transfer.playerName}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
+                      onError={handlePlayerImageError}
                     />
                     <AvatarFallback className="bg-blue-100 text-blue-600 text-xs">
-                      {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                      <img src="/player-placeholder.png" alt="Player placeholder" className="w-full h-full object-cover" />
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex items-center gap-2 flex-1 min-w-0">

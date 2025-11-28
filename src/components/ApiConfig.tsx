@@ -5,7 +5,6 @@ import { ApiKeyManager } from './ApiKeyManager';
 import ApiEndpointManager from './ApiEndpointManager';
 import { UrlTester } from './UrlTester';
 import { RefreshConfig } from './RefreshConfig';
-import { CountdownConfig } from './CountdownConfig';
 import { CrawlErrors } from './CrawlErrors';
 import { Settings } from 'lucide-react';
 

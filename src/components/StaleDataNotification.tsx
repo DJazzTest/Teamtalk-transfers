@@ -106,9 +106,10 @@ export const StaleDataNotification: React.FC<StaleDataNotificationProps> = ({ on
             onClick={handleDismiss}
             variant="ghost"
             size="sm"
-            className="text-amber-600 hover:text-amber-700 hover:bg-amber-100"
+            className="text-amber-600 hover:text-amber-700 hover:bg-amber-100 flex items-center gap-1"
           >
             <X className="w-4 h-4" />
+            Dismiss
           </Button>
         </div>
       </AlertDescription>

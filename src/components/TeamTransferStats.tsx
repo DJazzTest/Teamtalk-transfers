@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { clubBadgeMap } from './ClubsView';
+import { clubBadgeMap } from '@/data/clubBadgeMap';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, ArrowRight } from 'lucide-react';

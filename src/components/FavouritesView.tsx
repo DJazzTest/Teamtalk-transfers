@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Star, Heart, TrendingUp, TrendingDown, Home } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { TransferCard } from './TransferCard';
-import { clubBadgeMap } from './ClubsView';
+import { clubBadgeMap } from '@/data/clubBadgeMap';
 import { groupTransfersByNormalizedClub } from '@/utils/clubNormalizer';
 
 interface FavouritesViewProps {

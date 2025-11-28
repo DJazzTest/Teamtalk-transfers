@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { CheckCircle, TrendingUp, RefreshCw } from 'lucide-react';
+import { TrendingUp, RefreshCw } from 'lucide-react';
 import { Transfer } from '@/types/transfer';
 import { deduplicateTransfersUI } from '../utils/transferDeduplication';
-import { getPlayerImage } from '@/utils/playerImageUtils';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
+import { ClubBadgeIcon } from '@/components/ClubBadgeIcon';
 
 interface RecentConfirmedTransfersProps {
   transfers: Transfer[];
@@ -32,18 +32,19 @@ export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> =
   }
 
   return (
+    <>
     <Card className="border-gray-200/50 shadow-lg" style={{ backgroundColor: '#2F517A' }}>
       <div className="p-3 sm:p-6">
         <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="bg-green-100 p-1.5 sm:p-2 rounded-lg">
-              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-            </div>
-            <h3 className="text-lg sm:text-xl font-bold text-green-400">Latest Confirmed Transfers</h3>
-            <Badge className="bg-green-600 hover:bg-green-700 text-white text-xs">
-              CONFIRMED
-            </Badge>
+        <div className="flex items-center gap-3">
+          <div className="bg-green-100 p-1.5 sm:p-2 rounded-lg">
+            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
           </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.4em] text-green-200 font-medium">Confirmed In</p>
+            <h3 className="text-lg sm:text-xl font-bold text-green-400">Premier League arrivals</h3>
+          </div>
+        </div>
           <Button 
             onClick={handleRefresh}
             variant="outline" 
@@ -60,45 +61,35 @@ export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> =
               <Card key={transfer.id} className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:shadow-md transition-all duration-200 hover:border-green-300">
                 <div className="p-3 sm:p-4">
                 <div className="space-y-2 sm:space-y-3">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" />
-                    <Badge className="bg-green-600 hover:bg-green-700 text-white text-xs">
-                      #{index + 1} DONE
-                    </Badge>
-                  </div>
-                  
                   <div className="flex items-center gap-3">
                     <Avatar className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
                       <AvatarImage 
                         src={getPlayerImage(transfer.playerName, transfer.toClub)} 
                         alt={transfer.playerName}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
+                        onError={handlePlayerImageError}
                       />
                       <AvatarFallback className="bg-green-100 text-green-600 text-sm sm:text-base">
-                        {transfer.playerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                        <img 
+                          src="/player-placeholder.png" 
+                          alt="Player placeholder" 
+                          className="w-full h-full object-cover"
+                        />
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <h4 className="font-bold text-gray-800 text-base sm:text-lg leading-tight">{transfer.playerName}</h4>
-                      <div className="text-xs sm:text-sm text-gray-600 mt-1">
-                        <div className="flex items-center gap-1 flex-wrap">
-                          <span className="truncate">{transfer.fromClub}</span>
-                          <span>→</span>
-                          <span className="font-semibold text-gray-800 truncate">{transfer.toClub}</span>
-                        </div>
-                      </div>
                     </div>
                   </div>
                   
-                  <div className="flex justify-between items-end gap-2">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-base sm:text-lg font-bold text-green-600 truncate">{transfer.fee}</p>
-                      <p className="text-xs text-gray-500">{new Date(transfer.date).toLocaleDateString()}</p>
-                    </div>
-                    <p className="text-xs text-gray-600 truncate max-w-20 sm:max-w-none">{transfer.source}</p>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2">
+                        <ClubBadgeIcon club={transfer.fromClub} size="sm" />
+                        <span className="text-xs text-gray-500">→</span>
+                        <ClubBadgeIcon club={transfer.toClub} size="sm" highlight />
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {new Date(transfer.date).toLocaleDateString()}
+                      </div>
                   </div>
                 </div>
                 </div>
@@ -121,5 +112,6 @@ export const RecentConfirmedTransfers: React.FC<RecentConfirmedTransfersProps> =
         </div>
       </div>
     </Card>
+    </>
   );
 };

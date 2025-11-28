@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ShirtNumberIcon } from './ShirtNumberIcon';
 import { useTeamPlayerStats } from '@/hooks/usePlayerStats';
 import { syncPlayerToCMS, syncTeamToCMS } from '@/utils/syncPlayerDataToCMS';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 
 interface PlayerData {
   name: string;
@@ -1004,10 +1005,13 @@ export const PlayerManagement: React.FC = () => {
                         <div className="flex items-center gap-3">
                           <Avatar className="w-10 h-10">
                             <AvatarImage 
-                              src={displayPlayer.imageUrl || player.imageUrl} 
-                              alt={player.name} 
+                              src={displayPlayer.imageUrl || player.imageUrl || getPlayerImage(player.name)} 
+                              alt={player.name}
+                              onError={handlePlayerImageError}
                             />
-                            <AvatarFallback>{player.name[0]}</AvatarFallback>
+                            <AvatarFallback className="bg-green-100 text-green-600">
+                              <img src="/player-placeholder.png" alt="Player placeholder" className="w-full h-full object-cover" />
+                            </AvatarFallback>
                           </Avatar>
                           <div className="flex-1">
                             <div className="flex items-center gap-2">

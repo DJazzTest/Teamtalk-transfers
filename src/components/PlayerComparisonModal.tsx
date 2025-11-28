@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ import { TeamResultsFixturesService } from '@/services/teamResultsFixturesServic
 import { ShirtNumberIcon } from './ShirtNumberIcon';
 import { getPremierLeagueClubs } from '@/utils/teamMapping';
 import { getPlayerComparisonData, DetailedPlayerStats } from '@/data/playerComparisonData';
+import { fetchSofaScorePlayerData, searchSofaScorePlayers, SofaScorePlayerData } from '@/utils/fetchSofaScorePlayerData';
 
 interface Player {
   name: string;
@@ -28,6 +30,9 @@ interface Player {
   };
   weeklyWage?: number;
   yearlyWage?: number;
+  sofascoreId?: string;
+  sofascoreSlug?: string;
+  sofascoreUrl?: string;
   previousMatches?: Array<{
     competition: string;
     date: string;
@@ -55,10 +60,75 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
 }) => {
   const [team2, setTeam2] = useState<string>('');
   const [player2, setPlayer2] = useState<Player | null>(null);
+  const playerStatsCacheRef = useRef<Map<string, Player>>(new Map());
+  const [player1LiveData, setPlayer1LiveData] = useState<Player | null>(null);
+  const [player2LiveData, setPlayer2LiveData] = useState<Player | null>(null);
+  const [player1Loading, setPlayer1Loading] = useState(false);
+  const [player2Loading, setPlayer2Loading] = useState(false);
+  const [player1Error, setPlayer1Error] = useState<string | null>(null);
+  const [player2Error, setPlayer2Error] = useState<string | null>(null);
 
   const isGoalkeeper = player1?.position?.toLowerCase().includes('goalkeeper');
   const [upcomingFixtures, setUpcomingFixtures] = useState<Array<{ opponent: string; date: string }>>([]);
   const [loadingFixtures, setLoadingFixtures] = useState(false);
+
+  const getPlayerCacheKey = useCallback((playerObj?: Player | null, club?: string) => {
+    if (!playerObj?.name) return null;
+    const nameKey = playerObj.name.toLowerCase();
+    const positionKey = (playerObj.position || '').toLowerCase();
+    const clubKey = (club || '').toLowerCase();
+    return `${nameKey}|${positionKey}|${clubKey}`;
+  }, []);
+
+  const fetchLivePlayerStats = useCallback(
+    async (playerObj: Player, club?: string): Promise<Player | null> => {
+      const searchQueries = club ? [`${playerObj.name} ${club}`, playerObj.name] : [playerObj.name];
+      let playerId = playerObj.sofascoreId;
+      let playerSlug = playerObj.sofascoreSlug;
+      let playerUrl = playerObj.sofascoreUrl;
+
+      if (!playerId) {
+        let found: Awaited<ReturnType<typeof searchSofaScorePlayers>> | null = null;
+        for (const query of searchQueries) {
+          // eslint-disable-next-line no-await-in-loop
+          const result = await searchSofaScorePlayers(query);
+          if (result) {
+            found = result;
+            break;
+          }
+        }
+
+        if (!found) {
+          return null;
+        }
+
+        playerId = String(found.id);
+        playerSlug = found.slug || slugifyName(found.name || playerObj.name);
+        playerUrl = `https://www.sofascore.com/player/${playerSlug}/${playerId}`;
+      } else if (!playerUrl) {
+        const safeSlug = playerSlug || slugifyName(playerObj.name);
+        playerUrl = `https://www.sofascore.com/player/${safeSlug}/${playerId}`;
+      }
+
+      const sofaData = await fetchSofaScorePlayerData(playerUrl, playerId);
+      if (!sofaData) {
+        return null;
+      }
+
+      const mappedPlayer = mapSofaScoreDataToPlayer(playerObj, sofaData, {
+        id: playerId,
+        slug: playerSlug,
+        url: playerUrl
+      });
+
+      if (!mappedPlayer.seasonStats?.competitions?.length) {
+        return null;
+      }
+
+      return mappedPlayer;
+    },
+    []
+  );
 
   // Fetch upcoming fixtures to suggest opponent teams
   useEffect(() => {
@@ -132,9 +202,114 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
     return samePosition.length > 0 ? samePosition : team2Players;
   }, [team2Players, player1?.position]);
 
+  useEffect(() => {
+    if (!player1 || !isOpen) {
+      setPlayer1LiveData(null);
+      setPlayer1Error(null);
+      setPlayer1Loading(false);
+      return;
+    }
+
+    const cacheKey = getPlayerCacheKey(player1, team1);
+    if (cacheKey && playerStatsCacheRef.current.has(cacheKey)) {
+      setPlayer1LiveData(playerStatsCacheRef.current.get(cacheKey) || null);
+      return;
+    }
+
+    let cancelled = false;
+    setPlayer1Loading(true);
+    setPlayer1Error(null);
+
+    fetchLivePlayerStats(player1, team1)
+      .then((data) => {
+        if (cancelled) return;
+        if (data && cacheKey) {
+          playerStatsCacheRef.current.set(cacheKey, data);
+          setPlayer1LiveData(data);
+        } else {
+          setPlayer1LiveData(null);
+          if (!data) {
+            setPlayer1Error('Live SofaScore stats are not available for this player right now.');
+          }
+        }
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error('Error fetching SofaScore data for player 1:', error);
+        setPlayer1LiveData(null);
+        setPlayer1Error('Unable to fetch latest stats.');
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setPlayer1Loading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [player1, team1, isOpen, fetchLivePlayerStats, getPlayerCacheKey]);
+
+  useEffect(() => {
+    if (!player2 || !isOpen) {
+      setPlayer2LiveData(null);
+      setPlayer2Error(null);
+      setPlayer2Loading(false);
+      return;
+    }
+
+    const cacheKey = getPlayerCacheKey(player2, team2);
+    if (cacheKey && playerStatsCacheRef.current.has(cacheKey)) {
+      setPlayer2LiveData(playerStatsCacheRef.current.get(cacheKey) || null);
+      return;
+    }
+
+    let cancelled = false;
+    setPlayer2Loading(true);
+    setPlayer2Error(null);
+
+    fetchLivePlayerStats(player2, team2)
+      .then((data) => {
+        if (cancelled) return;
+        if (data && cacheKey) {
+          playerStatsCacheRef.current.set(cacheKey, data);
+          setPlayer2LiveData(data);
+        } else {
+          setPlayer2LiveData(null);
+          if (!data) {
+            setPlayer2Error('Live SofaScore stats are not available for this player right now.');
+          }
+        }
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error('Error fetching SofaScore data for player 2:', error);
+        setPlayer2LiveData(null);
+        setPlayer2Error('Unable to fetch latest stats.');
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setPlayer2Loading(false);
+        }
+      });
+
+  return () => {
+      cancelled = true;
+    };
+  }, [player2, team2, isOpen, fetchLivePlayerStats, getPlayerCacheKey]);
+
   // Get detailed stats for both players
-  const p1Stats = useMemo(() => getPlayerComparisonData(player1?.name || '', player1), [player1]);
-  const p2Stats = useMemo(() => getPlayerComparisonData(player2?.name || '', player2), [player2]);
+  const effectivePlayer1 = player1LiveData || player1;
+  const effectivePlayer2 = player2LiveData || player2;
+
+  const p1Stats = useMemo(
+    () => getPlayerComparisonData(player1?.name || '', effectivePlayer1),
+    [player1?.name, effectivePlayer1]
+  );
+  const p2Stats = useMemo(
+    () => getPlayerComparisonData(player2?.name || '', effectivePlayer2),
+    [player2?.name, effectivePlayer2]
+  );
 
   const parseNumericValue = (value: unknown): number => {
     if (typeof value === 'number') return value;
@@ -368,6 +543,16 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
             <Users className="w-6 h-6" />
             Head-to-Head Comparison
           </DialogTitle>
+          {(player1Loading || player2Loading) && (
+            <p className="text-xs text-gray-400 mt-2">
+              Fetching the latest SofaScore stats…
+            </p>
+          )}
+          {(player1Error || player2Error) && (
+            <p className="text-xs text-amber-300 mt-1">
+              {player1Error || player2Error}
+            </p>
+          )}
         </DialogHeader>
 
         <div className="space-y-6 mt-4">
@@ -446,8 +631,14 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
               {/* Player 1 */}
               <div className="flex items-end gap-3">
                 <Avatar className="w-16 h-16 border-2 border-blue-500">
-                  <AvatarImage src={player1.imageUrl} alt={player1.name} />
-                  <AvatarFallback className="bg-blue-600 text-white text-lg">{player1.name[0]}</AvatarFallback>
+                  <AvatarImage
+                    src={player1.imageUrl || getPlayerImage(player1.name, team1)}
+                    alt={player1.name}
+                    onError={handlePlayerImageError}
+                  />
+                  <AvatarFallback className="bg-green-100 text-green-600">
+                    <img src="/player-placeholder.png" alt="Player placeholder" className="w-full h-full object-cover" />
+                  </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
@@ -468,8 +659,14 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
                 {player2 ? (
                   <>
                     <Avatar className="w-16 h-16 border-2 border-purple-500">
-                      <AvatarImage src={player2.imageUrl} alt={player2.name} />
-                      <AvatarFallback className="bg-purple-600 text-white text-lg">{player2.name[0]}</AvatarFallback>
+                      <AvatarImage
+                        src={player2.imageUrl || getPlayerImage(player2.name, team2)}
+                        alt={player2.name}
+                        onError={handlePlayerImageError}
+                      />
+                      <AvatarFallback className="bg-green-100 text-green-600">
+                        <img src="/player-placeholder.png" alt="Player placeholder" className="w-full h-full object-cover" />
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -1644,4 +1841,47 @@ export const PlayerComparisonModal: React.FC<PlayerComparisonModalProps> = ({
       </DialogContent>
     </Dialog>
   );
+};
+
+const slugifyName = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+const mapSofaScoreDataToPlayer = (
+  player: Player,
+  sofaData: SofaScorePlayerData,
+  meta?: { id?: string; slug?: string; url?: string }
+): Player => {
+  const competitions = (sofaData.seasonStats || []).map((stat) => ({
+    competition: stat.competition,
+    matches: stat.matches,
+    minutes: stat.minutes,
+    goals: stat.goals,
+    assists: stat.assists,
+    cleanSheets: stat.cleanSheets,
+    goalsConceded: stat.goalsConceded,
+    saves: stat.saves,
+    yellowCards: stat.yellowCards,
+    redCards: stat.redCards,
+    averageRating: stat.rating
+  }));
+
+  return {
+    ...player,
+    name: sofaData.name || player.name,
+    age: sofaData.bio?.age ?? player.age,
+    bio: {
+      ...(player.bio || {}),
+      ...(sofaData.bio || {})
+    },
+    seasonStats: {
+      season: sofaData.currentSeason,
+      competitions
+    },
+    sofascoreId: meta?.id || player.sofascoreId || sofaData.sofascoreId,
+    sofascoreSlug: meta?.slug || player.sofascoreSlug,
+    sofascoreUrl: meta?.url || player.sofascoreUrl || sofaData.url
+  };
 };
