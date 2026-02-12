@@ -67,6 +67,11 @@ function getUniquePlayers(transfers: Transfer[]) {
 
 const uniquePlayers = getUniquePlayers(allTransfers);
 
+// LocalStorage keys for transfer window messaging
+const CLOSED_HEADLINE_KEY = 'transfer_window_closed_headline';
+const CLOSED_SUBTEXT_KEY = 'transfer_window_closed_subtext';
+const DEFAULT_CLOSED_HEADLINE = 'Transfer Window is Now Closed!';
+const DEFAULT_CLOSED_SUBTEXT = 'Transfer window opens mid June';
 
 const premierLeagueClubs = [
   'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton & Hove Albion',
@@ -105,6 +110,12 @@ export const TransferDataAdmin: React.FC = () => {
     return localStorage.getItem('transfer_window_open') || '2025-12-31T23:00';
   });
   const [timeLeft, setTimeLeft] = useState<any>(null);
+  const [closedHeadline, setClosedHeadline] = useState<string>(
+    () => localStorage.getItem(CLOSED_HEADLINE_KEY) || DEFAULT_CLOSED_HEADLINE
+  );
+  const [closedSubtext, setClosedSubtext] = useState<string>(
+    () => localStorage.getItem(CLOSED_SUBTEXT_KEY) || DEFAULT_CLOSED_SUBTEXT
+  );
 
   // Update transfer window countdown
   useEffect(() => {
@@ -125,6 +136,12 @@ export const TransferDataAdmin: React.FC = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, [openTime]);
+
+  // Persist closed-state messaging
+  useEffect(() => {
+    localStorage.setItem(CLOSED_HEADLINE_KEY, closedHeadline);
+    localStorage.setItem(CLOSED_SUBTEXT_KEY, closedSubtext);
+  }, [closedHeadline, closedSubtext]);
 
   // Helper to check for duplicates in allTransfers and current entries
   const isDuplicate = (playerName: string, toClub: string) => {
@@ -344,7 +361,32 @@ const parseBulkLine = (line: string) => {
         <div className="text-blue-200 text-md font-mono">
           {timeLeft
             ? `Countdown: ${timeLeft.days}d ${timeLeft.hours}h ${timeLeft.mins}m ${timeLeft.secs}s`
-            : 'Transfer window is now open!'}
+            : 'Transfer window is now closed!'}
+        </div>
+
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="flex flex-col gap-1">
+            <label className="block text-white font-semibold text-sm">
+              Closed state headline (homepage)
+            </label>
+            <Input
+              value={closedHeadline}
+              onChange={e => setClosedHeadline(e.target.value)}
+              placeholder="Transfer Window is Now Closed!"
+              className="bg-slate-900/70 border-slate-700 text-white"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="block text-white font-semibold text-sm">
+              Closed state subtext (homepage)
+            </label>
+            <Input
+              value={closedSubtext}
+              onChange={e => setClosedSubtext(e.target.value)}
+              placeholder="Transfer window opens mid June"
+              className="bg-slate-900/70 border-slate-700 text-white"
+            />
+          </div>
         </div>
       </div>
 
