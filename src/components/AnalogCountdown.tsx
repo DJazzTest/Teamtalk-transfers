@@ -48,14 +48,10 @@ export const AnalogCountdown: React.FC<AnalogCountdownProps> = ({ targetDate }) 
   return (
     <div className="space-y-3">
       <div className="text-center bg-gradient-to-br from-blue-50 to-blue-100 dark:from-[#1a2f4a] dark:to-[#1d3b5f] rounded-xl p-6 transition-colors border-2 border-blue-200 dark:border-[#335b8c] shadow-lg">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <h2 className="text-xl font-bold text-blue-700 dark:text-blue-300">Transfer Window Opens</h2>
-        </div>
-        
         {isExpired ? (
           <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-900/20 border-2 border-green-300 dark:border-green-700 rounded-xl p-6 max-w-md mx-auto shadow-inner">
-            <p className="text-green-700 dark:text-green-400 text-lg font-bold">Transfer Window is Now Open!</p>
-            <p className="text-gray-700 dark:text-gray-300 text-sm mt-2">The winter transfer window has begun</p>
+            <p className="text-green-700 dark:text-green-400 text-lg font-bold">Transfer Window is Now Closed!</p>
+            <p className="text-gray-700 dark:text-gray-300 text-sm mt-2">Transfer window opens mid June</p>
           </div>
         ) : (
           <div className="w-full">
