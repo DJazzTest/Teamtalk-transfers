@@ -1,0 +1,54 @@
+{
+  "slug": "ben-white",
+  "source": "local",
+  "profile": {
+    "name": "Ben White",
+    "fullName": "Benjamin William White",
+    "position": "DF (CB-FB, right)",
+    "primaryPosition": "Defender",
+    "footed": "Right",
+    "heightCm": 182,
+    "weightKg": 73,
+    "dateOfBirth": "1997-10-08",
+    "placeOfBirth": "Poole, England, United Kingdom",
+    "nationality": "England",
+    "club": "Arsenal",
+    "nationalTeam": "England",
+    "instagram": "@ben_white6",
+    "wages": {
+      "amount": 150000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2028-06-30",
+    "bio": "Ben White is a versatile defender for Arsenal and England, comfortable at centre-back or right-back and valued for his composure in possession and progressive passing."
+  },
+  "currentSeasonSummary": {
+    "2025-2026": {
+      "Premier League": {
+        "mp": 1,
+        "min": 70,
+        "gls": 0,
+        "ast": 0,
+        "xg": 0,
+        "npxG": 0,
+        "xAG": 0,
+        "sca": 2,
+        "gca": 0
+      },
+      "Champions League": {
+        "mp": 1,
+        "min": 57,
+        "gls": 0,
+        "ast": 0,
+        "xg": 0,
+        "npxG": 0,
+        "xAG": 0.2,
+        "sca": 3,
+        "gca": 0
+      }
+    }
+  },
+  "imagePath": "ben-white.png"
+}

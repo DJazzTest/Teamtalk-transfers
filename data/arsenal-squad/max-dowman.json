@@ -1,0 +1,27 @@
+{
+  "slug": "max-dowman",
+  "source": "local",
+  "profile": {
+    "name": "Max Dowman",
+    "fullName": "Max Dowman",
+    "position": "MF",
+    "primaryPosition": "Midfielder",
+    "dateOfBirth": "2009-12-31",
+    "placeOfBirth": "England, United Kingdom",
+    "nationality": "England",
+    "club": "Arsenal U21",
+    "youthNationalTeam": "England",
+    "bio": "Max Dowman is an emerging midfield talent in Arsenal's academy, a technically neat passer who links phases and shows maturity beyond his years."
+  },
+  "currentSeasonSummary": {
+    "2024-2025": {
+      "Premier League 2": {
+        "mp": 1,
+        "min": 7,
+        "gls": 0,
+        "ast": 0
+      }
+    }
+  },
+  "imagePath": "max-dowman.png"
+}

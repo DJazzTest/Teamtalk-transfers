@@ -1,0 +1,37 @@
+Standard Stats 2025-2026 Newcastle United: Premier League 
+GlossaryToggle Per90 Stats
+Playing Time	Performance	Per 90 Minutes	
+Player	Nation	Pos	Age	MP	Starts	Min	90s	Gls	Ast	G+A	G-PK	PK	PKatt	CrdY	CrdR	Gls	Ast	G+A	G-PK	G+A-PK	Matches
+Bruno Guimarães	br BRA	MF	28-092	23	22	2,017	22.4	9	4	13	7	2	2	5	0	0.40	0.18	0.58	0.31	0.49	Matches
+Malick Thiaw	de GER	DF	24-192	23	22	1,938	21.5	4	0	4	4	0	0	3	0	0.19	0.00	0.19	0.19	0.19	Matches
+Sandro Tonali	it ITA	MF	25-284	26	22	1,769	19.7	0	1	1	0	0	0	3	0	0.00	0.05	0.05	0.00	0.05	Matches
+Nick Pope	eng ENG	GK	33-303	20	20	1,786	19.8	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Anthony Gordon	eng ENG	FW	24-357	20	18	1,302	14.5	3	2	5	1	2	2	3	1	0.21	0.14	0.35	0.07	0.21	Matches
+Dan Burn	eng ENG	DF	33-283	18	17	1,439	16.0	0	2	2	0	0	0	7	1	0.00	0.13	0.13	0.00	0.13	Matches
+Nick Woltemade	de GER	FW	24-002	23	17	1,420	15.8	7	2	9	6	1	1	0	0	0.44	0.13	0.57	0.38	0.51	Matches
+Joelinton	br BRA	MF	29-186	19	17	1,363	15.1	2	0	2	2	0	0	6	0	0.13	0.00	0.13	0.13	0.13	Matches
+Harvey Barnes	eng ENG	FW	28-069	25	14	1,383	15.4	5	0	5	5	0	0	0	0	0.33	0.00	0.33	0.33	0.33	Matches
+Lewis Hall	eng ENG	DF	21-161	19	14	1,303	14.5	0	1	1	0	0	0	2	0	0.00	0.07	0.07	0.00	0.07	Matches
+Kieran Trippier	eng ENG	DF	35-150	14	13	1,138	12.6	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Jacob Murphy	eng ENG	FW,MF	30-357	21	13	1,089	12.1	2	1	3	2	0	0	1	0	0.17	0.08	0.25	0.17	0.25	Matches
+Sven Botman	nl NED	DF	26-035	15	12	1,061	11.8	1	1	2	1	0	0	1	0	0.08	0.08	0.17	0.08	0.17	Matches
+Lewis Miley	eng ENG	MF,DF	19-291	19	11	1,136	12.6	1	3	4	1	0	0	0	0	0.08	0.24	0.32	0.08	0.32	Matches
+Fabian Schär	ch SUI	DF	34-058	16	11	1,091	12.1	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Valentino Livramento	eng ENG	DF	23-096	13	11	1,049	11.7	0	1	1	0	0	0	1	0	0.00	0.09	0.09	0.00	0.09	Matches
+Anthony Elanga	se SWE	FW	23-295	22	9	928	10.3	0	1	1	0	0	0	0	0	0.00	0.10	0.10	0.00	0.10	Matches
+Jacob Ramsey	eng ENG	MF	24-264	16	6	722	8.0	1	0	1	1	0	0	3	0	0.12	0.00	0.12	0.12	0.12	Matches
+Aaron Ramsdale	eng ENG	GK	27-278	7	6	554	6.2	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Joe Willock	eng ENG	MF	26-180	15	5	452	5.0	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Yoane Wissa	cd COD	FW	29-166	11	4	413	4.6	1	0	1	1	0	0	1	0	0.22	0.00	0.22	0.22	0.22	Matches
+William Osula	dk DEN	FW	22-196	13	1	255	2.8	1	0	1	1	0	0	0	0	0.35	0.00	0.35	0.35	0.35	Matches
+Emil Krafth	se SWE	DF	31-198	1	1	45	0.5	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Jamaal Lascelles	eng ENG	DF	32-097	2	0	21	0.2	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Alex Murphy	ie IRL	DF	21-236	1	0	2	0.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Adedamola Alabi	eng ENG	MF	16-222	0	0														Matches
+Sean Neave	eng ENG	FW	18-265	0	0														Matches
+John Ruddy	eng ENG	GK	39-115	0	0														Matches
+Park Seungsoo	kr KOR	MF	18-336	0	0														Matches
+Leo Shahar	eng ENG	DF	18-335	0	0														Matches
+Squad Total			27.5	26	286	2,340	26.0	37	19	56	32	5	5	40	2	1.42	0.73	2.15	1.23	1.96	
+Opponent Total			26.7	26	286	2,340	26.0	35	21	56	31	4	4	59	2	1.35	0.81	2.15	1.19	2.00	
+Totals may not be complete for all senior-level play, see coverage note.

@@ -1,0 +1,53 @@
+{
+  "slug": "jakub-kiwior",
+  "source": "local",
+  "profile": {
+    "name": "Jakub Kiwior",
+    "fullName": "Jakub Kiwior",
+    "position": "DF-MF (CB)",
+    "primaryPosition": "Defender",
+    "footed": "Left",
+    "heightCm": 182,
+    "weightKg": 78,
+    "dateOfBirth": "2000-02-15",
+    "placeOfBirth": "Tychy, Poland",
+    "nationality": "Poland",
+    "club": "Arsenal",
+    "nationalTeam": "Poland",
+    "wages": {
+      "amount": 58000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2028-06-30",
+    "bio": "Jakub Kiwior is a left-footed defender for Arsenal and Poland, able to play at centre-back or full-back and contribute with progressive passing from the back."
+  },
+  "currentSeasonSummary": {
+    "2024-2025": {
+      "Premier League": {
+        "mp": 13,
+        "min": 762,
+        "gls": 1,
+        "ast": 0,
+        "xg": 0.2,
+        "npxG": 0.2,
+        "xAG": 0.3,
+        "sca": 6,
+        "gca": 0
+      },
+      "Champions League": {
+        "mp": 8,
+        "min": 592,
+        "gls": 0,
+        "ast": 0,
+        "xg": 0,
+        "npxG": 0,
+        "xAG": 0.7,
+        "sca": 3,
+        "gca": 0
+      }
+    }
+  },
+  "imagePath": "jakub-kiwior.png"
+}

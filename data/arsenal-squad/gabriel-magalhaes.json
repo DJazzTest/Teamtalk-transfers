@@ -1,0 +1,58 @@
+{
+  "slug": "gabriel-magalhaes",
+  "source": "local",
+  "profile": {
+    "name": "Gabriel Magalhaes",
+    "fullName": "Gabriel dos Santos Magalhaes",
+    "alsoKnownAs": [
+      "Gabriel dos Santos"
+    ],
+    "position": "DF (CB, left)",
+    "primaryPosition": "Defender",
+    "footed": "Left",
+    "heightCm": 190,
+    "weightKg": 78,
+    "dateOfBirth": "1997-12-19",
+    "placeOfBirth": "Sao Paulo, Brazil",
+    "nationality": "Brazil",
+    "club": "Arsenal",
+    "nationalTeam": "Brazil",
+    "wages": {
+      "amount": 150000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2029-06-30",
+    "bio": "Gabriel Magalhaes is a left-footed centre-back for Arsenal and Brazil, dominant in duels and aerial battles while offering a strong physical presence in the back line."
+  },
+  "currentSeasonSummary": {
+    "season": "2025-2026",
+    "club": "Arsenal",
+    "domesticLeague": {
+      "competition": "Premier League",
+      "mp": 7,
+      "min": 630,
+      "gls": 1,
+      "ast": 0,
+      "xG": 0.5,
+      "npxG": 0.5,
+      "xAG": 0,
+      "sca": 6,
+      "gca": 0
+    },
+    "internationalCups": {
+      "competition": "Champions League",
+      "mp": 2,
+      "min": 164,
+      "gls": 0,
+      "ast": 0,
+      "xG": 0,
+      "npxG": 0,
+      "xAG": 0,
+      "sca": 1,
+      "gca": 0
+    }
+  },
+  "imagePath": "gabriel-magalhaes.png"
+}

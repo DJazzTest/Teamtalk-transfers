@@ -63,6 +63,27 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
   isOpen, 
   onClose 
 }) => {
+  interface ArsenalFbProfile {
+    name?: string;
+    fullName?: string;
+    position?: string;
+    primaryPosition?: string;
+    dateOfBirth?: string;
+    placeOfBirth?: string;
+    nationality?: string;
+    club?: string;
+    bio?: string;
+    heightCm?: number;
+    weightKg?: number;
+    footed?: string;
+    preferredFoot?: string;
+  }
+
+  interface ArsenalFbPlayerRecord {
+    slug: string;
+    profile?: ArsenalFbProfile;
+  }
+
   const [stats, setStats] = useState<{ goals: number; appearances: number }>({ goals: 0, appearances: 0 });
   const [competitionStats, setCompetitionStats] = useState<Array<{
     competition: string;
@@ -76,6 +97,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
   const [expandedTransferHistory, setExpandedTransferHistory] = useState(false);
   const [expandedRecentMatches, setExpandedRecentMatches] = useState(false);
   const [showFullProfile, setShowFullProfile] = useState(false);
+  const [arsenalProfile, setArsenalProfile] = useState<ArsenalFbPlayerRecord | null>(null);
 
   useEffect(() => {
     if (!player || !isOpen) {
@@ -94,6 +116,44 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
       setCompetitionStats([]);
     }
   }, [player, isOpen]);
+
+  // Load local Arsenal scouting profile when viewing an Arsenal player
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadArsenalProfile = async () => {
+      if (!isOpen || !player?.name || teamName !== 'Arsenal') {
+        setArsenalProfile(null);
+        return;
+      }
+      try {
+        const res = await fetch('/arsenal-squad.json', { cache: 'no-cache' });
+        if (!res.ok) {
+          if (!cancelled) setArsenalProfile(null);
+          return;
+        }
+        const data = (await res.json()) as ArsenalFbPlayerRecord[];
+        const targetName = player.name.toLowerCase();
+        const record =
+          data.find(p => p.profile?.name?.toLowerCase() === targetName) ||
+          data.find(p => p.slug?.replace(/-/g, ' ').toLowerCase() === targetName) ||
+          null;
+        if (!cancelled) {
+          setArsenalProfile(record);
+        }
+      } catch {
+        if (!cancelled) {
+          setArsenalProfile(null);
+        }
+      }
+    };
+
+    loadArsenalProfile();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [player?.name, teamName, isOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -274,6 +334,15 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
 
   const filterStats = (statsGroup: { label: string; value: string | null }[]) =>
     statsGroup.filter(stat => stat.value !== null);
+
+  // Overlay profile fields for Arsenal players using local scouting data
+  const overlayProfile = arsenalProfile?.profile;
+  const displayNationality = overlayProfile?.nationality || player.bio?.nationality;
+  const displayDateOfBirth = overlayProfile?.dateOfBirth || player.bio?.dateOfBirth;
+  const displayHeight =
+    (overlayProfile?.heightCm ? `${overlayProfile.heightCm} cm` : undefined) || player.bio?.height;
+  const displayPreferredFoot = overlayProfile?.footed || overlayProfile?.preferredFoot || player.bio?.preferredFoot;
+  const displayBioDescription = overlayProfile?.bio || player.bio?.description;
 
   // Helper to extract numeric value from stat (handles percentages, formatted strings, etc.)
   const extractNumericValue = (value: string | null): number => {
@@ -522,7 +591,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
             <DialogTitle className="text-2xl font-bold text-white flex items-center gap-3">
               <Avatar className="w-12 h-12">
                 <AvatarImage
-                  src={player?.imageUrl || getPlayerImage(player?.name || '')}
+                  src={player?.imageUrl || getPlayerImage(player?.name || '', teamName)}
                   alt={player?.name || 'Player'}
                   onError={handlePlayerImageError}
                 />
@@ -568,7 +637,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
           {/* Basic Info - Single Line Format */}
           <div className="flex flex-wrap items-center gap-1.5 text-sm text-gray-300 font-medium">
             {/* Nationality Code - Nationality */}
-            {player.bio?.nationality && (
+            {displayNationality && (
               <>
                 <span className="text-white font-semibold">
                   {(() => {
@@ -610,21 +679,21 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
                       'Suriname': 'SR', 'French Guiana': 'GF', 'Venezuela': 'VE', 'Colombia': 'CO', 'Ecuador': 'EC',
                       'Peru': 'PE', 'Bolivia': 'BO', 'Paraguay': 'PY', 'Uruguay': 'UY', 'Chile': 'CL'
                     };
-                    return countryCodes[player.bio.nationality] || player.bio.nationality.substring(0, 2).toUpperCase();
+                    return countryCodes[displayNationality] || displayNationality.substring(0, 2).toUpperCase();
                   })()}
                 </span>
                 <span className="text-gray-400">-</span>
-                <span className="text-white">{player.bio.nationality}</span>
+                <span className="text-white">{displayNationality}</span>
                 <span className="text-gray-400">-</span>
               </>
             )}
             
             {/* Date of Birth with Age */}
-            {player.bio?.dateOfBirth && (
+            {displayDateOfBirth && (
               <>
                 <span className="text-white">
                   {(() => {
-                    const dob = player.bio.dateOfBirth;
+                    const dob = displayDateOfBirth;
                     // Try to parse date - handle formats like "15 Sept 1995" or "1995-09-15"
                     let day = '', month = '', year = '';
                     const age = player.age || 0;
@@ -681,19 +750,19 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
             )}
             
             {/* Height */}
-            {player.bio?.height && (
+            {displayHeight && (
               <>
-                <span className="text-white">{player.bio.height}</span>
+                <span className="text-white">{displayHeight}</span>
                 <span className="text-gray-400">-</span>
               </>
             )}
             
             {/* Preferred Foot with Boot Icon */}
-            {player.bio?.preferredFoot && (
+            {displayPreferredFoot && (
               <>
                 <span className="text-white inline-flex items-center gap-1">
                   <Footprints className="w-3.5 h-3.5" />
-                  {player.bio.preferredFoot}
+                  {displayPreferredFoot}
                 </span>
                 <span className="text-gray-400">-</span>
               </>
@@ -953,10 +1022,10 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
           })()}
 
           {/* About - Description */}
-          {player.bio?.description && (
+          {displayBioDescription && (
             <Card className="p-4 bg-slate-700/50 border-slate-600">
               <h3 className="text-lg font-semibold text-white mb-3">About</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">{player.bio?.description || ''}</p>
+              <p className="text-gray-300 text-sm leading-relaxed">{displayBioDescription}</p>
             </Card>
           )}
 

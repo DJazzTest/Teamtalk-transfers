@@ -1,0 +1,1660 @@
+[
+  {
+    "slug": "andre-annous",
+    "source": "local",
+    "profile": {
+      "name": "Andre Annous",
+      "fullName": "Andre Annous",
+      "position": "FW",
+      "primaryPosition": "Forward",
+      "dateOfBirth": "2007-12-27",
+      "placeOfBirth": "England, United Kingdom",
+      "nationality": "England",
+      "club": "Arsenal U21",
+      "citizenship": "England",
+      "bio": "Andre Annous is a quick, direct forward for Arsenal's under-21s, known for his sharp movement in the box and calm finishing in youth competitions."
+    },
+    "currentSeasonSummary": {
+      "2024-2025": {
+        "Premier League 2": {
+          "mp": 11,
+          "min": 515,
+          "gls": 2,
+          "ast": 0
+        }
+      }
+    },
+    "imagePath": "andre-annous.png"
+  },
+  {
+    "slug": "ben-white",
+    "source": "local",
+    "profile": {
+      "name": "Ben White",
+      "fullName": "Benjamin William White",
+      "position": "DF (CB-FB, right)",
+      "primaryPosition": "Defender",
+      "footed": "Right",
+      "heightCm": 182,
+      "weightKg": 73,
+      "dateOfBirth": "1997-10-08",
+      "placeOfBirth": "Poole, England, United Kingdom",
+      "nationality": "England",
+      "club": "Arsenal",
+      "nationalTeam": "England",
+      "instagram": "@ben_white6",
+      "wages": {
+        "amount": 150000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2028-06-30",
+      "bio": "Ben White is a versatile defender for Arsenal and England, comfortable at centre-back or right-back and valued for his composure in possession and progressive passing."
+    },
+    "currentSeasonSummary": {
+      "2025-2026": {
+        "Premier League": {
+          "mp": 1,
+          "min": 70,
+          "gls": 0,
+          "ast": 0,
+          "xg": 0,
+          "npxG": 0,
+          "xAG": 0,
+          "sca": 2,
+          "gca": 0
+        },
+        "Champions League": {
+          "mp": 1,
+          "min": 57,
+          "gls": 0,
+          "ast": 0,
+          "xg": 0,
+          "npxG": 0,
+          "xAG": 0.2,
+          "sca": 3,
+          "gca": 0
+        }
+      }
+    },
+    "imagePath": "ben-white.png"
+  },
+  {
+    "slug": "bukayo-saka",
+    "source": "local",
+    "profile": {
+      "name": "Bukayo Saka",
+      "fullName": "Bukayo Saka",
+      "position": "FW-MF (Right Wing)",
+      "primaryPosition": "Forward",
+      "footed": "Left",
+      "dateOfBirth": "2001-09-05",
+      "placeOfBirth": "London, England",
+      "nationality": "England",
+      "club": "Arsenal",
+      "nationalTeam": "England",
+      "bio": "Bukayo Saka is a left-footed winger for Arsenal and England, combining relentless work-rate with creativity and end product from the right flank."
+    },
+    "currentSeasonSummary": {
+      "season": "2024-2025",
+      "club": "Arsenal",
+      "domesticLeague": {
+        "competition": "Premier League",
+        "mp": 25,
+        "min": 1729,
+        "gls": 6,
+        "ast": 10,
+        "xG": 6.8,
+        "npxG": 6,
+        "xAG": 7.6,
+        "npxG_xAG": 13.7
+      }
+    },
+    "imagePath": "bukayo-saka.png"
+  },
+  {
+    "slug": "christian-norgaard",
+    "source": "local",
+    "profile": {
+      "name": "Christian Norgaard",
+      "fullName": "Christian Thers Norgaard",
+      "position": "MF (CM-DM)",
+      "primaryPosition": "Midfielder",
+      "footed": "Right",
+      "heightCm": 185,
+      "weightKg": 69,
+      "dateOfBirth": "1994-03-10",
+      "placeOfBirth": "Copenhagen, Denmark",
+      "nationality": "Denmark",
+      "club": "Brentford",
+      "nationalTeam": "Denmark",
+      "wages": {
+        "amount": 40000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2027-06-30",
+      "bio": "Christian Norgaard is a deep-lying midfielder for Brentford and Denmark, recognised for his defensive reading of the game and tidy distribution from the base of midfield."
+    },
+    "currentSeasonSummary": {
+      "2024-2025": {
+        "Premier League": {
+          "mp": 32,
+          "min": 2639,
+          "gls": 5,
+          "ast": 3,
+          "xg": 3.9,
+          "npxG": 3.9,
+          "xAG": 1,
+          "sca": 51,
+          "gca": 11
+        }
+      }
+    },
+    "imagePath": "christian-norgaard.png"
+  },
+  {
+    "slug": "cristhian-mosquera",
+    "source": "local",
+    "profile": {
+      "name": "Cristhian Mosquera",
+      "fullName": "Cristhian Mosquera",
+      "position": "DF (CB)",
+      "primaryPosition": "Defender",
+      "footed": "Right",
+      "heightCm": 188,
+      "weightKg": 78,
+      "dateOfBirth": "2004-06-27",
+      "placeOfBirth": "Alicante, Spain",
+      "nationality": "Spain",
+      "club": "Valencia",
+      "youthNationalTeam": "Spain",
+      "wages": {
+        "amount": 36154,
+        "currency": "EUR",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2026-06-30",
+      "bio": "Cristhian Mosquera is a young Valencia centre-back, a right-footed defender who couples strong aerial ability with calm play out from the back."
+    },
+    "currentSeasonSummary": {
+      "2024-2025": {
+        "La Liga": {
+          "mp": 32,
+          "min": 2869,
+          "gls": 1,
+          "ast": 0,
+          "xg": 0.4,
+          "npxG": 0.4,
+          "xAG": 0,
+          "sca": 12,
+          "gca": 0
+        }
+      }
+    },
+    "imagePath": "cristhian-mosquera.png"
+  },
+  {
+    "slug": "david-raya",
+    "profile": {
+      "name": "David Raya",
+      "position": "Goalkeeper",
+      "dateOfBirth": null,
+      "placeOfBirth": null,
+      "bio": "David Raya is a ball-playing goalkeeper for Arsenal, noted for his sweeping, confident handling and high-quality distribution under pressure.",
+      "yellowCards": null,
+      "redCards": null,
+      "preferredFoot": null,
+      "imagePath": null
+    },
+    "standardStatsDomesticLeagues": null,
+    "playingTimeDomesticLeagues": null,
+    "playerClubSummary": null,
+    "lastFiveMatchesDomesticLeagues": [
+      {
+        "date": "2026-02-12",
+        "day": "Thu",
+        "round": "Matchweek 26",
+        "venue": "Away",
+        "result": "D 1–1",
+        "squad": "Arsenal",
+        "opponent": "Brentford",
+        "started": true,
+        "position": "GK",
+        "minutes": 90,
+        "shotsOnTargetAgainst": 3,
+        "goalsAgainst": 1,
+        "saves": 2,
+        "savePct": 66.7,
+        "cleanSheet": false,
+        "penaltiesFaced": 0,
+        "penaltiesAllowed": 0,
+        "penaltiesSaved": 0,
+        "penaltiesMissedByOpp": 0
+      },
+      {
+        "date": "2026-02-07",
+        "day": "Sat",
+        "round": "Matchweek 25",
+        "venue": "Home",
+        "result": "W 3–0",
+        "squad": "Arsenal",
+        "opponent": "Sunderland",
+        "started": true,
+        "position": "GK",
+        "minutes": 90,
+        "shotsOnTargetAgainst": 2,
+        "goalsAgainst": 0,
+        "saves": 2,
+        "savePct": 100,
+        "cleanSheet": true,
+        "penaltiesFaced": 0,
+        "penaltiesAllowed": 0,
+        "penaltiesSaved": 0,
+        "penaltiesMissedByOpp": 0
+      },
+      {
+        "date": "2026-01-31",
+        "day": "Sat",
+        "round": "Matchweek 24",
+        "venue": "Away",
+        "result": "W 4–0",
+        "squad": "Arsenal",
+        "opponent": "Leeds United",
+        "started": true,
+        "position": "GK",
+        "minutes": 90,
+        "shotsOnTargetAgainst": 1,
+        "goalsAgainst": 0,
+        "saves": 1,
+        "savePct": 100,
+        "cleanSheet": true,
+        "penaltiesFaced": 0,
+        "penaltiesAllowed": 0,
+        "penaltiesSaved": 0,
+        "penaltiesMissedByOpp": 0
+      },
+      {
+        "date": "2026-01-25",
+        "day": "Sun",
+        "round": "Matchweek 23",
+        "venue": "Home",
+        "result": "L 2–3",
+        "squad": "Arsenal",
+        "opponent": "Manchester Utd",
+        "started": true,
+        "position": "GK",
+        "minutes": 90,
+        "shotsOnTargetAgainst": 3,
+        "goalsAgainst": 3,
+        "saves": 0,
+        "savePct": 0,
+        "cleanSheet": false,
+        "penaltiesFaced": 0,
+        "penaltiesAllowed": 0,
+        "penaltiesSaved": 0,
+        "penaltiesMissedByOpp": 0
+      },
+      {
+        "date": "2026-01-17",
+        "day": "Sat",
+        "round": "Matchweek 22",
+        "venue": "Away",
+        "result": "D 0–0",
+        "squad": "Arsenal",
+        "opponent": "Nottingham Forest",
+        "started": true,
+        "position": "GK",
+        "minutes": 90,
+        "shotsOnTargetAgainst": 0,
+        "goalsAgainst": 0,
+        "saves": 0,
+        "savePct": null,
+        "cleanSheet": true,
+        "penaltiesFaced": 0,
+        "penaltiesAllowed": 0,
+        "penaltiesSaved": 0,
+        "penaltiesMissedByOpp": 0
+      }
+    ],
+    "imagePath": "david-raya.png"
+  },
+  {
+    "slug": "ethan-nwaneri",
+    "source": "local",
+    "profile": {
+      "name": "Ethan Nwaneri",
+      "fullName": "Ethan Chidiebere Nwaneri",
+      "position": "MF",
+      "primaryPosition": "Midfielder",
+      "heightCm": 180,
+      "weightKg": 82,
+      "dateOfBirth": "2007-03-21",
+      "placeOfBirth": "England, United Kingdom",
+      "nationality": "England",
+      "club": "Arsenal",
+      "youthNationalTeam": "England",
+      "bio": "Ethan Nwaneri is a highly rated teenage midfielder for Arsenal, a creative, goal-scoring number eight who drifts into pockets and carries the ball through traffic."
+    },
+    "currentSeasonSummary": {
+      "2024-2025": {
+        "Premier League": {
+          "mp": 14,
+          "min": 291,
+          "gls": 3,
+          "ast": 0,
+          "xg": 0.5,
+          "npxG": 0.5,
+          "xAG": 0.3,
+          "sca": 8,
+          "gca": 1
+        },
+        "Champions League": {
+          "mp": 5,
+          "min": 153,
+          "gls": 1,
+          "ast": 0,
+          "xg": 0.4,
+          "npxG": 0.4,
+          "xAG": 0.3,
+          "sca": 1,
+          "gca": 0
+        }
+      }
+    },
+    "imagePath": "ethan-nwaneri.png"
+  },
+  {
+    "slug": "gabriel-jesus",
+    "source": "local",
+    "profile": {
+      "name": "Gabriel Jesus",
+      "fullName": "Gabriel Fernando de Jesus",
+      "position": "FW-MF",
+      "primaryPosition": "Forward",
+      "footed": "Right",
+      "heightCm": 177,
+      "weightKg": 72,
+      "dateOfBirth": "1997-04-03",
+      "placeOfBirth": "Sao Paulo, Brazil",
+      "nationality": "Brazil",
+      "club": "Arsenal",
+      "nationalTeam": "Brazil",
+      "instagram": "@dejesusoficial",
+      "wages": {
+        "amount": 265000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2027-06-30",
+      "honours": [
+        "5x Domestic League Champion",
+        "2016 Brazil Golden Ball"
+      ],
+      "bio": "Gabriel Jesus is a forward for Arsenal and Brazil, an energetic presser who links play, dribbles aggressively and attacks the box from multiple starting positions."
+    },
+    "currentSeasonSummary": {},
+    "imagePath": "gabriel-jesus.png"
+  },
+  {
+    "slug": "gabriel-magalhaes",
+    "source": "local",
+    "profile": {
+      "name": "Gabriel Magalhaes",
+      "fullName": "Gabriel dos Santos Magalhaes",
+      "alsoKnownAs": [
+        "Gabriel dos Santos"
+      ],
+      "position": "DF (CB, left)",
+      "primaryPosition": "Defender",
+      "footed": "Left",
+      "heightCm": 190,
+      "weightKg": 78,
+      "dateOfBirth": "1997-12-19",
+      "placeOfBirth": "Sao Paulo, Brazil",
+      "nationality": "Brazil",
+      "club": "Arsenal",
+      "nationalTeam": "Brazil",
+      "wages": {
+        "amount": 150000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2029-06-30",
+      "bio": "Gabriel Magalhaes is a left-footed centre-back for Arsenal and Brazil, dominant in duels and aerial battles while offering a strong physical presence in the back line."
+    },
+    "currentSeasonSummary": {
+      "season": "2025-2026",
+      "club": "Arsenal",
+      "domesticLeague": {
+        "competition": "Premier League",
+        "mp": 7,
+        "min": 630,
+        "gls": 1,
+        "ast": 0,
+        "xG": 0.5,
+        "npxG": 0.5,
+        "xAG": 0,
+        "sca": 6,
+        "gca": 0
+      },
+      "internationalCups": {
+        "competition": "Champions League",
+        "mp": 2,
+        "min": 164,
+        "gls": 0,
+        "ast": 0,
+        "xG": 0,
+        "npxG": 0,
+        "xAG": 0,
+        "sca": 1,
+        "gca": 0
+      }
+    },
+    "imagePath": "gabriel-magalhaes.png"
+  },
+  {
+    "slug": "gabriel-martinelli",
+    "source": "local",
+    "profile": {
+      "name": "Gabriel Martinelli",
+      "fullName": "Gabriel Teodoro Martinelli Silva",
+      "position": "FW-MF",
+      "primaryPosition": "Forward",
+      "footed": "Right",
+      "heightCm": 180,
+      "weightKg": 74,
+      "dateOfBirth": "2001-06-18",
+      "placeOfBirth": "Guarulhos, Brazil",
+      "nationality": "Brazil",
+      "club": "Arsenal",
+      "nationalTeam": "Brazil",
+      "instagram": "@ga_martinelli01",
+      "wages": {
+        "amount": 180000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2027-06-30",
+      "bio": "Gabriel Martinelli is a dynamic wide forward for Arsenal and Brazil, known for his direct dribbling, off-ball runs in behind and relentless pressing from the front."
+    },
+    "currentSeasonSummary": {
+      "2023-2024": {
+        "Premier League": {
+          "mp": 35,
+          "min": 2019,
+          "gls": 6,
+          "ast": 4,
+          "xg": 6.8,
+          "npxG": 6.8,
+          "xAG": 6.1,
+          "sca": 92,
+          "gca": 11
+        },
+        "Champions League": {
+          "mp": 6,
+          "min": 481,
+          "gls": 2,
+          "ast": 1,
+          "xg": 1.8,
+          "npxG": 1.8,
+          "xAG": 0.8,
+          "sca": 17,
+          "gca": 4
+        }
+      }
+    },
+    "imagePath": "gabriel-martinelli.png"
+  },
+  {
+    "slug": "jack-porter",
+    "profile": {
+      "name": "Jack Porter",
+      "position": "Goalkeeper",
+      "dateOfBirth": "2008-07-15",
+      "placeOfBirth": "Chelmsford, UK",
+      "bio": "Jack made 17 youth appearances last season, stepped up for two under‑21 games, and became Arsenal's youngest ever starter when he debuted in the Carabao Cup at 16 years and 72 days. He also played every FA Youth Cup match, making two shoot‑out saves against QPR.",
+      "yellowCards": 0,
+      "redCards": 0,
+      "preferredFoot": "Right",
+      "imagePath": "Jack-Porter-ad6b2726-9d46-49a9-91c8-9c72c7e2cb71.png"
+    },
+    "standardStatsDomesticLeagues": {
+      "headers": [
+        "Season",
+        "Age",
+        "Squad",
+        "Country",
+        "Comp",
+        "LgRank",
+        "MP",
+        "Starts",
+        "Min",
+        "90s",
+        "Gls",
+        "Ast",
+        "G+A",
+        "G-PK",
+        "PK",
+        "PKatt",
+        "CrdY",
+        "CrdR",
+        "Gls_90",
+        "Ast_90",
+        "G+A_90",
+        "G-PK_90",
+        "G+A-PK_90"
+      ],
+      "rows": [
+        {
+          "season": "2024-2025",
+          "age": 16,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "1. Premier League",
+          "lgRank": "2nd",
+          "mp": 0,
+          "starts": 0,
+          "min": null,
+          "90s": null,
+          "gls": null,
+          "ast": null,
+          "gPlusA": null,
+          "gMinusPK": null,
+          "pk": null,
+          "pkatt": null,
+          "crdY": null,
+          "crdR": null,
+          "gls90": null,
+          "ast90": null,
+          "gPlusA90": null,
+          "gMinusPK90": null,
+          "gPlusAMinusPK90": null
+        },
+        {
+          "season": "2024-2025",
+          "age": 16,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "Jr. PL2",
+          "lgRank": "8th",
+          "mp": 2,
+          "starts": 2,
+          "min": 180,
+          "90s": 2,
+          "gls": 0,
+          "ast": 0,
+          "gPlusA": 0,
+          "gMinusPK": 0,
+          "pk": 0,
+          "pkatt": 0,
+          "crdY": 0,
+          "crdR": 0,
+          "gls90": "0.00",
+          "ast90": "0.00",
+          "gPlusA90": "0.00",
+          "gMinusPK90": "0.00",
+          "gPlusAMinusPK90": "0.00"
+        },
+        {
+          "season": "2025-2026",
+          "age": 17,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "Jr. PL2",
+          "lgRank": "12th",
+          "mp": 2,
+          "starts": 2,
+          "min": 180,
+          "90s": 2,
+          "gls": 0,
+          "ast": 0,
+          "gPlusA": 0,
+          "gMinusPK": 0,
+          "pk": 0,
+          "pkatt": 0,
+          "crdY": 0,
+          "crdR": 0,
+          "gls90": "0.00",
+          "ast90": "0.00",
+          "gPlusA90": "0.00",
+          "gMinusPK90": "0.00",
+          "gPlusAMinusPK90": "0.00"
+        }
+      ],
+      "summary": {
+        "club": "Arsenal (2 Seasons)",
+        "leagues": "1 League",
+        "mp": 4,
+        "starts": 4,
+        "min": 360,
+        "90s": 4,
+        "gls": 0,
+        "ast": 0,
+        "gPlusA": 0,
+        "gMinusPK": 0,
+        "pk": 0,
+        "pkatt": 0,
+        "crdY": 0,
+        "crdR": 0
+      }
+    },
+    "playingTimeDomesticLeagues": {
+      "headers": [
+        "Season",
+        "Age",
+        "Squad",
+        "Country",
+        "Comp",
+        "LgRank",
+        "MP",
+        "Min",
+        "Mn/MP",
+        "Min%",
+        "90s",
+        "Starts",
+        "Mn/Start",
+        "Compl",
+        "Subs",
+        "Mn/Sub",
+        "unSub",
+        "PPM",
+        "onG",
+        "onGA",
+        "+/-",
+        "+/-90",
+        "On-Off"
+      ],
+      "rows": [
+        {
+          "season": "2024-2025",
+          "age": 16,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "1. Premier League",
+          "lgRank": "2nd",
+          "mp": 0,
+          "min": null,
+          "mnPerMP": null,
+          "minPct": null,
+          "90s": null,
+          "starts": 0,
+          "mnPerStart": null,
+          "compl": null,
+          "subs": 0,
+          "mnPerSub": null,
+          "unSub": null,
+          "ppm": 1,
+          "onG": null,
+          "onGA": null,
+          "plusMinus": null,
+          "plusMinus90": null,
+          "onOff": null
+        },
+        {
+          "season": "2024-2025",
+          "age": 16,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "Jr. PL2",
+          "lgRank": "8th",
+          "mp": 2,
+          "min": 180,
+          "mnPerMP": 90,
+          "minPct": "10.0",
+          "90s": 2,
+          "starts": 2,
+          "mnPerStart": 90,
+          "compl": 2,
+          "subs": 0,
+          "mnPerSub": null,
+          "unSub": null,
+          "ppm": 1.5,
+          "onG": 6,
+          "onGA": 5,
+          "plusMinus": "+1",
+          "plusMinus90": "+0.50",
+          "onOff": "+0.22"
+        },
+        {
+          "season": "2025-2026",
+          "age": 17,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "Jr. PL2",
+          "lgRank": "12th",
+          "mp": 2,
+          "min": 180,
+          "mnPerMP": 90,
+          "minPct": "16.7",
+          "90s": 2,
+          "starts": 2,
+          "mnPerStart": 90,
+          "compl": 2,
+          "subs": 0,
+          "mnPerSub": null,
+          "unSub": null,
+          "ppm": 3,
+          "onG": 4,
+          "onGA": 2,
+          "plusMinus": "+2",
+          "plusMinus90": "+1.00",
+          "onOff": "+1.30"
+        }
+      ],
+      "summary": {
+        "club": "Arsenal (2 Seasons)",
+        "mp": 4,
+        "min": 360,
+        "mnPerMP": 90,
+        "minPct": "12.5",
+        "90s": 4,
+        "starts": 4,
+        "mnPerStart": 90,
+        "compl": 4,
+        "subs": 0,
+        "ppm": 2.25,
+        "onG": 10,
+        "onGA": 7,
+        "plusMinus": "+3",
+        "plusMinus90": "+0.75",
+        "onOff": "+0.68"
+      }
+    },
+    "playerClubSummary": {
+      "headers": [
+        "Season",
+        "Age",
+        "Squad",
+        "Country",
+        "Comp",
+        "DomesticLeagues_MP",
+        "DomesticLeagues_Min",
+        "DomesticLeagues_GA",
+        "DomesticLeagues_CS",
+        "DomesticCups_MP",
+        "DomesticCups_Min",
+        "DomesticCups_GA",
+        "DomesticCups_CS",
+        "InternationalCups_MP",
+        "InternationalCups_Min",
+        "InternationalCups_GA",
+        "InternationalCups_CS",
+        "AllComps_MP",
+        "AllComps_Min",
+        "AllComps_GA",
+        "AllComps_CS"
+      ],
+      "rows": [
+        {
+          "season": "2024-2025",
+          "age": 16,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "1. Premier League",
+          "domesticLeagues_mp": null,
+          "domesticLeagues_min": null,
+          "domesticLeagues_ga": null,
+          "domesticLeagues_cs": null,
+          "domesticCups_mp": 1,
+          "domesticCups_min": 90,
+          "domesticCups_ga": 1,
+          "domesticCups_cs": 0,
+          "internationalCups_mp": null,
+          "internationalCups_min": null,
+          "internationalCups_ga": null,
+          "internationalCups_cs": null,
+          "allComps_mp": 1,
+          "allComps_min": 90,
+          "allComps_ga": 1,
+          "allComps_cs": 0
+        },
+        {
+          "season": "2024-2025",
+          "age": 16,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "Jr. PL2",
+          "domesticLeagues_mp": 2,
+          "domesticLeagues_min": 180,
+          "domesticLeagues_ga": 5,
+          "domesticLeagues_cs": 0,
+          "domesticCups_mp": null,
+          "domesticCups_min": null,
+          "domesticCups_ga": null,
+          "domesticCups_cs": null,
+          "internationalCups_mp": null,
+          "internationalCups_min": null,
+          "internationalCups_ga": null,
+          "internationalCups_cs": null,
+          "allComps_mp": 2,
+          "allComps_min": 180,
+          "allComps_ga": 5,
+          "allComps_cs": 0
+        },
+        {
+          "season": "2025-2026",
+          "age": 17,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "1. Premier League",
+          "domesticLeagues_mp": null,
+          "domesticLeagues_min": null,
+          "domesticLeagues_ga": null,
+          "domesticLeagues_cs": null,
+          "domesticCups_mp": null,
+          "domesticCups_min": null,
+          "domesticCups_ga": null,
+          "domesticCups_cs": null,
+          "internationalCups_mp": null,
+          "internationalCups_min": null,
+          "internationalCups_ga": null,
+          "internationalCups_cs": null,
+          "allComps_mp": null,
+          "allComps_min": null,
+          "allComps_ga": null,
+          "allComps_cs": null
+        },
+        {
+          "season": "2025-2026",
+          "age": 17,
+          "squad": "Arsenal",
+          "country": "eng ENG",
+          "comp": "Jr. PL2",
+          "domesticLeagues_mp": 2,
+          "domesticLeagues_min": 180,
+          "domesticLeagues_ga": 2,
+          "domesticLeagues_cs": 1,
+          "domesticCups_mp": null,
+          "domesticCups_min": null,
+          "domesticCups_ga": null,
+          "domesticCups_cs": null,
+          "internationalCups_mp": null,
+          "internationalCups_min": null,
+          "internationalCups_ga": null,
+          "internationalCups_cs": null,
+          "allComps_mp": 2,
+          "allComps_min": 180,
+          "allComps_ga": 2,
+          "allComps_cs": 1
+        }
+      ],
+      "totals": {
+        "seasons": "2 Seasons*",
+        "club": "1 Club",
+        "domesticLeagues_mp": 0,
+        "domesticCups_mp": 1,
+        "domesticCups_min": 90,
+        "domesticCups_ga": 1,
+        "domesticCups_cs": 0,
+        "internationalCups_mp": 0,
+        "allComps_mp": 1,
+        "allComps_min": 90,
+        "allComps_ga": 1,
+        "allComps_cs": 0
+      }
+    },
+    "imagePath": "jack-porter.png"
+  },
+  {
+    "slug": "jakub-kiwior",
+    "source": "local",
+    "profile": {
+      "name": "Jakub Kiwior",
+      "fullName": "Jakub Kiwior",
+      "position": "DF-MF (CB)",
+      "primaryPosition": "Defender",
+      "footed": "Left",
+      "heightCm": 182,
+      "weightKg": 78,
+      "dateOfBirth": "2000-02-15",
+      "placeOfBirth": "Tychy, Poland",
+      "nationality": "Poland",
+      "club": "Arsenal",
+      "nationalTeam": "Poland",
+      "wages": {
+        "amount": 58000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2028-06-30",
+      "bio": "Jakub Kiwior is a left-footed defender for Arsenal and Poland, able to play at centre-back or full-back and contribute with progressive passing from the back."
+    },
+    "currentSeasonSummary": {
+      "2024-2025": {
+        "Premier League": {
+          "mp": 13,
+          "min": 762,
+          "gls": 1,
+          "ast": 0,
+          "xg": 0.2,
+          "npxG": 0.2,
+          "xAG": 0.3,
+          "sca": 6,
+          "gca": 0
+        },
+        "Champions League": {
+          "mp": 8,
+          "min": 592,
+          "gls": 0,
+          "ast": 0,
+          "xg": 0,
+          "npxG": 0,
+          "xAG": 0.7,
+          "sca": 3,
+          "gca": 0
+        }
+      }
+    },
+    "imagePath": "jakub-kiwior.png"
+  },
+  {
+    "slug": "jurrien-timber",
+    "source": "local",
+    "profile": {
+      "name": "Jurrien Timber",
+      "fullName": "Jurrien David Norman Timber",
+      "position": "DF (CB-FB, right)",
+      "primaryPosition": "Defender",
+      "footed": "Right",
+      "heightCm": 179,
+      "weightKg": 78,
+      "dateOfBirth": "2001-06-17",
+      "placeOfBirth": "Utrecht, Netherlands",
+      "nationality": "Netherlands",
+      "club": "Arsenal",
+      "nationalTeam": "Netherlands",
+      "wages": {
+        "amount": 90000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2028-06-30",
+      "bio": "Jurrien Timber is a technically strong defender for Arsenal and the Netherlands, comfortable stepping into midfield from centre-back or right-back to help build play."
+    },
+    "currentSeasonSummary": {
+      "season": "2025-2026",
+      "club": "Arsenal",
+      "domesticLeague": {
+        "competition": "Premier League",
+        "mp": 7,
+        "min": 522,
+        "gls": 2,
+        "ast": 1,
+        "xG": 1.8,
+        "npxG": 1.8,
+        "xAG": 0.4,
+        "sca": 19,
+        "gca": 3
+      },
+      "internationalCups": {
+        "competition": "Champions League",
+        "mp": 2,
+        "min": 123,
+        "gls": 0,
+        "ast": 0,
+        "xG": 0,
+        "npxG": 0,
+        "xAG": 0.2,
+        "sca": 2,
+        "gca": 0
+      }
+    },
+    "imagePath": "jurrien-timber.png"
+  },
+  {
+    "slug": "kai-havertz",
+    "source": "local",
+    "profile": {
+      "name": "Kai Havertz",
+      "fullName": "Kai Lukas Havertz",
+      "position": "FW-MF (AM-CM-WM)",
+      "primaryPosition": "Forward",
+      "footed": "Left",
+      "heightCm": 186,
+      "weightKg": 77,
+      "dateOfBirth": "1999-06-11",
+      "placeOfBirth": "Aachen, Germany",
+      "nationality": "Germany",
+      "club": "Arsenal",
+      "nationalTeam": "Germany",
+      "instagram": "@kaihavertz29",
+      "wages": {
+        "amount": 280000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2028-06-30",
+      "honours": [
+        "2020-21 Champions League Champion"
+      ],
+      "bio": "Kai Havertz is a tall, elegant forward for Arsenal and Germany, operating between the lines as a hybrid striker-midfielder with smart movement and aerial threat."
+    },
+    "currentSeasonSummary": {
+      "2025-2026": {
+        "Premier League": {
+          "mp": 1,
+          "min": 30,
+          "gls": 0,
+          "ast": 0,
+          "xg": 0,
+          "npxG": 0,
+          "xAG": 0,
+          "sca": 3,
+          "gca": 0
+        }
+      }
+    },
+    "imagePath": "kai-havertz.png"
+  },
+  {
+    "slug": "kepa-arrizabalaga",
+    "source": "local",
+    "profile": {
+      "name": "Kepa Arrizabalaga",
+      "fullName": "Kepa Arrizabalaga Revuelta",
+      "position": "GK",
+      "primaryPosition": "Goalkeeper",
+      "footed": "Right",
+      "heightCm": 189,
+      "weightKg": 87,
+      "dateOfBirth": "1994-10-03",
+      "placeOfBirth": "Ondarroa, Spain",
+      "nationality": "Spain",
+      "club": "Arsenal",
+      "nationalTeam": "Spain",
+      "instagram": "@kepaarrizabalaga",
+      "wages": {
+        "amount": 60000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2028-06-30",
+      "honours": [
+        "2023-24 La Liga Champion",
+        "2023-24 Champions League Champion"
+      ],
+      "bio": "Kepa Arrizabalaga is an experienced Spanish goalkeeper, now at Arsenal, recognised for his reflex shot-stopping and agility on his line."
+    },
+    "currentSeasonSummary": {},
+    "imagePath": "kepa-arrizabalaga.png"
+  },
+  {
+    "slug": "leandro-trossard",
+    "source": "local",
+    "profile": {
+      "name": "Leandro Trossard",
+      "fullName": "Leandro Trossard",
+      "position": "FW-MF (AM)",
+      "primaryPosition": "Forward",
+      "footed": "Right",
+      "heightCm": 172,
+      "weightKg": 60,
+      "dateOfBirth": "1994-12-04",
+      "placeOfBirth": "Maasmechelen, Belgium",
+      "nationality": "Belgium",
+      "club": "Arsenal",
+      "nationalTeam": "Belgium",
+      "wages": {
+        "amount": 90000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2026-06-30",
+      "bio": "Leandro Trossard is a versatile attacking midfielder and forward for Arsenal and Belgium, dangerous between the lines with both feet and strong combination play."
+    },
+    "currentSeasonSummary": {
+      "season": "2025-2026",
+      "club": "Arsenal",
+      "domesticLeague": {
+        "competition": "Premier League",
+        "mp": 5,
+        "min": 294,
+        "gls": 0,
+        "ast": 1,
+        "xG": 0.6,
+        "npxG": 0.6,
+        "xAG": 0.3,
+        "sca": 12,
+        "gca": 1
+      },
+      "internationalCups": {
+        "competition": "Champions League",
+        "mp": 2,
+        "min": 98,
+        "gls": 1,
+        "ast": 1,
+        "xG": 0.5,
+        "npxG": 0.5,
+        "xAG": 0.7,
+        "sca": 3,
+        "gca": 1
+      }
+    },
+    "imagePath": "leandro-trossard.png"
+  },
+  {
+    "slug": "marli-salmon",
+    "source": "local",
+    "profile": {
+      "name": "Marli Salmon",
+      "fullName": "Marli Salmon",
+      "position": "DF",
+      "primaryPosition": "Defender",
+      "dateOfBirth": "2009-08-29",
+      "placeOfBirth": "England, United Kingdom",
+      "nationality": "England",
+      "club": "Arsenal U21",
+      "citizenship": "England",
+      "bio": "Marli Salmon is a young defender for Arsenal's under-21s, a composed presence at the back who reads the game well and looks to play out from defence."
+    },
+    "currentSeasonSummary": {
+      "2024-2025": {
+        "Premier League 2": {
+          "mp": 5,
+          "min": 450,
+          "gls": 0,
+          "ast": 0
+        }
+      }
+    },
+    "imagePath": "marli-salmon.png"
+  },
+  {
+    "slug": "martin-odegaard",
+    "source": "local",
+    "profile": {
+      "name": "Martin Odegaard",
+      "fullName": "Martin Odegaard",
+      "position": "MF (AM)",
+      "primaryPosition": "Midfielder",
+      "footed": "Left",
+      "heightCm": 178,
+      "weightKg": 68,
+      "dateOfBirth": "1998-12-17",
+      "placeOfBirth": "Drammen, Norway",
+      "nationality": "Norway",
+      "club": "Arsenal",
+      "nationalTeam": "Norway",
+      "bio": "Martin Odegaard is Arsenal's creative captain and a Norwegian international, a left-footed attacking midfielder who dictates tempo and creates chances with incisive passing."
+    },
+    "currentSeasonSummary": {},
+    "imagePath": "martin-odegaard.png"
+  },
+  {
+    "slug": "martin-zubimendi",
+    "source": "local",
+    "profile": {
+      "name": "Martín Zubimendi",
+      "fullName": "Martín Zubimendi Ibáñez",
+      "position": "MF (CM-DM)",
+      "footed": "Right",
+      "heightCm": 180,
+      "weightKg": 77,
+      "dateOfBirth": "1999-02-02",
+      "placeOfBirth": "Donostia / San Sebastián, Spain",
+      "nationalTeam": "Spain",
+      "club": "Real Sociedad",
+      "weeklyWageEur": 57692,
+      "contractExpiry": "2027-06-30",
+      "bio": "Martin Zubimendi is a deep-lying midfielder for Real Sociedad and Spain, excellent at screening the defence, recycling possession and progressing play under pressure."
+    },
+    "currentSeasonSummary": {
+      "season": "2023-2024",
+      "club": "Real Sociedad",
+      "competitions": {
+        "La Liga": {
+          "mp": 31,
+          "min": 2654,
+          "gls": 4,
+          "ast": 1,
+          "xg": 2.7,
+          "npxg": 2.7,
+          "xag": 1.5,
+          "sca": 55,
+          "gca": 4
+        },
+        "Champions League": {
+          "mp": 8,
+          "min": 712,
+          "gls": 0,
+          "ast": 0,
+          "xg": 0.6,
+          "npxg": 0.6,
+          "xag": 0.2,
+          "sca": 12,
+          "gca": 0
+        }
+      }
+    },
+    "scoutingReport365": {
+      "scope": "Last 365 Days, Men’s Big 5 Leagues + UCL/UEL",
+      "positionGroup": "Midfielders",
+      "per90": {
+        "nonPenaltyGoals": 0.11,
+        "npxg": 0.09,
+        "shotsTotal": 0.78,
+        "assists": 0.03,
+        "xag": 0.04,
+        "npxgPlusxag": 0.13,
+        "shotCreatingActions": 1.79,
+        "passesAttempted": 53.1,
+        "passCompletionPct": 86,
+        "progressivePasses": 5.21,
+        "progressiveCarries": 1.07,
+        "successfulTakeOns": 0.45,
+        "touchesAttPen": 1.23,
+        "progressivePassesReceived": 0.94,
+        "tackles": 1.79,
+        "interceptions": 1.18,
+        "blocks": 1.12,
+        "clearances": 1.76,
+        "aerialsWon": 1.55
+      },
+      "percentiles": {
+        "nonPenaltyGoals": 72,
+        "npxg": 60,
+        "shotsTotal": 31,
+        "assists": 19,
+        "xag": 26,
+        "npxgPlusxag": 39,
+        "shotCreatingActions": 26,
+        "passesAttempted": 62,
+        "passCompletionPct": 69,
+        "progressivePasses": 62,
+        "progressiveCarries": 40,
+        "successfulTakeOns": 32,
+        "touchesAttPen": 51,
+        "progressivePassesReceived": 17,
+        "tackles": 36,
+        "interceptions": 68,
+        "blocks": 44,
+        "clearances": 77,
+        "aerialsWon": 81
+      }
+    },
+    "imagePath": "martin-zubimendi.png"
+  },
+  {
+    "slug": "max-dowman",
+    "source": "local",
+    "profile": {
+      "name": "Max Dowman",
+      "fullName": "Max Dowman",
+      "position": "MF",
+      "primaryPosition": "Midfielder",
+      "dateOfBirth": "2009-12-31",
+      "placeOfBirth": "England, United Kingdom",
+      "nationality": "England",
+      "club": "Arsenal U21",
+      "youthNationalTeam": "England",
+      "bio": "Max Dowman is an emerging midfield talent in Arsenal's academy, a technically neat passer who links phases and shows maturity beyond his years."
+    },
+    "currentSeasonSummary": {
+      "2024-2025": {
+        "Premier League 2": {
+          "mp": 1,
+          "min": 7,
+          "gls": 0,
+          "ast": 0
+        }
+      }
+    },
+    "imagePath": "max-dowman.png"
+  },
+  {
+    "slug": "mikel-merino",
+    "source": "local",
+    "profile": {
+      "name": "Mikel Merino",
+      "fullName": "Mikel Merino Zazon",
+      "position": "MF (AM-CM-DM-WM)",
+      "primaryPosition": "Midfielder",
+      "footed": "Left",
+      "heightCm": 188,
+      "weightKg": 78,
+      "dateOfBirth": "1996-06-22",
+      "placeOfBirth": "Pamplona, Spain",
+      "nationality": "Spain",
+      "club": "Arsenal",
+      "nationalTeam": "Spain",
+      "instagram": "@mikelmerino",
+      "wages": {
+        "amount": 130000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2028-06-30",
+      "bio": "Mikel Merino is a left-footed central midfielder for Arsenal and Spain, combining physical presence with line-breaking passing and late surges into the box."
+    },
+    "currentSeasonSummary": {
+      "2025-2026": {
+        "Premier League": {
+          "mp": 4,
+          "min": 212,
+          "gls": 0,
+          "ast": 0,
+          "xg": 0.1,
+          "npxG": 0.1,
+          "xAG": 0.1,
+          "sca": 3,
+          "gca": 0
+        },
+        "Champions League": {
+          "mp": 1,
+          "min": 90,
+          "gls": 0,
+          "ast": 0,
+          "xg": 0.1,
+          "npxG": 0.1,
+          "xAG": 0,
+          "sca": 4,
+          "gca": 0
+        }
+      }
+    },
+    "imagePath": "mikel-merino.png"
+  },
+  {
+    "slug": "myles-lewis-skelly",
+    "source": "local",
+    "profile": {
+      "name": "Myles Lewis-Skelly",
+      "fullName": "Myles Lewis-Skelly",
+      "position": "DF",
+      "primaryPosition": "Defender",
+      "heightCm": 178,
+      "dateOfBirth": "2006-09-26",
+      "placeOfBirth": "England, United Kingdom",
+      "nationality": "England",
+      "club": "Arsenal",
+      "nationalTeam": "England",
+      "bio": "Myles Lewis-Skelly is a versatile young defender for Arsenal and England, aggressive in duels and comfortable stepping into midfield with the ball."
+    },
+    "currentSeasonSummary": {
+      "2024-2025": {
+        "Premier League": {
+          "mp": 19,
+          "min": 1078,
+          "gls": 1,
+          "ast": 0,
+          "xg": 0.1,
+          "npxG": 0.1,
+          "xAG": 0.3,
+          "sca": 21,
+          "gca": 0
+        },
+        "Champions League": {
+          "mp": 8,
+          "min": 408,
+          "gls": 0,
+          "ast": 1,
+          "xg": 0.1,
+          "npxG": 0.1,
+          "xAG": 0.3,
+          "sca": 11,
+          "gca": 2
+        }
+      }
+    },
+    "imagePath": "myles-lewis-skelly.png"
+  },
+  {
+    "slug": "noni-madueke",
+    "source": "local",
+    "profile": {
+      "name": "Noni Madueke",
+      "fullName": "Chukwunonso Tristan Madueke",
+      "position": "FW-MF",
+      "primaryPosition": "Forward",
+      "footed": "Left",
+      "heightCm": 176,
+      "weightKg": 66,
+      "dateOfBirth": "2002-03-10",
+      "placeOfBirth": "England, United Kingdom",
+      "nationality": "England",
+      "club": "Chelsea",
+      "youthNationalTeam": "England",
+      "bio": "Noni Madueke is an explosive winger for Chelsea and England, a left-footed dribbler who attacks from the right flank and creates chances with quick changes of direction."
+    },
+    "currentSeasonSummary": {
+      "2023-2024": {
+        "Premier League": {
+          "mp": 23,
+          "min": 1053,
+          "gls": 5,
+          "ast": 2,
+          "xg": 2.5,
+          "npxG": 1.7,
+          "xAG": 2.6,
+          "sca": 51,
+          "gca": 8
+        }
+      }
+    },
+    "imagePath": "noni-madueke.png"
+  },
+  {
+    "slug": "piero-hincapie",
+    "source": "local",
+    "profile": {
+      "name": "Piero Hincapie",
+      "fullName": "Piero Martin Hincapie Reyna",
+      "position": "DF (CB, left)",
+      "primaryPosition": "Defender",
+      "footed": "Left",
+      "heightCm": 182,
+      "weightKg": 64,
+      "dateOfBirth": "2002-01-09",
+      "placeOfBirth": "Esmeraldas, Ecuador",
+      "nationality": "Ecuador",
+      "club": "Bayer Leverkusen",
+      "nationalTeam": "Ecuador",
+      "wages": {
+        "amount": 40000,
+        "currency": "EUR",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2027-06-30",
+      "honours": [
+        "2023-24 Bundesliga Champion"
+      ],
+      "bio": "Piero Hincapie is a left-footed Ecuadorian defender, starring for Bayer Leverkusen, noted for his anticipation, recovery pace and comfort carrying the ball out of defence."
+    },
+    "currentSeasonSummary": {
+      "season": "2023-2024",
+      "club": "Bayer Leverkusen",
+      "domesticLeague": {
+        "competition": "Bundesliga",
+        "mp": 26,
+        "min": 1484,
+        "gls": 1,
+        "ast": 2,
+        "xG": 1.9,
+        "npxG": 1.9,
+        "xAG": 0.5,
+        "sca": 23,
+        "gca": 5
+      },
+      "internationalCups": {
+        "competition": "Europa League",
+        "mp": 12,
+        "min": 913,
+        "gls": 0,
+        "ast": 0,
+        "xG": 1,
+        "npxG": 1,
+        "xAG": 0.7,
+        "sca": 12,
+        "gca": 0
+      }
+    },
+    "imagePath": "piero-hincapie.png"
+  },
+  {
+    "slug": "riccardo-calafiori",
+    "source": "local",
+    "profile": {
+      "name": "Riccardo Calafiori",
+      "fullName": "Riccardo Calafiori",
+      "position": "DF (LB/CB)",
+      "primaryPosition": "Defender",
+      "footed": "Left",
+      "dateOfBirth": "2002-05-19",
+      "placeOfBirth": "Rome, Italy",
+      "nationality": "Italy",
+      "club": "Arsenal",
+      "nationalTeam": "Italy",
+      "bio": "Riccardo Calafiori is an Italian defender for Arsenal, able to play at left-back or centre-back and contribute with progressive carries and incisive passes."
+    },
+    "currentSeasonSummary": {
+      "season": "2024-2025",
+      "club": "Arsenal",
+      "domesticLeague": {
+        "competition": "Premier League",
+        "mp": 18,
+        "starts": 11,
+        "min": 938,
+        "gls": 2,
+        "ast": 1,
+        "xG": 0.9,
+        "npxG": 0.9,
+        "xAG": 0.3,
+        "npxG_xAG": 1.1,
+        "prgC": 21,
+        "prgP": 54,
+        "prgR": 29
+      }
+    },
+    "imagePath": "riccardo-calafiori.png"
+  },
+  {
+    "slug": "viktor-gyokeres",
+    "source": "local",
+    "profile": {
+      "name": "Viktor Gyokeres",
+      "fullName": "Viktor Einar Gyokeres",
+      "position": "FW-MF",
+      "primaryPosition": "Forward",
+      "footed": "Right",
+      "heightCm": 187,
+      "weightKg": 86,
+      "dateOfBirth": "1998-06-04",
+      "placeOfBirth": "Bromolla, Sweden",
+      "nationality": "Sweden",
+      "club": "Arsenal",
+      "nationalTeam": "Sweden",
+      "wages": {
+        "amount": 200000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2030-06-30",
+      "honours": [
+        "2x Primeira Liga Champion",
+        "2x Portuguese Best Player",
+        "2024 Swedish Golden Ball"
+      ],
+      "bio": "Viktor Gyokeres is a powerful Swedish striker for Arsenal, a relentless runner in behind who combines strength, hold-up play and a high-volume scoring threat."
+    },
+    "currentSeasonSummary": {
+      "season": "2025-2026",
+      "club": "Arsenal",
+      "domesticLeague": {
+        "competition": "Premier League",
+        "mp": 8,
+        "min": 665,
+        "gls": 3,
+        "ast": 0,
+        "xG": 3.4,
+        "npxG": 2.6,
+        "xAG": 0.3,
+        "sca": 15,
+        "gca": 1
+      },
+      "internationalCups": {
+        "competition": "Champions League",
+        "mp": 2,
+        "min": 154,
+        "gls": 0,
+        "ast": 0,
+        "xG": 0.9,
+        "npxG": 0.9,
+        "xAG": 0,
+        "sca": 2,
+        "gca": 1
+      }
+    },
+    "imagePath": "viktor-gyokeres.png"
+  },
+  {
+    "slug": "william-saliba",
+    "source": "local",
+    "profile": {
+      "name": "William Saliba",
+      "fullName": "William Saliba",
+      "position": "DF (CB, right)",
+      "primaryPosition": "Defender",
+      "footed": "Right",
+      "heightCm": 193,
+      "weightKg": 76,
+      "dateOfBirth": "2001-03-24",
+      "placeOfBirth": "Bondy, France",
+      "nationality": "France",
+      "club": "Arsenal",
+      "nationalTeam": "France",
+      "instagram": "@w.saliba4",
+      "wages": {
+        "amount": 250000,
+        "currency": "GBP",
+        "period": "weekly",
+        "source": "Capology"
+      },
+      "contractExpiry": "2030-06-30",
+      "bio": "William Saliba is a commanding centre-back for Arsenal and France, combining elite one‑v‑one defending with composure and line-breaking passing from the back."
+    },
+    "currentSeasonSummary": {
+      "season": "2025-2026",
+      "club": "Arsenal",
+      "domesticLeague": {
+        "competition": "Premier League",
+        "mp": 6,
+        "min": 409,
+        "gls": 0,
+        "ast": 0,
+        "xG": 0.1,
+        "npxG": 0.1,
+        "xAG": 0.1,
+        "sca": 4,
+        "gca": 0
+      },
+      "internationalCups": {
+        "competition": "Champions League",
+        "mp": 1,
+        "min": 90,
+        "gls": 0,
+        "ast": 0,
+        "xG": 0,
+        "npxG": 0,
+        "xAG": 0,
+        "sca": 0,
+        "gca": 0
+      }
+    },
+    "imagePath": "william-saliba.png"
+  }
+]

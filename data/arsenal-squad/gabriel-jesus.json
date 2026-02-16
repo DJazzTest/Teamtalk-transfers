@@ -1,0 +1,33 @@
+{
+  "slug": "gabriel-jesus",
+  "source": "local",
+  "profile": {
+    "name": "Gabriel Jesus",
+    "fullName": "Gabriel Fernando de Jesus",
+    "position": "FW-MF",
+    "primaryPosition": "Forward",
+    "footed": "Right",
+    "heightCm": 177,
+    "weightKg": 72,
+    "dateOfBirth": "1997-04-03",
+    "placeOfBirth": "Sao Paulo, Brazil",
+    "nationality": "Brazil",
+    "club": "Arsenal",
+    "nationalTeam": "Brazil",
+    "instagram": "@dejesusoficial",
+    "wages": {
+      "amount": 265000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2027-06-30",
+    "honours": [
+      "5x Domestic League Champion",
+      "2016 Brazil Golden Ball"
+    ],
+    "bio": "Gabriel Jesus is a forward for Arsenal and Brazil, an energetic presser who links play, dribbles aggressively and attacks the box from multiple starting positions."
+  },
+  "currentSeasonSummary": {},
+  "imagePath": "gabriel-jesus.png"
+}

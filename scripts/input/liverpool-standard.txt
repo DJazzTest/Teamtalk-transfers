@@ -1,0 +1,38 @@
+Standard Stats 2025-2026 Liverpool: Premier League 
+GlossaryToggle Per90 Stats
+Playing Time	Performance	Per 90 Minutes	
+Player	Nation	Pos	Age	MP	Starts	Min	90s	Gls	Ast	G+A	G-PK	PK	PKatt	CrdY	CrdR	Gls	Ast	G+A	G-PK	G+A-PK	Matches
+Virgil van Dijk	nl NED	DF	34-223	26	26	2,340	26.0	2	0	2	2	0	0	4	0	0.08	0.00	0.08	0.08	0.08	Matches
+Ibrahima Konaté	fr FRA	DF	26-267	25	25	2,146	23.8	1	0	1	1	0	0	5	0	0.04	0.00	0.04	0.04	0.04	Matches
+Dominik Szoboszlai	hu HUN	MF,DF	25-114	24	24	2,151	23.9	4	2	6	4	0	1	5	1	0.17	0.08	0.25	0.17	0.25	Matches
+Ryan Gravenberch	nl NED	MF	23-276	24	24	2,118	23.5	4	2	6	4	0	0	4	0	0.17	0.08	0.25	0.17	0.25	Matches
+Alisson	br BRA	GK	33-137	21	21	1,890	21.0	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Florian Wirtz	de GER	MF	22-289	25	21	1,851	20.6	4	2	6	4	0	0	1	0	0.19	0.10	0.29	0.19	0.29	Matches
+Alexis Mac Allister	ar ARG	MF	27-054	25	21	1,730	19.2	0	2	2	0	0	0	4	0	0.00	0.10	0.10	0.00	0.10	Matches
+Milos Kerkez	hu HUN	DF	22-101	24	21	1,717	19.1	1	1	2	1	0	0	4	0	0.05	0.05	0.10	0.05	0.10	Matches
+Cody Gakpo	nl NED	MF,FW	26-285	24	20	1,743	19.4	5	3	8	5	0	0	1	0	0.26	0.15	0.41	0.26	0.41	Matches
+Hugo Ekitike	fr FRA	FW	23-241	23	17	1,514	16.8	10	2	12	10	0	0	0	0	0.59	0.12	0.71	0.59	0.71	Matches
+Mohamed Salah	eg EGY	MF,FW	33-246	18	16	1,536	17.1	4	6	10	3	1	1	1	0	0.23	0.35	0.59	0.18	0.53	Matches
+Conor Bradley	nir NIR	DF	22-222	15	12	929	10.3	0	1	1	0	0	0	5	0	0.00	0.10	0.10	0.00	0.10	Matches
+Curtis Jones	eng ENG	MF	25-017	23	10	1,119	12.4	0	1	1	0	0	0	1	0	0.00	0.08	0.08	0.00	0.08	Matches
+Jeremie Frimpong	nl NED	DF,MF	25-068	11	6	542	6.0	0	1	1	0	0	0	0	0	0.00	0.17	0.17	0.00	0.17	Matches
+Alexander Isak	se SWE	FW	26-148	10	6	504	5.6	2	1	3	2	0	0	0	0	0.36	0.18	0.54	0.36	0.54	Matches
+Andrew Robertson	sct SCO	DF	31-342	15	5	636	7.1	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Giorgi Mamardashvili	ge GEO	GK	25-140	5	5	450	5.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Joe Gomez	eng ENG	DF	28-269	12	4	307	3.4	0	2	2	0	0	0	2	0	0.00	0.59	0.59	0.00	0.59	Matches
+Federico Chiesa	it ITA	MF	28-114	19	1	255	2.8	2	1	3	2	0	0	2	0	0.71	0.35	1.06	0.71	1.06	Matches
+Wataru Endo	jp JPN	DF	33-007	8	1	175	1.9	0	1	1	0	0	0	1	0	0.00	0.51	0.51	0.00	0.51	Matches
+Rio Ngumoha	eng ENG	FW	17-171	8	0	83	0.9	1	0	1	1	0	0	0	0	1.08	0.00	1.08	1.08	1.08	Matches
+Trey Nyoni	eng ENG	MF	18-231	2	0	2	0.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Harvey Elliott	eng ENG	FW,MF	22-318	1	0	1	0.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Giovanni Leoni	it ITA	DF	19-057	0	0																Matches
+Kieran Morrison	nir NIR	MF	19-099	0	0																Matches
+Amara Nallo	eng ENG	DF	19-090	0	0																Matches
+Wellity Omoruyi	es ESP	DF	20-035	0	0																Matches
+Ármin Pécsi	hu HUN	GK	20-357	0	0																Matches
+Calvin Ramsay	sct SCO	DF	22-200	0	0																Matches
+Freddie Woodman	eng ENG	GK	28-349	0	0																Matches
+Squad Total			27.2	26	286	2,340	26.0	40	28	68	39	1	2	41	1	1.54	1.08	2.62	1.50	2.58	
+Opponent Total			26.8	26	286	2,340	26.0	35	22	57	32	3	4	53	5	1.35	0.85	2.19	1.23	2.08	
+Totals may not be complete for all senior-level play, see coverage note.
+

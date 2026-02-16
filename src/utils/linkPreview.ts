@@ -38,21 +38,32 @@ export const getYouTubeThumbnail = (videoId: string): string => {
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 };
 
+// Normalize URL to HTTPS
+const normalizeToHttps = (url: string): string => {
+  if (!url) return '';
+  if (url.startsWith('https://')) return url;
+  if (url.startsWith('http://')) return url.replace(/^http:\/\//i, 'https://');
+  if (url.startsWith('//')) return `https:${url}`;
+  return url;
+};
+
 export const fetchLinkPreview = async (url: string): Promise<LinkPreview | null> => {
   try {
-    const linkType = detectLinkType(url);
+    // Normalize URL to HTTPS first
+    const normalizedUrl = normalizeToHttps(url);
+    const linkType = detectLinkType(normalizedUrl);
     
     if (linkType === 'youtube') {
-      const videoId = extractYouTubeVideoId(url);
+      const videoId = extractYouTubeVideoId(normalizedUrl);
       if (videoId) {
         // Fetch YouTube video info using oEmbed
         try {
-          const oEmbedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`;
+          const oEmbedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(normalizedUrl)}&format=json`;
           const response = await fetch(oEmbedUrl);
           if (response.ok) {
             const data = await response.json();
             return {
-              url,
+              url: normalizedUrl,
               title: data.title,
               description: data.author_name,
               image: getYouTubeThumbnail(videoId),
@@ -67,7 +78,7 @@ export const fetchLinkPreview = async (url: string): Promise<LinkPreview | null>
         
         // Fallback: return basic YouTube info
         return {
-          url,
+          url: normalizedUrl,
           title: 'YouTube Video',
           image: getYouTubeThumbnail(videoId),
           type: 'youtube',
@@ -79,14 +90,14 @@ export const fetchLinkPreview = async (url: string): Promise<LinkPreview | null>
     
     if (linkType === 'instagram') {
       // Instagram requires authentication for oEmbed, so we'll use a proxy or basic info
-      const match = url.match(INSTAGRAM_REGEX);
+      const match = normalizedUrl.match(INSTAGRAM_REGEX);
       if (match) {
         return {
-          url,
+          url: normalizedUrl,
           title: 'Instagram Post',
           description: 'View on Instagram',
           type: 'instagram',
-          embedUrl: url
+          embedUrl: normalizedUrl
         };
       }
     }
@@ -94,15 +105,15 @@ export const fetchLinkPreview = async (url: string): Promise<LinkPreview | null>
     if (linkType === 'article') {
       // Prefer serverless preview to avoid CORS limitations
       try {
-        const response = await fetch(`/.netlify/functions/link-preview?url=${encodeURIComponent(url)}`);
+        const response = await fetch(`/.netlify/functions/link-preview?url=${encodeURIComponent(normalizedUrl)}`);
         if (response.ok) {
           const data = await response.json();
           if (data) {
             return {
-              url: data.url || url,
+              url: data.url ? normalizeToHttps(data.url) : normalizedUrl,
               title: data.title || '',
               description: data.description || '',
-              image: data.image || '',
+              image: data.image ? normalizeToHttps(data.image) : '',
               type: 'article'
             };
           }
@@ -113,7 +124,7 @@ export const fetchLinkPreview = async (url: string): Promise<LinkPreview | null>
 
       // Fallback: fetch via public proxy directly from the browser
       try {
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(normalizedUrl)}`;
         const response = await fetch(proxyUrl);
         if (response.ok) {
           const data = await response.json();
@@ -136,10 +147,10 @@ export const fetchLinkPreview = async (url: string): Promise<LinkPreview | null>
             '';
 
           return {
-            url,
+            url: normalizedUrl,
             title: ogTitle || '',
             description: ogDescription || '',
-            image: ogImage || '',
+            image: ogImage ? normalizeToHttps(ogImage) : '',
             type: 'article'
           };
         }
@@ -149,16 +160,16 @@ export const fetchLinkPreview = async (url: string): Promise<LinkPreview | null>
 
       // Last resort: basic info
       try {
-        const urlObj = new URL(url);
+        const urlObj = new URL(normalizedUrl);
         return {
-          url,
+          url: normalizedUrl,
           title: urlObj.hostname,
-          description: url,
+          description: normalizedUrl,
           type: 'article'
         };
       } catch {
         return {
-          url,
+          url: normalizedUrl,
           title: 'Article',
           type: 'article'
         };

@@ -1,0 +1,54 @@
+{
+  "slug": "gabriel-martinelli",
+  "source": "local",
+  "profile": {
+    "name": "Gabriel Martinelli",
+    "fullName": "Gabriel Teodoro Martinelli Silva",
+    "position": "FW-MF",
+    "primaryPosition": "Forward",
+    "footed": "Right",
+    "heightCm": 180,
+    "weightKg": 74,
+    "dateOfBirth": "2001-06-18",
+    "placeOfBirth": "Guarulhos, Brazil",
+    "nationality": "Brazil",
+    "club": "Arsenal",
+    "nationalTeam": "Brazil",
+    "instagram": "@ga_martinelli01",
+    "wages": {
+      "amount": 180000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2027-06-30",
+    "bio": "Gabriel Martinelli is a dynamic wide forward for Arsenal and Brazil, known for his direct dribbling, off-ball runs in behind and relentless pressing from the front."
+  },
+  "currentSeasonSummary": {
+    "2023-2024": {
+      "Premier League": {
+        "mp": 35,
+        "min": 2019,
+        "gls": 6,
+        "ast": 4,
+        "xg": 6.8,
+        "npxG": 6.8,
+        "xAG": 6.1,
+        "sca": 92,
+        "gca": 11
+      },
+      "Champions League": {
+        "mp": 6,
+        "min": 481,
+        "gls": 2,
+        "ast": 1,
+        "xg": 1.8,
+        "npxG": 1.8,
+        "xAG": 0.8,
+        "sca": 17,
+        "gca": 4
+      }
+    }
+  },
+  "imagePath": "gabriel-martinelli.png"
+}

@@ -1,0 +1,27 @@
+{
+  "slug": "andre-annous",
+  "source": "local",
+  "profile": {
+    "name": "Andre Annous",
+    "fullName": "Andre Annous",
+    "position": "FW",
+    "primaryPosition": "Forward",
+    "dateOfBirth": "2007-12-27",
+    "placeOfBirth": "England, United Kingdom",
+    "nationality": "England",
+    "club": "Arsenal U21",
+    "citizenship": "England",
+    "bio": "Andre Annous is a quick, direct forward for Arsenal's under-21s, known for his sharp movement in the box and calm finishing in youth competitions."
+  },
+  "currentSeasonSummary": {
+    "2024-2025": {
+      "Premier League 2": {
+        "mp": 11,
+        "min": 515,
+        "gls": 2,
+        "ast": 0
+      }
+    }
+  },
+  "imagePath": "andre-annous.png"
+}

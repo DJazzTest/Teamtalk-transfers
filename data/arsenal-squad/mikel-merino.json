@@ -1,0 +1,54 @@
+{
+  "slug": "mikel-merino",
+  "source": "local",
+  "profile": {
+    "name": "Mikel Merino",
+    "fullName": "Mikel Merino Zazon",
+    "position": "MF (AM-CM-DM-WM)",
+    "primaryPosition": "Midfielder",
+    "footed": "Left",
+    "heightCm": 188,
+    "weightKg": 78,
+    "dateOfBirth": "1996-06-22",
+    "placeOfBirth": "Pamplona, Spain",
+    "nationality": "Spain",
+    "club": "Arsenal",
+    "nationalTeam": "Spain",
+    "instagram": "@mikelmerino",
+    "wages": {
+      "amount": 130000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2028-06-30",
+    "bio": "Mikel Merino is a left-footed central midfielder for Arsenal and Spain, combining physical presence with line-breaking passing and late surges into the box."
+  },
+  "currentSeasonSummary": {
+    "2025-2026": {
+      "Premier League": {
+        "mp": 4,
+        "min": 212,
+        "gls": 0,
+        "ast": 0,
+        "xg": 0.1,
+        "npxG": 0.1,
+        "xAG": 0.1,
+        "sca": 3,
+        "gca": 0
+      },
+      "Champions League": {
+        "mp": 1,
+        "min": 90,
+        "gls": 0,
+        "ast": 0,
+        "xg": 0.1,
+        "npxG": 0.1,
+        "xAG": 0,
+        "sca": 4,
+        "gca": 0
+      }
+    }
+  },
+  "imagePath": "mikel-merino.png"
+}

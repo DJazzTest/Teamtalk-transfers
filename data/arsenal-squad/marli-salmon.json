@@ -1,0 +1,27 @@
+{
+  "slug": "marli-salmon",
+  "source": "local",
+  "profile": {
+    "name": "Marli Salmon",
+    "fullName": "Marli Salmon",
+    "position": "DF",
+    "primaryPosition": "Defender",
+    "dateOfBirth": "2009-08-29",
+    "placeOfBirth": "England, United Kingdom",
+    "nationality": "England",
+    "club": "Arsenal U21",
+    "citizenship": "England",
+    "bio": "Marli Salmon is a young defender for Arsenal's under-21s, a composed presence at the back who reads the game well and looks to play out from defence."
+  },
+  "currentSeasonSummary": {
+    "2024-2025": {
+      "Premier League 2": {
+        "mp": 5,
+        "min": 450,
+        "gls": 0,
+        "ast": 0
+      }
+    }
+  },
+  "imagePath": "marli-salmon.png"
+}

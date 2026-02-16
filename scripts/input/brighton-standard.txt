@@ -1,0 +1,39 @@
+Standard Stats 2025-2026 Brighton & Hove Albion: Premier League 
+GlossaryToggle Per90 Stats
+Playing Time	Performance	Per 90 Minutes	
+Player	Nation	Pos	Age	MP	Starts	Min	90s	Gls	Ast	G+A	G-PK	PK	PKatt	CrdY	CrdR	Gls	Ast	G+A	G-PK	G+A-PK	Matches
+Bart Verbruggen	nl NED	GK	23-182	26	26	2,340	26.0	0	0	0	0	0	0	3	0	0.00	0.00	0.00	0.00	0.00	Matches
+Lewis Dunk	eng ENG	DF	34-087	25	24	2,205	24.5	0	0	0	0	0	0	8	0	0.00	0.00	0.00	0.00	0.00	Matches
+Jan Paul van Hecke	nl NED	DF	25-253	24	24	2,130	23.7	3	2	5	3	0	0	7	0	0.13	0.08	0.21	0.13	0.21	Matches
+Ferdi Kadioglu	tr TUR	DF,MF	26-132	25	22	2,053	22.8	0	0	0	0	0	0	4	0	0.00	0.00	0.00	0.00	0.00	Matches
+Yasin Ayari	se SWE	MF	22-133	21	18	1,701	18.9	3	2	5	3	0	0	0	0	0.16	0.11	0.26	0.16	0.26	Matches
+Yankuba Minteh	gm GAM	MF	21-209	24	18	1,637	18.2	1	4	5	1	0	0	0	0	0.05	0.22	0.27	0.05	0.27	Matches
+Diego Gómez	py PAR	MF,FW	22-326	23	18	1,516	16.8	3	0	3	3	0	0	6	0	0.18	0.00	0.18	0.18	0.18	Matches
+Georginio Rutter	fr FRA	MF,FW	23-302	23	18	1,505	16.7	2	2	4	2	0	0	2	0	0.12	0.12	0.24	0.12	0.24	Matches
+Carlos Baleba	cm CMR	MF	22-044	21	18	1,182	13.1	0	0	0	0	0	0	5	0	0.00	0.00	0.00	0.00	0.00	Matches
+Danny Welbeck	eng ENG	FW	35-082	25	16	1,453	16.1	8	0	8	7	1	3	4	0	0.50	0.00	0.50	0.43	0.43	Matches
+Maxim De Cuyper	be BEL	DF,MF	25-056	21	14	1,121	12.5	2	0	2	2	0	0	2	0	0.16	0.00	0.16	0.16	0.16	Matches
+Kaoru Mitoma	jp JPN	MF,FW	28-272	16	13	1,187	13.2	2	1	3	2	0	0	2	0	0.15	0.08	0.23	0.15	0.23	Matches
+Mats Wieffer	nl NED	DF	26-092	16	13	1,181	13.1	0	3	3	0	0	0	4	0	0.00	0.23	0.23	0.00	0.23	Matches
+Joël Veltman	nl NED	DF	34-032	14	8	788	8.8	1	0	1	1	0	0	4	0	0.11	0.00	0.11	0.11	0.11	Matches
+Jack Hinshelwood	eng ENG	MF,DF	20-311	15	8	759	8.4	1	1	2	1	0	0	0	0	0.12	0.12	0.24	0.12	0.24	Matches
+Brajan Gruda	de GER	MF	21-261	18	8	719	8.0	1	1	2	1	0	0	2	0	0.13	0.13	0.25	0.13	0.25	Matches
+Pascal Groß	de GER	MF	34-246	7	6	556	6.2	1	0	1	1	0	0	2	0	0.16	0.00	0.16	0.16	0.16	Matches
+Olivier Boscagli	fr FRA	DF	28-090	7	4	352	3.9	0	1	1	0	0	0	1	0	0.00	0.26	0.26	0.00	0.26	Matches
+James Milner	eng ENG	MF	40-043	15	2	387	4.3	1	1	2	0	1	1	2	0	0.23	0.23	0.47	0.00	0.23	Matches
+Charalampos Kostoulas	gr GRE	FW	18-262	16	2	305	3.4	2	1	3	2	0	0	2	0	0.59	0.30	0.89	0.59	0.89	Matches
+Diego Coppola	it ITA	DF	22-050	5	2	194	2.2	0	0	0	0	0	0	2	0	0.00	0.00	0.00	0.00	0.00	Matches
+Matt O'Riley	dk DEN	MF	25-087	3	2	186	2.1	1	0	1	0	1	1	0	0	0.48	0.00	0.48	0.00	0.00	Matches
+Stefanos Tzimas	gr GRE	FW	20-041	9	1	139	1.5	1	1	2	1	0	0	0	0	0.65	0.65	1.29	0.65	1.29	Matches
+Harry Howell	eng ENG	MF	17-140	2	1	80	0.9	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Tom Watson	eng ENG	MF	19-314	6	0	62	0.7	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Joe Knight	eng ENG	MF	20-148	1	0	1	0.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Nehemiah Oriola	eng ENG	MF	18-250	1	0	1	0.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Igor	br BRA	DF	28-009	0	0																Matches
+Freddie Simmonds	eng ENG	DF	17-344	0	0																Matches
+Jason Steele	eng ENG	GK	35-182	0	0																Matches
+Charlie Tasker	eng ENG	DF	19-357	0	0																Matches
+Squad Total			26.3	26	286	2,340	26.0	33	20	53	30	3	5	63	0	1.27	0.77	2.04	1.15	1.92	
+Opponent Total			26.9	26	286	2,340	26.0	30	20	50	25	5	6	55	1	1.15	0.77	1.92	0.96	1.73	
+Totals may not be complete for all senior-level play, see coverage note.
+

@@ -1,0 +1,58 @@
+{
+  "slug": "piero-hincapie",
+  "source": "local",
+  "profile": {
+    "name": "Piero Hincapie",
+    "fullName": "Piero Martin Hincapie Reyna",
+    "position": "DF (CB, left)",
+    "primaryPosition": "Defender",
+    "footed": "Left",
+    "heightCm": 182,
+    "weightKg": 64,
+    "dateOfBirth": "2002-01-09",
+    "placeOfBirth": "Esmeraldas, Ecuador",
+    "nationality": "Ecuador",
+    "club": "Bayer Leverkusen",
+    "nationalTeam": "Ecuador",
+    "wages": {
+      "amount": 40000,
+      "currency": "EUR",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2027-06-30",
+    "honours": [
+      "2023-24 Bundesliga Champion"
+    ],
+    "bio": "Piero Hincapie is a left-footed Ecuadorian defender, starring for Bayer Leverkusen, noted for his anticipation, recovery pace and comfort carrying the ball out of defence."
+  },
+  "currentSeasonSummary": {
+    "season": "2023-2024",
+    "club": "Bayer Leverkusen",
+    "domesticLeague": {
+      "competition": "Bundesliga",
+      "mp": 26,
+      "min": 1484,
+      "gls": 1,
+      "ast": 2,
+      "xG": 1.9,
+      "npxG": 1.9,
+      "xAG": 0.5,
+      "sca": 23,
+      "gca": 5
+    },
+    "internationalCups": {
+      "competition": "Europa League",
+      "mp": 12,
+      "min": 913,
+      "gls": 0,
+      "ast": 0,
+      "xG": 1,
+      "npxG": 1,
+      "xAG": 0.7,
+      "sca": 12,
+      "gca": 0
+    }
+  },
+  "imagePath": "piero-hincapie.png"
+}

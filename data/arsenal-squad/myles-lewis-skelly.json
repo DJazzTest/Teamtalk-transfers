@@ -1,0 +1,44 @@
+{
+  "slug": "myles-lewis-skelly",
+  "source": "local",
+  "profile": {
+    "name": "Myles Lewis-Skelly",
+    "fullName": "Myles Lewis-Skelly",
+    "position": "DF",
+    "primaryPosition": "Defender",
+    "heightCm": 178,
+    "dateOfBirth": "2006-09-26",
+    "placeOfBirth": "England, United Kingdom",
+    "nationality": "England",
+    "club": "Arsenal",
+    "nationalTeam": "England",
+    "bio": "Myles Lewis-Skelly is a versatile young defender for Arsenal and England, aggressive in duels and comfortable stepping into midfield with the ball."
+  },
+  "currentSeasonSummary": {
+    "2024-2025": {
+      "Premier League": {
+        "mp": 19,
+        "min": 1078,
+        "gls": 1,
+        "ast": 0,
+        "xg": 0.1,
+        "npxG": 0.1,
+        "xAG": 0.3,
+        "sca": 21,
+        "gca": 0
+      },
+      "Champions League": {
+        "mp": 8,
+        "min": 408,
+        "gls": 0,
+        "ast": 1,
+        "xg": 0.1,
+        "npxG": 0.1,
+        "xAG": 0.3,
+        "sca": 11,
+        "gca": 2
+      }
+    }
+  },
+  "imagePath": "myles-lewis-skelly.png"
+}

@@ -1,0 +1,46 @@
+{
+  "slug": "kai-havertz",
+  "source": "local",
+  "profile": {
+    "name": "Kai Havertz",
+    "fullName": "Kai Lukas Havertz",
+    "position": "FW-MF (AM-CM-WM)",
+    "primaryPosition": "Forward",
+    "footed": "Left",
+    "heightCm": 186,
+    "weightKg": 77,
+    "dateOfBirth": "1999-06-11",
+    "placeOfBirth": "Aachen, Germany",
+    "nationality": "Germany",
+    "club": "Arsenal",
+    "nationalTeam": "Germany",
+    "instagram": "@kaihavertz29",
+    "wages": {
+      "amount": 280000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2028-06-30",
+    "honours": [
+      "2020-21 Champions League Champion"
+    ],
+    "bio": "Kai Havertz is a tall, elegant forward for Arsenal and Germany, operating between the lines as a hybrid striker-midfielder with smart movement and aerial threat."
+  },
+  "currentSeasonSummary": {
+    "2025-2026": {
+      "Premier League": {
+        "mp": 1,
+        "min": 30,
+        "gls": 0,
+        "ast": 0,
+        "xg": 0,
+        "npxG": 0,
+        "xAG": 0,
+        "sca": 3,
+        "gca": 0
+      }
+    }
+  },
+  "imagePath": "kai-havertz.png"
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "playerName": "Ethan Amundsen-Day",
+    "club": "Hamarkameratene",
+    "transferFeedUrl": "https://www.transferfeed.com/search?query=Ethan%2BAmundsen-Day",
+    "clubs": [
+      "aston Villa"
+    ]
+  },
+  {
+    "playerName": "Luca Ashby-Hammond",
+    "club": "Watford",
+    "transferFeedUrl": "https://www.transferfeed.com/search?query=Luca%2BAshby-Hammond",
+    "clubs": [
+      "fulham"
+    ]
+  },
+  {
+    "playerName": "Diego Leon",
+    "club": "Manchester United",
+    "transferFeedUrl": "https://www.transferfeed.com/search?query=Diego%2BLeon",
+    "clubs": [
+      "manchester United"
+    ]
+  },
+  {
+    "playerName": "Jack Perkins",
+    "club": "Free Agent",
+    "transferFeedUrl": "https://www.transferfeed.com/search?query=Jack%2BPerkins",
+    "clubs": [
+      "nottingham Forest"
+    ]
+  },
+  {
+    "playerName": "Kamarai Swyer",
+    "club": "Free Agent",
+    "transferFeedUrl": "https://www.transferfeed.com/search?query=Kamarai%2BSwyer",
+    "clubs": [
+      "west Ham"
+    ]
+  }
+]

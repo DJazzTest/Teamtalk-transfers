@@ -1,0 +1,21 @@
+{
+  "slug": "martin-odegaard",
+  "source": "local",
+  "profile": {
+    "name": "Martin Odegaard",
+    "fullName": "Martin Odegaard",
+    "position": "MF (AM)",
+    "primaryPosition": "Midfielder",
+    "footed": "Left",
+    "heightCm": 178,
+    "weightKg": 68,
+    "dateOfBirth": "1998-12-17",
+    "placeOfBirth": "Drammen, Norway",
+    "nationality": "Norway",
+    "club": "Arsenal",
+    "nationalTeam": "Norway",
+    "bio": "Martin Odegaard is Arsenal's creative captain and a Norwegian international, a left-footed attacking midfielder who dictates tempo and creates chances with incisive passing."
+  },
+  "currentSeasonSummary": {},
+  "imagePath": "martin-odegaard.png"
+}

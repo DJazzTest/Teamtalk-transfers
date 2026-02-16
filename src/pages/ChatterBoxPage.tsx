@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { MessageSquare, Image as ImageIcon, Link as LinkIcon, Video, ExternalLink, ArrowLeft } from 'lucide-react';
 import { TransferDataProvider } from '@/store/transferDataStore';
 import type { ChatterBoxEntry } from '@/components/ChatterBoxManagement';
+import { stripHtml, normalizeToHttps } from '@/utils/htmlUtils';
 
 const STORAGE_KEY = 'chatterBoxEntries';
 
@@ -73,11 +74,12 @@ const ChatterBoxPage: React.FC = () => {
   };
 
   const getYouTubeEmbedUrl = (url: string) => {
+    const normalizedUrl = normalizeToHttps(url);
     let videoId = '';
-    if (url.includes('youtube.com/watch?v=')) {
-      videoId = url.split('v=')[1]?.split('&')[0] || '';
-    } else if (url.includes('youtu.be/')) {
-      videoId = url.split('youtu.be/')[1]?.split('?')[0] || '';
+    if (normalizedUrl.includes('youtube.com/watch?v=')) {
+      videoId = normalizedUrl.split('v=')[1]?.split('&')[0] || '';
+    } else if (normalizedUrl.includes('youtu.be/')) {
+      videoId = normalizedUrl.split('youtu.be/')[1]?.split('?')[0] || '';
     }
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
   };
@@ -167,18 +169,18 @@ const ChatterBoxPage: React.FC = () => {
                           <div className="flex items-center gap-2 mb-2">
                             <Video className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                             <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                              {entry.linkPreview.title || 'YouTube Video'}
+                              {stripHtml(entry.linkPreview.title) || 'YouTube Video'}
                             </h4>
                           </div>
                           {entry.linkPreview.description && (
                             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                              {entry.linkPreview.description}
+                              {stripHtml(entry.linkPreview.description)}
                             </p>
                           )}
                           <div className="aspect-video max-w-4xl">
                             <iframe
                               src={entry.linkPreview.embedUrl}
-                              title={entry.linkPreview.title || 'Video'}
+                              title={stripHtml(entry.linkPreview.title) || 'Video'}
                               className="w-full h-full rounded-lg"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                               allowFullScreen
@@ -192,18 +194,18 @@ const ChatterBoxPage: React.FC = () => {
                           <div className="flex items-center gap-2 mb-2">
                             <LinkIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                             <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                              {entry.linkPreview.title || 'Article'}
+                              {stripHtml(entry.linkPreview.title) || 'Article'}
                             </h4>
                           </div>
                           {entry.linkPreview.description && (
                             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                              {entry.linkPreview.description}
+                              {stripHtml(entry.linkPreview.description)}
                             </p>
                           )}
                           {entry.linkPreview.image && (
                             <img
                               src={entry.linkPreview.image}
-                              alt={entry.linkPreview.title || 'Article preview'}
+                              alt={stripHtml(entry.linkPreview.title) || 'Article preview'}
                               className="w-full max-w-2xl rounded-lg border border-gray-200 dark:border-slate-600 mb-2"
                               onError={(e) => {
                                 (e.target as HTMLImageElement).style.display = 'none';
@@ -211,7 +213,7 @@ const ChatterBoxPage: React.FC = () => {
                             />
                           )}
                           <a
-                            href={entry.linkPreview.url}
+                            href={normalizeToHttps(entry.linkPreview.url)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
@@ -227,11 +229,11 @@ const ChatterBoxPage: React.FC = () => {
                           <div className="flex items-center gap-2 mb-2">
                             <LinkIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                             <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                              {entry.linkPreview.title || 'Instagram Post'}
+                              {stripHtml(entry.linkPreview.title) || 'Instagram Post'}
                             </h4>
                           </div>
                           <a
-                            href={entry.linkPreview.url}
+                            href={normalizeToHttps(entry.linkPreview.url)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg transition-colors"
@@ -256,7 +258,7 @@ const ChatterBoxPage: React.FC = () => {
                       {isYouTubeUrl(entry.videoUrl) ? (
                         <div className="aspect-video max-w-4xl">
                           <iframe
-                            src={getYouTubeEmbedUrl(entry.videoUrl) || entry.videoUrl}
+                            src={getYouTubeEmbedUrl(entry.videoUrl) || normalizeToHttps(entry.videoUrl)}
                             title="Video"
                             className="w-full h-full rounded-lg"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -265,7 +267,7 @@ const ChatterBoxPage: React.FC = () => {
                         </div>
                       ) : (
                         <video
-                          src={entry.videoUrl}
+                          src={normalizeToHttps(entry.videoUrl)}
                           controls
                           className="w-full max-w-4xl rounded-lg border border-gray-200 dark:border-slate-600"
                         />

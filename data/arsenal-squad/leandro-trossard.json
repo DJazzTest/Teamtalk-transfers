@@ -1,0 +1,55 @@
+{
+  "slug": "leandro-trossard",
+  "source": "local",
+  "profile": {
+    "name": "Leandro Trossard",
+    "fullName": "Leandro Trossard",
+    "position": "FW-MF (AM)",
+    "primaryPosition": "Forward",
+    "footed": "Right",
+    "heightCm": 172,
+    "weightKg": 60,
+    "dateOfBirth": "1994-12-04",
+    "placeOfBirth": "Maasmechelen, Belgium",
+    "nationality": "Belgium",
+    "club": "Arsenal",
+    "nationalTeam": "Belgium",
+    "wages": {
+      "amount": 90000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2026-06-30",
+    "bio": "Leandro Trossard is a versatile attacking midfielder and forward for Arsenal and Belgium, dangerous between the lines with both feet and strong combination play."
+  },
+  "currentSeasonSummary": {
+    "season": "2025-2026",
+    "club": "Arsenal",
+    "domesticLeague": {
+      "competition": "Premier League",
+      "mp": 5,
+      "min": 294,
+      "gls": 0,
+      "ast": 1,
+      "xG": 0.6,
+      "npxG": 0.6,
+      "xAG": 0.3,
+      "sca": 12,
+      "gca": 1
+    },
+    "internationalCups": {
+      "competition": "Champions League",
+      "mp": 2,
+      "min": 98,
+      "gls": 1,
+      "ast": 1,
+      "xG": 0.5,
+      "npxG": 0.5,
+      "xAG": 0.7,
+      "sca": 3,
+      "gca": 1
+    }
+  },
+  "imagePath": "leandro-trossard.png"
+}

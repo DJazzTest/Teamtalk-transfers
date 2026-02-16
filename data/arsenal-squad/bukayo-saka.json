@@ -1,0 +1,33 @@
+{
+  "slug": "bukayo-saka",
+  "source": "local",
+  "profile": {
+    "name": "Bukayo Saka",
+    "fullName": "Bukayo Saka",
+    "position": "FW-MF (Right Wing)",
+    "primaryPosition": "Forward",
+    "footed": "Left",
+    "dateOfBirth": "2001-09-05",
+    "placeOfBirth": "London, England",
+    "nationality": "England",
+    "club": "Arsenal",
+    "nationalTeam": "England",
+    "bio": "Bukayo Saka is a left-footed winger for Arsenal and England, combining relentless work-rate with creativity and end product from the right flank."
+  },
+  "currentSeasonSummary": {
+    "season": "2024-2025",
+    "club": "Arsenal",
+    "domesticLeague": {
+      "competition": "Premier League",
+      "mp": 25,
+      "min": 1729,
+      "gls": 6,
+      "ast": 10,
+      "xG": 6.8,
+      "npxG": 6,
+      "xAG": 7.6,
+      "npxG_xAG": 13.7
+    }
+  },
+  "imagePath": "bukayo-saka.png"
+}

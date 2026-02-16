@@ -111,6 +111,7 @@ const WebsiteContent = () => {
     'Everton',
     'Fulham',
     'Ipswich Town',
+    'Leeds United',
     'Leicester City',
     'Liverpool',
     'Manchester City',

@@ -1,0 +1,94 @@
+{
+  "slug": "martin-zubimendi",
+  "source": "local",
+  "profile": {
+    "name": "Martín Zubimendi",
+    "fullName": "Martín Zubimendi Ibáñez",
+    "position": "MF (CM-DM)",
+    "footed": "Right",
+    "heightCm": 180,
+    "weightKg": 77,
+    "dateOfBirth": "1999-02-02",
+    "placeOfBirth": "Donostia / San Sebastián, Spain",
+    "nationalTeam": "Spain",
+    "club": "Real Sociedad",
+    "weeklyWageEur": 57692,
+    "contractExpiry": "2027-06-30",
+    "bio": "Martin Zubimendi is a deep-lying midfielder for Real Sociedad and Spain, excellent at screening the defence, recycling possession and progressing play under pressure."
+  },
+  "currentSeasonSummary": {
+    "season": "2023-2024",
+    "club": "Real Sociedad",
+    "competitions": {
+      "La Liga": {
+        "mp": 31,
+        "min": 2654,
+        "gls": 4,
+        "ast": 1,
+        "xg": 2.7,
+        "npxg": 2.7,
+        "xag": 1.5,
+        "sca": 55,
+        "gca": 4
+      },
+      "Champions League": {
+        "mp": 8,
+        "min": 712,
+        "gls": 0,
+        "ast": 0,
+        "xg": 0.6,
+        "npxg": 0.6,
+        "xag": 0.2,
+        "sca": 12,
+        "gca": 0
+      }
+    }
+  },
+  "scoutingReport365": {
+    "scope": "Last 365 Days, Men’s Big 5 Leagues + UCL/UEL",
+    "positionGroup": "Midfielders",
+    "per90": {
+      "nonPenaltyGoals": 0.11,
+      "npxg": 0.09,
+      "shotsTotal": 0.78,
+      "assists": 0.03,
+      "xag": 0.04,
+      "npxgPlusxag": 0.13,
+      "shotCreatingActions": 1.79,
+      "passesAttempted": 53.1,
+      "passCompletionPct": 86,
+      "progressivePasses": 5.21,
+      "progressiveCarries": 1.07,
+      "successfulTakeOns": 0.45,
+      "touchesAttPen": 1.23,
+      "progressivePassesReceived": 0.94,
+      "tackles": 1.79,
+      "interceptions": 1.18,
+      "blocks": 1.12,
+      "clearances": 1.76,
+      "aerialsWon": 1.55
+    },
+    "percentiles": {
+      "nonPenaltyGoals": 72,
+      "npxg": 60,
+      "shotsTotal": 31,
+      "assists": 19,
+      "xag": 26,
+      "npxgPlusxag": 39,
+      "shotCreatingActions": 26,
+      "passesAttempted": 62,
+      "passCompletionPct": 69,
+      "progressivePasses": 62,
+      "progressiveCarries": 40,
+      "successfulTakeOns": 32,
+      "touchesAttPen": 51,
+      "progressivePassesReceived": 17,
+      "tackles": 36,
+      "interceptions": 68,
+      "blocks": 44,
+      "clearances": 77,
+      "aerialsWon": 81
+    }
+  },
+  "imagePath": "martin-zubimendi.png"
+}

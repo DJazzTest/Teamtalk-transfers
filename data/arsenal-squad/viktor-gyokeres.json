@@ -1,0 +1,60 @@
+{
+  "slug": "viktor-gyokeres",
+  "source": "local",
+  "profile": {
+    "name": "Viktor Gyokeres",
+    "fullName": "Viktor Einar Gyokeres",
+    "position": "FW-MF",
+    "primaryPosition": "Forward",
+    "footed": "Right",
+    "heightCm": 187,
+    "weightKg": 86,
+    "dateOfBirth": "1998-06-04",
+    "placeOfBirth": "Bromolla, Sweden",
+    "nationality": "Sweden",
+    "club": "Arsenal",
+    "nationalTeam": "Sweden",
+    "wages": {
+      "amount": 200000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2030-06-30",
+    "honours": [
+      "2x Primeira Liga Champion",
+      "2x Portuguese Best Player",
+      "2024 Swedish Golden Ball"
+    ],
+    "bio": "Viktor Gyokeres is a powerful Swedish striker for Arsenal, a relentless runner in behind who combines strength, hold-up play and a high-volume scoring threat."
+  },
+  "currentSeasonSummary": {
+    "season": "2025-2026",
+    "club": "Arsenal",
+    "domesticLeague": {
+      "competition": "Premier League",
+      "mp": 8,
+      "min": 665,
+      "gls": 3,
+      "ast": 0,
+      "xG": 3.4,
+      "npxG": 2.6,
+      "xAG": 0.3,
+      "sca": 15,
+      "gca": 1
+    },
+    "internationalCups": {
+      "competition": "Champions League",
+      "mp": 2,
+      "min": 154,
+      "gls": 0,
+      "ast": 0,
+      "xG": 0.9,
+      "npxG": 0.9,
+      "xAG": 0,
+      "sca": 2,
+      "gca": 1
+    }
+  },
+  "imagePath": "viktor-gyokeres.png"
+}

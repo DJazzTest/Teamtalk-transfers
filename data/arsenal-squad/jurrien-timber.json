@@ -1,0 +1,55 @@
+{
+  "slug": "jurrien-timber",
+  "source": "local",
+  "profile": {
+    "name": "Jurrien Timber",
+    "fullName": "Jurrien David Norman Timber",
+    "position": "DF (CB-FB, right)",
+    "primaryPosition": "Defender",
+    "footed": "Right",
+    "heightCm": 179,
+    "weightKg": 78,
+    "dateOfBirth": "2001-06-17",
+    "placeOfBirth": "Utrecht, Netherlands",
+    "nationality": "Netherlands",
+    "club": "Arsenal",
+    "nationalTeam": "Netherlands",
+    "wages": {
+      "amount": 90000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2028-06-30",
+    "bio": "Jurrien Timber is a technically strong defender for Arsenal and the Netherlands, comfortable stepping into midfield from centre-back or right-back to help build play."
+  },
+  "currentSeasonSummary": {
+    "season": "2025-2026",
+    "club": "Arsenal",
+    "domesticLeague": {
+      "competition": "Premier League",
+      "mp": 7,
+      "min": 522,
+      "gls": 2,
+      "ast": 1,
+      "xG": 1.8,
+      "npxG": 1.8,
+      "xAG": 0.4,
+      "sca": 19,
+      "gca": 3
+    },
+    "internationalCups": {
+      "competition": "Champions League",
+      "mp": 2,
+      "min": 123,
+      "gls": 0,
+      "ast": 0,
+      "xG": 0,
+      "npxG": 0,
+      "xAG": 0.2,
+      "sca": 2,
+      "gca": 0
+    }
+  },
+  "imagePath": "jurrien-timber.png"
+}

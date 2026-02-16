@@ -3,6 +3,7 @@ import Admin from './Admin';
 import { TeamApiConfigManager } from '@/components/TeamApiConfigManager';
 import { TeamBioManager } from '@/components/TeamBioManager';
 import { PlayerManagement } from '@/components/PlayerManagement';
+import { ClubManagement } from '@/components/ClubManagement';
 import { ChatterBoxManagement } from '@/components/ChatterBoxManagement';
 import { FlashBannerManagement } from '@/components/FlashBannerManagement';
 import { ApiFeedManager } from '@/components/ApiFeedManager';
@@ -36,6 +37,7 @@ const Cms: React.FC = () => {
               <TabsContent value="teams" className="space-y-6">
                 <TeamBioManager />
                 <TeamApiConfigManager />
+                <ClubManagement />
               </TabsContent>
 
               <TabsContent value="chatter">

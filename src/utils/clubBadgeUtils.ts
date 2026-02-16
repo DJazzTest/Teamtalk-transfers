@@ -22,6 +22,7 @@ const TRANSFERFEED_SEARCH_ENDPOINTS = [
 ];
 
 const STORAGE_KEY_PREFIX = 'clubBadge::';
+const CLUB_BADGE_OVERRIDES_KEY = 'club-badge-overrides';
 
 const slugifyClub = (clubName: string) =>
   clubName
@@ -38,10 +39,33 @@ const isRemoteUrl = (url: string) => /^https?:\/\//i.test(url);
 export const isFreeAgentClub = (clubName?: string | null) =>
   !!clubName && FREE_AGENT_KEYWORDS.some(keyword => clubName.toLowerCase().includes(keyword));
 
+const getBadgeOverrides = (): Record<string, string> => {
+  if (typeof window === 'undefined' || !window.localStorage) return {};
+  try {
+    const stored = window.localStorage.getItem(CLUB_BADGE_OVERRIDES_KEY);
+    if (!stored) return {};
+    const parsed = JSON.parse(stored);
+    if (!parsed || typeof parsed !== 'object') return {};
+    return parsed as Record<string, string>;
+  } catch {
+    return {};
+  }
+};
+
 export const getStaticBadgeSrc = (clubName?: string | null) => {
   if (!clubName) return null;
+
+  // 1) Check CMS overrides first
+  const overrides = getBadgeOverrides();
+  if (overrides[clubName]) {
+    return overrides[clubName];
+  }
+
+  // 2) Fallback to static badge map
   const mapped = clubBadgeMap[clubName];
   if (mapped) return mapped;
+
+  // 3) Slug-based default
   return `/badges/${slugifyClub(clubName)}.png`;
 };
 

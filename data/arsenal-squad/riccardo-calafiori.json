@@ -1,0 +1,37 @@
+{
+  "slug": "riccardo-calafiori",
+  "source": "local",
+  "profile": {
+    "name": "Riccardo Calafiori",
+    "fullName": "Riccardo Calafiori",
+    "position": "DF (LB/CB)",
+    "primaryPosition": "Defender",
+    "footed": "Left",
+    "dateOfBirth": "2002-05-19",
+    "placeOfBirth": "Rome, Italy",
+    "nationality": "Italy",
+    "club": "Arsenal",
+    "nationalTeam": "Italy",
+    "bio": "Riccardo Calafiori is an Italian defender for Arsenal, able to play at left-back or centre-back and contribute with progressive carries and incisive passes."
+  },
+  "currentSeasonSummary": {
+    "season": "2024-2025",
+    "club": "Arsenal",
+    "domesticLeague": {
+      "competition": "Premier League",
+      "mp": 18,
+      "starts": 11,
+      "min": 938,
+      "gls": 2,
+      "ast": 1,
+      "xG": 0.9,
+      "npxG": 0.9,
+      "xAG": 0.3,
+      "npxG_xAG": 1.1,
+      "prgC": 21,
+      "prgP": 54,
+      "prgR": 29
+    }
+  },
+  "imagePath": "riccardo-calafiori.png"
+}

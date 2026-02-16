@@ -1,0 +1,56 @@
+{
+  "slug": "william-saliba",
+  "source": "local",
+  "profile": {
+    "name": "William Saliba",
+    "fullName": "William Saliba",
+    "position": "DF (CB, right)",
+    "primaryPosition": "Defender",
+    "footed": "Right",
+    "heightCm": 193,
+    "weightKg": 76,
+    "dateOfBirth": "2001-03-24",
+    "placeOfBirth": "Bondy, France",
+    "nationality": "France",
+    "club": "Arsenal",
+    "nationalTeam": "France",
+    "instagram": "@w.saliba4",
+    "wages": {
+      "amount": 250000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2030-06-30",
+    "bio": "William Saliba is a commanding centre-back for Arsenal and France, combining elite one‑v‑one defending with composure and line-breaking passing from the back."
+  },
+  "currentSeasonSummary": {
+    "season": "2025-2026",
+    "club": "Arsenal",
+    "domesticLeague": {
+      "competition": "Premier League",
+      "mp": 6,
+      "min": 409,
+      "gls": 0,
+      "ast": 0,
+      "xG": 0.1,
+      "npxG": 0.1,
+      "xAG": 0.1,
+      "sca": 4,
+      "gca": 0
+    },
+    "internationalCups": {
+      "competition": "Champions League",
+      "mp": 1,
+      "min": 90,
+      "gls": 0,
+      "ast": 0,
+      "xG": 0,
+      "npxG": 0,
+      "xAG": 0,
+      "sca": 0,
+      "gca": 0
+    }
+  },
+  "imagePath": "william-saliba.png"
+}

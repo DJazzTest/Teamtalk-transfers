@@ -4,6 +4,7 @@ import { MessageSquare, Image as ImageIcon, Link as LinkIcon, Video, ExternalLin
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import type { ChatterBoxEntry } from './ChatterBoxManagement';
 import { TeamTalkAppPrompt, isTeamTalkUrl } from '@/components/TeamTalkAppPrompt';
+import { stripHtml } from '@/utils/htmlUtils';
 
 const STORAGE_KEY = 'chatterBoxEntries';
 const API_URL = '/.netlify/functions/live-hub';
@@ -563,11 +564,11 @@ const fetchRemoteEntries = async (): Promise<ChatterBoxEntry[]> => {
                     <div>
                       <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
                         <Video className="w-4 h-4" />
-                        {selectedEntry.linkPreview.title || 'YouTube Video'}
+                        {stripHtml(selectedEntry.linkPreview.title) || 'YouTube Video'}
                       </h4>
                       {selectedEntry.linkPreview.description && (
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                          {selectedEntry.linkPreview.description}
+                          {stripHtml(selectedEntry.linkPreview.description)}
                         </p>
                       )}
                       <div className="aspect-video">

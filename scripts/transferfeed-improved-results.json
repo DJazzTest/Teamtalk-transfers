@@ -1,0 +1,569 @@
+{
+  "success": [
+    {
+      "playerName": "Vitezslav Jaros",
+      "club": "Ajax",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/vitezslav-jaros-216206.png",
+      "localPath": "/player-images/ajax/vitezslav-jaros.png"
+    },
+    {
+      "playerName": "Harvey Davies",
+      "club": "Crawley",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/harvey-davies-279711.png",
+      "localPath": "/player-images/crawley/harvey-davies.png"
+    },
+    {
+      "playerName": "Owen Beck",
+      "club": "Derby",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/owen-beck-241934.png",
+      "localPath": "/player-images/derby/owen-beck.png"
+    },
+    {
+      "playerName": "Isaac Mabaya",
+      "club": "Wigan Athletic",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/la-liga-194.png",
+      "localPath": "/player-images/wigan-athletic/isaac-mabaya.png"
+    },
+    {
+      "playerName": "Luca Stephenson",
+      "club": "Dundee United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/luca-stephenson-284691.png",
+      "localPath": "/player-images/dundee-united/luca-stephenson.png"
+    },
+    {
+      "playerName": "Lewis Koumas",
+      "club": "Birmingham City",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/lewis-koumas-381835.png",
+      "localPath": "/player-images/birmingham-city/lewis-koumas.png"
+    },
+    {
+      "playerName": "Rayan Ait-Nouri",
+      "club": "Manchester City",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/la-liga-194.png",
+      "localPath": "/player-images/manchester-city/rayan-ait-nouri.png"
+    },
+    {
+      "playerName": "Rayan Cherki",
+      "club": "Manchester City",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/mathis-ryan-cherki-233162.png",
+      "localPath": "/player-images/manchester-city/rayan-cherki.png"
+    },
+    {
+      "playerName": "Tijjani Reijnders",
+      "club": "Manchester City",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/tijjani-reijnders-202543.png",
+      "localPath": "/player-images/manchester-city/tijjani-reijnders.png"
+    },
+    {
+      "playerName": "Kevin De Bruyne",
+      "club": "Napoli",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/kevin-de-bruyne-1220.png",
+      "localPath": "/player-images/napoli/kevin-de-bruyne.png"
+    },
+    {
+      "playerName": "Jacob Wright",
+      "club": "Norwich City",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/jacob-wright-364703.png",
+      "localPath": "/player-images/norwich-city/jacob-wright.png"
+    },
+    {
+      "playerName": "Scott Carson",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/scott-carson-104.png",
+      "localPath": "/player-images/free-agent/scott-carson.png"
+    },
+    {
+      "playerName": "Kayky",
+      "club": "Bahia",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/kayky-325986.png",
+      "localPath": "/player-images/bahia/kayky.png"
+    },
+    {
+      "playerName": "Maximo Perrone",
+      "club": "Como",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/maximo-perrone-314059.png",
+      "localPath": "/player-images/como/maximo-perrone.png"
+    },
+    {
+      "playerName": "James McAtee",
+      "club": "Frankfurt",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/james-mcatee-249590.png",
+      "localPath": "/player-images/frankfurt/james-mcatee.png"
+    },
+    {
+      "playerName": "Divin Mubama",
+      "club": "Stoke",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/divin-mubama-286529.png",
+      "localPath": "/player-images/stoke/divin-mubama.png"
+    },
+    {
+      "playerName": "Claudio Echeverri",
+      "club": "Bayer Leverkusen",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/claudio-echeverri-1056319.png",
+      "localPath": "/player-images/bayer-leverkusen/claudio-echeverri.png"
+    },
+    {
+      "playerName": "Jahmai Simpson-Pusey",
+      "club": "Celtic",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/jahmai-simpson-pusey-353207.png",
+      "localPath": "/player-images/celtic/jahmai-simpson-pusey.png"
+    },
+    {
+      "playerName": "Vitor Reis",
+      "club": "Girona",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/vitor-reis-406848.png",
+      "localPath": "/player-images/girona/vitor-reis.png"
+    },
+    {
+      "playerName": "Matheus Cunha",
+      "club": "Manchester United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/matheus-cunha-198503.png",
+      "localPath": "/player-images/manchester-united/matheus-cunha.png"
+    },
+    {
+      "playerName": "Benjamin Sesko",
+      "club": "Manchester United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/benjamin-sesko-243630.png",
+      "localPath": "/player-images/manchester-united/benjamin-sesko.png"
+    },
+    {
+      "playerName": "Christian Eriksen",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/christian-eriksen-932.png",
+      "localPath": "/player-images/free-agent/christian-eriksen.png"
+    },
+    {
+      "playerName": "Jonny Evans",
+      "club": "Retired (coaching role)",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/jonny-evans-593.png",
+      "localPath": "/player-images/retired-coaching-role/jonny-evans.png"
+    },
+    {
+      "playerName": "Victor Lindelof",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/victor-lindelof-68502.png",
+      "localPath": "/player-images/free-agent/victor-lindelof.png"
+    },
+    {
+      "playerName": "Sonny Aljofree",
+      "club": "Notts County",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/sonny-aljofree-344530.png",
+      "localPath": "/player-images/notts-county/sonny-aljofree.png"
+    },
+    {
+      "playerName": "Dan Gore",
+      "club": "Rotherham",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/la-liga-194.png",
+      "localPath": "/player-images/rotherham/dan-gore.png"
+    },
+    {
+      "playerName": "Joe Hugill",
+      "club": "Barnet",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/joe-hugill-283348.png",
+      "localPath": "/player-images/barnet/joe-hugill.png"
+    },
+    {
+      "playerName": "Elyh Harrison",
+      "club": "Shrewsbury Town",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/elyh-harrison-373696.png",
+      "localPath": "/player-images/shrewsbury-town/elyh-harrison.png"
+    },
+    {
+      "playerName": "Ethan Wheatley",
+      "club": "Northampton Town",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/ethan-wheatley-1045111.png",
+      "localPath": "/player-images/northampton-town/ethan-wheatley.png"
+    },
+    {
+      "playerName": "Jack Moorhouse",
+      "club": "Leyton Orient",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/jack-moorhouse-356213.png",
+      "localPath": "/player-images/leyton-orient/jack-moorhouse.png"
+    },
+    {
+      "playerName": "Toby Collyer",
+      "club": "West Bromwich Albion",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/toby-collier-253542.png",
+      "localPath": "/player-images/west-bromwich-albion/toby-collyer.png"
+    },
+    {
+      "playerName": "Anthony Elanga",
+      "club": "Newcastle United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/anthony-elanga-249783.png",
+      "localPath": "/player-images/newcastle-united/anthony-elanga.png"
+    },
+    {
+      "playerName": "Sven Botman",
+      "club": "Newcastle United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/sven-botman-209055.png",
+      "localPath": "/player-images/newcastle-united/sven-botman.png"
+    },
+    {
+      "playerName": "Antonio Cordero",
+      "club": "Newcastle United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/antonio-cordero-428042.png",
+      "localPath": "/player-images/newcastle-united/antonio-cordero.png"
+    },
+    {
+      "playerName": "Jamal Lewis",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/jamal-lewis-192816.png",
+      "localPath": "/player-images/free-agent/jamal-lewis.png"
+    },
+    {
+      "playerName": "Lloyd Kelly",
+      "club": "Newcastle United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/lloyd-kelly-4459.png",
+      "localPath": "/player-images/newcastle-united/lloyd-kelly.png"
+    },
+    {
+      "playerName": "Ramon Sosa",
+      "club": "Palmeiras",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/ramon-sosa-acosta-290066.png",
+      "localPath": "/player-images/palmeiras/ramon-sosa.png"
+    },
+    {
+      "playerName": "Harry Toffolo",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/harry-toffolo-2334.png",
+      "localPath": "/player-images/free-agent/harry-toffolo.png"
+    },
+    {
+      "playerName": "Andrew Omobamidele",
+      "club": "Nottingham Forest",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/andrew-omobamidele-243757.png",
+      "localPath": "/player-images/nottingham-forest/andrew-omobamidele.png"
+    },
+    {
+      "playerName": "Morgan Gibbs-White",
+      "club": "Tottenham",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/morgan-gibbs-white-4588.png",
+      "localPath": "/player-images/tottenham/morgan-gibbs-white.png"
+    },
+    {
+      "playerName": "Johan Bakayoko",
+      "club": "Nottingham Forest",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/johan-bakayoko-289844.png",
+      "localPath": "/player-images/nottingham-forest/johan-bakayoko.png"
+    },
+    {
+      "playerName": "Nico Schlotterbeck",
+      "club": "Manchester United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/nico-schlotterbeck-206002.png",
+      "localPath": "/player-images/manchester-united/nico-schlotterbeck.png"
+    },
+    {
+      "playerName": "Joshua Zirkzee",
+      "club": "Everton",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/joshua-zirkzee-216180.png",
+      "localPath": "/player-images/everton/joshua-zirkzee.png"
+    },
+    {
+      "playerName": "Ibrahima Konate",
+      "club": "Real Madrid",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/ibrahima-konate-45124.png",
+      "localPath": "/player-images/real-madrid/ibrahima-konate.png"
+    },
+    {
+      "playerName": "Frenkie de Jong",
+      "club": "Manchester United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/frenkie-de-jong-12788.png",
+      "localPath": "/player-images/manchester-united/frenkie-de-jong.png"
+    },
+    {
+      "playerName": "Omari Hutchinson",
+      "club": "Brentford",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/la-liga-194.png",
+      "localPath": "/player-images/brentford/omari-hutchinson.png"
+    },
+    {
+      "playerName": "Jadon Sancho",
+      "club": "Juventus & Napoli",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/jadon-sancho-179232.png",
+      "localPath": "/player-images/juventus--napoli/jadon-sancho.png"
+    },
+    {
+      "playerName": "Luis Díaz & Darwin Núñez",
+      "club": "Napoli",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/la-liga-194.png",
+      "localPath": "/player-images/napoli/luis-daz--darwin-nez.png"
+    },
+    {
+      "playerName": "Andy Robertson",
+      "club": "TBD",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/la-liga-194.png",
+      "localPath": "/player-images/tbd/andy-robertson.png"
+    },
+    {
+      "playerName": "Cristian Romero",
+      "club": "Atletico Madrid",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/cristian-romero-128738.png",
+      "localPath": "/player-images/atletico-madrid/cristian-romero.png"
+    },
+    {
+      "playerName": "Junior Hountondji",
+      "club": "Sunderland",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/la-liga-194.png",
+      "localPath": "/player-images/sunderland/junior-hountondji.png"
+    },
+    {
+      "playerName": "Jobe Bellingham",
+      "club": "Crystal Palace",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/jobe-bellingham-340781.png",
+      "localPath": "/player-images/crystal-palace/jobe-bellingham.png"
+    },
+    {
+      "playerName": "Charlie Cresswell",
+      "club": "Sunderland",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/charlie-cresswell-288800.png",
+      "localPath": "/player-images/sunderland/charlie-cresswell.png"
+    },
+    {
+      "playerName": "Alejo Veliz",
+      "club": "Sevilla FC",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/alejo-veliz-330371.png",
+      "localPath": "/player-images/sevilla-fc/alejo-veliz.png"
+    },
+    {
+      "playerName": "Fraser Forster",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/fraser-forster-1117.png",
+      "localPath": "/player-images/free-agent/fraser-forster.png"
+    },
+    {
+      "playerName": "Sergio Reguilon",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/sergio-reguilon-142764.png",
+      "localPath": "/player-images/free-agent/sergio-reguilon.png"
+    },
+    {
+      "playerName": "Alfie Whiteman",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/alfie-whiteman-131026.png",
+      "localPath": "/player-images/free-agent/alfie-whiteman.png"
+    },
+    {
+      "playerName": "Timo Werner",
+      "club": "RB Leipzig",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/timo-werner-15347.png",
+      "localPath": "/player-images/rb-leipzig/timo-werner.png"
+    },
+    {
+      "playerName": "Pierre-Emile Hojbjerg",
+      "club": "Marseille",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/pierre-emile-hjbjerg-1458.png",
+      "localPath": "/player-images/marseille/pierre-emile-hojbjerg.png"
+    },
+    {
+      "playerName": "Damola Ajayi",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/damola-ajayi-367107.png",
+      "localPath": "/player-images/free-agent/damola-ajayi.png"
+    },
+    {
+      "playerName": "Aaron Cresswell",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/aaron-cresswell-1133.png",
+      "localPath": "/player-images/free-agent/aaron-cresswell.png"
+    },
+    {
+      "playerName": "Lukasz Fabianski",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/lukasz-fabianski-713.png",
+      "localPath": "/player-images/free-agent/lukasz-fabianski.png"
+    },
+    {
+      "playerName": "Vladimir Coufal",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/vladimir-coufal-36282.png",
+      "localPath": "/player-images/free-agent/vladimir-coufal.png"
+    },
+    {
+      "playerName": "Danny Ings",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/danny-ings-1283.png",
+      "localPath": "/player-images/free-agent/danny-ings.png"
+    },
+    {
+      "playerName": "Carlos Soler",
+      "club": "West Ham United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/carlos-soler-78448.png",
+      "localPath": "/player-images/west-ham-united/carlos-soler.png"
+    },
+    {
+      "playerName": "Evan Ferguson",
+      "club": "West Ham United",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/evan-ferguson-267443.png",
+      "localPath": "/player-images/west-ham-united/evan-ferguson.png"
+    },
+    {
+      "playerName": "Kurt Zouma",
+      "club": "Al-Orobah",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/kurt-zouma-1175.png",
+      "localPath": "/player-images/al-orobah/kurt-zouma.png"
+    },
+    {
+      "playerName": "Brad Dolaghan",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/la-liga-194.png",
+      "localPath": "/player-images/free-agent/brad-dolaghan.png"
+    },
+    {
+      "playerName": "Pablo Sarabia",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/pablo-sarabia-77991.png",
+      "localPath": "/player-images/free-agent/pablo-sarabia.png"
+    },
+    {
+      "playerName": "Craig Dawson",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/craig-dawson-1074.png",
+      "localPath": "/player-images/free-agent/craig-dawson.png"
+    },
+    {
+      "playerName": "Carlos Forbs",
+      "club": "Wolverhampton Wanderers",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/carlos-forbs-291224.png",
+      "localPath": "/player-images/wolverhampton-wanderers/carlos-forbs.png"
+    },
+    {
+      "playerName": "Matty Whittingham",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/la-liga-194.png",
+      "localPath": "/player-images/free-agent/matty-whittingham.png"
+    },
+    {
+      "playerName": "Hugo Bueno",
+      "club": "Feyenoord",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/hugo-bueno-273598.png",
+      "localPath": "/player-images/feyenoord/hugo-bueno.png"
+    },
+    {
+      "playerName": "Chem Campbell",
+      "club": "Free Agent",
+      "success": true,
+      "imageUrl": "https://cdn.transferfeed.com/chem-campbell-241935.png",
+      "localPath": "/player-images/free-agent/chem-campbell.png"
+    }
+  ],
+  "failed": [
+    {
+      "playerName": "Ethan Amundsen-Day",
+      "club": "Hamarkameratene",
+      "reason": "no_image_found"
+    },
+    {
+      "playerName": "Jesse Derry",
+      "club": "Chelsea",
+      "reason": "no_image_found"
+    },
+    {
+      "playerName": "Luca Ashby-Hammond",
+      "club": "Watford",
+      "reason": "no_image_found"
+    },
+    {
+      "playerName": "Sverre Nypan",
+      "club": "Middlesborough",
+      "reason": "no_image_found"
+    },
+    {
+      "playerName": "Diego Leon",
+      "club": "Manchester United",
+      "reason": "no_image_found"
+    },
+    {
+      "playerName": "Radek Vitek",
+      "club": "Bristol City",
+      "reason": "no_image_found"
+    },
+    {
+      "playerName": "Jack Perkins",
+      "club": "Free Agent",
+      "reason": "no_image_found"
+    },
+    {
+      "playerName": "Kamarai Swyer",
+      "club": "Free Agent",
+      "reason": "no_image_found"
+    },
+    {
+      "playerName": "Fer Lopez",
+      "club": "Free Agent",
+      "reason": "no_image_found"
+    }
+  ]
+}

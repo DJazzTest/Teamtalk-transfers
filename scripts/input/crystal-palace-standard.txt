@@ -1,0 +1,47 @@
+Standard Stats 2025-2026 Crystal Palace: Premier League 
+GlossaryToggle Per90 Stats
+Playing Time	Performance	Per 90 Minutes	
+Player	Nation	Pos	Age	MP	Starts	Min	90s	Gls	Ast	G+A	G-PK	PK	PKatt	CrdY	CrdR	Gls	Ast	G+A	G-PK	G+A-PK	Matches
+Dean Henderson	eng ENG	GK	28-341	26	26	2,340	26.0	0	0	0	0	0	0	2	0	0.00	0.00	0.00	0.00	0.00	Matches
+Maxence Lacroix	fr FRA	DF	25-316	26	26	2,340	26.0	0	2	2	0	0	0	3	0	0.00	0.08	0.08	0.00	0.08	Matches
+Tyrick Mitchell	eng ENG	MF	26-168	26	26	2,307	25.6	1	0	1	1	0	0	5	0	0.04	0.00	0.04	0.04	0.04	Matches
+Jean-Philippe Mateta	fr FRA	FW	28-233	23	23	1,904	21.2	8	0	8	5	3	3	2	0	0.38	0.00	0.38	0.24	0.24	Matches
+Adam Wharton	eng ENG	MF	22-010	23	23	1,895	21.1	0	3	3	0	0	0	5	1	0.00	0.14	0.14	0.00	0.14	Matches
+Chris Richards	us USA	DF	25-325	22	22	1,972	21.9	1	0	1	1	0	0	3	0	0.05	0.00	0.05	0.05	0.05	Matches
+Marc Guéhi	eng ENG	DF	25-218	20	20	1,800	20.0	2	2	4	2	0	0	4	0	0.10	0.10	0.20	0.10	0.20	Matches
+Yeremi Pino	es ESP	MF,FW	23-119	24	20	1,628	18.1	2	1	3	2	0	0	4	0	0.11	0.06	0.17	0.11	0.17	Matches
+Daniel Muñoz	co COL	MF	29-266	18	18	1,585	17.6	3	2	5	3	0	0	5	0	0.17	0.11	0.28	0.17	0.28	Matches
+Ismaila Sarr	sn SEN	MF,FW	27-356	16	16	1,365	15.2	5	1	6	4	1	1	1	0	0.33	0.07	0.40	0.26	0.33	Matches
+Daichi Kamada	jp JPN	MF	29-195	16	15	1,249	13.9	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Will Hughes	eng ENG	MF	30-305	23	13	1,164	12.9	0	0	0	0	0	0	5	0	0.00	0.00	0.00	0.00	0.00	Matches
+Jefferson Lerma	co COL	MF,DF	31-114	23	12	1,165	12.9	0	2	2	0	0	0	6	0	0.00	0.15	0.15	0.00	0.15	Matches
+Nathaniel Clyne	eng ENG	MF	34-317	7	6	418	4.6	0	1	1	0	0	0	0	0	0.00	0.22	0.22	0.00	0.22	Matches
+Justin Devenny	nir NIR	MF,FW	22-128	18	5	603	6.7	1	0	1	0	1	1	0	0	0.15	0.00	0.15	0.00	0.00	Matches
+Brennan Johnson	wls WAL	MF	24-269	7	5	452	5.0	0	0	0	0	0	0	2	0	0.00	0.00	0.00	0.00	0.00	Matches
+Jaydee Canvot	fr FRA	DF	19-202	9	3	357	4.0	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Eddie Nketiah	eng ENG	MF	26-262	12	2	424	4.7	2	0	2	2	0	0	2	0	0.42	0.00	0.42	0.42	0.42	Matches
+Jørgen Strand Larsen	no NOR	FW	26-010	2	2	180	2.0	2	0	2	2	0	0	1	0	1.00	0.00	1.00	1.00	1.00	Matches
+Chadi Riad	ma MAR	DF	22-244	3	1	120	1.3	0	1	1	0	0	0	1	0	0.00	0.75	0.75	0.00	0.75	Matches
+Evann Guessand	ci CIV	MF	24-230	2	1	92	1.0	0	1	1	0	0	0	0	0	0.00	0.98	0.98	0.00	0.98	Matches
+Eberechi Eze	eng ENG	MF	27-232	1	1	83	0.9	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Christantus Uche	ng NGA	FW	22-273	13	0	163	1.8	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Borna Sosa	hr CRO	DF,MF	28-026	5	0	55	0.6	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Romain Esse	eng ENG	MF	20-279	4	0	44	0.5	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Playing Time	Performance	Per 90 Minutes	
+Player	Nation	Pos	Age	MP	Starts	Min	90s	Gls	Ast	G+A	G-PK	PK	PKatt	CrdY	CrdR	Gls	Ast	G+A	G-PK	G+A-PK	Matches
+Joél Drakes-Thomas	eng ENG	MF	16-252	2	0	9	0.1	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Kaden Rodney	eng ENG	DF,MF	21-132	1	0	4	0.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Odsonne Édouard	fr FRA	FW	28-031	1	0	3	0.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Dean Benamar	eng ENG	DF	17-261	0	0																Matches
+Walter Benítez	ar ARG	GK	33-028	0	0																Matches
+Rio Cardines	tt TRI	MF	19-230	0	0																Matches
+Ben Casey	eng ENG	FW	18-078	0	0																Matches
+Danny Imray	eng ENG	DF,MF	22-204	0	0																Matches
+George King	eng ENG	DF	18-333	0	0																Matches
+Zachariah Marsh	eng ENG	FW	20-133	0	0																Matches
+Remi Matthews	eng ENG	GK	32-006	0	0																Matches
+Jesurun Rak Sakyi	eng ENG	FW,MF	23-134	0	0																Matches
+Squad Total			26.9	26	286	2,340	26.0	27	16	43	22	5	5	53	1	1.04	0.62	1.65	0.85	1.46	
+Opponent Total			27.0	26	286	2,340	26.0	31	16	47	28	3	3	48	1	1.19	0.62	1.81	1.08	1.69	
+Totals may not be complete for all senior-level play, see coverage note.
+

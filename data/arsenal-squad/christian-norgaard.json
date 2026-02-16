@@ -1,0 +1,42 @@
+{
+  "slug": "christian-norgaard",
+  "source": "local",
+  "profile": {
+    "name": "Christian Norgaard",
+    "fullName": "Christian Thers Norgaard",
+    "position": "MF (CM-DM)",
+    "primaryPosition": "Midfielder",
+    "footed": "Right",
+    "heightCm": 185,
+    "weightKg": 69,
+    "dateOfBirth": "1994-03-10",
+    "placeOfBirth": "Copenhagen, Denmark",
+    "nationality": "Denmark",
+    "club": "Brentford",
+    "nationalTeam": "Denmark",
+    "wages": {
+      "amount": 40000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2027-06-30",
+    "bio": "Christian Norgaard is a deep-lying midfielder for Brentford and Denmark, recognised for his defensive reading of the game and tidy distribution from the base of midfield."
+  },
+  "currentSeasonSummary": {
+    "2024-2025": {
+      "Premier League": {
+        "mp": 32,
+        "min": 2639,
+        "gls": 5,
+        "ast": 3,
+        "xg": 3.9,
+        "npxG": 3.9,
+        "xAG": 1,
+        "sca": 51,
+        "gca": 11
+      }
+    }
+  },
+  "imagePath": "christian-norgaard.png"
+}

@@ -1,0 +1,45 @@
+{
+  "slug": "ethan-nwaneri",
+  "source": "local",
+  "profile": {
+    "name": "Ethan Nwaneri",
+    "fullName": "Ethan Chidiebere Nwaneri",
+    "position": "MF",
+    "primaryPosition": "Midfielder",
+    "heightCm": 180,
+    "weightKg": 82,
+    "dateOfBirth": "2007-03-21",
+    "placeOfBirth": "England, United Kingdom",
+    "nationality": "England",
+    "club": "Arsenal",
+    "youthNationalTeam": "England",
+    "bio": "Ethan Nwaneri is a highly rated teenage midfielder for Arsenal, a creative, goal-scoring number eight who drifts into pockets and carries the ball through traffic."
+  },
+  "currentSeasonSummary": {
+    "2024-2025": {
+      "Premier League": {
+        "mp": 14,
+        "min": 291,
+        "gls": 3,
+        "ast": 0,
+        "xg": 0.5,
+        "npxG": 0.5,
+        "xAG": 0.3,
+        "sca": 8,
+        "gca": 1
+      },
+      "Champions League": {
+        "mp": 5,
+        "min": 153,
+        "gls": 1,
+        "ast": 0,
+        "xg": 0.4,
+        "npxG": 0.4,
+        "xAG": 0.3,
+        "sca": 1,
+        "gca": 0
+      }
+    }
+  },
+  "imagePath": "ethan-nwaneri.png"
+}

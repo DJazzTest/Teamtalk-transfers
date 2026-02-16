@@ -12,6 +12,7 @@ import Cms from "./pages/Cms";
 import ChatterBoxPage from "./pages/ChatterBoxPage";
 import NotFound from "./pages/NotFound";
 import { ClubBioProvider } from "@/context/ClubBioContext";
+import ArsenalSquad from "./pages/ArsenalSquad";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/cms" element={<Cms />} />
                 <Route path="/chatter-box" element={<ChatterBoxPage />} />
+                <Route path="/arsenal-squad" element={<ArsenalSquad />} />
                 {/* Keep the old Index route temporarily for backward compatibility */}
                 <Route path="/old" element={<Index />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

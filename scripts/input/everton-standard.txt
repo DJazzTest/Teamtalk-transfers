@@ -1,0 +1,40 @@
+Standard Stats 2025-2026 Everton: Premier League 
+GlossaryToggle Per90 Stats
+Playing Time	Performance	Per 90 Minutes	
+Player	Nation	Pos	Age	MP	Starts	Min	90s	Gls	Ast	G+A	G-PK	PK	PKatt	CrdY	CrdR	Gls	Ast	G+A	G-PK	G+A-PK	Matches
+Jordan Pickford	eng ENG	GK	31-346	26	26	2,340	26.0	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+James Tarkowski	eng ENG	DF	33-089	26	26	2,340	26.0	0	1	1	0	0	0	4	0	0.00	0.04	0.04	0.00	0.04	Matches
+James Garner	eng ENG	MF,DF	24-340	26	26	2,333	25.9	2	3	5	2	0	0	6	0	0.08	0.12	0.19	0.08	0.19	Matches
+Jake O'Brien	ie IRL	DF	24-277	26	24	2,188	24.3	0	1	1	0	0	0	2	1	0.00	0.04	0.04	0.00	0.04	Matches
+Vitaliy Mykolenko	ua UKR	DF	26-263	22	22	1,968	21.9	0	1	1	0	0	0	5	0	0.00	0.05	0.05	0.00	0.05	Matches
+Michael Keane	eng ENG	DF	33-036	22	21	1,857	20.6	3	0	3	3	0	0	0	1	0.15	0.00	0.15	0.15	0.15	Matches
+Iliman Ndiaye	sn SEN	MF	25-347	20	20	1,701	18.9	5	2	7	3	2	2	2	0	0.26	0.11	0.37	0.16	0.26	Matches
+Jack Grealish	eng ENG	MF	30-159	20	18	1,627	18.1	2	6	8	2	0	0	5	1	0.11	0.33	0.44	0.11	0.44	Matches
+Kiernan Dewsbury-Hall	eng ENG	MF	27-163	19	18	1,559	17.3	5	2	7	5	0	0	5	0	0.29	0.12	0.40	0.29	0.40	Matches
+Thierno Barry	fr FRA	FW	23-118	26	18	1,493	16.6	5	0	5	5	0	0	2	0	0.30	0.00	0.30	0.30	0.30	Matches
+Idrissa Gana Gueye	sn SEN	MF	36-143	17	17	1,400	15.6	2	1	3	2	0	0	1	1	0.13	0.06	0.19	0.13	0.19	Matches
+Tim Iroegbunam	eng ENG	MF	22-231	19	11	941	10.5	0	2	2	0	0	0	8	0	0.00	0.19	0.19	0.00	0.19	Matches
+Beto	gw GNB	FW	28-016	26	8	897	10.0	3	0	3	3	0	0	2	0	0.30	0.00	0.30	0.30	0.30	Matches
+Dwight McNeil	eng ENG	MF,FW	26-086	14	7	621	6.9	0	1	1	0	0	0	1	0	0.00	0.14	0.14	0.00	0.14	Matches
+Carlos Alcaraz	ar ARG	MF	23-078	16	6	675	7.5	0	1	1	0	0	0	3	0	0.00	0.13	0.13	0.00	0.13	Matches
+Harrison Armstrong	eng ENG	MF	19-028	8	5	412	4.6	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Tyler Dibling	eng ENG	MF	19-341	13	4	357	4.0	0	0	0	0	0	0	2	0	0.00	0.00	0.00	0.00	0.00	Matches
+Nathan Patterson	sct SCO	DF	24-123	6	3	240	2.7	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Merlin Röhl	de GER	MF	23-226	10	2	359	4.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Jarrad Branthwaite	eng ENG	DF	23-234	4	2	229	2.5	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Tyrique George	eng ENG	MF	20-012	2	1	83	0.9	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Séamus Coleman	ie IRL	DF	37-128	3	1	11	0.1	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Adam Aznou	ma MAR	DF	19-259	0	0																Matches
+Callum Bates	eng ENG	MF	20-141	0	0																Matches
+Elijah Campbell	eng ENG	DF	21-198	0	0																Matches
+Youssef Chermiti	pt POR	FW	21-268	0	0																Matches
+Braiden Graham	nir NIR	FW	18-101	0	0																Matches
+Tom King	wls WAL	GK	30-344	0	0																Matches
+Tyler Onyango	eng ENG	MF	22-349	0	0																Matches
+Mark Travers	ie IRL	GK	26-274	0	0																Matches
+Harry Tyrer	eng ENG	GK	24-072	0	0																Matches
+Reece Welch	eng ENG	DF	22-150	0	0																Matches
+Squad Total			27.9	26	286	2,340	26.0	27	21	48	25	2	2	50	4	1.04	0.81	1.85	0.96	1.77	
+Opponent Total			26.6	26	286	2,340	26.0	29	26	55	27	2	3	46	0	1.12	1.00	2.12	1.04	2.04	
+Totals may not be complete for all senior-level play, see coverage note.
+

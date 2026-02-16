@@ -1,0 +1,33 @@
+Playing Time	Performance	Per 90 Minutes	
+Player	Nation	Pos	Age	MP	Starts	Min	90s	Gls	Ast	G+A	G-PK	PK	PKatt	CrdY	CrdR	Gls	Ast	G+A	G-PK	G+A-PK	Matches
+David Raya	es ESP	GK	30-150	25	25	2,250	25.0	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Martín Zubimendi	es ESP	MF	27-010	25	24	2,084	23.2	5	1	6	5	0	0	4	0	0.22	0.04	0.26	0.22	0.26	Matches
+Declan Rice	eng ENG	MF	27-029	24	23	2,056	22.8	4	3	7	4	0	0	2	0	0.18	0.13	0.31	0.18	0.31	Matches
+Jurriën Timber	nl NED	DF	24-240	24	22	2,001	22.2	2	3	5	2	0	0	4	0	0.09	0.13	0.22	0.09	0.22	Matches
+William Saliba	fr FRA	DF	24-325	21	20	1,714	19.0	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Gabriel Magalhães	br BRA	DF	28-055	19	18	1,626	18.1	3	2	5	3	0	0	1	0	0.17	0.11	0.28	0.17	0.28	Matches
+Viktor Gyökeres	se SWE	FW	27-253	23	18	1,485	16.5	8	0	8	6	2	2	3	0	0.48	0.00	0.48	0.36	0.36	Matches
+Bukayo Saka	eng ENG	FW,MF	24-160	21	17	1,546	17.2	4	3	7	3	1	1	1	0	0.23	0.17	0.41	0.17	0.35	Matches
+Riccardo Calafiori	it ITA	DF	23-269	18	17	1,337	14.9	1	2	3	1	0	0	5	0	0.07	0.13	0.20	0.07	0.20	Matches
+Leandro Trossard	be BEL	FW,MF	31-070	21	15	1,418	15.8	5	5	10	5	0	0	1	0	0.32	0.32	0.63	0.32	0.63	Matches
+Martin Ødegaard	no NOR	MF	27-057	18	13	1,017	11.3	1	4	5	1	0	0	0	0	0.09	0.35	0.44	0.09	0.44	Matches
+Piero Hincapié	ec ECU	DF	24-034	15	12	1,046	11.6	0	0	0	0	0	0	2	0	0.00	0.00	0.00	0.00	0.00	Matches
+Eberechi Eze	eng ENG	MF,FW	27-228	19	11	1,002	11.1	4	2	6	4	0	0	1	0	0.36	0.18	0.54	0.36	0.54	Matches
+Mikel Merino	es ESP	MF,FW	29-235	21	10	1,007	11.2	4	3	7	4	0	0	1	0	0.36	0.27	0.63	0.36	0.63	Matches
+Noni Madueke	eng ENG	FW,MF	23-339	16	9	701	7.8	1	1	2	1	0	0	0	0	0.13	0.13	0.26	0.13	0.26	Matches
+Gabriel Martinelli	br BRA	FW	24-239	19	7	616	6.8	1	2	3	1	0	0	2	0	0.15	0.29	0.44	0.15	0.44	Matches
+Ben White	eng ENG	DF	28-127	7	5	411	4.6	0	1	1	0	0	0	0	0	0.00	0.22	0.22	0.00	0.22	Matches
+Cristhian Mosquera	es ESP	DF	21-230	10	4	433	4.8	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Gabriel Jesus	br BRA	FW	28-315	10	2	287	3.2	2	0	2	2	0	0	1	0	0.63	0.00	0.63	0.63	0.63	Matches
+Kai Havertz	de GER	MF	26-246	3	2	157	1.7	0	1	1	0	0	0	0	0	0.00	0.57	0.57	0.00	0.57	Matches
+Myles Lewis-Skelly	eng ENG	DF	19-139	14	1	321	3.6	0	0	0	0	0	0	3	0	0.00	0.00	0.00	0.00	0.00	Matches
+Ethan Nwaneri	eng ENG	MF	18-328	6	0	171	1.9	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Christian Nørgaard	dk DEN	MF	31-339	4	0	35	0.4	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Max Dowman	eng ENG	MF	16-043	2	0	29	0.3	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Andre Annous	eng ENG	FW	18-047	0	0																Matches
+Kepa Arrizabalaga	es ESP	GK	31-132	0	0																Matches
+Jakub Kiwior	pl POL	DF,MF	25-362	0	0																Matches
+Marli Salmon	eng ENG	DF	16-167	0	0																Matches
+Squad Total			26.7	25	275	2,250	25.0	45	33	78	42	3	3	34	0	1.80	1.32	3.12	1.68	3.00	
+Opponent Total			26.8	25	275	2,250	25.0	17	10	27	17	0	0	42	1	0.68	0.40	1.08	0.68	1.08	
+

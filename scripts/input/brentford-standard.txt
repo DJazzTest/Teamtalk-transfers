@@ -1,0 +1,38 @@
+Standard Stats 2025-2026 Brentford: Premier League 
+GlossaryToggle Per90 Stats
+Playing Time	Performance	Per 90 Minutes	
+Player	Nation	Pos	Age	MP	Starts	Min	90s	Gls	Ast	G+A	G-PK	PK	PKatt	CrdY	CrdR	Gls	Ast	G+A	G-PK	G+A-PK	Matches
+Caoimhín Kelleher	ie IRL	GK	27-085	26	26	2,340	26.0	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Michael Kayode	it ITA	DF	21-221	26	26	2,268	25.2	0	0	0	0	0	0	6	0	0.00	0.00	0.00	0.00	0.00	Matches
+Thiago	br BRA	FW	24-235	26	25	2,202	24.5	17	1	18	11	6	7	5	0	0.69	0.04	0.74	0.45	0.49	Matches
+Nathan Collins	ie IRL	DF	24-292	24	22	2,029	22.5	1	2	3	1	0	0	4	0	0.04	0.09	0.13	0.04	0.13	Matches
+Yehor Yarmoliuk	ua UKR	MF	21-352	26	22	1,874	20.8	1	2	3	1	0	0	5	0	0.05	0.10	0.14	0.05	0.14	Matches
+Kevin Schade	de GER	MF,FW	24-081	23	22	1,857	20.6	6	3	9	6	0	1	6	1	0.29	0.15	0.44	0.29	0.44	Matches
+Sepp van den Berg	nl NED	DF	24-058	21	20	1,854	20.6	0	1	1	0	0	0	1	0	0.00	0.05	0.05	0.00	0.05	Matches
+Jordan Henderson	eng ENG	MF	35-244	24	17	1,495	16.6	1	3	4	1	0	0	4	0	0.06	0.18	0.24	0.06	0.24	Matches
+Kristoffer Ajer	no NOR	DF	27-305	20	16	1,369	15.2	0	1	1	0	0	0	2	0	0.00	0.07	0.07	0.00	0.07	Matches
+Dango Ouattara	bf BFA	MF	24-005	20	15	1,369	15.2	5	1	6	5	0	0	4	0	0.33	0.07	0.39	0.33	0.39	Matches
+Mikkel Damsgaard	dk DEN	MF	25-228	22	15	1,300	14.4	1	3	4	1	0	0	0	0	0.07	0.21	0.28	0.07	0.28	Matches
+Mathias Jensen	dk DEN	MF	30-046	24	14	1,203	13.4	2	1	3	2	0	0	2	0	0.15	0.07	0.22	0.15	0.22	Matches
+Vitaly Janelt	de GER	MF	27-282	21	12	1,216	13.5	1	4	5	1	0	0	7	0	0.07	0.30	0.37	0.07	0.37	Matches
+Keane Lewis-Potter	eng ENG	MF,DF	24-359	24	12	1,097	12.2	3	1	4	3	0	0	1	0	0.25	0.08	0.33	0.25	0.33	Matches
+Rico Henry	jm JAM	DF	28-223	22	11	1,128	12.5	0	0	0	0	0	0	2	0	0.00	0.00	0.00	0.00	0.00	Matches
+Aaron Hickey	sct SCO	DF	23-251	17	6	555	6.2	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Ethan Pinnock	jm JAM	DF	32-263	3	3	228	2.5	0	0	0	0	0	0	1	0	0.00	0.00	0.00	0.00	0.00	Matches
+Fabio Carvalho	pt POR	MF	23-170	6	1	102	1.1	1	0	1	1	0	0	0	0	0.88	0.00	0.88	0.88	0.88	Matches
+Antoni Milambo	nl NED	MF	20-319	1	1	45	0.5	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Frank Onyeka	ng NGA	MF	28-046	6	0	92	1.0	0	1	1	0	0	0	0	0	0.00	0.98	0.98	0.00	0.98	Matches
+Reiss Nelson	eng ENG	FW,MF	26-068	6	0	55	0.6	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Romelle Donovan	eng ENG	FW	19-078	2	0	12	0.1	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Myles Peart-Harris	eng ENG	MF	23-151	1	0	1	0.0	0	0	0	0	0	0	0	0	0.00	0.00	0.00	0.00	0.00	Matches
+Benjamin Arthur	eng ENG	DF	20-130	0	0																Matches
+Luka Bentt	be BEL	MF	18-138	0	0																Matches
+Yunus Emre Konak	tr TUR	MF	20-037	0	0																Matches
+Kaye Furo	be BEL	FW	19-010	0	0																Matches
+Gustavo Nunes	br BRA	MF	20-088	0	0																Matches
+Mads Roerslev	dk DEN	DF,MF	26-237	0	0																Matches
+Hákon Valdimarsson	is ISL	GK	24-126	0	0																Matches
+Squad Total			25.8	26	286	2,340	26.0	39	24	63	33	6	8	52	1	1.50	0.92	2.42	1.27	2.19	
+Opponent Total			26.8	26	286	2,340	26.0	33	20	53	29	4	7	45	1	1.27	0.77	2.04	1.12	1.88	
+Totals may not be complete for all senior-level play, see coverage note.
+

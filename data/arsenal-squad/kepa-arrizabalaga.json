@@ -1,0 +1,33 @@
+{
+  "slug": "kepa-arrizabalaga",
+  "source": "local",
+  "profile": {
+    "name": "Kepa Arrizabalaga",
+    "fullName": "Kepa Arrizabalaga Revuelta",
+    "position": "GK",
+    "primaryPosition": "Goalkeeper",
+    "footed": "Right",
+    "heightCm": 189,
+    "weightKg": 87,
+    "dateOfBirth": "1994-10-03",
+    "placeOfBirth": "Ondarroa, Spain",
+    "nationality": "Spain",
+    "club": "Arsenal",
+    "nationalTeam": "Spain",
+    "instagram": "@kepaarrizabalaga",
+    "wages": {
+      "amount": 60000,
+      "currency": "GBP",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2028-06-30",
+    "honours": [
+      "2023-24 La Liga Champion",
+      "2023-24 Champions League Champion"
+    ],
+    "bio": "Kepa Arrizabalaga is an experienced Spanish goalkeeper, now at Arsenal, recognised for his reflex shot-stopping and agility on his line."
+  },
+  "currentSeasonSummary": {},
+  "imagePath": "kepa-arrizabalaga.png"
+}

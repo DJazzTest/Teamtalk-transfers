@@ -1,0 +1,35 @@
+{
+  "slug": "noni-madueke",
+  "source": "local",
+  "profile": {
+    "name": "Noni Madueke",
+    "fullName": "Chukwunonso Tristan Madueke",
+    "position": "FW-MF",
+    "primaryPosition": "Forward",
+    "footed": "Left",
+    "heightCm": 176,
+    "weightKg": 66,
+    "dateOfBirth": "2002-03-10",
+    "placeOfBirth": "England, United Kingdom",
+    "nationality": "England",
+    "club": "Chelsea",
+    "youthNationalTeam": "England",
+    "bio": "Noni Madueke is an explosive winger for Chelsea and England, a left-footed dribbler who attacks from the right flank and creates chances with quick changes of direction."
+  },
+  "currentSeasonSummary": {
+    "2023-2024": {
+      "Premier League": {
+        "mp": 23,
+        "min": 1053,
+        "gls": 5,
+        "ast": 2,
+        "xg": 2.5,
+        "npxG": 1.7,
+        "xAG": 2.6,
+        "sca": 51,
+        "gca": 8
+      }
+    }
+  },
+  "imagePath": "noni-madueke.png"
+}

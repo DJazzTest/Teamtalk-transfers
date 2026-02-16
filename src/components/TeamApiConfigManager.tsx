@@ -3,23 +3,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Table, 
-  Calendar, 
-  Trophy, 
-  ExternalLink, 
-  CheckCircle, 
+import {
+  Calendar,
+  Trophy,
+  ExternalLink,
+  CheckCircle,
   XCircle,
   Clock,
-  TestTube
+  TestTube,
 } from 'lucide-react';
-import { 
-  TEAM_API_CONFIGS, 
-  getTeamConfig, 
-  getAllLeagueTables,
-  getTeamsByLeague 
+import {
+  TEAM_API_CONFIGS,
+  getTeamConfig,
+  getTeamsByLeague,
 } from '@/data/teamApiConfig';
-import { sport365Api } from '@/services/sport365Api';
 import { TeamDetailPanel } from '@/components/TeamDetailPanel';
 
 interface ApiTestResult {
@@ -117,9 +114,8 @@ export const TeamApiConfigManager: React.FC = () => {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="teams" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-1">
               <TabsTrigger value="teams">Teams by League</TabsTrigger>
-              <TabsTrigger value="tables">League Tables</TabsTrigger>
             </TabsList>
 
             <TabsContent value="teams" className="space-y-4">
@@ -147,47 +143,7 @@ export const TeamApiConfigManager: React.FC = () => {
                               <Badge variant="outline">{team.league}</Badge>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                              {/* League Table */}
-                              <div className="space-y-2">
-                                <div className="flex items-center gap-2">
-                                  <Table className="h-4 w-4" />
-                                  <span className="font-medium">League Table</span>
-                                  {getResultIcon(tableResult)}
-                                </div>
-                                <div className="text-sm text-gray-500 break-all">
-                                  {team.leagueTable.tableApi.substring(0, 60)}...
-                                </div>
-                                <div className="flex gap-2">
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => testApi(tableApiId, team.leagueTable.tableApi, team.leagueTable.provider)}
-                                    disabled={testingApis.has(tableApiId)}
-                                  >
-                                    <TestTube className="h-3 w-3 mr-1" />
-                                    Test
-                                  </Button>
-                                  <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    onClick={() => window.open(team.leagueTable.tableApi, '_blank')}
-                                  >
-                                    <ExternalLink className="h-3 w-3" />
-                                  </Button>
-                                </div>
-                                {tableResult?.status === 'success' && (
-                                  <div className="text-xs text-green-600">
-                                    ✓ {tableResult.responseTime}ms
-                                  </div>
-                                )}
-                                {tableResult?.status === 'error' && (
-                                  <div className="text-xs text-red-600">
-                                    ✗ {tableResult.error}
-                                  </div>
-                                )}
-                              </div>
-
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {/* Results */}
                               <div className="space-y-2">
                                 <div className="flex items-center gap-2">
@@ -276,58 +232,6 @@ export const TeamApiConfigManager: React.FC = () => {
                           </div>
                         );
                       })}
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </TabsContent>
-
-            <TabsContent value="tables" className="space-y-4">
-              {getAllLeagueTables().map((table, index) => {
-                const tableApiId = `table-${index}`;
-                const result = testResults[tableApiId];
-
-                return (
-                  <Card key={index}>
-                    <CardContent className="pt-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                          <Table className="h-5 w-5" />
-                          <h3 className="font-semibold text-lg">{table.leagueName}</h3>
-                          <Badge variant="outline">{table.provider}</Badge>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => testApi(tableApiId, table.tableApi, table.provider)}
-                            disabled={testingApis.has(tableApiId)}
-                          >
-                            <TestTube className="h-3 w-3 mr-1" />
-                            Test API
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => window.open(table.tableApi, '_blank')}
-                          >
-                            <ExternalLink className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="text-sm text-gray-500 break-all mb-2">
-                        {table.tableApi}
-                      </div>
-                      {result?.status === 'success' && (
-                        <div className="text-xs text-green-600">
-                          ✓ Success - {result.responseTime}ms
-                        </div>
-                      )}
-                      {result?.status === 'error' && (
-                        <div className="text-xs text-red-600">
-                          ✗ Error: {result.error}
-                        </div>
-                      )}
                     </CardContent>
                   </Card>
                 );

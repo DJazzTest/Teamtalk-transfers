@@ -3,6 +3,7 @@ import { Video, Clock, ExternalLink, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { crowdyNewsApi, CrowdyNewsItem } from '@/services/crowdyNewsApi';
 import { TeamTalkAppPrompt, isTeamTalkUrl } from '@/components/TeamTalkAppPrompt';
+import { stripHtml, normalizeToHttps, cleanTitle, parseTextWithUrls } from '@/utils/htmlUtils';
 
 interface VideoItem extends CrowdyNewsItem {
   isVideo?: boolean;
@@ -67,7 +68,8 @@ export const VideoTab: React.FC = () => {
               .filter(item => isVideoItem(item) && isTransferRelated(item))
               .map(item => ({
                 ...item,
-                isVideo: true
+                isVideo: true,
+                url: item.url ? normalizeToHttps(item.url) : item.url
               }));
             
             return videoItems;
@@ -132,6 +134,9 @@ export const VideoTab: React.FC = () => {
   const extractYouTubeVideoId = (url?: string): string | null => {
     if (!url) return null;
     
+    // Normalize to HTTPS first to ensure consistent matching
+    const normalizedUrl = normalizeToHttps(url);
+    
     const patterns = [
       /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/,
       /youtube\.com\/embed\/([^&\s]+)/,
@@ -139,7 +144,7 @@ export const VideoTab: React.FC = () => {
     ];
     
     for (const pattern of patterns) {
-      const match = url.match(pattern);
+      const match = normalizedUrl.match(pattern);
       if (match && match[1]) {
         return match[1];
       }
@@ -209,15 +214,16 @@ export const VideoTab: React.FC = () => {
                 setSelectedVideo(video);
                 setIsVideoModalOpen(true);
               } else if (video.url) {
+                const normalizedUrl = normalizeToHttps(video.url);
                 // Check if it's a TeamTalk article and if user hasn't dismissed the prompt
-                const isTeamTalk = isTeamTalkUrl(video.url);
+                const isTeamTalk = isTeamTalkUrl(normalizedUrl);
                 const hasDismissed = localStorage.getItem('teamtalk-app-prompt-dismissed') === 'true';
                 
                 if (isTeamTalk && !hasDismissed) {
-                  setSelectedArticleUrl(video.url);
+                  setSelectedArticleUrl(normalizedUrl);
                   setShowAppPrompt(true);
                 } else {
-                  window.open(video.url, '_blank', 'noopener,noreferrer');
+                  window.open(normalizedUrl, '_blank', 'noopener,noreferrer');
                 }
               }
             }}
@@ -283,12 +289,12 @@ export const VideoTab: React.FC = () => {
                 </div>
                 
                 <h3 className="font-semibold text-gray-900 dark:text-white text-sm leading-tight line-clamp-2 mb-2 hover:text-blue-600 dark:hover:text-blue-300 transition-colors">
-                  {video.title}
+                  {cleanTitle(video.title)}
                 </h3>
                 
                 {video.summary && (
                   <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-2">
-                    {video.summary}
+                    {cleanTitle(video.summary)}
                   </p>
                 )}
                 
@@ -298,7 +304,7 @@ export const VideoTab: React.FC = () => {
                   </span>
                   {video.url && !hasYouTubeVideo && (
                     <a
-                      href={video.url}
+                      href={normalizeToHttps(video.url)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline text-xs"
@@ -325,7 +331,7 @@ export const VideoTab: React.FC = () => {
         <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl max-h-[90vh] overflow-hidden flex flex-col bg-white dark:bg-slate-800 p-0">
           <DialogHeader className="px-6 pt-6 pb-4">
             <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white pr-8">
-              {selectedVideo?.title}
+              {selectedVideo ? cleanTitle(selectedVideo.title) : ''}
             </DialogTitle>
           </DialogHeader>
           
@@ -347,9 +353,24 @@ export const VideoTab: React.FC = () => {
                 
                 {selectedVideo.summary && (
                   <div className="mt-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                      {selectedVideo.summary}
-                    </p>
+                    <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
+                      {parseTextWithUrls(selectedVideo.summary).map((part, index) => {
+                        if (part.type === 'url' && part.url) {
+                          return (
+                            <a
+                              key={`url-${index}`}
+                              href={part.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 dark:text-blue-400 hover:underline break-all inline"
+                            >
+                              {part.content}
+                            </a>
+                          );
+                        }
+                        return <span key={`text-${index}`}>{part.content}</span>;
+                      })}
+                    </div>
                   </div>
                 )}
                 
@@ -362,7 +383,7 @@ export const VideoTab: React.FC = () => {
                   </div>
                   {selectedVideo.url && (
                     <a
-                      href={selectedVideo.url}
+                      href={normalizeToHttps(selectedVideo.url)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline text-sm"

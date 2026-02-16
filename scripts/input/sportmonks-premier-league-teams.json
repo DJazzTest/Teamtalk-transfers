@@ -1,0 +1,37 @@
+{
+  "//": "Map your internal club names to Sportmonks team IDs for the current Premier League season.",
+  "//_how_to_use": [
+    "1. Log in to your Sportmonks dashboard and open the Football API 3.0 playground.",
+    "2. Use the teams or search endpoints to find each club and note its numeric team ID.",
+    "3. Replace each 0 below with the correct team ID for that club.",
+    "4. Save this file, then run:  node scripts/importSportmonksPremierLeague.mjs"
+  ],
+  "league": {
+    "name": "Premier League",
+    "season": "2025-26",
+    "sportmonks_league_id": 0
+  },
+  "teams": {
+    "AFC Bournemouth": 0,
+    "Arsenal": 0,
+    "Aston Villa": 0,
+    "Brentford": 0,
+    "Brighton & Hove Albion": 0,
+    "Burnley": 0,
+    "Chelsea": 0,
+    "Crystal Palace": 0,
+    "Everton": 0,
+    "Fulham": 0,
+    "Leeds United": 0,
+    "Liverpool": 0,
+    "Manchester City": 0,
+    "Manchester United": 0,
+    "Newcastle United": 0,
+    "Nottingham Forest": 0,
+    "Sunderland": 0,
+    "Tottenham Hotspur": 0,
+    "West Ham United": 0,
+    "Wolverhampton Wanderers": 0
+  }
+}
+

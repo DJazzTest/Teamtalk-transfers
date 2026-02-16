@@ -1,0 +1,42 @@
+{
+  "slug": "cristhian-mosquera",
+  "source": "local",
+  "profile": {
+    "name": "Cristhian Mosquera",
+    "fullName": "Cristhian Mosquera",
+    "position": "DF (CB)",
+    "primaryPosition": "Defender",
+    "footed": "Right",
+    "heightCm": 188,
+    "weightKg": 78,
+    "dateOfBirth": "2004-06-27",
+    "placeOfBirth": "Alicante, Spain",
+    "nationality": "Spain",
+    "club": "Valencia",
+    "youthNationalTeam": "Spain",
+    "wages": {
+      "amount": 36154,
+      "currency": "EUR",
+      "period": "weekly",
+      "source": "Capology"
+    },
+    "contractExpiry": "2026-06-30",
+    "bio": "Cristhian Mosquera is a young Valencia centre-back, a right-footed defender who couples strong aerial ability with calm play out from the back."
+  },
+  "currentSeasonSummary": {
+    "2024-2025": {
+      "La Liga": {
+        "mp": 32,
+        "min": 2869,
+        "gls": 1,
+        "ast": 0,
+        "xg": 0.4,
+        "npxG": 0.4,
+        "xAG": 0,
+        "sca": 12,
+        "gca": 0
+      }
+    }
+  },
+  "imagePath": "cristhian-mosquera.png"
+}

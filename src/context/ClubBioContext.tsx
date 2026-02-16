@@ -145,8 +145,12 @@ export const ClubBioProvider: React.FC<ClubBioProviderProps> = ({ children }) =>
                   className="justify-center"
                   onClick={() => {
                     if (activeClub) {
+                      // Dispatch the event first
                       dispatchClubAction('overview', activeClub);
-                      setActiveClub(null);
+                      // Close the dialog after a small delay to ensure event is processed
+                      setTimeout(() => {
+                        setActiveClub(null);
+                      }, 100);
                     }
                   }}
                 >

@@ -314,5 +314,25 @@
   "Leeds United:Lukas Nmecha": {
     "completed": false,
     "error": "ID not found"
+  },
+  "Arsenal:Jurriën Timber": {
+    "completed": false,
+    "error": "ID not found"
+  },
+  "Arsenal:Christian Nørgaard": {
+    "completed": false,
+    "error": "ID not found"
+  },
+  "Arsenal:Martín Zubimendi": {
+    "completed": false,
+    "error": "ID not found"
+  },
+  "Brentford:Reiss Nelson": {
+    "completed": false,
+    "error": "ID not found"
+  },
+  "Nottingham Forest:Oleksandr Zinchenko": {
+    "completed": false,
+    "error": "ID not found"
   }
 }
