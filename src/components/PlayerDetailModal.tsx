@@ -10,6 +10,7 @@ import { ShirtNumberIcon } from './ShirtNumberIcon';
 import { PlayerComparisonModal } from './PlayerComparisonModal';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, LineChart, Line, Cell, Legend } from 'recharts';
 import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
+import { FbrefStandardRow, getPlayerStandardStatsForClub, createEmptyStandardRow } from '@/utils/fbrefStandardStats';
 
 interface Player {
   name: string;
@@ -93,6 +94,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
     goalsConceded?: number;
     goals?: number;
   }>>([]);
+  const [fbrefStandardStats, setFbrefStandardStats] = useState<FbrefStandardRow | null>(null);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
   const [expandedTransferHistory, setExpandedTransferHistory] = useState(false);
   const [expandedRecentMatches, setExpandedRecentMatches] = useState(false);
@@ -103,6 +105,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
     if (!player || !isOpen) {
       setStats({ appearances: 0, goals: 0 });
       setCompetitionStats([]);
+      setFbrefStandardStats(null);
       return;
     }
 
@@ -116,6 +119,35 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
       setCompetitionStats([]);
     }
   }, [player, isOpen]);
+
+  // Load FBref standard stats for supported clubs (starting with Leeds United)
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadStandardStats = async () => {
+      if (!isOpen || !player?.name) {
+        if (!cancelled) setFbrefStandardStats(null);
+        return;
+      }
+
+      const standard = await getPlayerStandardStatsForClub(teamName, player.name);
+      if (!cancelled) {
+        if (standard) {
+          setFbrefStandardStats(standard);
+        } else {
+          // Fallback: safe empty row so visuals still render
+          const guessedPosition = player.position || 'MF';
+          setFbrefStandardStats(createEmptyStandardRow(player.name, guessedPosition));
+        }
+      }
+    };
+
+    loadStandardStats();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [player?.name, teamName, isOpen]);
 
   // Load local Arsenal scouting profile when viewing an Arsenal player
   useEffect(() => {
@@ -331,6 +363,21 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
     { label: 'Red (2 yellows)', value: formatStringOrNumber(primaryCompetition?.redCards2Yellows, 0) },
     { label: 'Red cards', value: formatStringOrNumber(primaryCompetition?.redCards, 0) },
   ];
+
+  // FBref standard stats for league play (25/26 season)
+  const fbrefStandardGroup = fbrefStandardStats
+    ? [
+        { label: 'Matches', value: formatStringOrNumber(fbrefStandardStats.matches, 0) },
+        { label: 'Starts', value: formatStringOrNumber(fbrefStandardStats.starts, 0) },
+        { label: 'Minutes', value: formatStringOrNumber(fbrefStandardStats.minutes, 0) },
+        { label: 'Goals', value: formatStringOrNumber(fbrefStandardStats.goals, 0) },
+        { label: 'Assists', value: formatStringOrNumber(fbrefStandardStats.assists, 0) },
+        { label: 'Goals/90', value: formatNumber(fbrefStandardStats.goalsPer90, 2) },
+        { label: 'Assists/90', value: formatNumber(fbrefStandardStats.assistsPer90, 2) },
+        { label: 'G+A/90', value: formatNumber(fbrefStandardStats.gaPer90, 2) },
+        { label: 'G-no-pen/90', value: formatNumber(fbrefStandardStats.gNoPenPer90, 2) },
+      ]
+    : [];
 
   const filterStats = (statsGroup: { label: string; value: string | null }[]) =>
     statsGroup.filter(stat => stat.value !== null);
@@ -931,6 +978,25 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
                 </div>
               </div>
             </Card>
+          )}
+
+          {/* FBref League Standard Stats (Premier League 2025-26) */}
+          {fbrefStandardStats && fbrefStandardGroup.length > 0 && (
+            renderBarChart(
+              'Premier League 2025-26 (FBref standard)',
+              fbrefStandardGroup,
+              {
+                Matches: '#3b82f6',
+                Starts: '#0ea5e9',
+                Minutes: '#22c55e',
+                Goals: '#f97316',
+                Assists: '#eab308',
+                'Goals/90': '#ec4899',
+                'Assists/90': '#8b5cf6',
+                'G+A/90': '#06b6d4',
+                'G-no-pen/90': '#14b8a6',
+              }
+            )
           )}
 
           {/* Average Rating - Bar Chart with Goals */}
