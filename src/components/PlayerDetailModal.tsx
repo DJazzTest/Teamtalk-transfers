@@ -1497,28 +1497,45 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
 
           {/* Recent Matches – by competition type (League, Cup, European, International, Friendly) */}
           {(() => {
-            const baseMatches = player.previousMatches && player.previousMatches.length > 0
-              ? player.previousMatches
-              : teamName === 'Arsenal' && arsenalProfile?.lastFiveMatchesDomesticLeagues
-              ? arsenalProfile.lastFiveMatchesDomesticLeagues.map((m) => {
-                  const outcome =
-                    m.result && /W /.test(m.result)
-                      ? 'Win'
-                      : m.result && /L /.test(m.result)
-                      ? 'Loss'
-                      : 'Draw';
-                  const score = m.result ? m.result.replace(/^[WD L]\s*/, '') : '';
-                  return {
-                    competition: 'Premier League',
-                    date: m.date,
-                    team: m.squad || teamName,
-                    opponent: m.opponent || '',
-                    score,
-                    outcome: outcome as 'Win' | 'Draw' | 'Loss',
-                    venue: m.venue === 'Home' || m.venue === 'Away' ? (m.venue as 'Home' | 'Away') : undefined,
-                  };
-                })
-              : [];
+            let baseMatches =
+              player.previousMatches && player.previousMatches.length > 0
+                ? player.previousMatches
+                : teamName === 'Arsenal' && arsenalProfile?.lastFiveMatchesDomesticLeagues
+                ? arsenalProfile.lastFiveMatchesDomesticLeagues.map((m) => {
+                    const outcome =
+                      m.result && /W /.test(m.result)
+                        ? 'Win'
+                        : m.result && /L /.test(m.result)
+                        ? 'Loss'
+                        : 'Draw';
+                    const score = m.result ? m.result.replace(/^[WD L]\s*/, '') : '';
+                    return {
+                      competition: 'Premier League',
+                      date: m.date,
+                      team: m.squad || teamName,
+                      opponent: m.opponent || '',
+                      score,
+                      outcome: outcome as 'Win' | 'Draw' | 'Loss',
+                      venue:
+                        m.venue === 'Home' || m.venue === 'Away'
+                          ? (m.venue as 'Home' | 'Away')
+                          : undefined,
+                    };
+                  })
+                : [];
+
+            // Final fallback: synthesize recent matches from primaryCompetition matchDates/opponents
+            if (!baseMatches.length && primaryCompetition?.matchDates && primaryCompetition.opponents) {
+              baseMatches = primaryCompetition.matchDates.map((date, index) => ({
+                competition: primaryCompetition.competition || 'League',
+                date,
+                team: teamName,
+                opponent: primaryCompetition.opponents?.[index] ?? '',
+                score: '',
+                outcome: undefined,
+                venue: undefined,
+              }));
+            }
 
             if (!baseMatches.length) return null;
 
