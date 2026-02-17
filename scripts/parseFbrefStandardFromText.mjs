@@ -18,6 +18,7 @@
  *     position: string | null,
  *     matches: number | null,   // MP
  *     starts: number | null,
+ *     subAppearances: number | null,  // derived: matches - starts (times came on from bench)
  *     minutes: number | null,
  *     goals: number | null,
  *     assists: number | null,
@@ -151,11 +152,15 @@ function parseStandardText(text) {
     const gNoPen90 = parseNumber(get(19));
     const gaNoPen90 = parseNumber(get(20));
 
+    const subAppearances =
+      matches != null && starts != null ? Math.max(0, matches - starts) : null;
+
     players.push({
       name,
       position,
       matches,
       starts,
+      subAppearances,
       minutes,
       goals,
       assists,

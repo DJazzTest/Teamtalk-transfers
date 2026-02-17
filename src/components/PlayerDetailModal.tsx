@@ -11,6 +11,7 @@ import { PlayerComparisonModal } from './PlayerComparisonModal';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, LineChart, Line, Cell, Legend } from 'recharts';
 import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 import { FbrefStandardRow, getPlayerStandardStatsForClub, createEmptyStandardRow } from '@/utils/fbrefStandardStats';
+import { getFbrefPlayerProfile, FbrefPlayerProfileRecord } from '@/utils/fbrefPlayerProfiles';
 
 interface Player {
   name: string;
@@ -80,9 +81,15 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
     preferredFoot?: string;
   }
 
+  interface ArsenalPlayingTimeRow {
+    comp?: string;
+    unSub?: number | null;
+    subs?: number | null;
+  }
   interface ArsenalFbPlayerRecord {
     slug: string;
     profile?: ArsenalFbProfile;
+    playingTimeDomesticLeagues?: { rows?: ArsenalPlayingTimeRow[] };
   }
 
   const [stats, setStats] = useState<{ goals: number; appearances: number }>({ goals: 0, appearances: 0 });
@@ -100,6 +107,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
   const [expandedRecentMatches, setExpandedRecentMatches] = useState(false);
   const [showFullProfile, setShowFullProfile] = useState(false);
   const [arsenalProfile, setArsenalProfile] = useState<ArsenalFbPlayerRecord | null>(null);
+  const [fbrefProfile, setFbrefProfile] = useState<FbrefPlayerProfileRecord | null>(null);
 
   useEffect(() => {
     if (!player || !isOpen) {
@@ -143,6 +151,39 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
     };
 
     loadStandardStats();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [player?.name, teamName, isOpen]);
+
+  // Load richer FBref player profile (for clubs we have scraped: uses club slug)
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadProfile = async () => {
+      if (!isOpen || !player?.name) {
+        if (!cancelled) setFbrefProfile(null);
+        return;
+      }
+      // Map teamName -> fbref club slug used in fbref-urls.json
+      const slugMap: Record<string, string> = {
+        'Arsenal': 'arsenal',
+        'Leeds United': 'leeds-united',
+        'Manchester United': 'manchester-united',
+      };
+      const clubSlug = slugMap[teamName];
+      if (!clubSlug) {
+        if (!cancelled) setFbrefProfile(null);
+        return;
+      }
+      const profile = await getFbrefPlayerProfile(clubSlug, player.name);
+      if (!cancelled) {
+        setFbrefProfile(profile);
+      }
+    };
+
+    loadProfile();
 
     return () => {
       cancelled = true;
@@ -364,20 +405,33 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
     { label: 'Red cards', value: formatStringOrNumber(primaryCompetition?.redCards, 0) },
   ];
 
-  // FBref standard stats for league play (25/26 season)
-  const fbrefStandardGroup = fbrefStandardStats
-    ? [
-        { label: 'Matches', value: formatStringOrNumber(fbrefStandardStats.matches, 0) },
-        { label: 'Starts', value: formatStringOrNumber(fbrefStandardStats.starts, 0) },
-        { label: 'Minutes', value: formatStringOrNumber(fbrefStandardStats.minutes, 0) },
-        { label: 'Goals', value: formatStringOrNumber(fbrefStandardStats.goals, 0) },
-        { label: 'Assists', value: formatStringOrNumber(fbrefStandardStats.assists, 0) },
-        { label: 'Goals/90', value: formatNumber(fbrefStandardStats.goalsPer90, 2) },
-        { label: 'Assists/90', value: formatNumber(fbrefStandardStats.assistsPer90, 2) },
-        { label: 'G+A/90', value: formatNumber(fbrefStandardStats.gaPer90, 2) },
-        { label: 'G-no-pen/90', value: formatNumber(fbrefStandardStats.gNoPenPer90, 2) },
-      ]
-    : [];
+  // Unused sub (time on bench without playing) – Arsenal only, from arsenal-squad.json
+  const arsenalUnusedSub =
+    teamName === 'Arsenal' && arsenalProfile?.playingTimeDomesticLeagues?.rows
+      ? arsenalProfile.playingTimeDomesticLeagues.rows
+          .filter((r) => r.comp?.includes('Premier League'))
+          .reduce((sum, r) => sum + (typeof r.unSub === 'number' ? r.unSub : 0), 0)
+      : null;
+
+  // FBref standard stats for league play (25/26 season); subAppearances = matches - starts (times came on from bench)
+  const fbrefStandardGroup = (() => {
+    const base = fbrefStandardStats
+      ? [
+          { label: 'Matches', value: formatStringOrNumber(fbrefStandardStats.matches, 0) },
+          { label: 'Starts', value: formatStringOrNumber(fbrefStandardStats.starts, 0) },
+          { label: 'Sub appearances', value: formatStringOrNumber(fbrefStandardStats.subAppearances ?? (fbrefStandardStats.matches - fbrefStandardStats.starts), 0) },
+          ...(arsenalUnusedSub !== null ? [{ label: 'Unused sub', value: formatStringOrNumber(arsenalUnusedSub, 0) }] : []),
+          { label: 'Minutes', value: formatStringOrNumber(fbrefStandardStats.minutes, 0) },
+          { label: 'Goals', value: formatStringOrNumber(fbrefStandardStats.goals, 0) },
+          { label: 'Assists', value: formatStringOrNumber(fbrefStandardStats.assists, 0) },
+          { label: 'Goals/90', value: formatNumber(fbrefStandardStats.goalsPer90, 2) },
+          { label: 'Assists/90', value: formatNumber(fbrefStandardStats.assistsPer90, 2) },
+          { label: 'G+A/90', value: formatNumber(fbrefStandardStats.gaPer90, 2) },
+          { label: 'G-no-pen/90', value: formatNumber(fbrefStandardStats.gNoPenPer90, 2) },
+        ]
+      : [];
+    return base;
+  })();
 
   const filterStats = (statsGroup: { label: string; value: string | null }[]) =>
     statsGroup.filter(stat => stat.value !== null);
@@ -980,6 +1034,16 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
             </Card>
           )}
 
+          {/* Player visual placeholders – require event-level feed (touch/shot/pass/duel maps) */}
+          <div className="grid grid-cols-2 gap-3">
+            {['Touch map', 'Shot map', 'Pass map', 'Duel map'].map((label) => (
+              <Card key={label} className="p-4 bg-slate-700/50 border-slate-600 border-dashed">
+                <h4 className="text-sm font-medium text-white mb-2">{label}</h4>
+                <p className="text-xs text-gray-400">Data not yet available. Requires event-level feed (e.g. Opta, StatsBomb).</p>
+              </Card>
+            ))}
+          </div>
+
           {/* FBref League Standard Stats (Premier League 2025-26) */}
           {fbrefStandardStats && fbrefStandardGroup.length > 0 && (
             renderBarChart(
@@ -988,6 +1052,8 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
               {
                 Matches: '#3b82f6',
                 Starts: '#0ea5e9',
+                'Sub appearances': '#64748b',
+                'Unused sub': '#94a3b8',
                 Minutes: '#22c55e',
                 Goals: '#f97316',
                 Assists: '#eab308',
@@ -1194,7 +1260,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
             </Card>
           )}
 
-          {/* Recent Matches */}
+          {/* Recent Matches – by competition type (League, Cup, European, International, Friendly) */}
           {player.previousMatches && player.previousMatches.length > 0 && (
             <Card className="p-4 bg-slate-700/50 border-slate-600">
               <div className="flex items-center justify-between mb-4">
@@ -1231,6 +1297,13 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
                       : match.outcome === 'Loss'
                         ? 'text-red-400'
                         : 'text-yellow-300';
+                  const compType =
+                    /premier league|championship|league one|la liga|serie a|bundesliga|ligue 1/i.test(match.competition) ? 'League'
+                    : /fa cup|league cup|efl cup|carabao|domestic cup/i.test(match.competition) ? 'Cup'
+                    : /champions league|europa|europa league|conference league|european/i.test(match.competition) ? 'European'
+                    : /world cup|euro |international|qualifier|nations league/i.test(match.competition) ? 'International'
+                    : /friendly|friendlies/i.test(match.competition) ? 'Friendly'
+                    : null;
 
                   return (
                     <div
@@ -1238,8 +1311,13 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
                       className="flex items-start justify-between gap-4 rounded-lg border border-slate-700/50 bg-slate-800/40 p-3"
                     >
                       <div className="space-y-1">
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-gray-400 flex items-center gap-2 flex-wrap">
                           {match.date} • {match.competition}
+                          {compType && (
+                            <span className="px-1.5 py-0.5 rounded bg-slate-600 text-slate-300 text-[10px] uppercase tracking-wide">
+                              {compType}
+                            </span>
+                          )}
                         </p>
                         <p className="text-sm font-semibold text-white">
                           {match.team} {match.score} {match.opponent}

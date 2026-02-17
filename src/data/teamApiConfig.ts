@@ -332,3 +332,50 @@ export function getTeamsByLeague(league: string): TeamApiConfig[] {
   return TEAM_API_CONFIGS.filter(config => config.league === league);
 }
 
+// ——— Disabled endpoints (failed or empty) — persisted in localStorage for CMS "Test all" / remove ———
+const DISABLED_ENDPOINTS_KEY = 'team_api_disabled_endpoints';
+
+export function getDisabledEndpoints(): string[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(DISABLED_ENDPOINTS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export function isEndpointDisabled(apiId: string): boolean {
+  return getDisabledEndpoints().includes(apiId);
+}
+
+export function addDisabledEndpoint(apiId: string): void {
+  const list = getDisabledEndpoints();
+  if (list.includes(apiId)) return;
+  list.push(apiId);
+  try {
+    localStorage.setItem(DISABLED_ENDPOINTS_KEY, JSON.stringify(list));
+  } catch {
+    // ignore
+  }
+}
+
+export function removeDisabledEndpoint(apiId: string): void {
+  const list = getDisabledEndpoints().filter((id) => id !== apiId);
+  try {
+    localStorage.setItem(DISABLED_ENDPOINTS_KEY, JSON.stringify(list));
+  } catch {
+    // ignore
+  }
+}
+
+export function setDisabledEndpoints(apiIds: string[]): void {
+  try {
+    localStorage.setItem(DISABLED_ENDPOINTS_KEY, JSON.stringify(apiIds));
+  } catch {
+    // ignore
+  }
+}
+

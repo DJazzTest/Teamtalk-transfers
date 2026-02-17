@@ -1,0 +1,949 @@
+{
+  "scrapedAt": "2026-02-17T10:00:08.142Z",
+  "profiles": [
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/9c94165b/Luke-Shaw",
+      "fbrefId": "9c94165b",
+      "name": "Luke Shaw",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/507c7bdf/Bruno-Fernandes",
+      "fbrefId": "507c7bdf",
+      "name": "Bruno Fernandes",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/4d224fe8/Casemiro",
+      "fbrefId": "4d224fe8",
+      "name": "Casemiro",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/d9565625/Diogo-Dalot",
+      "fbrefId": "d9565625",
+      "name": "Diogo Dalot",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/6afaebf2/Bryan-Mbeumo",
+      "fbrefId": "6afaebf2",
+      "name": "Bryan Mbeumo",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/8e6d2fcd/Senne-Lammens",
+      "fbrefId": "8e6d2fcd",
+      "name": "Senne Lammens",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/9dc96f10/Amad-Diallo",
+      "fbrefId": "9dc96f10",
+      "name": "Amad Diallo",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/dc62b55d/Matheus-Cunha",
+      "fbrefId": "dc62b55d",
+      "name": "Matheus Cunha",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/e6536124/Patrick-Dorgu",
+      "fbrefId": "e6536124",
+      "name": "Patrick Dorgu",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/d6e53a3a/Matthijs-de-Ligt",
+      "fbrefId": "d6e53a3a",
+      "name": "Matthijs de Ligt",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/6763f716/Leny-Yoro",
+      "fbrefId": "6763f716",
+      "name": "Leny Yoro",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/3260690c/Benjamin-Sesko",
+      "fbrefId": "3260690c",
+      "name": "Benjamin Sesko",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/9674002f/Mason-Mount",
+      "fbrefId": "9674002f",
+      "name": "Mason Mount",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/bac46a10/Lisandro-Martinez",
+      "fbrefId": "bac46a10",
+      "name": "Lisandro Martinez",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/d8931174/Harry-Maguire",
+      "fbrefId": "d8931174",
+      "name": "Harry Maguire",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/64e17fab/Ayden-Heaven",
+      "fbrefId": "64e17fab",
+      "name": "Ayden Heaven",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/c9817014/Manuel-Ugarte",
+      "fbrefId": "c9817014",
+      "name": "Manuel Ugarte",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/072e68ed/Altay-Bayindir",
+      "fbrefId": "072e68ed",
+      "name": "Altay Bayindir",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/b74277a0/Noussair-Mazraoui",
+      "fbrefId": "b74277a0",
+      "name": "Noussair Mazraoui",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/c6220452/Kobbie-Mainoo",
+      "fbrefId": "c6220452",
+      "name": "Kobbie Mainoo",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/028e70b9/Joshua-Zirkzee",
+      "fbrefId": "028e70b9",
+      "name": "Joshua Zirkzee",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/38a6c944/Jack-Fletcher",
+      "fbrefId": "38a6c944",
+      "name": "Jack Fletcher",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/e8a55b80/Bendito-Mantato",
+      "fbrefId": "e8a55b80",
+      "name": "Bendito Mantato",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/58630379/Tyler-Fredricson",
+      "fbrefId": "58630379",
+      "name": "Tyler Fredricson",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/6b6c793c/Tyrell-Malacia",
+      "fbrefId": "6b6c793c",
+      "name": "Tyrell Malacia",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/81a92add/Tyler-Fletcher",
+      "fbrefId": "81a92add",
+      "name": "Tyler Fletcher",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/a6de6361/Tom-Heaton",
+      "fbrefId": "a6de6361",
+      "name": "Tom Heaton",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/30416cc3/Godwill-Kukonki",
+      "fbrefId": "30416cc3",
+      "name": "Godwill Kukonki",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/69ea448b/Diego-Leon",
+      "fbrefId": "69ea448b",
+      "name": "Diego Leon",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/0c9bfc3b/Chidozie-Obi-Martin",
+      "fbrefId": "0c9bfc3b",
+      "name": "Chidozie Obi-Martin",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "manchester-united",
+      "clubName": "Manchester United",
+      "fbrefUrl": "https://fbref.com/en/players/e9c0c1b2/Andre-Onana",
+      "fbrefId": "e9c0c1b2",
+      "name": "Andre Onana",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/d5d22a58/Gabriel-Gudmundsson",
+      "fbrefId": "d5d22a58",
+      "name": "Gabriel Gudmundsson",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/8d62d31a/Joe-Rodon",
+      "fbrefId": "8d62d31a",
+      "name": "Joe Rodon",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/10b9fa99/Ethan-Ampadu",
+      "fbrefId": "10b9fa99",
+      "name": "Ethan Ampadu",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/ae5019e6/Jayden-Bogle",
+      "fbrefId": "ae5019e6",
+      "name": "Jayden Bogle",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/f4d296e4/Pascal-Struijk",
+      "fbrefId": "f4d296e4",
+      "name": "Pascal Struijk",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/0f59a7bf/Anton-Stach",
+      "fbrefId": "0f59a7bf",
+      "name": "Anton Stach",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/5bc43860/Brenden-Aaronson",
+      "fbrefId": "5bc43860",
+      "name": "Brenden Aaronson",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/59e6e5bf/Dominic-Calvert-Lewin",
+      "fbrefId": "59e6e5bf",
+      "name": "Dominic Calvert-Lewin",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/5dbd461a/Lucas-Perri",
+      "fbrefId": "5dbd461a",
+      "name": "Lucas Perri",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/ca607d59/Noah-Okafor",
+      "fbrefId": "ca607d59",
+      "name": "Noah Okafor",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/6fdac234/Jaka-Bijol",
+      "fbrefId": "6fdac234",
+      "name": "Jaka Bijol",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/1fc4f3d1/Ilia-Gruev",
+      "fbrefId": "1fc4f3d1",
+      "name": "Ilia Gruev",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/a2b105e0/Sean-Longstaff",
+      "fbrefId": "a2b105e0",
+      "name": "Sean Longstaff",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/cde3309f/Karl-Darlow",
+      "fbrefId": "cde3309f",
+      "name": "Karl Darlow",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/fb614c44/James-Justin",
+      "fbrefId": "fb614c44",
+      "name": "James Justin",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/1d36d6b6/Ao-Tanaka",
+      "fbrefId": "1d36d6b6",
+      "name": "Ao Tanaka",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/0cc5f4a5/Lukas-Nmecha",
+      "fbrefId": "0cc5f4a5",
+      "name": "Lukas Nmecha",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/c931d9f9/Daniel-James",
+      "fbrefId": "c931d9f9",
+      "name": "Daniel James",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/75fdd638/Wilfried-Gnonto",
+      "fbrefId": "75fdd638",
+      "name": "Wilfried Gnonto",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/01834aa0/Sebastiaan-Bornauw",
+      "fbrefId": "01834aa0",
+      "name": "Sebastiaan Bornauw",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/1f0072a6/Joel-Piroe",
+      "fbrefId": "1f0072a6",
+      "name": "Joel Piroe",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/aa849a12/Jack-Harrison",
+      "fbrefId": "aa849a12",
+      "name": "Jack Harrison",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/468a7a91/Facundo-Buonanotte",
+      "fbrefId": "468a7a91",
+      "name": "Facundo Buonanotte",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/1bf811d4/Sam-Byram",
+      "fbrefId": "1bf811d4",
+      "name": "Sam Byram",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/30b33655/Samuel-Chambers",
+      "fbrefId": "30b33655",
+      "name": "Samuel Chambers",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/99965ed0/Harry-Gray",
+      "fbrefId": "99965ed0",
+      "name": "Harry Gray",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/6b625ac2/Illan-Meslier",
+      "fbrefId": "6b625ac2",
+      "name": "Illan Meslier",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    },
+    {
+      "clubSlug": "leeds-united",
+      "clubName": "Leeds United",
+      "fbrefUrl": "https://fbref.com/en/players/cc9256ef/Largie-Ramazani",
+      "fbrefId": "cc9256ef",
+      "name": "Largie Ramazani",
+      "scrapedName": "fbref.com",
+      "bioBlocks": [],
+      "tables": {
+        "standardDomesticLeagues": null,
+        "keeperDomesticLeagues": null,
+        "playingTimeDomesticLeagues": null,
+        "miscDomesticLeagues": null,
+        "matchLogs": null
+      }
+    }
+  ]
+}

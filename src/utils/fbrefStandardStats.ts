@@ -3,6 +3,8 @@ export interface FbrefStandardRow {
   position: string;
   matches: number;
   starts: number;
+  /** Substitute appearances (times came on from the bench). Derived: matches - starts. */
+  subAppearances?: number;
   minutes: number;
   goals: number;
   assists: number;
@@ -72,7 +74,7 @@ export async function loadClubStandardStats(teamName: string): Promise<FbrefStan
 /**
  * Return the FBref standard stats row for a given player at a given club.
  * Name matching is done case-insensitively and ignores simple whitespace
- * differences for robustness.
+ * differences for robustness. Enriches the row with subAppearances (matches - starts).
  */
 export async function getPlayerStandardStatsForClub(
   teamName: string,
@@ -82,15 +84,26 @@ export async function getPlayerStandardStatsForClub(
   if (!all || !playerName) return null;
 
   const target = normalise(playerName);
-  return (
-    all.find((row) => normalise(row.name) === target) ||
-    all.find((row) => normalise(row.name).includes(target)) ||
-    null
-  );
+  const row =
+    all.find((r) => normalise(r.name) === target) ||
+    all.find((r) => normalise(r.name).includes(target)) ||
+    null;
+  if (!row) return null;
+
+  const subAppearances =
+    row.subAppearances ?? Math.max(0, (row.matches ?? 0) - (row.starts ?? 0));
+  return { ...row, subAppearances };
 }
 
 function normalise(name: string): string {
-  return name.trim().toLowerCase().replace(/\s+/g, ' ');
+  // Lowercase, strip accents/diacritics, normalise whitespace
+  return name
+    .trim()
+    .toLowerCase()
+    // NFD splits accented chars into base + combining marks; we drop the marks.
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ');
 }
 
 /**
@@ -104,6 +117,7 @@ export function createEmptyStandardRow(playerName: string, position = 'MF'): Fbr
     position,
     matches: 0,
     starts: 0,
+    subAppearances: 0,
     minutes: 0,
     goals: 0,
     assists: 0,

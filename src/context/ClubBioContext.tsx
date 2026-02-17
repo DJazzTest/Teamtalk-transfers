@@ -98,6 +98,26 @@ export const ClubBioProvider: React.FC<ClubBioProviderProps> = ({ children }) =>
                       ))}
                     </div>
                   )}
+                  {(() => {
+                    const m = clubBio.metrics;
+                    const hasMetrics = m && (
+                      (m.attacking && Object.keys(m.attacking).length > 0) ||
+                      (m.passing && Object.keys(m.passing).length > 0) ||
+                      (m.defending && Object.keys(m.defending).length > 0) ||
+                      (m.other && Object.keys(m.other).length > 0)
+                    );
+                    return hasMetrics ? (
+                    <div className="rounded-lg border border-gray-200 dark:border-slate-700 p-3 space-y-2">
+                      <p className="text-xs uppercase text-gray-500 dark:text-gray-400">Club metrics</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Attacking, passing, defending and other metrics (when feed is connected).</p>
+                    </div>
+                    ) : (
+                      <div className="rounded-lg border border-dashed border-gray-300 dark:border-slate-600 p-3">
+                        <p className="text-xs uppercase text-gray-500 dark:text-gray-400">Club metrics</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Attacking, passing, defending and discipline — data source not yet connected. See docs/DATA_VISUALS_AUDIT.md.</p>
+                      </div>
+                    );
+                  })()}
                   {parsedHonours.length > 0 && (
                     <div>
                       <p className="text-sm font-semibold text-gray-900 dark:text-white mb-2">

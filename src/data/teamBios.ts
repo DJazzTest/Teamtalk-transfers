@@ -3,6 +3,14 @@ export interface TeamBioFact {
   value: string;
 }
 
+/** Optional club-level metrics (attack, pass, defend, other). Filled when a feed is available. */
+export interface ClubMetrics {
+  attacking?: Record<string, number | string>;
+  passing?: Record<string, number | string>;
+  defending?: Record<string, number | string>;
+  other?: Record<string, number | string>;
+}
+
 export interface TeamBioEntry {
   intro: string;
   history: string;
@@ -11,6 +19,8 @@ export interface TeamBioEntry {
   facts?: TeamBioFact[];
   website?: string;
   twitter?: string;
+  /** Club-level attacking/passing/defending/other metrics when available from a feed */
+  metrics?: ClubMetrics;
 }
 
 export type TeamBioMap = Record<string, TeamBioEntry>;

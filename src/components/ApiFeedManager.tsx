@@ -1,12 +1,11 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { API_FEEDS, ApiFeedEntry } from '@/data/apiFeeds';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import { API_FEEDS, ApiFeedEntry, ApiFeedEndpoint } from '@/data/apiFeeds';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Copy, ExternalLink, PlusCircle, RefreshCcw } from 'lucide-react';
+import { Copy, ExternalLink, PlusCircle, RefreshCcw, TestTube, CheckCircle, XCircle, Clock, MinusCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface CustomFeedForm {
@@ -16,13 +15,85 @@ interface CustomFeedForm {
   category: ApiFeedEntry['category'];
 }
 
+type TestStatus = 'idle' | 'testing' | 'success' | 'error' | 'skipped';
+
+interface EndpointTestResult {
+  status: TestStatus;
+  responseTime?: number;
+  error?: string;
+  skipReason?: string;
+}
+
 const LOCAL_STORAGE_KEY = 'cms.customFeeds';
+
+/** Build a testable URL by replacing known placeholders; returns null if URL requires auth or unknown params. */
+function getTestUrl(endpoint: ApiFeedEndpoint): { url: string; skipped?: string } | null {
+  let u = endpoint.url;
+  const method = endpoint.method ?? 'GET';
+
+  // Replacements that allow a real request
+  const replacements: [RegExp | string, string][] = [
+    ['{season}', '2024/25'],
+    ['{window}', 'Summer'],
+    ['{ISO}', new Date().toISOString()],
+    ['{query}', 'arsenal'],
+    ['{player}', 'messi'],
+    ['{offset}', '0'],
+    ['{topic}', 'transfers'],
+    ['{type}', 'article'],
+    ['{matchId}', '2999249'],
+    ['{n}', '5'],
+  ];
+  for (const [key, value] of replacements) {
+    u = u.split(key).join(encodeURIComponent(value));
+  }
+  // Relative URLs (Netlify functions) - prepend origin for fetch
+  if (u.startsWith('/')) {
+    u = window.location.origin + u;
+  }
+
+  // Skip if still has placeholders we can't fill
+  if (/\{[^}]+\}/.test(u)) {
+    return null;
+  }
+  return { url: u };
+}
+
+async function testEndpoint(endpoint: ApiFeedEndpoint): Promise<EndpointTestResult> {
+  const testable = getTestUrl(endpoint);
+  if (!testable) {
+    return { status: 'skipped', skipReason: 'Requires auth or params' };
+  }
+  const method = endpoint.method ?? 'GET';
+  const start = Date.now();
+  try {
+    const res = await fetch(testable.url, {
+      method,
+      headers: { Accept: 'application/json' },
+      signal: AbortSignal.timeout(15000),
+    });
+    const elapsed = Date.now() - start;
+    if (!res.ok) {
+      return { status: 'error', responseTime: elapsed, error: `HTTP ${res.status}` };
+    }
+    return { status: 'success', responseTime: elapsed };
+  } catch (err) {
+    const elapsed = Date.now() - start;
+    const message = err instanceof Error ? err.message : String(err);
+    return { status: 'error', responseTime: elapsed, error: message };
+  }
+}
+
+function endpointKey(feedId: string, endpointId: string): string {
+  return `${feedId}:${endpointId}`;
+}
 
 export const ApiFeedManager: React.FC = () => {
   const { toast } = useToast();
   const [query, setQuery] = useState('');
   const [customFeeds, setCustomFeeds] = useState<ApiFeedEntry[]>([]);
-  const [activeCategory, setActiveCategory] = useState<'all' | ApiFeedEntry['category']>('all');
+  const [testResults, setTestResults] = useState<Record<string, EndpointTestResult>>({});
+  const [testingKeys, setTestingKeys] = useState<Set<string>>(new Set());
   const [form, setForm] = useState<CustomFeedForm>({
     name: '',
     url: '',
@@ -55,9 +126,6 @@ export const ApiFeedManager: React.FC = () => {
     const dataset = [...API_FEEDS, ...customFeeds];
     return dataset
       .filter(feed => {
-        if (activeCategory !== 'all' && feed.category !== activeCategory) {
-          return false;
-        }
         if (!query.trim()) return true;
         const search = query.toLowerCase();
         return (
@@ -73,7 +141,7 @@ export const ApiFeedManager: React.FC = () => {
         );
       })
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [activeCategory, query, customFeeds]);
+  }, [query, customFeeds]);
 
   const handleCopy = async (value: string) => {
     try {
@@ -146,11 +214,89 @@ export const ApiFeedManager: React.FC = () => {
     });
   };
 
+  const allFeedsForTest = useMemo(() => [...API_FEEDS, ...customFeeds], [customFeeds]);
+
+  const testOne = useCallback(async (feedId: string, endpoint: ApiFeedEndpoint) => {
+    const key = endpointKey(feedId, endpoint.id);
+    setTestingKeys(prev => new Set(prev).add(key));
+    setTestResults(prev => ({ ...prev, [key]: { status: 'testing' } }));
+    const result = await testEndpoint(endpoint);
+    setTestResults(prev => ({ ...prev, [key]: result }));
+    setTestingKeys(prev => {
+      const next = new Set(prev);
+      next.delete(key);
+      return next;
+    });
+    return result;
+  }, []);
+
+  const testAllFeeds = useCallback(async () => {
+    const keys: string[] = [];
+    for (const feed of allFeedsForTest) {
+      for (const ep of feed.endpoints) {
+        keys.push(endpointKey(feed.id, ep.id));
+      }
+    }
+    setTestingKeys(new Set(keys));
+    const results: Record<string, EndpointTestResult> = {};
+    let passed = 0;
+    let failed = 0;
+    let skipped = 0;
+    for (const feed of allFeedsForTest) {
+      for (const ep of feed.endpoints) {
+        const key = endpointKey(feed.id, ep.id);
+        results[key] = { status: 'testing' };
+      }
+    }
+    setTestResults(results);
+
+    for (const feed of allFeedsForTest) {
+      for (const ep of feed.endpoints) {
+        const key = endpointKey(feed.id, ep.id);
+        const result = await testEndpoint(ep);
+        results[key] = result;
+        setTestResults(prev => ({ ...prev, [key]: result }));
+        if (result.status === 'success') passed++;
+        else if (result.status === 'error') failed++;
+        else skipped++;
+      }
+    }
+    setTestingKeys(new Set());
+    toast({
+      title: 'Test all feeds complete',
+      description: `Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}`,
+      variant: failed > 0 ? 'destructive' : undefined,
+    });
+  }, [allFeedsForTest, toast]);
+
+  const getTestIcon = (key: string) => {
+    const r = testResults[key];
+    if (!r) return null;
+    if (r.status === 'testing' || testingKeys.has(key)) {
+      return <Clock className="h-4 w-4 animate-spin text-blue-500" />;
+    }
+    if (r.status === 'success') return <CheckCircle className="h-4 w-4 text-green-500" />;
+    if (r.status === 'error') return <XCircle className="h-4 w-4 text-red-500" />;
+    if (r.status === 'skipped') return <MinusCircle className="h-4 w-4 text-slate-500" />;
+    return null;
+  };
+
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">API & Feed Inventory</CardTitle>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <CardTitle className="text-xl">API & Feed Inventory</CardTitle>
+            <Button
+              onClick={testAllFeeds}
+              disabled={testingKeys.size > 0}
+              variant="outline"
+              className="gap-2"
+            >
+              <TestTube className="h-4 w-4" />
+              Test all feeds
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-4">
@@ -162,20 +308,6 @@ export const ApiFeedManager: React.FC = () => {
                 className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-400"
               />
             </div>
-            <Tabs
-              value={activeCategory}
-              onValueChange={(value) => setActiveCategory(value as typeof activeCategory)}
-              className="w-full"
-            >
-              <TabsList className="flex flex-wrap gap-2 bg-slate-800 p-1">
-                <TabsTrigger value="all">All</TabsTrigger>
-                {categories.map(category => (
-                  <TabsTrigger key={category} value={category}>
-                    {category}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
           </div>
 
           <ScrollArea className="h-[60vh] rounded-md border border-slate-800 p-4">
@@ -221,32 +353,57 @@ export const ApiFeedManager: React.FC = () => {
                     </div>
 
                     <div className="space-y-3">
-                      {feed.endpoints.map(endpoint => (
-                        <div key={endpoint.id} className="rounded-lg border border-slate-800 p-3 bg-slate-950">
-                          <div className="flex flex-wrap items-center justify-between gap-2">
-                            <div className="flex items-center gap-2">
-                              {endpoint.method && (
-                                <Badge variant="outline" className="text-xs uppercase">{endpoint.method}</Badge>
-                              )}
-                              <p className="font-semibold text-white">{endpoint.label}</p>
+                      {feed.endpoints.map(endpoint => {
+                        const testKey = endpointKey(feed.id, endpoint.id);
+                        const result = testResults[testKey];
+                        const isTesting = testingKeys.has(testKey);
+                        return (
+                          <div key={endpoint.id} className="rounded-lg border border-slate-800 p-3 bg-slate-950">
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                {endpoint.method && (
+                                  <Badge variant="outline" className="text-xs uppercase">{endpoint.method}</Badge>
+                                )}
+                                <p className="font-semibold text-white">{endpoint.label}</p>
+                                {getTestIcon(testKey)}
+                                {result?.status === 'success' && result.responseTime != null && (
+                                  <span className="text-xs text-green-500">{result.responseTime}ms</span>
+                                )}
+                                {result?.status === 'error' && (
+                                  <span className="text-xs text-red-500">{result.error}</span>
+                                )}
+                                {result?.status === 'skipped' && result.skipReason && (
+                                  <span className="text-xs text-slate-500">{result.skipReason}</span>
+                                )}
+                              </div>
+                              <div className="flex gap-2">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => testOne(feed.id, endpoint)}
+                                  disabled={isTesting}
+                                  className="gap-1"
+                                >
+                                  <TestTube className="h-3 w-3" />
+                                  Test
+                                </Button>
+                                <Button size="icon" variant="ghost" onClick={() => handleCopy(endpoint.url)}>
+                                  <Copy className="h-4 w-4" />
+                                </Button>
+                                <Button size="icon" variant="ghost" asChild>
+                                  <a href={endpoint.url.replace('{token}', '').replace('{season}', '2024/25')} target="_blank" rel="noreferrer">
+                                    <ExternalLink className="h-4 w-4" />
+                                  </a>
+                                </Button>
+                              </div>
                             </div>
-                            <div className="flex gap-2">
-                              <Button size="icon" variant="ghost" onClick={() => handleCopy(endpoint.url)}>
-                                <Copy className="h-4 w-4" />
-                              </Button>
-                              <Button size="icon" variant="ghost" asChild>
-                                <a href={endpoint.url.replace('{token}', '').replace('{season}', '2024/25')} target="_blank" rel="noreferrer">
-                                  <ExternalLink className="h-4 w-4" />
-                                </a>
-                              </Button>
-                            </div>
+                            <p className="text-xs text-slate-400 break-all mt-1">{endpoint.url}</p>
+                            {endpoint.notes && (
+                              <p className="text-xs text-slate-500 mt-1">{endpoint.notes}</p>
+                            )}
                           </div>
-                          <p className="text-xs text-slate-400 break-all mt-1">{endpoint.url}</p>
-                          {endpoint.notes && (
-                            <p className="text-xs text-slate-500 mt-1">{endpoint.notes}</p>
-                          )}
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </CardContent>
                 </Card>

@@ -14,7 +14,10 @@
     "import:sportmonks-pl": "node scripts/importSportmonksPremierLeague.mjs",
     "scrape:arsenal-images": "node scripts/scrapeFootballTransfersImages.mjs",
     "scrape:prem-players": "node scripts/fetchMissingPremPlayers.mjs",
-    "export:transfer-players": "node scripts/extractTransferPlayerData.mjs"
+    "export:transfer-players": "node scripts/extractTransferPlayerData.mjs",
+    "scrape:fbref-urls": "node scripts/scrapeFbrefUrls.mjs",
+    "scrape:fbref-arsenal": "node scripts/scrapeFbrefArsenalOnly.mjs",
+    "scrape:fbref-player-profiles": "node scripts/scrapeFbrefPlayerProfiles.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

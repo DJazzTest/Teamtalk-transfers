@@ -1,0 +1,91 @@
+{
+  "compUrl": "https://fbref.com/en/comps/9/Premier-League-Stats",
+  "scrapedAt": null,
+  "clubs": [
+    {
+      "name": "Arsenal",
+      "slug": "arsenal",
+      "squadUrl": "https://fbref.com/en/squads/18bb7c10/Arsenal-Stats",
+      "players": []
+    },
+    {
+      "name": "Manchester United",
+      "slug": "manchester-united",
+      "squadUrl": "https://fbref.com/en/squads/19538871/Manchester-United-Stats",
+      "players": [
+        { "name": "Luke Shaw", "url": "https://fbref.com/en/players/9c94165b/Luke-Shaw" },
+        { "name": "Bruno Fernandes", "url": "https://fbref.com/en/players/507c7bdf/Bruno-Fernandes" },
+        { "name": "Casemiro", "url": "https://fbref.com/en/players/4d224fe8/Casemiro" },
+        { "name": "Diogo Dalot", "url": "https://fbref.com/en/players/d9565625/Diogo-Dalot" },
+        { "name": "Bryan Mbeumo", "url": "https://fbref.com/en/players/6afaebf2/Bryan-Mbeumo" },
+        { "name": "Senne Lammens", "url": "https://fbref.com/en/players/8e6d2fcd/Senne-Lammens" },
+        { "name": "Amad Diallo", "url": "https://fbref.com/en/players/9dc96f10/Amad-Diallo" },
+        { "name": "Matheus Cunha", "url": "https://fbref.com/en/players/dc62b55d/Matheus-Cunha" },
+        { "name": "Patrick Dorgu", "url": "https://fbref.com/en/players/e6536124/Patrick-Dorgu" },
+        { "name": "Matthijs de Ligt", "url": "https://fbref.com/en/players/d6e53a3a/Matthijs-de-Ligt" },
+        { "name": "Leny Yoro", "url": "https://fbref.com/en/players/6763f716/Leny-Yoro" },
+        { "name": "Benjamin Sesko", "url": "https://fbref.com/en/players/3260690c/Benjamin-Sesko" },
+        { "name": "Mason Mount", "url": "https://fbref.com/en/players/9674002f/Mason-Mount" },
+        { "name": "Lisandro Martinez", "url": "https://fbref.com/en/players/bac46a10/Lisandro-Martinez" },
+        { "name": "Harry Maguire", "url": "https://fbref.com/en/players/d8931174/Harry-Maguire" },
+        { "name": "Ayden Heaven", "url": "https://fbref.com/en/players/64e17fab/Ayden-Heaven" },
+        { "name": "Manuel Ugarte", "url": "https://fbref.com/en/players/c9817014/Manuel-Ugarte" },
+        { "name": "Altay Bayindir", "url": "https://fbref.com/en/players/072e68ed/Altay-Bayindir" },
+        { "name": "Noussair Mazraoui", "url": "https://fbref.com/en/players/b74277a0/Noussair-Mazraoui" },
+        { "name": "Kobbie Mainoo", "url": "https://fbref.com/en/players/c6220452/Kobbie-Mainoo" },
+        { "name": "Joshua Zirkzee", "url": "https://fbref.com/en/players/028e70b9/Joshua-Zirkzee" },
+        { "name": "Jack Fletcher", "url": "https://fbref.com/en/players/38a6c944/Jack-Fletcher" },
+        { "name": "Bendito Mantato", "url": "https://fbref.com/en/players/e8a55b80/Bendito-Mantato" },
+        { "name": "Tyler Fredricson", "url": "https://fbref.com/en/players/58630379/Tyler-Fredricson" },
+        { "name": "Tyrell Malacia", "url": "https://fbref.com/en/players/6b6c793c/Tyrell-Malacia" },
+        { "name": "Tyler Fletcher", "url": "https://fbref.com/en/players/81a92add/Tyler-Fletcher" },
+        { "name": "Tom Heaton", "url": "https://fbref.com/en/players/a6de6361/Tom-Heaton" },
+        { "name": "Godwill Kukonki", "url": "https://fbref.com/en/players/30416cc3/Godwill-Kukonki" },
+        { "name": "Diego Leon", "url": "https://fbref.com/en/players/69ea448b/Diego-Leon" },
+        { "name": "Chidozie Obi-Martin", "url": "https://fbref.com/en/players/0c9bfc3b/Chidozie-Obi-Martin" },
+        { "name": "Andre Onana", "url": "https://fbref.com/en/players/e9c0c1b2/Andre-Onana" }
+      ]
+    },
+    {
+      "name": "Leeds United",
+      "slug": "leeds-united",
+      "squadUrl": "https://fbref.com/en/squads/5bfb9659/Leeds-United-Stats",
+      "players": [
+        {"name": "Gabriel Gudmundsson", "url": "https://fbref.com/en/players/d5d22a58/Gabriel-Gudmundsson"},
+        {"name": "Joe Rodon", "url": "https://fbref.com/en/players/8d62d31a/Joe-Rodon"},
+        {"name": "Ethan Ampadu", "url": "https://fbref.com/en/players/10b9fa99/Ethan-Ampadu"},
+        {"name": "Jayden Bogle", "url": "https://fbref.com/en/players/ae5019e6/Jayden-Bogle"},
+        {"name": "Pascal Struijk", "url": "https://fbref.com/en/players/f4d296e4/Pascal-Struijk"},
+        {"name": "Anton Stach", "url": "https://fbref.com/en/players/0f59a7bf/Anton-Stach"},
+        {"name": "Brenden Aaronson", "url": "https://fbref.com/en/players/5bc43860/Brenden-Aaronson"},
+        {"name": "Dominic Calvert-Lewin", "url": "https://fbref.com/en/players/59e6e5bf/Dominic-Calvert-Lewin"},
+        {"name": "Lucas Perri", "url": "https://fbref.com/en/players/5dbd461a/Lucas-Perri"},
+        {"name": "Noah Okafor", "url": "https://fbref.com/en/players/ca607d59/Noah-Okafor"},
+        {"name": "Jaka Bijol", "url": "https://fbref.com/en/players/6fdac234/Jaka-Bijol"},
+        {"name": "Ilia Gruev", "url": "https://fbref.com/en/players/1fc4f3d1/Ilia-Gruev"},
+        {"name": "Sean Longstaff", "url": "https://fbref.com/en/players/a2b105e0/Sean-Longstaff"},
+        {"name": "Karl Darlow", "url": "https://fbref.com/en/players/cde3309f/Karl-Darlow"},
+        {"name": "James Justin", "url": "https://fbref.com/en/players/fb614c44/James-Justin"},
+        {"name": "Ao Tanaka", "url": "https://fbref.com/en/players/1d36d6b6/Ao-Tanaka"},
+        {"name": "Lukas Nmecha", "url": "https://fbref.com/en/players/0cc5f4a5/Lukas-Nmecha"},
+        {"name": "Daniel James", "url": "https://fbref.com/en/players/c931d9f9/Daniel-James"},
+        {"name": "Wilfried Gnonto", "url": "https://fbref.com/en/players/75fdd638/Wilfried-Gnonto"},
+        {"name": "Sebastiaan Bornauw", "url": "https://fbref.com/en/players/01834aa0/Sebastiaan-Bornauw"},
+        {"name": "Joel Piroe", "url": "https://fbref.com/en/players/1f0072a6/Joel-Piroe"},
+        {"name": "Jack Harrison", "url": "https://fbref.com/en/players/aa849a12/Jack-Harrison"},
+        {"name": "Facundo Buonanotte", "url": "https://fbref.com/en/players/468a7a91/Facundo-Buonanotte"},
+        {"name": "Sam Byram", "url": "https://fbref.com/en/players/1bf811d4/Sam-Byram"},
+        {"name": "Samuel Chambers", "url": "https://fbref.com/en/players/30b33655/Samuel-Chambers"},
+        {"name": "Harry Gray", "url": "https://fbref.com/en/players/99965ed0/Harry-Gray"},
+        {"name": "Illan Meslier", "url": "https://fbref.com/en/players/6b625ac2/Illan-Meslier"},
+        {"name": "Largie Ramazani", "url": "https://fbref.com/en/players/cc9256ef/Largie-Ramazani"}
+      ]
+    },
+    {
+      "name": "Newcastle United",
+      "slug": "newcastle-united",
+      "squadUrl": "https://fbref.com/en/squads/b2b47a98/Newcastle-United-Stats",
+      "players": []
+    }
+  ]
+}

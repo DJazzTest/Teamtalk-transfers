@@ -1,12 +1,13 @@
 import React from 'react';
-import Admin from './Admin';
 import { TeamApiConfigManager } from '@/components/TeamApiConfigManager';
 import { TeamBioManager } from '@/components/TeamBioManager';
 import { PlayerManagement } from '@/components/PlayerManagement';
 import { ClubManagement } from '@/components/ClubManagement';
+import { FbrefUrlsManager } from '@/components/FbrefUrlsManager';
 import { ChatterBoxManagement } from '@/components/ChatterBoxManagement';
 import { FlashBannerManagement } from '@/components/FlashBannerManagement';
 import { ApiFeedManager } from '@/components/ApiFeedManager';
+import ClubApiManager from '@/components/ClubApiManager';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PlayerModalProvider } from '@/context/PlayerModalContext';
 import { TransferDataProvider } from '@/store/transferDataStore';
@@ -27,7 +28,6 @@ const Cms: React.FC = () => {
                 <TabsTrigger value="chatter">Live Hub</TabsTrigger>
                 <TabsTrigger value="flash-banner">Flash Banner</TabsTrigger>
                 <TabsTrigger value="apis">APIs & Feeds</TabsTrigger>
-                <TabsTrigger value="admin">Admin</TabsTrigger>
               </TabsList>
 
               <TabsContent value="players">
@@ -35,6 +35,7 @@ const Cms: React.FC = () => {
               </TabsContent>
 
               <TabsContent value="teams" className="space-y-6">
+                <FbrefUrlsManager />
                 <TeamBioManager />
                 <TeamApiConfigManager />
                 <ClubManagement />
@@ -49,11 +50,12 @@ const Cms: React.FC = () => {
               </TabsContent>
 
               <TabsContent value="apis">
-                <ApiFeedManager />
-              </TabsContent>
-
-              <TabsContent value="admin">
-                <Admin />
+                <div className="space-y-6">
+                  {/* Per-club APIs (ScoreInside, TeamTalk, custom) with per-club green status ticks */}
+                  <ClubApiManager />
+                  {/* Global feeds and utilities inventory */}
+                  <ApiFeedManager />
+                </div>
               </TabsContent>
             </Tabs>
           </div>
