@@ -1,7 +1,14 @@
-import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { DEFAULT_TEAM_BIOS } from '@/data/teamBios';
+import { DEFAULT_TEAM_BIOS, ClubMetrics } from '@/data/teamBios';
 import { useClubBadge } from '@/hooks/useClubBadge';
 
 type ClubBioAction = 'overview' | 'compare' | 'squad';
@@ -28,6 +35,7 @@ const dispatchClubAction = (action: ClubBioAction, club: string) => {
 export const ClubBioProvider: React.FC<ClubBioProviderProps> = ({ children }) => {
   const [activeClub, setActiveClub] = useState<string | null>(null);
   const { badgeSrc } = useClubBadge(activeClub);
+  const [dynamicMetrics, setDynamicMetrics] = useState<ClubMetrics | null>(null);
 
   const value = useMemo(
     () => ({
@@ -38,6 +46,86 @@ export const ClubBioProvider: React.FC<ClubBioProviderProps> = ({ children }) =>
   );
 
   const clubBio = activeClub ? DEFAULT_TEAM_BIOS[activeClub] : null;
+
+  // For now we compute club-level metrics only for Arsenal from the rich squad JSON.
+  useEffect(() => {
+    if (!activeClub || activeClub !== 'Arsenal') {
+      setDynamicMetrics(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    const loadArsenalMetrics = async () => {
+      try {
+        const response = await fetch('/arsenal-squad.json');
+        if (!response.ok) {
+          throw new Error(`Failed to load Arsenal squad JSON: ${response.status}`);
+        }
+        const squad = (await response.json()) as any[];
+
+        // Aggregate simple attacking metrics across all players with domestic league minutes.
+        let totalGoals = 0;
+        let totalAssists = 0;
+        let totalMinutes = 0;
+        let totalXg = 0;
+        let totalXa = 0;
+        let playersWithMinutes = 0;
+
+        squad.forEach((player) => {
+          const league = player?.currentSeasonSummary?.domesticLeague;
+          if (!league) return;
+
+          const min = Number(league.min) || 0;
+          const gls = Number(league.gls) || 0;
+          const ast = Number(league.ast) || 0;
+          const xg = Number(league.xG ?? league.xg ?? 0) || 0;
+          const xa = Number(league.xAG ?? league.xAg ?? league.xa ?? 0) || 0;
+
+          if (min > 0 || gls > 0 || ast > 0 || xg > 0 || xa > 0) {
+            playersWithMinutes += 1;
+          }
+
+          totalMinutes += min;
+          totalGoals += gls;
+          totalAssists += ast;
+          totalXg += xg;
+          totalXa += xa;
+        });
+
+        const approxTeam90s = totalMinutes > 0 ? totalMinutes / 90 : 0;
+
+        const attacking: Record<string, number | string> = {
+          'Total league goals (squad)': totalGoals,
+          'Total league assists (squad)': totalAssists,
+          'Total league minutes (squad)': totalMinutes,
+          'Total xG (squad)': Number(totalXg.toFixed(1)),
+          'Total xA (squad)': Number(totalXa.toFixed(1)),
+          'Approx. team 90s (sum mins / 90)': Number(approxTeam90s.toFixed(1)),
+          'Players with league minutes': playersWithMinutes,
+        };
+
+        if (!cancelled) {
+          setDynamicMetrics({
+            attacking,
+          });
+        }
+      } catch (error) {
+        // If anything fails, fall back to no dynamic metrics so the placeholder still shows.
+        if (!cancelled) {
+          // eslint-disable-next-line no-console
+          console.error('Failed to load Arsenal club metrics', error);
+          setDynamicMetrics(null);
+        }
+      }
+    };
+
+    loadArsenalMetrics();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeClub]);
 
   const parsedHonours = useMemo(() => {
     if (!clubBio?.honours?.length) return [];
@@ -99,22 +187,78 @@ export const ClubBioProvider: React.FC<ClubBioProviderProps> = ({ children }) =>
                     </div>
                   )}
                   {(() => {
-                    const m = clubBio.metrics;
-                    const hasMetrics = m && (
-                      (m.attacking && Object.keys(m.attacking).length > 0) ||
-                      (m.passing && Object.keys(m.passing).length > 0) ||
-                      (m.defending && Object.keys(m.defending).length > 0) ||
-                      (m.other && Object.keys(m.other).length > 0)
-                    );
-                    return hasMetrics ? (
-                    <div className="rounded-lg border border-gray-200 dark:border-slate-700 p-3 space-y-2">
-                      <p className="text-xs uppercase text-gray-500 dark:text-gray-400">Club metrics</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">Attacking, passing, defending and other metrics (when feed is connected).</p>
-                    </div>
-                    ) : (
-                      <div className="rounded-lg border border-dashed border-gray-300 dark:border-slate-600 p-3">
-                        <p className="text-xs uppercase text-gray-500 dark:text-gray-400">Club metrics</p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Attacking, passing, defending and discipline — data source not yet connected. See docs/DATA_VISUALS_AUDIT.md.</p>
+                    const metrics: ClubMetrics | undefined =
+                      dynamicMetrics || clubBio.metrics;
+
+                    const hasMetrics =
+                      metrics &&
+                      ((metrics.attacking && Object.keys(metrics.attacking).length > 0) ||
+                        (metrics.passing && Object.keys(metrics.passing).length > 0) ||
+                        (metrics.defending && Object.keys(metrics.defending).length > 0) ||
+                        (metrics.other && Object.keys(metrics.other).length > 0));
+
+                    if (!hasMetrics) {
+                      return (
+                        <div className="rounded-lg border border-dashed border-gray-300 dark:border-slate-600 p-3">
+                          <p className="text-xs uppercase text-gray-500 dark:text-gray-400">
+                            Club metrics
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            Attacking, passing, defending and discipline — data source not yet
+                            connected. See docs/DATA_VISUALS_AUDIT.md.
+                          </p>
+                        </div>
+                      );
+                    }
+
+                    const sections: Array<{
+                      key: keyof ClubMetrics;
+                      label: string;
+                    }> = [
+                      { key: 'attacking', label: 'Attacking' },
+                      { key: 'passing', label: 'Passing' },
+                      { key: 'defending', label: 'Defending' },
+                      { key: 'other', label: 'Other' },
+                    ];
+
+                    return (
+                      <div className="rounded-lg border border-gray-200 dark:border-slate-700 p-3 space-y-3">
+                        <p className="text-xs uppercase text-gray-500 dark:text-gray-400">
+                          Club metrics
+                        </p>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          High-level attacking, passing, defending and other indicators for this
+                          season. Arsenal currently uses aggregated squad stats; other clubs can be
+                          wired to dedicated feeds.
+                        </p>
+                        <div className="space-y-3">
+                          {sections.map(({ key, label }) => {
+                            const group = metrics?.[key];
+                            if (!group || Object.keys(group).length === 0) return null;
+                            return (
+                              <div key={key}>
+                                <p className="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 mb-1">
+                                  {label}
+                                </p>
+                                <dl className="grid grid-cols-1 gap-1 text-xs text-gray-700 dark:text-gray-200">
+                                  {Object.entries(group).map(([metricLabel, value]) => (
+                                    <div
+                                      key={metricLabel}
+                                      className="flex items-center justify-between gap-2"
+                                    >
+                                      <dt className="text-gray-500 dark:text-gray-400">
+                                        {metricLabel}
+                                      </dt>
+                                      <dd className="font-semibold text-gray-900 dark:text-white">
+                                        {value}
+                                      </dd>
+                                    </div>
+                                  ))}
+                                </dl>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     );
                   })()}
