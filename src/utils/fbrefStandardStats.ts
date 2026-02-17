@@ -28,6 +28,7 @@ export interface FbrefStandardRow {
  * e.g. "leeds" -> /leeds-standard.json.
  */
 const clubToSlug: Record<string, string> = {
+  // Canonical UI names
   'Arsenal': 'arsenal',
   'Aston Villa': 'aston-villa',
   'Bournemouth': 'bournemouth',
@@ -50,6 +51,13 @@ const clubToSlug: Record<string, string> = {
   // they may not be current PL sides – we still expose them for completeness.
   'Sunderland': 'sunderland',
   'Burnley': 'burnley',
+  // Common short forms / aliases used elsewhere in the app
+  'Manchester Utd': 'manchester-united',
+  'Man Utd': 'manchester-united',
+  'Leeds': 'leeds',
+  'Newcastle': 'newcastle-united',
+  'West Ham': 'west-ham-united',
+  'Wolves': 'wolverhampton-wanderers',
 };
 
 /**
