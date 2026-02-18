@@ -6,7 +6,6 @@ import { ClubSpendingChart2025 } from '@/components/ClubSpendingChart2025';
 import { ClubTransfersList } from '@/components/ClubTransfersList';
 import { ConfirmedTransfersTab } from '@/components/ConfirmedTransfersTab';
 import { NewsCarousel } from '@/components/NewsCarousel';
-import { ChatterBoxDisplay } from '@/components/ChatterBoxDisplay';
 import { Top10ExpensiveVertical } from '@/components/Top10ExpensiveVertical';
 import { VideoTab } from '@/components/VideoTab';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -16,15 +15,10 @@ import { PlanetSportFooter } from '@/components/PlanetSportFooter';
 
 interface MobileLayoutProps {
   countdownTarget: string;
-  newsView: 'confirmed' | 'news' | 'chatter' | 'top10' | 'video';
-  setNewsView: (view: 'confirmed' | 'news' | 'chatter' | 'top10' | 'video') => void;
+  newsView: 'confirmed' | 'news' | 'top10' | 'video';
+  setNewsView: (view: 'confirmed' | 'news' | 'top10' | 'video') => void;
   allTransfers: Transfer[];
   premierLeagueClubs: string[];
-  availableSeasons: string[];
-  transferSelectionIns: string | undefined;
-  setTransferSelectionIns: (value: string | undefined) => void;
-  transferSelectionOuts: string | undefined;
-  setTransferSelectionOuts: (value: string | undefined) => void;
   onSelectClub: (club: string, playerName?: string) => void;
 }
 
@@ -34,11 +28,6 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
   setNewsView,
   allTransfers,
   premierLeagueClubs,
-  availableSeasons,
-  transferSelectionIns,
-  setTransferSelectionIns,
-  transferSelectionOuts,
-  setTransferSelectionOuts,
   onSelectClub,
 }) => {
   return (
@@ -63,19 +52,8 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
       {/* Transfers In */}
       <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md">
         <div className="p-3">
-          <div className="mb-3">
-            <Select value={transferSelectionIns} onValueChange={setTransferSelectionIns}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Transfer season" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableSeasons.map((season) => (
-                  <SelectItem key={`ins-${season}`} value={`ins-${season}`}>
-                    Summer Ins {season}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="mb-3 font-semibold text-sm text-gray-700 dark:text-gray-200">
+            Transfers In
           </div>
           <div className="border-b-2 border-blue-600 dark:border-blue-400 mb-3"></div>
           <div className="max-h-96 overflow-y-auto">
@@ -84,7 +62,6 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
               clubs={premierLeagueClubs}
               type="in"
               window="summer"
-              season={transferSelectionIns ? transferSelectionIns.split('-')[1] : undefined}
               onSelectClub={onSelectClub}
             />
           </div>
@@ -129,18 +106,6 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
               >
                 <Video className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span>Video</span>
-              </button>
-              <button
-                onClick={() => setNewsView('chatter')}
-                className={`flex items-center gap-1 text-xs sm:text-sm font-semibold transition-colors px-2 py-1 rounded ${
-                  newsView === 'chatter'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700'
-                }`}
-              >
-                <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span>Live hub</span>
-                <span className="live-dot w-2 h-2 rounded-full bg-green-500" />
               </button>
               <button
                 onClick={() => setNewsView('confirmed')}
@@ -195,8 +160,6 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
               <NewsCarousel maxItems={5} />
             ) : newsView === 'video' ? (
               <VideoTab />
-            ) : newsView === 'chatter' ? (
-              <ChatterBoxDisplay />
             ) : newsView === 'confirmed' ? (
               <ConfirmedTransfersTab transfers={allTransfers} onSelectClub={onSelectClub} />
             ) : (
@@ -209,19 +172,8 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
       {/* Transfers Out */}
       <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md">
         <div className="p-3">
-          <div className="mb-3">
-            <Select value={transferSelectionOuts} onValueChange={setTransferSelectionOuts}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Transfer season" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableSeasons.map((season) => (
-                  <SelectItem key={`outs-${season}`} value={`outs-${season}`}>
-                    Summer Outs {season}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="mb-3 font-semibold text-sm text-gray-700 dark:text-gray-200">
+            Transfers Out
           </div>
           <div className="border-b-2 border-red-600 dark:border-red-400 mb-3"></div>
           <div className="max-h-96 overflow-y-auto">
@@ -230,7 +182,6 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({
               clubs={premierLeagueClubs}
               type="out"
               window="summer"
-              season={transferSelectionOuts ? transferSelectionOuts.split('-')[1] : undefined}
               onSelectClub={onSelectClub}
             />
           </div>

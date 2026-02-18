@@ -8,6 +8,7 @@ import { PlayerSeasonStats } from '@/data/squadWages';
 import { PlayerStatsHexagon } from './PlayerStatsHexagon';
 import { ShirtNumberIcon } from './ShirtNumberIcon';
 import { PlayerComparisonModal } from './PlayerComparisonModal';
+import { mergePlayerWithSofa } from '@/utils/sofaPlayerMerge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, LineChart, Line, Cell, Legend } from 'recharts';
 import { getPlayerImage, handlePlayerImageError } from '@/utils/playerImageUtils';
 import { FbrefStandardRow, getPlayerStandardStatsForClub, createEmptyStandardRow } from '@/utils/fbrefStandardStats';
@@ -143,25 +144,47 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
   const [showFullProfile, setShowFullProfile] = useState(false);
   const [arsenalProfile, setArsenalProfile] = useState<ArsenalFbPlayerRecord | null>(null);
   const [fbrefProfile, setFbrefProfile] = useState<FbrefPlayerProfileRecord | null>(null);
+  const [mergedPlayer, setMergedPlayer] = useState<Player | null>(null);
+
+  const effectivePlayer = mergedPlayer || player;
+
+  // Merge local player data with SofaScore JSON (if available) to fill seasonStats/bio/etc.
+  useEffect(() => {
+    let cancelled = false;
+    if (!player || !isOpen) {
+      setMergedPlayer(null);
+      return;
+    }
+    const doMerge = async () => {
+      const enriched = await mergePlayerWithSofa(player, teamName);
+      if (!cancelled) {
+        setMergedPlayer(enriched);
+      }
+    };
+    doMerge();
+    return () => {
+      cancelled = true;
+    };
+  }, [player, teamName, isOpen]);
 
   useEffect(() => {
-    if (!player || !isOpen) {
+    if (!effectivePlayer || !isOpen) {
       setStats({ appearances: 0, goals: 0 });
       setCompetitionStats([]);
       setFbrefStandardStats(null);
       return;
     }
 
-    if (player.seasonStats?.competitions && Array.isArray(player.seasonStats.competitions) && player.seasonStats.competitions.length > 0) {
-      const totalMatches = player.seasonStats.competitions.reduce((sum, c) => sum + (c.matches || 0), 0);
-      const totalGoals = player.seasonStats.competitions.reduce((sum, c) => sum + (c.goals || 0), 0);
+    if (effectivePlayer.seasonStats?.competitions && Array.isArray(effectivePlayer.seasonStats.competitions) && effectivePlayer.seasonStats.competitions.length > 0) {
+      const totalMatches = effectivePlayer.seasonStats.competitions.reduce((sum, c) => sum + (c.matches || 0), 0);
+      const totalGoals = effectivePlayer.seasonStats.competitions.reduce((sum, c) => sum + (c.goals || 0), 0);
       setStats({ appearances: totalMatches, goals: totalGoals });
-      setCompetitionStats(player.seasonStats.competitions);
+      setCompetitionStats(effectivePlayer.seasonStats.competitions);
     } else {
       setStats({ appearances: 0, goals: 0 });
       setCompetitionStats([]);
     }
-  }, [player, isOpen]);
+  }, [effectivePlayer, isOpen]);
 
   // Load FBref standard stats for supported clubs (starting with Leeds United)
   useEffect(() => {
@@ -1637,7 +1660,7 @@ export const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
     <>
       {playerDetailModal}
       <PlayerComparisonModal
-        player1={player}
+        player1={effectivePlayer}
         team1={teamName}
         isOpen={isComparisonOpen}
         onClose={() => setIsComparisonOpen(false)}

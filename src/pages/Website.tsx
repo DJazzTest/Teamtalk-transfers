@@ -34,12 +34,9 @@ const WebsiteContent = () => {
   const [selectedClub, setSelectedClub] = useState<string | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
   const [countdownTarget] = useState('2025-12-31T23:00:00');
-  const [newsView, setNewsView] = useState<'confirmed' | 'news' | 'chatter' | 'top10' | 'video'>('confirmed');
+  const [newsView, setNewsView] = useState<'confirmed' | 'news' | 'top10' | 'video'>('confirmed');
   // Available seasons - can be extended as needed
-  const availableSeasons = ['2025/26', '2024/25', '2023/24'];
-  
-  const [transferSelectionIns, setTransferSelectionIns] = useState<string | undefined>(undefined);
-  const [transferSelectionOuts, setTransferSelectionOuts] = useState<string | undefined>(undefined);
+  // We now always show the current window's Transfers In / Out (no season dropdown)
   
   // View mode state (desktop or mobile)
   const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>(() => {
@@ -204,11 +201,6 @@ const WebsiteContent = () => {
           setNewsView={setNewsView}
           allTransfers={allTransfers}
           premierLeagueClubs={premierLeagueClubs}
-          availableSeasons={availableSeasons}
-          transferSelectionIns={transferSelectionIns}
-          setTransferSelectionIns={setTransferSelectionIns}
-          transferSelectionOuts={transferSelectionOuts}
-          setTransferSelectionOuts={setTransferSelectionOuts}
           onSelectClub={handleSelectClub}
         />
       ) : (
@@ -225,7 +217,7 @@ const WebsiteContent = () => {
 
         {/* Three Column Layout: Transfers In | News | Transfers Out */}
         <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr 260px', gap: '16px', marginBottom: '0', alignItems: 'end' }}>
-          {/* Club Spending Chart 2025 - Spans all three columns */}
+          {/* Club Spending Chart - Spans all three columns */}
           <div style={{ gridColumn: '1 / -1', marginBottom: '16px' }}>
             <ClubSpendingChart2025 onSelectClub={handleSelectClub} />
           </div>
@@ -233,19 +225,8 @@ const WebsiteContent = () => {
           <div style={{ width: '260px', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md flex flex-col h-full">
               <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', flex: '1' }}>
-                <div className="mb-3">
-                  <Select value={transferSelectionIns} onValueChange={setTransferSelectionIns}>
-                    <SelectTrigger className="w-64">
-                      <SelectValue placeholder="Select Transfer season" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableSeasons.map((season) => (
-                        <SelectItem key={`ins-${season}`} value={`ins-${season}`}>
-                          Summer Ins {season}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="mb-3 font-semibold text-sm text-gray-700 dark:text-gray-200">
+                  Transfers In
                 </div>
                 <div className="border-b-2 border-blue-600 dark:border-blue-400 mb-3"></div>
                 <div 
@@ -297,21 +278,6 @@ const WebsiteContent = () => {
                     >
                       <Video className="w-4 h-4" style={{ color: '#6b8e6b' }} />
                       Video
-                    </button>
-                    <button
-                      onClick={() => setNewsView('chatter')}
-                      className={`flex items-center gap-2 text-sm font-semibold transition-colors ${
-                        newsView === 'chatter'
-                          ? 'border-b-2 border-blue-600 dark:border-blue-400 pb-1'
-                          : ''
-                      }`}
-                      style={newsView === 'chatter' ? { color: '#6b8e6b', borderBottom: '2px solid #6b8e6b' } : { color: '#6b8e6b' }}
-                    >
-                      <MessageSquare className="w-4 h-4" style={{ color: '#6b8e6b' }} />
-                      <span>Live hub</span>
-                      <span 
-                        className="live-dot w-2.5 h-2.5 rounded-full bg-green-500"
-                      />
                     </button>
                     <button
                       onClick={() => setNewsView('confirmed')}
@@ -391,8 +357,6 @@ const WebsiteContent = () => {
                     <ConfirmedTransfersTab transfers={allTransfers} onSelectClub={handleSelectClub} />
                   ) : newsView === 'news' ? (
                     <NewsCarousel maxItems={5} />
-                  ) : newsView === 'chatter' ? (
-                    <ChatterBoxDisplay />
                   ) : newsView === 'video' ? (
                     <VideoTab />
                   ) : (
@@ -407,19 +371,8 @@ const WebsiteContent = () => {
           <div style={{ width: '260px', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-md flex flex-col h-full">
               <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', flex: '1' }}>
-                <div className="mb-3">
-                  <Select value={transferSelectionOuts} onValueChange={setTransferSelectionOuts}>
-                    <SelectTrigger className="w-64">
-                      <SelectValue placeholder="Select Transfer season" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableSeasons.map((season) => (
-                        <SelectItem key={`outs-${season}`} value={`outs-${season}`}>
-                          Summer Outs {season}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="mb-3 font-semibold text-sm text-gray-700 dark:text-gray-200">
+                  Transfers Out
                 </div>
                 <div className="border-b-2 border-red-600 dark:border-red-400 mb-3"></div>
                 <div 

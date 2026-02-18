@@ -44,6 +44,11 @@ async function fetchWithProxy(url, retries = MAX_RETRIES) {
   throw new Error('All proxies failed');
 }
 
+// Optional hard-coded SofaScore IDs for specific Arsenal players
+const KNOWN_IDS = {
+  'Alexei Rojas': '1218090',
+};
+
 // Fetch SofaScore API
 async function fetchSofaScoreAPI(endpoint, retries = MAX_RETRIES) {
   for (let attempt = 0; attempt < retries; attempt++) {

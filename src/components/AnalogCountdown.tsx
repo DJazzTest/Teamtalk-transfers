@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 const CLOSED_HEADLINE_KEY = 'transfer_window_closed_headline';
 const CLOSED_SUBTEXT_KEY = 'transfer_window_closed_subtext';
-const DEFAULT_CLOSED_HEADLINE = 'Transfer Window is Now Closed!';
-const DEFAULT_CLOSED_SUBTEXT = 'Transfer window opens mid June';
+// We now just show the \"opens\" message as the main line
+const DEFAULT_CLOSED_HEADLINE = 'Transfer window opens mid June';
+const DEFAULT_CLOSED_SUBTEXT = '';
 
 interface AnalogCountdownProps {
   targetDate: string;
@@ -65,9 +66,30 @@ export const AnalogCountdown: React.FC<AnalogCountdownProps> = ({ targetDate }) 
     <div className="space-y-3">
       <div className="text-center bg-gradient-to-br from-blue-50 to-blue-100 dark:from-[#1a2f4a] dark:to-[#1d3b5f] rounded-xl p-6 transition-colors border-2 border-blue-200 dark:border-[#335b8c] shadow-lg">
         {isExpired ? (
-          <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-900/20 border-2 border-green-300 dark:border-green-700 rounded-xl p-6 max-w-md mx-auto shadow-inner">
-            <p className="text-green-700 dark:text-green-400 text-lg font-bold">{closedHeadline}</p>
-            <p className="text-gray-700 dark:text-gray-300 text-sm mt-2">{closedSubtext}</p>
+          <div className="relative bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-900/20 border-2 border-green-300 dark:border-green-700 rounded-xl p-6 max-w-md mx-auto shadow-inner overflow-hidden">
+            {/* Simple football-style background animation */}
+            <style>
+              {`
+              @keyframes footballFloat {
+                0% { transform: translate3d(-10%, -10%, 0) rotate(0deg); opacity: 0.25; }
+                50% { transform: translate3d(10%, 10%, 0) rotate(8deg); opacity: 0.4; }
+                100% { transform: translate3d(-10%, -10%, 0) rotate(0deg); opacity: 0.25; }
+              }
+            `}
+            </style>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-6 -top-6 w-24 h-24 rounded-full border-4 border-white/70 bg-gradient-to-br from-green-500/40 to-blue-500/40"
+              style={{ animation: 'footballFloat 7s ease-in-out infinite' }}
+            />
+            <p className="text-green-700 dark:text-green-400 text-lg font-bold relative z-10">
+              {closedHeadline}
+            </p>
+            {closedSubtext ? (
+              <p className="text-gray-700 dark:text-gray-300 text-sm mt-2 relative z-10">
+                {closedSubtext}
+              </p>
+            ) : null}
           </div>
         ) : (
           <div className="w-full">
